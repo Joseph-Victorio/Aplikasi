@@ -104,6 +104,7 @@ div,
   color: #101010c2;
 }
 .mobile-view{
+  position: relative;
     max-width: var(--page-width);
     margin-left: auto;
     margin-right: auto;
@@ -803,4 +804,10 @@ table.table td, table.table td * {
     z-index: 999;
     background-color: white;
   }
+}
+.header-absolute {
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
 }

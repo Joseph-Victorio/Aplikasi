@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="row auto-padding-side q-pt-md q-pb-sm justify-between items-center" v-if="products.ready && products.available">
+    <div class="row auto-padding-side q-pt-md q-pb-sm justify-between items-center" :class="{ 'header-absolute' : products.ready && !products.available}">
       <div>
         <q-btn @click="handleMenuCategory" outline color="grey-7" padding="3px 10px" no-caps>
           <q-icon name="eva-keypad" size="15px"></q-icon>

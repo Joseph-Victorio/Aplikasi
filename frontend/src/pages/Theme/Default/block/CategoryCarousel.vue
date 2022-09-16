@@ -22,9 +22,19 @@ export default {
     return {
       glideOptions: {
         rewind: false,
-        perView: 4,
-        gap: 12,
-        bound: true
+        perView: 5,
+        gap: 16,
+        bound: true,
+        breakpoints: {
+          600: {
+            perView: 4,
+            gap: 12,
+          },
+          360: {
+            perView: 3,
+            gap: 8
+          }
+        }
       }
     }
   },
@@ -33,14 +43,8 @@ export default {
   },
   methods: {
     setGlideOptions() {
-      if(this.datas.length <= 3) {
-      this.glideOptions.perView = 3
-      }else if(window.innerWidth > 600) {
-        this.glideOptions.perView = 5
-        this.glideOptions.gap = 16
-      }else if(window.innerWidth < 360) {
-        this.glideOptions.perView = 3
-        this.glideOptions.gap = 8
+      if(this.datas.length == 4) {
+        this.glideOptions.perView = 4
       }
     },
     openCategory(id) {

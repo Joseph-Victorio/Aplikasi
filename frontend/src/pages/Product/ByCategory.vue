@@ -9,7 +9,7 @@
           <shopping-cart  />
        </q-toolbar>
     </q-header>
-    <template v-if="products.available">
+    <template>
       <product-section title="Produk Katalog" :products="products"></product-section>
       <div class="flex justify-center q-py-lg" v-if="products.links">
         <q-btn label="loadmore" color="primary" outline :loading="isLoadmore" v-if="products.links.next" @click="paginate(products.links.next)"></q-btn>
