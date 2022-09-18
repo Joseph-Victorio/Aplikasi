@@ -59,11 +59,7 @@ export default {
   methods: {
     ...mapActions('product', ['getProductsByCategory']),
     backButton() {
-      if(window.history.length > 2) {
-        window.history.back()
-      }else {
-        this.$router.push({name: 'ProductIndex'})
-      }
+      this.$router.push({name: 'ProductIndex'})
     },
     getCategoryTitle() {
       if(this.categories.data.length) {

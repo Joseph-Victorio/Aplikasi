@@ -350,8 +350,6 @@ class ProductController extends Controller
                 'product_id' => $request->product_id
             ], $data);
             
-            // ProductPromo::create($data);
-
             $this->result['data'] = $product;
 
             Cache::forget('products');

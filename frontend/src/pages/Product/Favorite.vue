@@ -38,11 +38,7 @@ export default {
   methods: {
     ...mapActions('product', ['getProductsFavorites']),
     backButton() {
-      if(window.history.length > 2) {
-        window.history.back()
-      }else {
-        this.$router.push({name: 'ProductIndex'})
-      }
+      this.$router.push({name: 'ProductIndex'})
     },
   },
   created() {
