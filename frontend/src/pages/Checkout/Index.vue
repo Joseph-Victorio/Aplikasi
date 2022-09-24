@@ -201,7 +201,6 @@ export default {
         this.commitFormOrder('coupon_discount', this.getDiscountAmount())
       }
 
-      console.log(this.formOrder);
     },
     handleBackButton() {
       if(this.step > 1) {
@@ -315,7 +314,6 @@ export default {
       return location.origin + props.href;
     },
     next() {
-      console.log(this.formOrder);
       this.$store.commit('CLEAR_ERRORS')
         let validationCustomer = ['customer_name', 'customer_phone', 'customer_email', 'customer_address']
         let validationShipping = [ 'shipping_destination', 'shipping_courier_name', 'shipping_courier_service']

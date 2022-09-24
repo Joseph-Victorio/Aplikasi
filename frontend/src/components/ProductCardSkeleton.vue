@@ -35,7 +35,6 @@ export default{
   methods: {
     pageResize() {
       this.pageWidth = window.innerWidth
-      console.log(this.pageWidth);
     }
   },
   created() {

@@ -265,7 +265,6 @@ export default {
       }
     },
     codSelected: function(val) {
-      console.log(val);
       if(val) {
         this.commitFormOrder('shipping_cost', val.price)
         this.commitFormOrder('shipping_courier_name', 'COD')

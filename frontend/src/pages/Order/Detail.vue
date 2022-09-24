@@ -472,10 +472,7 @@ export default {
         QRCode.toDataURL(this.getRoutePath(), opts, (err, url) => {
         if (err) throw err
 
-        console.log(url);
-
           this.qrData = url
-          console.log(this.qrData);
         })
     },
     getRoutePath() {

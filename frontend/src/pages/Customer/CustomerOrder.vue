@@ -82,7 +82,6 @@ export default {
     }),
   },
   mounted() {
-    console.log(this.orders.data.length, this.orders.limit);
     if(!this.orders.data.length || this.orders.data.length <= this.orders.limit) {
       this.getCustomerOrders()
     }

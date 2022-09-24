@@ -228,7 +228,6 @@ export default {
       this.directCheckoutModal = true
     },
     incrementQty(cart) {
-      console.log(cart);
       if(parseInt(cart.quantity) >= parseInt(cart.product_stock)) return
       let qty = parseInt(cart.quantity)+1
       if(!this.session_id) return

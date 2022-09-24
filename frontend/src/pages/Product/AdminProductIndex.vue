@@ -187,7 +187,6 @@ export default {
       this.$refs.input.blur()
       this.searchAdminProducts(this.search).then(response => {
         if(response.status == 200) {
-          console.log(response.data.results);
           this.$store.commit('product/SET_ADMIN_PRODUCTS', response.data.results)
         }
       }).finally(() => {

@@ -192,7 +192,6 @@ export default {
       }
        if(Object.keys(this.errors).length > 0) {
         for(let i in this.errors) {
-          console.log(i);
           if(i == 'shipping_destination') {
             this.jumpTo('shipping')
             this.$q.notify({
