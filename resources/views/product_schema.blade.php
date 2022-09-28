@@ -1,5 +1,5 @@
 @php
-$data = $jsapp['page']['schema']
+$data = $jsapp['page']['product_schema']
 @endphp
 <script type="application/ld+json">
 {
