@@ -32,13 +32,14 @@ class ConfigApiProvider extends ServiceProvider
                     'courier_basic' => explode(',', env('RAJAONGKIR_BASIC')),
                     'courier_pro' => explode(',', env('RAJAONGKIR_PRO')),
                 );
+                
+                Config::set('rajaongkir', $rajaongkir);
     
                 if($setting->telegram_bot_token && $setting->telegram_user_id) {
                     Config::set('services.telegram-bot-api', ['token' =>$setting->telegram_bot_token]);
                     Config::set('telegram', ['user_id' =>$setting->telegram_user_id]);
                 }
                 
-                Config::set('rajaongkir', $rajaongkir);
                 
                 if($setting->tripay_api_key && $setting->tripay_private_key && $setting->tripay_merchant_code ) {
                     
