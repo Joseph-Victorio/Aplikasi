@@ -7,7 +7,7 @@
             <q-toggle v-model="form.is_service_fee" :label="form.is_service_fee? 'Active' : 'Disabled'" left-label color="green-7" class="text-grey-8"></q-toggle>
           </div>
         <div class="text-caption text-grey-7">
-        Biaya layanan penggunaan aplikasi akan ditambahkan pada pesanan kustomer
+        Biaya tambahan penggunaan layanan, akan ditambahkan pada pesanan kustomer
         </div>
       </div>
      <q-form @submit.prevent="updateData" class="q-mt-md q-gutter-y-sm">

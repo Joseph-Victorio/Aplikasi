@@ -76,6 +76,6 @@ class ResetStockByOrder extends Command
 
         }
 
-        $this->info(count($orderExpireds));
+        // $this->info(count($orderExpireds));
     }
 }

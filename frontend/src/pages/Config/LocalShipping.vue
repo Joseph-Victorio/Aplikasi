@@ -4,18 +4,23 @@
       <q-card flat>
         <q-card-section>
           <div class="q-mb-md">
-            <div class="text-md text-weight-bold">Kurir Toko (COD) dan Pembayaran Ditempat </div>
-            <div class="q-mb-sm text-caption text-grey-7">Pengaturan pengiriman kurir toko (COD) dan opsi pembayaran ditempat</div>
+            <div class="text-md text-weight-bold">Kurir Toko dan Pembayaran Ditempat </div>
+            <div class="q-mb-sm text-caption text-grey-7">Pengaturan pengiriman kurir toko dan opsi pembayaran ditempat</div>
           </div>
 
           <div class="flex justify-between items-center q-py-sm">
-              <div class="text-weight-medium">Opsi Pembayaran Ditempat</div>
-              <div>
-                <q-toggle class="text-grey-8" color="green" v-model="formdata.is_cod_payment" left-label :label="formdata.is_cod_payment ? 'Active' : 'Disabled'"> </q-toggle>
-              </div>
+            <div>
+              <div class="text-weight-medium">Pembayaran Ditempat</div>
+              <div class="q-mb-sm text-caption text-grey-7">Opsi pembayaran ditempat oleh kurir</div>
             </div>
-              <div class="q-mb-sm text-caption text-grey-7">Pengaturan pembayaran ditempat untuk pengiriman kurir toko </div>
-            <div class="q-mb-sm text-caption text-grey-7">Pengaturan kecamatan tujuan untuk pengiriman kurir toko / COD ( Kosongkan untuk menonaktifkan ) </div>
+            <div>
+              <q-toggle class="text-grey-8" color="green" v-model="formdata.is_cod_payment" left-label :label="formdata.is_cod_payment ? 'Active' : 'Disabled'"> </q-toggle>
+            </div>
+          </div>
+          <div class="q-mt-md">
+             <div class="text-weight-medium">Kecamatan Tujuan</div>
+            <div class="q-mb-sm text-caption text-grey-7">Pilih kecamatan tujuan untuk pengiriman kurir toko ( Kosongkan untuk menonaktifkan ) </div>
+          </div>
 
           <div>
             <div>

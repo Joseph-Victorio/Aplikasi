@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div class="flex justify-end q-mt-md">
+      <div class="flex justify-end q-pt-lg">
         <q-btn unelevated size="12px" type="submit" label="Simpan Pengaturan" color="blue-7"></q-btn>
       </div>
     </q-form>
