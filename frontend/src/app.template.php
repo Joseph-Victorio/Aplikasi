@@ -31,6 +31,10 @@
     @if(isset($jsapp['page']['featured_image']) && $jsapp['page']['featured_image'])
     <meta property="og:image" content="{{ $jsapp['page']['featured_image'] }}" data-qmeta="ogImage">
     @endif
+
+    @isset($jsapp['page']['product_schema'])
+      @include('product_schema')
+    @endisset
   </head>
   <body class="bg-blue-grey-1">
   @if(isset($jsapp['page']['featured_image']) && $jsapp['page']['featured_image'])

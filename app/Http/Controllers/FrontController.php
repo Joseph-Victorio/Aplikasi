@@ -46,13 +46,29 @@ class FrontController extends Controller
     }
     public function productDetail($slug)
     {
-        $product = Product::where('slug', $slug)->first();
+       $product =  Product::with(['assets'])
+            ->withCount('reviews')
+            ->withAvg('reviews', 'rating')
+            ->where('slug', $slug) 
+            ->first();
+
+        $featuredImage = $product->assets[0]->src;
+        $desc= $product->description ? $this->createTeaser($product->description) : $this->shop->description;
+    
+        $productSchema = [
+            'name' => $product->title,
+            'description' => $desc,
+            'image' => $featuredImage,
+            'reviews_count' => $product->reviews_count,
+            'price' => $product->price,
+            'rating' => (String) $product->reviews_avg_rating ? number_format($this->reviews_avg_rating, 1) : "0",
+        ];
         
         return View::vue([
             'title' => $product->title . ' | ' . $this->shop->name,
-            'description' => $product->description ? $this->createTeaser($product->description) : $this->shop->description,
-            'featured_image' => $product->assets[0]->src,
-            'data' => null
+            'description' => $desc,
+            'featured_image' => $featuredImage,
+            'product_schema' => $productSchema
         ]);
 
     }
