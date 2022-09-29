@@ -25,7 +25,7 @@ class ProductListResource extends JsonResource
             'rating'  =>  $this->reviews_avg_rating ? (float) number_format($this->reviews_avg_rating, 1) : 0,
             'pricing' =>  $this->setPricing($this),
             'category' => $this->category,
-            'assets'  =>  $this->assets,
+            'asset'  =>  $this->featuredImage,
             'category_id' => $this->category_id,
             'category_type' => $this->category_type,
           ];

@@ -40,7 +40,7 @@ class ProductRepository
 
     public function getAll()
     {
-            return Product::with(['assets', 'category:id,title,slug', 'productPromo' => function($query) {
+            return Product::with(['featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
                 $query->whereHas('promoActive');
             }])
             ->withAvg('reviews', 'rating')
@@ -50,7 +50,7 @@ class ProductRepository
 
     public function getProductsFavorites($pids)
     {
-        return Product::with(['assets', 'category:id,title,slug', 'productPromo' => function($query) {
+        return Product::with(['featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
             $query->whereHas('promoActive');
         }])
             ->whereIn('id', $pids)
@@ -62,7 +62,7 @@ class ProductRepository
     public function search($key)
     {
 
-        return Product::with(['assets', 'category:id,title,slug', 'productPromo' => function($query) {
+        return Product::with(['featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
             $query->whereHas('promoActive');
         }])
             ->where('title', 'like', '%'.$key.'%')
@@ -73,7 +73,7 @@ class ProductRepository
 
     public function getProductsByCategory($id)
     {
-        return Product::with(['assets', 'category:id,title,slug', 'productPromo' => function($query) {
+        return Product::with(['featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
             $query->whereHas('promoActive');
         }])
             ->where('category_id', $id)
@@ -85,12 +85,14 @@ class ProductRepository
     public function getProductPromo()
     {
         return Promo::active()->with(['products' => function($query) {
-            $query->with('assets');
+            $query->with('featuredImage');
             $query->with('productPromo', function($q) {
                 $q->whereHas('promoActive');
             });
             $query->withAvg('reviews', 'rating');
-        }])->get()->map(function($item) {
+        }])
+        ->whereHas('products')
+        ->get()->map(function($item) {
 
             $promo = new stdClass();
             $promo->id = $item->id;
@@ -107,7 +109,7 @@ class ProductRepository
                     'status'  =>  $product->status,
                     'rating'  =>  $product->reviews_avg_rating ? (float) number_format($product->reviews_avg_rating, 1) : 0,
                     'pricing' =>  $this->setPricing($product),
-                    'assets'  =>  $product->assets,
+                    'asset'  =>  $product->featuredImage,
                 ];
             });
 
@@ -122,7 +124,7 @@ class ProductRepository
 
         $data = Category::whereHas('products')
             ->with(['products' => function($query) {
-                $query->with('assets');
+                $query->with('featuredImage');
                 $query->with('productPromo', function($q) {
                     $q->whereHas('promoActive');
                 });
@@ -161,7 +163,7 @@ class ProductRepository
                         'rating'  =>  $product->reviews_avg_rating ? (float) number_format($product->reviews_avg_rating, 1) : 0,
                         'pricing' =>  $this->setPricing($product),
                         'category' => $newCat,
-                        'assets'  =>  $product->assets,
+                        'asset'  =>  $product->featuredImage,
                         'description' =>  $product->description,
                         // 'promo' => $product->promo
                     ];
@@ -202,14 +204,18 @@ class ProductRepository
             $product->save();
 
             if($request->images && count($request->images) > 0) {
-                foreach($request->images as $file) {
-                    
+
+                for($i = 0; $i < count($request->images); $i++) {
+
+                    $file = $request->images[$i];
+
                     $filename = Str::random(41).'.' . $file->extension();
 
                     $file->move($path, $filename);
 
                     $product->assets()->create([
-                        'filename' => $filename
+                        'filename' => $filename,
+                        'variable' => $i == $request->featured_index ? 'featured' : NULL
                     ]);
                 }
             }
@@ -247,7 +253,7 @@ class ProductRepository
 
             $this->clearCache();
 
-            return $product->load('assets','varians.subvarian');
+            return $product->load('featuredImage','varians.subvarian');
 
 
         } catch (Exception $e) {
@@ -279,22 +285,47 @@ class ProductRepository
         $product->description = $request->description;
         $product->category_id = $request->category_id;
 
+        
         try {
 
-            if($request->images) {
-                foreach($request->images as $file) {
+            if($request->featured_asset) {
+                foreach($product->assets as $asset) {
 
-                    $filename = Str::random(42).'.' . $file->extension();
-                    
-                    if($file->move($path, $filename)){
-
-                        $product->assets()->create([
-                            'filename' => $filename
-                        ]);
+                    if($asset->filename == $request->featured_asset) {
+                        $asset->variable = 'featured';
+                    }else {
+                        $asset->variable = NULL;
                     }
-
+                    $asset->save();
+    
                 }
             }
+
+            if($request->images && count($request->images) > 0) {
+
+                for($i = 0; $i < count($request->images); $i++) {
+
+                    $isFeatured = false;
+
+                    if(!$request->featured_asset && $i == $request->featured_index) {
+
+                        $isFeatured = true;
+                        
+                    }
+
+                    $file = $request->images[$i];
+
+                    $filename = Str::random(41).'.' . $file->extension();
+
+                    $file->move($path, $filename);
+
+                    $product->assets()->create([
+                        'filename' => $filename,
+                        'variable' => $isFeatured? 'featured' : NULL
+                    ]);
+                }
+            }
+
             if($request->del_images) {
                 foreach($request->del_images as $filename) {
                     File::delete('upload/images/'. $filename);
@@ -372,7 +403,7 @@ class ProductRepository
             DB::commit();
             
             $product->fresh();
-            $product->load('assets', 'category', 'varians.subvarian');
+            $product->load('featuredImage', 'category', 'varians.subvarian');
 
             Cache::forget($product->slug);
 

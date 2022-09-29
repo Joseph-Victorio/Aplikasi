@@ -11,6 +11,7 @@ $default   : #0598c0;
   --page-width: 768px;
   --blue-light: #c0eec6;
   --default-theme: $default;
+  --box-shadow: 0px 14px 16px -10px rgba(48, 48, 48, 0.04);
 }
 @import 'main';
 @import 'responsive';

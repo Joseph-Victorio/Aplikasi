@@ -10,29 +10,52 @@
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
+    <div class="q-px-md q-py-md">
+      <div class="">
+        <div class="text-weight-medium text-md q-mb-sm text-grey-7">Gambar Produk</div>
+        <div class="row q-gutter-sm">
+
+          <div class="box-image bordered cursor-pointer flex justify-center items-center" @click="selectNewImage">
+            <q-icon name="add_a_photo" size="lg" color="grey"></q-icon>
+          </div>
+          <div 
+          class="box-image relative cursor-pointer" 
+          :class="{'feature-image-selected' : form.featured_index == index }"
+          v-for="(image, index) in imagePreview" :key="index">
+            <img :src="image" class="bg-white" @click="changeFeaturedImage(image, index)"/>
+            <q-tooltip v-if="form.featured_index == index" class="bg-green text-white">Featured</q-tooltip>
+            <div class="absolute-top-right">
+              <q-btn dense @click.prevent="removeImage(image, index)" size="10px" unelevated icon="close" color="red" padding="1px"/>
+            </div>
+          </div>
+        </div>
+        <div class="text-xs q-py-sm text-grey" v-if="imagePreview.length">Untuk memilih featured image klik pada gambar</div>
+      </div>
+    </div>
     <form @submit.prevent="submit">
-    <div class="q-pa-md q-gutter-y-sm">
+      <div class="q-px-md q-gutter-y-md">
          <q-input  
          filled
+         square
           type="text" 
           v-model="form.title" 
           label="Nama Produk"
-          :rules="[val => val && val != '' || 'Nama produk harus diisi']"
+          required
         />
         <div class="row items-start q-gutter-x-sm">
           <div class="col">
-            <money-formatter v-model="form.price" prefix="Rp"/>
+            <money-formatter square filled v-model="form.price" prefix="Rp"/>
           </div>
           <div class="col">
-            <money-formatter v-model="form.stock" label="Stok"/>
+            <money-formatter square filled v-model="form.stock" label="Stok"/>
           </div>
           <div class="col">
-            <money-formatter v-model="form.weight" label="Berat" suffix="GRAM"/>
+            <money-formatter square filled v-model="form.weight" label="Berat" suffix="GRAM"/>
           </div>
         </div>
 
           <q-select
-          filled 
+          square filled 
             v-model="form.category_id"
             :options="categories"
             label="Kategori"
@@ -47,43 +70,10 @@
           />
           <div class="text-xs text-red" v-if="errors.description"> {{ errors.description[0]}}</div>
         </div>
-        <section id="image-section" class="q-my-md q-gutter-y-sm">
-          <div>
-            <q-btn label="Upload Gambar Produk" size="sm" color="primary" icon="eva-upload" class="mt-2 mr-2" type="button" @click.prevent="selectNewImage">
-            </q-btn>
-          <input type="file" class="hidden"
-                              ref="image"
-                              @change="updateImagePreview" multiple>
-
-          </div>
-
-          <q-list separator>
-            <q-item  v-for="(image, index) in imagePreview" :key="index">
-
-              <q-item-section>
-                <img :src="image" class="shadow-4 q-pa-xs bg-white" style="width:100px;height:70px;object-fit:cover;"/>
-              </q-item-section>
-
-              <q-item-section side>
-                  <q-btn @click.prevent="removeLocalImage(index)" size="sm" round icon="eva-trash-2" glossy color="red"/>
-              </q-item-section>
-            </q-item>
-            <q-item v-for="image in oldImages" :key="image.id">
-
-              <q-item-section>
-                <img :src="image.src" class="shadow-4 q-pa-xs bg-white" style="width:100px;height:70px;object-fit:cover;"/>
-              </q-item-section>
-
-              <q-item-section side>
-                  <q-btn @click.prevent="removeImage(image)" size="sm" round icon="eva-trash-2" glossy color="red"/>
-              </q-item-section>
-            </q-item>
-          </q-list>
-          <!-- <jet-input-error :message="form.errors.images" class="mt-2" /> -->
-          </section>
       </div>
+        <input type="file" class="hidden" ref="image" @change="updateImagePreview" multiple>
     <!-- Start Product Variants -->
-       <div id="variants">
+       <div id="variants" style="min-height:200px;">
           <div class="row items-center justify-between q-mt-xl q-pa-md bg-green-1">
             <div class="text-md2 text-weight-medium">Produk Variasi</div>
             <q-btn v-if="canAddVarian" label="Tambah Variasi" @click="varianModal = true" color="accent" size="12px"></q-btn>
@@ -229,7 +219,9 @@ export default {
         del_images: [],
         has_subvarian: false,
         remove_varian:[],
-        remove_subvarian:[]
+        remove_subvarian:[],
+        featured_index: 0,
+        featured_asset: null
 
       },
       imagePreview: [],
@@ -283,6 +275,18 @@ export default {
      onUpdateImage(data) {
       this.form.product_images.push(data)
     },
+    changeFeaturedImage(img, index) {
+      this.form.featured_index = index
+
+      if(img.startsWith('http')) {
+        let asset = img.split('/')
+        this.form.featured_asset = asset[asset.length-1]
+      }else {
+        this.form.featured_asset = null
+      }
+
+      console.log(this.form.featured_asset);
+    },
     onDeleteProductOldImage(filename) {
       this.productOldImages = this.productOldImages.filter(k => k.filename != filename)
       this.form.del_product_images.push(filename)
@@ -292,8 +296,9 @@ export default {
     },
     deleteVarian(varIndex, varian) {
       this.$q.dialog({
-        title: 'Yakin akan menghapus data?',
-        cancel: true
+        title: 'Konfirmasi',
+        message: 'Yakin akan menghapus varian',
+        cancel: true,
       }).onOk(() => {
         this.form.varians.splice(varIndex,1)
         this.form.remove_varian.push(varian.id)
@@ -370,6 +375,10 @@ export default {
       formData.append('has_subvarian', this.form.has_subvarian)
       formData.append('stock', this.form.stock)
       formData.append('description', this.form.description)
+      formData.append('featured_index', this.form.featured_index)
+      if(this.form.featured_asset) {
+        formData.append('featured_asset', this.form.featured_asset)
+      }
 
       if(this.form.category_id) {
         formData.append('category_id', this.form.category_id)
@@ -413,32 +422,37 @@ export default {
 
       for(let i=0;i<img.length;i++){
 
-        this.form.images.push(img[i])
+        this.form.images.unshift(img[i])
 
         const reader = new FileReader();
 
         reader.onload = (e) => {
-            this.imagePreview.push(e.target.result);
+            this.imagePreview.unshift(e.target.result);
         };
 
         reader.readAsDataURL(img[i]);
         }
     },
-    removeLocalImage(index) {
+    removeImage(img, index) {
 
-      this.imagePreview = this.imagePreview.filter(function(el,i) {
-        return i !== index;
-      })
-      this.form.images = this.form.images.filter(function(el,i) {
-        return i !== index;
-      })
-    },
-    removeImage(img) {
+      if(this.form.featured_index == index) {
+        if(index != 0) {
+          this.form.featured_index--
+        }else {
+          this.form.featured_index = 0
+        }
+      }
 
-      this.oldImages = this.oldImages.filter(function(el) {
-        return el.id !== img.id;
-      })
-      this.form.del_images.push(img.filename)
+     this.imagePreview.splice(index,1)
+
+     if(img.startsWith('http')) {
+       let asset = img.split('/')
+       this.form.del_images.push(asset[asset.length-1])
+       let cr = this.imagePreview[this.form.featured_index].split('/')
+       this.form.featured_asset = cr[cr.length-1]
+     }
+
+     console.log(this.form.featured_asset);
     },
     setData() {
       this.form.id = this.product.id
@@ -451,7 +465,9 @@ export default {
       this.form.varians = this.product.varians
       this.form.has_subvarian = this.product.varians.length ? this.product.varians[0].has_subvarian : false
       
-      this.oldImages = this.product.assets
+      this.imagePreview = this.product.assets.map(el => el.src)
+
+      this.form.featured_index =  this.product.assets.findIndex(el => el.variable == 'featured')
 
     },
   },

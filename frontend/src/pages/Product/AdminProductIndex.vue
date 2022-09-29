@@ -28,7 +28,7 @@
        <q-item v-for="product in products.data" :key="product.id">
 
          <q-item-section avatar class="q-pr-md" top>
-           <q-img v-if="product.assets" :src="product.assets[0].src" class="bg-white img-product-admin" ratio="1" width="55px"/>
+           <q-img v-if="product.featured_image" :src="product.featured_image.src" class="bg-white img-product-admin thumbnail" ratio="1" width="55px"/>
         </q-item-section>
 
         <q-item-section top>

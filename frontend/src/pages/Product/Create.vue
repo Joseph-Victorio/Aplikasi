@@ -11,30 +11,52 @@
        
       </q-toolbar>
       </q-header>
+      <div class="q-px-md q-py-md">
+        <div class="">
+          <div class="text-weight-medium text-md q-mb-sm text-grey-7">Gambar Produk</div>
+          <div class="row q-gutter-md">
+
+            <div class="box-image bordered cursor-pointer flex justify-center items-center" @click="selectNewImage">
+              <q-icon name="add_a_photo" size="lg" color="grey"></q-icon>
+            </div>
+            <div 
+            class="box-image relative cursor-pointer" 
+            :class="{'feature-image-selected' : form.featured_index == index }"
+            v-for="(image, index) in imagePreview" :key="index">
+                <img :src="image" class="bg-white" @click="changeFeaturedImage(index)"/>
+                <q-tooltip v-if="form.featured_index == index" class="bg-green text-white">Featured</q-tooltip>
+                <div class="absolute-top-right">
+                  <q-btn dense @click.prevent="removeImage(index)" size="10px" unelevated icon="close" color="red" padding="1px"/>
+                </div>
+              </div>
+          </div>
+          <div class="text-xs q-py-sm text-grey" v-if="imagePreview.length">Untuk memilih featured image klik pada gambar</div>
+        </div>
+      </div>
       <form @submit.prevent="submit"> 
-        <div class="q-pa-md q-gutter-y-sm">
+        <div class="q-gutter-y-md q-px-md">
             <q-input  
-            filled 
+              square filled 
             type="text" 
             v-model="form.title" 
             label="Nama Produk"
-            :rules="requiredRules"
+            required
             ></q-input>
             <div class="text-xs text-red" v-if="errors.title"> {{ errors.title[0]}}</div>
 
             <div class="row items-center q-gutter-x-sm">
               <div class="col">
-                <money-formatter v-model="form.price" prefix="Rp"/>
+                <money-formatter square filled v-model="form.price" prefix="Rp"/>
               </div>
               <div class="col">
-                <money-formatter v-model="form.stock" label="Stok"/>
+                <money-formatter square filled  v-model="form.stock" label="Stok"/>
               </div>
               <div class="col">
-                <money-formatter v-model="form.weight" label="Berat" suffix="GRAM"/>
+                <money-formatter square filled  v-model="form.weight" label="Berat" suffix="GRAM"/>
               </div>
             </div>
               <q-select
-              filled 
+                square filled 
                 v-model="form.category_id"
                 :options="categories"
                 label="Kategori"
@@ -49,38 +71,10 @@
               />
               <div class="text-xs text-red" v-if="errors.description"> {{ errors.description[0]}}</div>
             </div>
-            <section id="image-section" class="q-my-lg q-gutter-y-sm">
-              <div>
-                <q-btn label="Upload Gambar Produk" size="sm" color="primary" icon="eva-upload" class="mt-2 mr-2" type="button" @click.prevent="selectNewImage">
-                </q-btn>
-              </div>
-                  
-              <input type="file" class="hidden"
-                                  ref="image"
-                                  @change="updateImagePreview" multiple>
-              <!-- <jet-input-error :message="form.errors.images" class="mt-2" /> -->
-
-                  <q-list separator v-if="imagePreview.length" class="q-mt-md">
-                    <q-item dense>
-                      <q-item-section>
-                        Gambar Utama
-                      </q-item-section>
-                    </q-item>
-                  <q-item  v-for="(image, index) in imagePreview" :key="index">
-
-                    <q-item-section>
-                      <img :src="image" class="bg-white" style="width:100px;height:70px;object-fit:contain;"/>
-                    </q-item-section>
-
-                    <q-item-section side>
-                        <q-btn @click.prevent="removeImage(index)" size="sm" round icon="eva-trash-2" glossy color="red"/>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-            </section>
         </div>
-           <!-- Start Product Variants -->
-        <div id="variants">
+        <input type="file" class="hidden" ref="image" @change="updateImagePreview" multiple>
+          <!-- Start Product Variants -->
+        <div id="variants" style="min-height:200px;">
           <div class="row items-center justify-between q-mt-xl q-pa-md bg-green-1">
             <div class="text-md2 text-weight-medium">Produk Variasi</div>
             <q-btn v-if="canAddVarian" label="Tambah Variasi" @click="varianModal = true" color="accent" size="12px"></q-btn>
@@ -223,7 +217,8 @@ export default {
         varians: [],
         images: [],
         sku: '',
-        has_subvarian: false
+        has_subvarian: false,
+        featured_index: 0
       },
       imagePreview: [],
       variantModalForm: false,
@@ -277,13 +272,17 @@ export default {
     onDeleteImage(idx) {
       this.form.product_images.splice(idx, 1)
     },
+    changeFeaturedImage(index) {
+      this.form.featured_index = index
+    },
     onSubmitForm(data) {
       this.form.variants = data
       this.variantModalForm = false
     },
     deleteVarian(varIndex) {
       this.$q.dialog({
-        title: 'Yakin akan menghapus data?',
+        title: 'Konfirmasi',
+        message: 'Yakin akan menghapus varian',
         cancel: true
       }).onOk(() => {
         this.form.varians.splice(varIndex,1)
@@ -357,6 +356,7 @@ export default {
       formData.append('has_subvarian', this.form.has_subvarian)
       formData.append('stock', this.form.stock)
       formData.append('description', this.form.description)
+      formData.append('featured_index', this.form.featured_index)
       
       if(this.form.category_id) {
         formData.append('category_id', this.form.category_id)
@@ -380,11 +380,11 @@ export default {
 
     updateImagePreview() {
 
-      let img = this.$refs.image.files
+      let imgs = this.$refs.image.files
 
-      for(let i=0;i<img.length;i++){
+      for(let i=0;i<imgs.length;i++){
 
-        this.form.images.push(img[i])
+        this.form.images.push(imgs[i])
 
         const reader = new FileReader();
 
@@ -392,17 +392,22 @@ export default {
             this.imagePreview.push(e.target.result);
         };
 
-        reader.readAsDataURL(img[i]);
-        }
+        reader.readAsDataURL(imgs[i]);
+      }
     },
-    removeImage(index) {
+    removeImage(index) {  
 
-      this.imagePreview = this.imagePreview.filter(function(el,i) {
-        return i !== index;
-      })
-      this.form.images = this.form.images.filter(function(el,i) {
-        return i !== index;
-      })
+      if(this.form.featured_index == index) {
+        if(index != 0) {
+          this.form.featured_index--
+        }else {
+          this.form.featured_index = 0
+        }
+      }
+
+      this.imagePreview.splice(index, 1)
+      this.form.images.splice(index, 1)
+
     },
  
   },

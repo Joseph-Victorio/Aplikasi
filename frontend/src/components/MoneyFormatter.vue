@@ -1,6 +1,15 @@
 <template>
   <div>
-    <q-input :value="pricing" filled :label="label" @input="updateData" :prefix="prefix" :suffix="suffix"></q-input>
+    <q-input
+    :value="pricing" 
+    :filled="filled" 
+    :outlined="outlined" 
+    :square="square" 
+    :label="label" 
+    :prefix="prefix"
+    :suffix="suffix"
+    @input="updateData" 
+    ></q-input>
   </div>
 </template>
 
@@ -11,6 +20,9 @@ export default {
       type: String,
       default: 'Price'
     },
+    filled: Boolean,
+    outlined: Boolean,
+    square: Boolean,
     value: [String, Number],
     prefix: String,
     suffix: String,

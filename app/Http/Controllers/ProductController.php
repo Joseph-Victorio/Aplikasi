@@ -49,7 +49,7 @@ class ProductController extends Controller
     {
         try {
 
-            $this->result['results'] = Product::with(['assets', 'category', 'varians.subvarian'])
+            $this->result['results'] = Product::with(['featuredImage', 'category', 'varians.subvarian'])
                     ->latest()
                     ->paginate($this->limit);
 

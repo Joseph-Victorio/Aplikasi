@@ -1,7 +1,7 @@
 <template>
   <div class="q-px-xs q-pb-xs q-mb-sm" :class="pageWidth >= 800 ? 'col-4' : 'col-6'">
     <div class="column full-height relative bg-white box-shadow">
-      <q-img v-if="product.assets.length" :src="product.assets[0].src" ratio="1" @click="show(product.slug)" class="cursor-pointer">
+      <q-img v-if="product.asset" :src="product.asset.src" ratio="1" @click="show(product.slug)" class="cursor-pointer">
          <template v-slot:error>
           <div class="absolute-full flex flex-center bg-grey-6 text-white">
             Cannot load image

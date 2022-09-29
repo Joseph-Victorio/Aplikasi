@@ -1,7 +1,7 @@
 <template>
   <div class="full-height">
     <div class="column full-height relative bg-white box-shadow">
-      <q-img v-if="product.assets.length" :src="product.assets[0].src" ratio="1" @click="show(product.slug)" class="cursor-pointer">
+      <q-img v-if="product.asset" :src="product.asset.src" ratio="1" @click="show(product.slug)" class="cursor-pointer">
         <template v-slot:error>
           <div class="absolute-full flex flex-center bg-grey-6 text-white">
             Cannot load image
@@ -63,9 +63,6 @@ export default {
     }
   },
   methods: {
-    money(number) {
-      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number)
-    },
     show(slug) {
       this.$router.push({name: 'ProductShow', params: { slug: slug }})
     },

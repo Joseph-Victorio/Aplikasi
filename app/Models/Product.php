@@ -28,7 +28,11 @@ class Product extends Model
     }
     public function assets()
     {
-        return $this->morphMany(Asset::class, 'assetable');
+        return $this->morphMany(Asset::class, 'assetable')->orderByDesc('variable');
+    }
+    public function featuredImage()
+    {
+        return $this->morphOne(Asset::class, 'assetable')->orderByDesc('variable');
     }
     public function reviews()
     {
