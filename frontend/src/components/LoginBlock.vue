@@ -6,7 +6,7 @@
       </div>
       <q-separator />
       <q-card-section style="max-height:70vh;" class="scroll">
-        <q-form @submit.prevent="submit" class="q-gutter-y-xs">
+        <form @submit.prevent="submit" class="q-gutter-y-xs">
           <template v-if="isRegister">
             <q-input
               v-model="form.name"
@@ -106,7 +106,7 @@
         >{{ isRegister? 'Daftar' : 'Login'}}</q-btn>
 
       </div>
-        </q-form>
+        </form>
         <div class="column q-gutter-y-sm text-center q-mt-xs">
           <div v-if="isRegister">Sudah punya akun <q-btn no-caps color="green-7" padding="xs" flat :disabled="isLoading" label="Login Disini" @click="formType ='login'"></q-btn></div>
           <div v-if="!isRegister">

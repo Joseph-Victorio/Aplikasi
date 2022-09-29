@@ -60,7 +60,7 @@
     <q-dialog v-model="modal" persistent>
       <q-card class="card-medium">
         <div class="card-heading">{{ formType }} Promo</div>
-        <q-form @submit.prevent="submit">
+        <form @submit.prevent="submit">
           <q-card-section class="q-gutter-y-sm">
             <q-input required filled square label="Label" v-model="form.label" :rules="[val => !!val || 'Field is required']"></q-input>
             <q-select required filled square 
@@ -126,7 +126,7 @@
               <q-btn unelevated color="primary" type="submit" label="Simpan"></q-btn>
             </div>
           </q-card-section>
-        </q-form>
+        </form>
       </q-card>
     </q-dialog>
   </div>

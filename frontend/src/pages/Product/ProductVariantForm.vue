@@ -9,7 +9,7 @@
         </div>
       </q-toolbar>
     </q-header>
-    <q-form @submit.prevent="submit" class="q-pt-xl">
+    <form @submit.prevent="submit" class="q-pt-xl">
       <div id="variants" v-if="variants.length" style="min-height:200px;" class="q-pb-xl">
         <div v-for="(variant, varIndex) in variants" :key="varIndex" class="q-pa-md">
           <div class="row items-center justify-between">
@@ -55,14 +55,14 @@
           </div>
         </div>
       </div>
-    </q-form>
+    </form>
     <div class="text-center q-gutter-y-sm" v-if="!variants.length">
       <div class="text-md">Tidak ada produk variasi</div>
       <q-btn label="Tambah Produk Variasi" color="primary" unelevated @click="handleAddVariant"></q-btn>
     </div>
     <q-dialog v-model="variantModal">
         <q-card class="card-medium">
-          <q-form @submit.prevent="addVariant">
+          <form @submit.prevent="addVariant">
             <div class="card-heading">Tambah Produk Varian</div>
             <q-card-section>
               <q-input required label="Nama Varian" v-model="tempVariant"  hint="contoh: Warna"></q-input>
@@ -72,12 +72,12 @@
                 <q-btn type="submit" label="Tambah" unelevated color="primary"></q-btn>
               </div>
             </q-card-section>
-          </q-form>
+          </form>
         </q-card>
       </q-dialog>
       <q-dialog v-model="variantItemModal">
         <q-card class="card-medium">
-          <q-form @submit.prevent="addVariantItem">
+          <form @submit.prevent="addVariantItem">
             <div class="card-heading">Tambah varian {{ variantSelectedLabel }}</div>
             <q-card-section>
               <q-input :label="variantSelectedLabel" required v-model="tempVarianItem"></q-input>
@@ -88,7 +88,7 @@
                 <q-btn type="submit" label="Tambah" unelevated color="primary"></q-btn>
               </div>
             </q-card-section>
-          </q-form>
+          </form>
         </q-card>
       </q-dialog>
   </q-card>

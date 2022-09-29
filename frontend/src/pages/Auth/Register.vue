@@ -16,7 +16,7 @@
       <div class="text-red q-pb-sm text-center" v-if="errors.email">{{ errors.email[0] }}</div>
       <q-card flat class="q-pt-sm" style="background:rgb(255 255 255 / 71%);">
         <q-card-section>
-          <q-form @submit.prevent="submit" class="q-gutter-y-sm q-pa-md">
+          <form @submit.prevent="submit" class="q-gutter-y-sm q-pa-md">
             <q-input
               v-model="form.name"
               color="grey-6"
@@ -98,7 +98,7 @@
           >Daftar Sekarang</q-btn>
 
         </div>
-          </q-form>
+          </form>
           <div class="column text-center q-mt-sm">
           <div>
           Sudah punya akun <q-btn no-caps color="primary" padding="xs" flat :disabled="isLoading" label="Login Disini" :to="{ name: 'Login'}"></q-btn>

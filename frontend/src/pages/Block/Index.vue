@@ -49,7 +49,7 @@
     </q-page-sticky>
     <q-dialog v-model="blockModal">
       <q-card style="width:100%;max-width:450px;" class="bg-white">
-        <q-form @submit.prevent="submitBlock" class="full-width">
+        <form @submit.prevent="submitBlock" class="full-width">
           <q-card-section>
             <q-input 
             dense
@@ -117,7 +117,7 @@
             <q-btn @click.prevent="closeModal" type="button" color="secondary" label="Batal"></q-btn>
             <q-btn :loading="loading" type="submit" color="primary" label="Simpan Data"></q-btn>
           </q-card-actions>
-        </q-form>
+        </form>
       </q-card>
     </q-dialog>
   </q-page>

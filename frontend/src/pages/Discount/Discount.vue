@@ -38,7 +38,7 @@
     <q-dialog v-model="modal" persistent>
       <q-card class="card-medium">
         <div class="card-heading">{{ formType }} Diskon</div>
-        <q-form @submit.prevent="submit">
+        <form @submit.prevent="submit">
           <q-card-section>
             <q-input required filled square label="Label" v-model="form.label" :rules="[val => !!val || 'Field is required']"></q-input>
             <div class="flex items-center q-mt-sm">
@@ -57,7 +57,7 @@
               <q-btn unelevated color="primary" type="submit" label="Simpan"></q-btn>
             </div>
           </q-card-section>
-        </q-form>
+        </form>
       </q-card>
     </q-dialog>
   </div>

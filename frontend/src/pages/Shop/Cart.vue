@@ -39,14 +39,14 @@
           <div class="column items-end">
             <div class="cart-coupon q-mt-lg">
               <div class="text-medium q-mb-md text-grey-7">Punya Code voucher?</div>
-              <q-form @submit.prevent="handleRedeemCoupon">
+              <form @submit.prevent="handleRedeemCoupon">
                 <div class="flex items-center flex-no-wrap q-gutter-x-sm">
                   <q-input padding="10px" required v-model="couponCode" borderless class="q-px-md bg-grey-3 col rounded15" placeholder="Masukan Kode..."></q-input>
                   <q-btn type="submit" no-caps outline color="teal" class="rounded15 text-weight-bold" unelevated style="padding:8px;">
                     <span>Gunakan</span>
                   </q-btn>
                 </div>
-              </q-form>
+              </form>
             </div>
           </div>
         </div>

@@ -114,7 +114,7 @@
       <q-card class="card-medium" v-if="productSelected ">
         <q-card-section>
           <div class="text-md text-weight-bold q-mb-md">Produk {{ productSelected.title }}</div>
-          <q-form @submit.prevent="submitProductPromo">
+          <form @submit.prevent="submitProductPromo">
               <div class="flex items-center q-mt-sm full-width q-gutter-x-sm">
                 <q-input class="col" required filled square label="Diskon Nominal" v-model="form.discount_amount" :rules="[val => !!val || 'Field is required']"></q-input>
                 <q-select required filled square 
@@ -131,7 +131,7 @@
                 <q-btn v-close-popup label="Close" outline color="primary"></q-btn>
                 <q-btn type="submit" label="Submit" unelevated color="primary"></q-btn>
               </div>
-            </q-form>
+            </form>
           </q-card-section>
         </q-card>
     </q-dialog>

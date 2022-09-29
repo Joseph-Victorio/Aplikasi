@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-form @submit.prevent="updateData">
+    <form @submit.prevent="updateData">
       <q-card flat>
         <q-card-section>
           <div class="flex items-center justify-between">
@@ -36,7 +36,7 @@
           <q-btn type="submit" unelevated size="12px" label="Simpan Pengaturan" color="blue-7"></q-btn>
         </q-card-actions>
       </q-card>
-    </q-form>
+    </form>
     <q-dialog v-model="modal">
       <q-card style="width:100%;max-width:500px;">
         <q-card-section>

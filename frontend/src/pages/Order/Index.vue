@@ -153,7 +153,7 @@
     <q-dialog v-model="inputResiModal">
       <q-card square style="width:100%;max-width:420px;">
         <div class="q-px-md q-py-sm bg-dark text-white text-weight-bold">Input Resi  <span v-if="orderSelected"># {{ orderSelected.order_ref }}</span></div>
-       <q-form @submit.prevent="submitResi" >
+       <form @submit.prevent="submitResi" >
         <q-card-section>
           <div class="text-grey-8">No Resi</div>
           <q-input 
@@ -166,7 +166,7 @@
             <q-btn unelevated type="submit" label="Simpan" color="primary"></q-btn>
           </div>
         </q-card-section>
-       </q-form>
+       </form>
       </q-card>
     </q-dialog>
     <q-inner-loading :showing="loading">

@@ -4,7 +4,7 @@
       <div class="text-md text-weight-bold">Penaturan Tema</div>
       <div class="text-caption text-grey-7">Pengaturan tema dan warna dasar situs</div>
     </q-card-section>
-    <q-form @submit.prevent="updateData">
+    <form @submit.prevent="updateData">
       <q-list>
         <q-item>
           <q-item-section>
@@ -26,7 +26,7 @@
       <q-card-section class="flex justify-end">
         <q-btn unelevated size="12px" type="submit" label="Simpan Pengaturan" color="blue-7"></q-btn>
       </q-card-section>
-    </q-form>
+    </form>
   </q-card>
 </template>
 

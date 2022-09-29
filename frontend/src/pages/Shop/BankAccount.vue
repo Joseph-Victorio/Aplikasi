@@ -55,7 +55,7 @@
     </q-page-sticky>
     <q-dialog v-model="modal">
       <q-card style="width:100%;max-width:400px;">
-        <q-form @submit.prevent="submit">
+        <form @submit.prevent="submit">
           <q-card-section>
             <div class="text-weight-bold text-md">{{ formType == 'add' ? 'Tambah ' : 'Edit ' }} Data Bank</div>
             <q-input
@@ -87,7 +87,7 @@
             <q-btn :loading="loading" unelevated label="Simpan Data" type="submit" color="primary"></q-btn>
           </q-card-actions>
           
-        </q-form>
+        </form>
       </q-card>
     </q-dialog>
   </q-page>

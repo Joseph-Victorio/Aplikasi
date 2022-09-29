@@ -1,6 +1,6 @@
 <template>
   <q-card style="width:100%;max-width:400px;">
-    <q-form @submit.prevent="submitMessage">
+    <form @submit.prevent="submitMessage">
       <div class="q-px-md q-pt-md">
         <div class="text-h6">{{ messageButtonLabel }}</div>
         <div class="text-xs text-grey-7">Anda bisa mengedit dengan format pesan anda sendiri.</div>
@@ -12,7 +12,7 @@
             <q-btn unelevated type="submit" label="Kirim Whatsapp" color="primary" no-caps/>
         </div>
       </q-card-section>
-    </q-form>
+    </form>
   </q-card>
 </template>
 

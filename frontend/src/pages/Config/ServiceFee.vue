@@ -10,7 +10,7 @@
         Biaya tambahan penggunaan layanan, akan ditambahkan pada pesanan kustomer
         </div>
       </div>
-     <q-form @submit.prevent="updateData" class="q-mt-md q-gutter-y-sm">
+     <form @submit.prevent="updateData" class="q-mt-md q-gutter-y-sm">
       <q-input
         filled
         v-model="form.service_fee_label"
@@ -28,7 +28,7 @@
       <div class="flex justify-end q-mt-md">
         <q-btn unelevated size="12px" type="submit" label="Simpan Pengaturan" color="blue-7"></q-btn>
       </div>
-    </q-form>
+    </form>
   </q-card-section>
   </q-card>
 </template>

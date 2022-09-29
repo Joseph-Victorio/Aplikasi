@@ -11,7 +11,7 @@
        
       </q-toolbar>
       </q-header>
-      <q-form @submit.prevent="submit"> 
+      <form @submit.prevent="submit"> 
         <div class="q-pa-md q-gutter-y-sm">
             <q-input  
             filled 
@@ -156,11 +156,11 @@
               <q-tooltip class="bg-accent">Simpan Data</q-tooltip>
             </q-btn>
         </q-footer>
-      </q-form>
+      </form>
        <q-dialog v-model="varianModal">
         <q-card class="card-medium">
           <div class="card-heading">Tambah varian</div>
-          <q-form @submit.prevent="addVarianProduk">
+          <form @submit.prevent="addVarianProduk">
             <q-card-section>
               
               <div>
@@ -185,7 +185,7 @@
                 <q-btn unelevated label="Tambah" type="submit" color="primary"></q-btn>
               </div>
             </q-card-section>
-          </q-form>
+          </form>
         </q-card>
       </q-dialog>
   </q-page>

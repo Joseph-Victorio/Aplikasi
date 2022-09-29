@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-form @submit.prevent="submitOrder">
+    <form @submit.prevent="submitOrder">
       <q-card class="full-width">
         <div class="text-weight-bold q-py-sm q-px-md bg-green-6 text-white text-md">Checkout Whatsapp</div>
         <q-card-section>
@@ -30,7 +30,7 @@
             <q-btn type="submit" :loading="loading" :disabled="!canDirectCheckout" unelevated label="Order Sekarang" color="green-6" no-caps></q-btn>
         </q-card-actions>
       </q-card>
-    </q-form>
+    </form>
     <q-dialog v-model="errorModal">
       <q-card>
         <q-card-section>

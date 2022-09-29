@@ -22,7 +22,7 @@
           <div class="text-grey-7 q-pa-sm" v-else>Kode token sudah kami kirim ke alamat email 
             <span class="text-weight-bold">{{ hideEmail }}</span>, 
             Silahkan buka email anda dan masukan token kedalam input yang tersedia.</div>
-          <q-form @submit.prevent="submit" class="q-gutter-y-sm q-pa-sm">
+          <form @submit.prevent="submit" class="q-gutter-y-sm q-pa-sm">
              
             <template v-if="isValidToken">
               <q-input 
@@ -81,7 +81,7 @@
         <div class="q-py-md text-center">
           <q-btn :disabled="isLoading" no-caps flat color="primary" :to="{name: 'Login'}">Kembali ke halaman login</q-btn>
         </div>
-          </q-form>
+          </form>
         </q-card-section>
       </q-card>
     </div>

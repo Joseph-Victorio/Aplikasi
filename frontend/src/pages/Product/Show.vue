@@ -18,7 +18,6 @@
         animated
         swipeable
         v-model="slide"
-        :fullscreen.sync="fullscreen"
         navigation
         infinite
         :height="height"
@@ -208,7 +207,7 @@
       <q-dialog v-model="reviewModal">
         <div class="q-card" style="width:100%;max-width:360px;">
           <q-card-section>
-          <q-form @submit.prevent="submitReview">
+          <form @submit.prevent="submitReview">
             <div>
             <div class="text-subtitle2 q-mb-sm">Berikan Ulasan Anda</div>
               <q-rating 
@@ -248,7 +247,7 @@
               <q-btn unelevated :disabled="chalengeTesting" type="submit" :loading="loading" label="Kirim Ulasan" color="primary"></q-btn>
             </div>
           </div>
-          </q-form>
+          </form>
           </q-card-section>
         </div>
       </q-dialog>
@@ -352,11 +351,9 @@
       </q-card>
     </q-dialog>
     <q-dialog v-model="fullscreen" persistent maximized>
-      <div class="max-width relative preview-image" v-if="product">
-        <TransitionGroup name="list" tag="div">
-        <div class="" v-for="(img, idx) in product.assets" :key="idx" v-show="idx == currentSlide">
-          <img :src="img.src" style="height:100%;width:auto;"/>
-        </div>
+      <div class="max-width relative" v-if="product">
+        <TransitionGroup name="slide" tag="div" class="preview-image relative bg-dark">
+          <img v-for="(img, idx) in product.assets" :key="idx" v-show="idx == currentSlide" :src="img.src" style="height:100%;width:auto;"/>
         </TransitionGroup>
         <div class="absolute row items-center" style="bottom: 4%; right:4%;">
           <div class="q-mr-lg" v-if="product.assets.length > 1">
@@ -1004,9 +1001,21 @@ position: absolute;
 .slide-leave-active {
   transition: all 0.5s ease;
 }
+
+.slide-enter-to,
+.slide-leave-from,
 .slide-enter-from,
 .slide-leave-to {
   opacity: 0;
-  transform: translateX(30px);
 }
+.preview-image {
+  height:100%;
+  width:100%;
+  position:relative;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+// .preview-image img {
+//   transition: all ease-in-out 300ms;
+// }
 </style>

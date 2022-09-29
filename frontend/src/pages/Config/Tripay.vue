@@ -6,7 +6,7 @@
         <q-toggle class="text-grey-8" v-model="form.is_payment_gateway" :label="form.is_payment_gateway? 'Active' : 'Disabled'" left-label @input="checkIsReady" color="green-7"></q-toggle>
       </div>
     </div>
-    <q-form @submit.prevent="updateDate">
+    <form @submit.prevent="updateDate">
       <div class="q-mb-md text-grey-7 text-caption">
         <div>Pengaturan Tripay payment Gateway, Silahkan daftar di TRIPAY untuk mendapatkan Kredensial, Anda dapat mendaftar melalui link berikut <span class="cursor-pointer bg-green-1 text-green-9 q-px-xs q-px-xs" @click="daftarTripay">https://tripay.co.id/register</span></div>
       </div>
@@ -43,7 +43,7 @@
       <div class="flex justify-end q-pt-lg">
         <q-btn unelevated size="12px" type="submit" label="Simpan Pengaturan" color="blue-7"></q-btn>
       </div>
-    </q-form>
+    </form>
   </div> 
 </template>
 

@@ -7,7 +7,7 @@
       </div>
       <div class="text-caption text-grey-7">Notifikasi order untuk admin via telegram</div>
       <div class="text-caption text-grey-7">Silahkan buat bot di telegram untuk mendapatkan token, serta dapatkan user id di bot @infouserid</div>
-     <q-form @submit.prevent="updateData">
+     <form @submit.prevent="updateData">
       <div class="q-gutter-y-sm q-mt-md">
         <q-input
         filled
@@ -23,7 +23,7 @@
       <div class="flex justify-end q-mt-md">
         <q-btn unelevated size="12px" type="submit" label="Simpan Pengaturan" color="blue-7"></q-btn>
       </div>
-    </q-form>
+    </form>
   </q-card-section>
   </q-card>
 </template>

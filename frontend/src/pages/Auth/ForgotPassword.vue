@@ -23,7 +23,7 @@
               Anda sudah membuat permintaan reset password, silahkan buka email anda.
               <router-link no-caps flat class="text-primary" :to="{name: 'ResetPassword'}">Klik disini untuk memasukan kode token</router-link>
             </div>
-          <q-form @submit.prevent="submit" class="q-gutter-y-md q-pa-sm">
+          <form @submit.prevent="submit" class="q-gutter-y-md q-pa-sm">
              
           <q-input 
             v-model="form.email" 
@@ -42,7 +42,7 @@
             type="submit" color="primary" padding="sm lg"
             >Kirim</q-btn>
           </div>
-          </q-form>
+          </form>
           <div class="text-center q-mt-sm"> 
             <q-btn :disabled="isLoading" no-caps flat color="primary" :to="{name: 'Login'}">Kembali ke halaman login</q-btn>
           </div>

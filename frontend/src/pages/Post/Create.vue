@@ -11,7 +11,7 @@
         
       </q-toolbar>
     </q-header>
-    <q-form @submit.prevent="submitPost">
+    <form @submit.prevent="submitPost">
       <q-input v-model="form.title" label="Title" :rules="[ val => val && val.length > 0 || 'Required']"></q-input>
       <q-input v-model="form.tags" label="Kategori"></q-input>
       <div class="row justify-between items-center text-grey-8 q-py-sm q-my-xs border-b">
@@ -35,7 +35,7 @@
      <q-footer class="bg-white q-pa-md">
         <q-btn :loading="loading" label="Simpan Data" type="submit" color="primary" class="full-width"></q-btn>
       </q-footer>
-    </q-form>
+    </form>
     <div class="q-my-md">
       <q-btn label="Upload Gambar" size="sm" color="primary" icon="eva-upload" class="mt-2 mr-2" type="button" @click.prevent="selectNewImage" />
     </div>

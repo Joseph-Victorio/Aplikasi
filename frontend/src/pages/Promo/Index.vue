@@ -58,7 +58,7 @@
     <q-dialog v-model="modal" persistent>
       <q-card class="card-medium">
         <div class="card-heading">{{ formType }} Promo</div>
-          <q-form @submit.prevent="submit">
+          <form @submit.prevent="submit">
             <q-card-section class="q-gutter-y-sm">
               <q-input required filled square label="Label" v-model="form.label" :rules="[val => !!val || 'Field is required']"></q-input>
               <q-input label="Start Date" filled v-model="form.start_date" readonly :rules="[val => !!val || 'Field is required']">
@@ -110,7 +110,7 @@
               <q-btn v-close-popup type="button" color="secondary" label="Batal"></q-btn>
               <q-btn :loading="loading" type="submit" color="primary" label="Simpan Data"></q-btn>
             </q-card-actions>
-          </q-form>
+          </form>
       </q-card>
     </q-dialog>
   </q-page>
