@@ -32,7 +32,7 @@
             :offset="[18, 40]"
           >
             <q-btn
-              push round dense color="white" text-color="primary"
+               dense color="dark" text-color="white"
               :icon="fullscreen ? 'eva-minimize-outline' : 'eva-maximize-outline'"
               @click="fullscreen = !fullscreen"
             />
@@ -351,6 +351,37 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="fullscreen" persistent maximized>
+      <div class="max-width relative preview-image" v-if="product">
+        <TransitionGroup name="list" tag="div">
+        <div class="" v-for="(img, idx) in product.assets" :key="idx" v-show="idx == currentSlide">
+          <img :src="img.src" style="height:100%;width:auto;"/>
+        </div>
+        </TransitionGroup>
+        <div class="absolute row items-center" style="bottom: 4%; right:4%;">
+          <div class="q-mr-lg" v-if="product.assets.length > 1">
+            <q-btn
+              :disable="slide == 1"
+              dense color="dark" text-color="white"
+              icon="eva-arrow-ios-back"
+              @click="slide--"
+              class="q-mr-sm"
+            />
+            <q-btn
+              :disable="product.assets.length == slide"
+              dense color="dark" text-color="white"
+              icon="eva-arrow-ios-forward"
+              @click="slide++"
+            />
+          </div>
+            <q-btn
+              dense color="dark" text-color="white"
+              :icon="fullscreen ? 'eva-minimize-outline' : 'eva-maximize-outline'"
+              @click="fullscreen = !fullscreen"
+            />
+          </div>
+      </div>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -391,12 +422,16 @@ export default {
       subvarianSelected: null,
       formVariantModal: false,
       product: null,
-      productReviews: []
+      productReviews: [],
+      imagePreviewIndex: 0
     }
   },
   computed: {
     session_id() {
       return this.$store.state.session_id
+    },
+    currentSlide() {
+      return this.slide-1
     },
     chalengeTesting() {
       return this.number1+this.number2 != this.jawaban
@@ -964,5 +999,14 @@ position: absolute;
   .q-carousel__navigation--bottom{
     transform: translateY(-20px)
   }
+}
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.5s ease;
+}
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 </style>

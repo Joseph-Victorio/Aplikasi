@@ -16,7 +16,7 @@
       <div class="text-red q-pb-sm text-center" v-if="errors.email">{{ errors.email[0] }}</div>
       <q-card flat class="q-pt-sm" style="background:rgb(255 255 255 / 71%);">
         <q-card-section>
-          <q-form @submit.prevent="submit" class="q-gutter-y-sm q-pa-md">
+          <form @submit.prevent="submit" class="q-gutter-y-sm q-pa-md">
               <q-input
               v-model="form.email"
               color="grey-6"
@@ -49,13 +49,13 @@
             />
           </template>
         </q-input>
-        <div class="column">
-          <q-btn :loading="isLoading"
-          type="submit" color="primary" padding="sm lg"
-          >Login</q-btn>
+          <div class="column">
+            <q-btn :loading="isLoading"
+            type="submit" color="primary" padding="sm lg"
+            >Login</q-btn>
 
-        </div>
-          </q-form>
+          </div>
+        </form>
           <div class="text-center q-mt-sm">
           Belum punya akun <q-btn no-caps color="primary" padding="xs" flat :disabled="isLoading" label="Daftar Disini" :to="{ name: 'Register'}"></q-btn>
           </div>
@@ -96,6 +96,7 @@ export default {
   methods: {
     ...mapActions('user', ['login']),
     submit() {
+      console.log('fired');
      this.login(this.form)
     }
   }
