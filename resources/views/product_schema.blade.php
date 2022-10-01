@@ -18,6 +18,13 @@ $data = $jsapp['page']['product_schema']
     "@type": "AggregateRating",
     "ratingValue": "{{ $data['rating'] }}",
     "reviewCount": "{{ $data['reviews_count'] }}"
-  }
+  },
+  "review": {
+    "@type": "Review",
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": "{{ $data['rating'] }}",
+      "bestRating": "5"
+    }
 }
 </script>
