@@ -27,18 +27,24 @@
           </q-item-label>
         </q-item-section>
         <q-item-section side>
-          <div class="q-gutter-x-sm">
-            <q-btn @click="changeHomeViewMode('grid')" label="Grid Mode" size="sm" unelevated :color="form.home_view_mode == 'grid' ? 'green-7' : 'grey-6'" dense icon="grid_view">
+          <q-btn-group rounded unelevated>
+            <q-btn size="12px" @click="changeHomeViewMode('grid')" unelevated 
+            color="blue" 
+            :outline="form.home_view_mode != 'grid'" 
+            icon="grid_view">
               <q-tooltip>
                 Grid Mode
               </q-tooltip>
             </q-btn>
-            <q-btn @click="changeHomeViewMode('list')" label="List Mode" size="sm" unelevated :color="form.home_view_mode == 'list' ? 'green-7' : 'grey-6'" dense icon="eva-list">
+            <q-btn size="12px" @click="changeHomeViewMode('list')" unelevated 
+            color="blue" 
+            :outline="form.home_view_mode != 'list'" 
+            icon="eva-list">
               <q-tooltip>
                 List Mode
               </q-tooltip>
             </q-btn>
-          </div>
+          </q-btn-group>
         </q-item-section>
       </q-item>
       <q-item>
@@ -48,29 +54,35 @@
           </q-item-label>
         </q-item-section>
         <q-item-section side>
-          <div class="q-gutter-x-sm">
-            <q-btn @click="changeProductViewMode('grid')" label="Grid Mode" size="sm" unelevated :color="form.product_view_mode == 'grid' ? 'green-7' : 'grey-6'" dense icon="grid_view">
+          <q-btn-group rounded unelevated>
+            <q-btn size="12px" @click="changeProductViewMode('grid')" no-caps unelevated 
+            color="blue" 
+            :outline="form.product_view_mode != 'grid'" 
+             icon="grid_view">
               <q-tooltip>
                 Grid Mode
               </q-tooltip>
             </q-btn>
-            <q-btn @click="changeProductViewMode('list')" label="List Mode" size="sm" unelevated :color="form.product_view_mode == 'list' ? 'green-7' : 'grey-6'" dense icon="eva-list">
+            <q-btn size="12px" @click="changeProductViewMode('list')" no-caps unelevated 
+            color="blue" 
+            :outline="form.product_view_mode != 'list'" 
+            icon="eva-list">
               <q-tooltip>
                 List Mode
               </q-tooltip>
             </q-btn>
-          </div>
+          </q-btn-group>
         </q-item-section>
       </q-item>
       <q-item class="q-mt-md">
         <q-item-section>
           <q-item-label class="text-weight-medium">Social Proof Popup</q-item-label>
-          <div class="q-mb-sm text-caption text-grey-7 q-mt-sm">
+          <div class="q-mb-sm text-caption text-blue q-mt-sm">
             Pengaturan social proof notifikasi.
           </div>
         </q-item-section>
         <q-item-section side top>
-          <q-toggle v-model="form.is_notifypro" :label="form.is_notifypro? 'Active' : 'Disabled'" left-label color="green-6"></q-toggle>
+          <q-toggle v-model="form.is_notifypro" :label="form.is_notifypro? 'Active' : 'Disabled'" left-label color="blue"></q-toggle>
         </q-item-section>
       </q-item>
       <q-item v-if="form.is_notifypro">
@@ -83,7 +95,7 @@
       </q-item>
     </q-list>
     <q-card-section class="flex justify-end">
-      <q-btn unelevated size="12px" label="Simpan Pengaturan" color="blue-7" @click="saveTampilan"></q-btn>
+      <q-btn unelevated size="12px" label="Simpan Pengaturan" color="blue" @click="saveTampilan"></q-btn>
     </q-card-section>
   </q-card>
 </template>

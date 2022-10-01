@@ -3,12 +3,12 @@
     <div class="flex items-center justify-between q-mb-xs">
       <div class="text-md text-weight-bold">Tripay Payment Gateway</div>
       <div>
-        <q-toggle class="text-grey-8" v-model="form.is_payment_gateway" :label="form.is_payment_gateway? 'Active' : 'Disabled'" left-label @input="checkIsReady" color="green-7"></q-toggle>
+        <q-toggle class="text-grey-8" v-model="form.is_payment_gateway" :label="form.is_payment_gateway? 'Active' : 'Disabled'" left-label @input="checkIsReady" color="blue"></q-toggle>
       </div>
     </div>
     <form @submit.prevent="updateDate">
       <div class="q-mb-md text-grey-7 text-caption">
-        <div>Pengaturan Tripay payment Gateway, Silahkan daftar di TRIPAY untuk mendapatkan Kredensial, Anda dapat mendaftar melalui link berikut <span class="cursor-pointer bg-green-1 text-green-9 q-px-xs q-px-xs" @click="daftarTripay">https://tripay.co.id/register</span></div>
+        <div>Pengaturan Tripay payment Gateway, Silahkan daftar di TRIPAY untuk mendapatkan Kredensial, Anda dapat mendaftar melalui link berikut <span class="cursor-pointer bg-green-1 text-dark q-px-xs text-weight-medium q-px-xs" @click="daftarTripay">https://tripay.co.id/register</span></div>
       </div>
       <div class="q-pt-sm">
         <div class="q-gutter-y-sm">

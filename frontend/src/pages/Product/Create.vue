@@ -24,16 +24,15 @@
             :class="{'feature-image-selected' : form.featured_index == index }"
             v-for="(image, index) in imagePreview" :key="index">
                 <img :src="image" class="bg-white" @click="changeFeaturedImage(index)"/>
-                <q-tooltip v-if="form.featured_index == index" class="bg-green text-white">Featured</q-tooltip>
                 <div class="absolute-top-right">
                   <q-btn dense @click.prevent="removeImage(index)" size="10px" unelevated icon="close" color="red" padding="1px"/>
                 </div>
               </div>
           </div>
-          <div class="text-xs q-py-sm text-grey" v-if="imagePreview.length">Untuk memilih featured image klik pada gambar</div>
+          <div class="text-xs q-pt-sm text-grey" v-if="imagePreview.length">Untuk memilih featured image klik pada gambar</div>
         </div>
       </div>
-      <form @submit.prevent="submit"> 
+      <form @submit.prevent="submit" class="q-pt-sm"> 
         <div class="q-gutter-y-md q-px-md">
             <q-input  
               square filled 

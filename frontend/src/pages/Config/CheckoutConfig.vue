@@ -12,7 +12,7 @@
         <q-item-label caption>Memungkinan user untuk bisa checkout langsung via whatsapp ( Order tidak tersimpan di database )</q-item-label>
       </q-item-section>
       <q-item-section side>
-        <q-toggle v-model="form.is_whatsapp_checkout" :label="form.is_whatsapp_checkout? 'Active' : 'Disabled'" left-label color="green-6"></q-toggle>
+        <q-toggle v-model="form.is_whatsapp_checkout" :label="form.is_whatsapp_checkout? 'Active' : 'Disabled'" left-label color="blue"></q-toggle>
       </q-item-section>
     </q-item>
     <q-item>
@@ -21,7 +21,7 @@
         <q-item-label caption>Memunginkan checkout tanpa harus login / register</q-item-label>
       </q-item-section>
       <q-item-section side>
-        <q-toggle v-model="form.is_guest_checkout" :label="form.is_guest_checkout? 'Active' : 'Disabled'" left-label color="green-6"></q-toggle>
+        <q-toggle v-model="form.is_guest_checkout" :label="form.is_guest_checkout? 'Active' : 'Disabled'" left-label color="blue"></q-toggle>
       </q-item-section>
     </q-item>
   </q-list>

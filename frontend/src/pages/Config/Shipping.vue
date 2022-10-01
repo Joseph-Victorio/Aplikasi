@@ -5,7 +5,7 @@
         <q-card-section>
           <div class="flex items-center justify-between">
             <div class="text-md text-weight-bold">Ekspedisi</div>
-             <q-toggle v-model="formdata.is_shipping_active" :label="formdata.is_shipping_active? 'Active' : 'Disabled'" left-label color="green-7" class="text-grey-8"></q-toggle>
+             <q-toggle v-model="formdata.is_shipping_active" :label="formdata.is_shipping_active? 'Active' : 'Disabled'" left-label color="blue" class="text-grey-8"></q-toggle>
           </div>
           <div class="text-caption text-grey-7">
             <div>Pengaturan ongkir otomatis by Rajaongkir</div>
@@ -27,7 +27,7 @@
                 <div class="text-grey-8 text-weight-medium q-py-md">Pengaturan Kurir Aktif</div>
                   <div class="q-gutter-sm">
                     <q-btn unelevated rounded size="10px" v-for="(name, index) in theCouriers" :key="index" 
-                    :color="isCourierActive(name)? 'green-5' : 'grey-5'" @click="handleSelectCourier(name)" :label="name"></q-btn>
+                    :color="isCourierActive(name)? 'blue' : 'grey-5'" @click="handleSelectCourier(name)" :label="name"></q-btn>
                   </div>
               </div>
           </div>

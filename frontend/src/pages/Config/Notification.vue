@@ -3,7 +3,7 @@
     <q-card-section>
       <div class="flex items-center justify-between">
         <div class="text-subtitle1 text-weight-bold">Telegram Notifikasi</div>
-        <div class="q-px-sm rounded-borders text-white" :class="config && config.is_telegram_ready? 'bg-green-7' : 'bg-grey-6'">{{ config && config.is_telegram_ready? 'Active' : 'Disabled' }}</div>
+        <div class="q-px-sm rounded-borders text-white" :class="config && config.is_telegram_ready? 'bg-blue' : 'bg-grey-6'">{{ config && config.is_telegram_ready? 'Active' : 'Disabled' }}</div>
       </div>
       <div class="text-caption text-grey-7">Notifikasi order untuk admin via telegram</div>
       <div class="text-caption text-grey-7">Silahkan buat bot di telegram untuk mendapatkan token, serta dapatkan user id di bot @infouserid</div>
