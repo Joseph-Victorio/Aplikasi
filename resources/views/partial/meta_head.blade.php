@@ -8,13 +8,13 @@
 <meta name="twitter:title" content="{{ $jsapp['shop']['name'] }}">
 @endif
 
-<meta property="og:url" content="{{ url()->full() }}">
+<meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:type" content="website" data-qmeta="ogType"/>
 <meta property="og:site_name" content="{{ $jsapp['shop']['name'] }}">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta property="twitter:domain" content="{{ $jsapp['shop']['name'] }}">
-<meta property="twitter:url" content="{{ url()->full() }}">
+<meta property="twitter:domain" content="{{ request()->getHost() }}">
+<meta property="twitter:url" content="{{ url()->current() }}">
 
 @if(isset($jsapp['page']['description']) && $jsapp['page']['description'])
 <meta name="description" content="{{ $jsapp['page']['description'] }}">
