@@ -68,7 +68,8 @@ class FrontController extends Controller
             'title' => $product->title . ' | ' . $this->shop->name,
             'description' => $desc,
             'featured_image' => $featuredImage,
-            'product_schema' => $productSchema
+            'product_schema' => $productSchema,
+            'json_schema_product_single' => $this->getSingleProductSchema($product)
         ]);
 
     }
@@ -132,5 +133,40 @@ class FrontController extends Controller
         $str = strip_tags($html);
 
         return substr($str, 0, 130) . '...'; 
+    }
+    protected function getSingleProductSchema($product)
+    {
+        $featuredImage = $product->assets[0]->src;
+        $desc= $product->description ? $this->createTeaser($product->description) : $this->shop->description;
+        $rating= $product->reviews_avg_rating ? number_format($product->reviews_avg_rating, 1) : 0;
+
+        $data = [
+            "@context" => "https://schema.org",
+            "@type" => "Product",
+            "description" => $desc,
+            "name" => $product->title,
+            "image" => $featuredImage,
+            "offers" => [
+              "@type" => "Offer",
+              "availability" => "https://schema.org/InStock",
+              "price" => $product->price,
+              "priceCurrency" => "IDR"
+            ],
+            "aggregateRating" => [
+              "@type" => "AggregateRating",
+              "ratingValue" => "$rating",
+              "reviewCount" => "$product->reviews_count",
+            ],
+            "review" => [
+              "@type" => "Review",
+              "reviewRating" => [
+                "@type" => "Rating",
+                "ratingValue" => "$rating",
+                "bestRating" => "5"
+              ]
+            ]
+        ];
+
+        return json_encode($data, JSON_UNESCAPED_SLASHES);
     }
 }
