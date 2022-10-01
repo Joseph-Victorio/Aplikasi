@@ -31,7 +31,6 @@ class FrontController extends Controller
             'title' => $title,
             'description' => $this->shop->description,
             'featured_image' => $this->shop->logo_path? url($this->shop->logo_path) : null,
-            'data' => null
         ]);
     }
     
@@ -41,7 +40,6 @@ class FrontController extends Controller
             'title' => 'Produk Katalog | ' . $this->shop->name,
             'description' => $this->shop->description,
             'featured_image' => $this->shop->logo_path? url($this->shop->logo_path) : null,
-            'data' => null
         ]);
     }
     public function productDetail($slug)
@@ -54,22 +52,12 @@ class FrontController extends Controller
 
         $featuredImage = $product->assets[0]->src;
         $desc= $product->description ? $this->createTeaser($product->description) : $this->shop->description;
-    
-        $productSchema = [
-            'name' => $product->title,
-            'description' => $desc,
-            'image' => $featuredImage,
-            'reviews_count' => $product->reviews_count,
-            'price' => $product->price,
-            'rating' => (String) $product->reviews_avg_rating ? number_format($product->reviews_avg_rating, 1) : "0",
-        ];
-        
+
         return View::vue([
             'title' => $product->title . ' | ' . $this->shop->name,
             'description' => $desc,
             'featured_image' => $featuredImage,
-            'product_schema' => $productSchema,
-            'json_schema_product_single' => $this->getSingleProductSchema($product)
+            'json_schema' => $this->getSingleProductSchema($product)
         ]);
 
     }
@@ -80,7 +68,6 @@ class FrontController extends Controller
             'title' => $category->title . ' | ' . $this->shop->name,
             'description' => $category->description?? $this->shop->description,
             'featured_image' => url('/upload/images/' . $category->filename),
-            'data' => null
         ]);
 
     }
@@ -90,7 +77,6 @@ class FrontController extends Controller
             'title' => 'Artikel | ' . $this->shop->name,
             'description' => $this->shop->description,
             'featured_image' => $this->shop->logo_path? url($this->shop->logo_path) : null,
-            'data' => null
         ]);
     }
     public function postDetail($slug)
@@ -101,7 +87,6 @@ class FrontController extends Controller
             'title' => $post->title . ' | ' . $this->shop->name,
             'description' => $this->createTeaser($post->body),
             'featured_image' => url('/upload/images/' . $post->image),
-            'data' => null
         ]);
     }
     public function showInvoice($id)
@@ -109,7 +94,6 @@ class FrontController extends Controller
         return View::vue([
             'title' => "Invoice #$id",
             'description' => "Detail tagihan dan instruksi pembayaran invoice #$id - " . $this->shop->name,
-            'data' => null
         ]);
     }
     public function any()
@@ -120,7 +104,6 @@ class FrontController extends Controller
         }
         return View::vue([
             'title' => $title,
-            'data' => null
         ]);
     }
     public function clearCache()
