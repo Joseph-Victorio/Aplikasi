@@ -11,7 +11,7 @@
     <q-dialog v-model="OpenThemeSetting" position="right" square v-if="config">
       <q-card class="text-sm">
         <q-linear-progress :value="1" color="primary" />
-        <q-card-section class="q-pa-sm">
+        <q-card-section >
           <div class="q-pb-sm row items-center justify-between">
             <div class="text-weight-bold text-md text-primary">Setting</div>
             <q-btn flat padding="xs" v-close-popup no-caps icon="eva-close" round color="primary"></q-btn>
@@ -27,18 +27,28 @@
                     </q-item-label>
                   </q-item-section>
                   <q-item-section side v-if="config">
-                    <div class="q-gutter-x-sm">
-                      <q-btn @click="changeHomeViewMode('grid')" label="Grid" size="sm" unelevated :color="config.home_view_mode == 'grid' ? 'green-7' : 'grey-6'" dense icon="eva-grid">
+                    <q-btn-group unelevated rounded>
+                      <q-btn @click="changeHomeViewMode('grid')"
+                      size="sm" 
+                      unelevated 
+                      color="primary" 
+                      :outline="config.home_view_mode == 'list'" 
+                      icon="eva-grid">
                         <q-tooltip>
                           Grid Mode
                         </q-tooltip>
                       </q-btn>
-                      <q-btn @click="changeHomeViewMode('list')" label="List" size="sm" unelevated :color="config.home_view_mode == 'list' ? 'green-7' : 'grey-6'" dense icon="eva-list">
+                      <q-btn @click="changeHomeViewMode('list')" 
+                      size="sm" 
+                      unelevated 
+                      color="primary" 
+                      :outline="config.home_view_mode == 'grid'" 
+                      icon="eva-list">
                         <q-tooltip>
                           List Mode
                         </q-tooltip>
                       </q-btn>
-                    </div>
+                    </q-btn-group>
                   </q-item-section>
                 </q-item>
                 <q-item>
@@ -48,18 +58,29 @@
                     </q-item-label>
                   </q-item-section>
                   <q-item-section side>
-                    <div class="q-gutter-x-sm">
-                      <q-btn @click="changeProductViewMode('grid')" label="Grid" size="sm" unelevated :color="config.product_view_mode == 'grid' ? 'green-7' : 'grey-6'" dense icon="eva-grid">
+                    <q-btn-group unelevated rounded>
+                      <q-btn 
+                      @click="changeProductViewMode('grid')" 
+                      size="sm" 
+                      unelevated 
+                      color="primary" 
+                      :outline="config.product_view_mode == 'list'" 
+                      icon="eva-grid">
                         <q-tooltip>
                           Grid Mode
                         </q-tooltip>
                       </q-btn>
-                      <q-btn @click="changeProductViewMode('list')" label="List" size="sm" unelevated :color="config.product_view_mode == 'list' ? 'green-7' : 'grey-6'" dense icon="eva-list">
+                      <q-btn @click="changeProductViewMode('list')" 
+                      size="sm" 
+                      unelevated 
+                      color="primary" 
+                      :outline="config.product_view_mode == 'grid'" 
+                      icon="eva-list">
                         <q-tooltip>
                           List Mode
                         </q-tooltip>
                       </q-btn>
-                    </div>
+                     </q-btn-group>
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -86,7 +107,7 @@
               </q-list>
             </div>
             <div>
-              <div class="text-md text-weight-medium">Checkout</div>
+              <div class="text-md text-weight-medium">Checkout Mode</div>
               <q-list dense>
                   <q-item dense>
                     <q-item-section>
@@ -125,6 +146,9 @@ export default {
       OpenThemeSetting: false,
     }
   },
+  mounted() {
+    this.$store.commit('LOAD_DEMO_CONFIG')
+  },
   computed: {
     ...mapState({
       config: state => state.config,
@@ -152,7 +176,7 @@ export default {
     },
     is_whatsapp_checkout: {
       get() {
-        return localStorage.getItem('__wck') ? localStorage.getItem('__wck') : this.config.is_whatsapp_checkout
+        return this.config.is_whatsapp_checkout
       },
       set(val) {
         localStorage.setItem('__wck', val)
@@ -161,7 +185,7 @@ export default {
     },
     is_guest_checkout: {
       get() {
-        return localStorage.getItem('__guest') ? localStorage.getItem('__guest') : this.config.is_guest_checkout
+        return this.config.is_guest_checkout
       },
       set(val) {
         localStorage.setItem('__guest', val)

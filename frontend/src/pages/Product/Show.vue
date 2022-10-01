@@ -204,7 +204,7 @@
       <q-inner-loading :showing="!ready">
         <q-spinner-facebook size="50px" color="primary"/>
       </q-inner-loading>
-      <q-dialog v-model="reviewModal">
+      <q-dialog v-model="reviewModal" persistent>
         <div class="q-card" style="width:100%;max-width:360px;">
           <q-card-section>
           <form @submit.prevent="submitReview">
@@ -239,11 +239,11 @@
               <div class="row q-gutter-x-sm items-center">
                 <div class="text-weight-bold bg-dark text-white q-px-sm q-py-xs rounded">{{ number2 }} + {{ number1 }} </div> 
                 <div class="text-weight-bold"> = </div> 
-               <input class="rounded text-grey-9" type="text" v-model="jawaban" style="width:60px;padding:3px 6px;border:1px solid grey">
+               <input class="rounded text-grey-9" type="text" ref="jawaban" v-model="jawaban" style="width:60px;padding:3px 6px;border:1px solid grey">
               </div>
             </div>
             <div class="row justify-end q-gutter-x-sm">
-              <q-btn unelevated type="button" @click.prevent="reviewModal = false" label="Batal" color="primary" outline></q-btn>
+              <q-btn unelevated type="button" @click.prevent="closeReviewModal" label="Batal" color="primary" outline></q-btn>
               <q-btn unelevated :disabled="chalengeTesting" type="submit" :loading="loading" label="Kirim Ulasan" color="primary"></q-btn>
             </div>
           </div>
@@ -413,6 +413,7 @@ export default {
       chatText: '',
       chatModal: false,
       reviewModal: false,
+      timeInterval: null,
       number1: 0,
       number2: 0,
       jawaban: '',
@@ -835,8 +836,18 @@ export default {
         return ''
       }
     },
+    closeReviewModal() {
+      clearInterval(this.timeInterval)
+       this.reviewModal = false
+    },
     handleReviewModal() {
       this.getRandomNumber()
+
+      this.timeInterval = setInterval(() => {
+        if(document.activeElement !== this.$refs.jawaban) {
+          this.getRandomNumber()
+        }
+      }, 10000)
       this.reviewModal = true
     },
     submitReview() {
@@ -911,9 +922,9 @@ export default {
       })
     },
     getRandomNumber() {
-      let number = [1,2,3,4,5,6,7,8,9]
+      let number = [1,2,3,4,5,6,7,8,9,10,11,12]
       this.number1 = Math.floor((Math.random() * number.length));
-      this.number2= Math.floor((Math.random() * number.length));
+      this.number2= Math.ceil((Math.random() * number.length));
     },
     formatPhoneNumber(number) {
       let formatted = number.replace(/\D/g,'')
@@ -966,8 +977,7 @@ export default {
     } else {
       this.ready = true
     }
-    this.getRandomNumber()
-      
+    this.getRandomNumber()   
   },
   meta() {
     return {
