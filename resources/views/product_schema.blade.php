@@ -26,5 +26,6 @@ $data = $jsapp['page']['product_schema']
       "ratingValue": "{{ $data['rating'] }}",
       "bestRating": "5"
     }
+  }
 }
 </script>
