@@ -115,7 +115,7 @@ class FrontController extends Controller
     {
         $str = strip_tags($html);
 
-        return substr($str, 0, 130) . '...'; 
+        return substr($str, 0, 155); 
     }
     protected function getSingleProductSchema($product)
     {
