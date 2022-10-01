@@ -61,7 +61,7 @@ class FrontController extends Controller
             'image' => $featuredImage,
             'reviews_count' => $product->reviews_count,
             'price' => $product->price,
-            'rating' => (String) $product->reviews_avg_rating ? number_format($this->reviews_avg_rating, 1) : "0",
+            'rating' => (String) $product->reviews_avg_rating ? number_format($product->reviews_avg_rating, 1) : "0",
         ];
         
         return View::vue([
