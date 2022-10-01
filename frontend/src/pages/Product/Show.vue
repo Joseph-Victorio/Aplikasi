@@ -971,13 +971,7 @@ export default {
   },
   meta() {
     return {
-      title: this.product?.title,
-      meta: {
-        description: { name: 'description', content: this.getTeaser(this.product?.description) },
-        ogDescription: { property: 'og:description', content: this.getTeaser(this.product?.description)  },
-        ogTitle:  { property: 'og:title', content: this.product?.title },
-        ogImage:  { property: 'og:image', content: this.product?.assets[0].src },
-      }
+      title: this.product?.title
     }
   }
 }
