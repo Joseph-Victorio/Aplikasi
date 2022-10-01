@@ -269,54 +269,53 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog 
+    <!-- <q-dialog 
     v-model="cartModal"
     transition-show="slide-up"
     transition-hide="slide-down"
     >
-      <q-card flat class="card-md bg-white" v-if="product">
+      <q-card flat class="card-lg bg-white" v-if="product">
         <q-linear-progress size="10px" :value="100" />
           <q-card-section class="text-center block__padding">
             <q-img :src="product.assets[0].src" width="100px" class="rounded-borders"></q-img>
-            <div class="text-lg text-weight-bold q-mt-md">{{ product.title }} </div>
-              <div class="text-md">Berhasil ditambahkan.</div>
-              <div class="text-grey-7">Anda dapat lanjut kehalaman checkout atau berbelanja kembali</div>
+            <div class="text-md text-weight-bold q-mt-md">Berhasil menmbahkan {{ product.title }} ke keranjang</div>
+              <div class="text-grey-7">Anda dapat lanjut kehalaman checkout atau memilih berbelanja kembali</div>
           <div class="q-gutter-y-sm q-pt-lg">
             <q-btn class="full-width" unelevated no-caps :to="{ name: 'Cart' }" label="Lanjut Checkout" color="primary"></q-btn>
             <q-btn class="full-width" flat no-caps @click="cartModal = false" label="Berbelanja Lagi" color="primary"></q-btn>
           </div>
         </q-card-section>
       </q-card>
-    </q-dialog>
-    <!-- <q-dialog 
+    </q-dialog> -->
+    <q-dialog 
     v-model="cartModal"
-    position="bottom"
     transition-show="slide-up"
-    transition-hide="slide-down"
+    transition-hide="slide-up"
     >
-      <q-card flat class="max-width bg-white" v-if="product">
+      <q-card flat class="card-lg bg-white" v-if="product">
         <q-linear-progress size="10px" :value="100" />
           <q-card-section>
           <q-list>
-            <q-item>
-              <q-item-section avatar>
-                <q-img :src="product.assets[0].src" width="60px" class="rounded-borders"></q-img>
+            <q-item class="q-px-xs">
+              <q-item-section avatar top>
+                <q-img :src="product.assets[0].src" width="80px" class="rounded-borders"></q-img>
               </q-item-section>
               <q-item-section top>
-                <div class="text-md text-weight-meduim q-mb-sm">Produk berhasil ditambahkan.</div>
-                <q-item-label caption>Anda bisa lanjut kehalaman checkout atau berbelanja kembali</q-item-label>
+                <div class="text-md text-weight-meduim q-mb-sm"><span class="text-weight-medium">{{ product.title }}</span> berhasil ditambahkan di keranjang belanja.</div>
+                <q-item-label caption>Anda bisa lanjut kehalaman checkout atau melanjutkan berbelanja</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
           <div class="flex justify-end q-gutter-x-sm q-pt-sm">
-            <q-btn flat no-caps @click="cartModal = false" label="Berbelanja Lagi" color="primary"></q-btn>
+            <q-btn outline no-caps @click="cartModal = false" label="Berbelanja Lagi" color="primary"></q-btn>
             <q-btn unelevated no-caps :to="{ name: 'Cart' }" label="Lanjut Checkout" color="primary"></q-btn>
           </div>
         </q-card-section>
       </q-card>
-    </q-dialog> -->
+    </q-dialog>
     <q-dialog v-model="alreadyItemModal">
-      <q-card style="width:100%;max-width:350px;">
+      <q-card class="card-lg">
+        <q-linear-progress size="10px" :value="100" />
         <q-card-section v-if="product">
           <div class="q-mb-sm text-weight-medium text-lg">Konfirmasi</div>
           <div><span class="text-weight-medium text-md text-capitalize">{{ product.title }} </span> {{ getVarianTextNote() }}<br>Sudah ada dikeranjang, Apakah ingin tetap menambahkan?, Jika YA, keranjang akan diperbarui kuantitasnya</div>

@@ -264,6 +264,11 @@ ul {
 .flex-1 {
   flex: 1 0;
 }
+.card-lg {
+  width:100%;
+  max-width:470px !important;
+}
+.card-md,
 .card-medium {
   width:100%;
   max-width:400px !important;
