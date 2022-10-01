@@ -13,11 +13,11 @@
     </q-header>
     <div class="q-pa-md q-gutter-y-md">
       <div class="q-gutter-y-md">
-        <q-input label="Nama Toko" v-model="form.name"></q-input>
-        <q-input label="Nomor Whatsapp" v-model="form.phone" placeholder="0812*******"></q-input>
-        <q-input label="Slogan" v-model="form.slogan"></q-input>
+        <q-input filled label="Nama Toko" v-model="form.name"></q-input>
+        <q-input filled label="Nomor Whatsapp" v-model="form.phone" placeholder="0812*******"></q-input>
+        <q-input filled label="Slogan" v-model="form.slogan"></q-input>
         <div class="q-my-xs text-red text-sm" v-if="errors.phone">Nomor Whatsapp harus berupa angka</div>
-        <q-input autogrow label="Deskripsi Toko" v-model="form.description"></q-input>
+        <q-input filled type="textarea" rows="3" label="Deskripsi Toko" v-model="form.description"></q-input>
         <div class="q-my-md">
           <div for="" class="text-grey-8 q-mb-sm">Alamat Toko</div>
           <q-editor 
@@ -30,7 +30,7 @@
       </div>
      
       <div>
-        <input type="file" class="hidden" ref="image" @change="updateImagePreview">
+        <input filled type="file" class="hidden" ref="image" @change="updateImagePreview">
         <q-btn label="Upload Logo" size="sm" color="primary" icon="eva-upload" class="mt-2 mr-2" type="button" @click.prevent="handleBtnUpload"></q-btn>
        <div class="text-xs text-red q-my-md" v-if="errors.logo"> {{ errors.logo[0]}}</div>
       </div>

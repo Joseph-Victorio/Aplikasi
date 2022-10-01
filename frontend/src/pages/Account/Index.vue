@@ -11,23 +11,23 @@
       </q-toolbar>
       </q-header>
       <div class="q-pa-md q-gutter-y-md">
-        <q-input  v-model="form.name" label="Nama">
+        <q-input filled  v-model="form.name" label="Nama">
           <template v-slot:prepend>
               <q-icon name="eva-person-outline" />
           </template>
         </q-input>
-        <q-input  v-model="form.phone" label="No Ponsel / Whatasapp">
+        <q-input filled  v-model="form.phone" label="No Ponsel / Whatasapp">
           <template v-slot:prepend>
               <q-icon name="eva-phone-outline" />
           </template>
         </q-input>
-        <q-input  type="email" v-model="form.email" label="Email">
+        <q-input filled  type="email" v-model="form.email" label="Email">
           <template v-slot:prepend>
               <q-icon name="eva-email-outline" />
           </template>
         </q-input>
         <template v-if="changePassword">
-        <q-input  
+        <q-input filled  
         :type="isPwd ? 'password' : 'text'" 
         placeholder="Password Baru"
         v-model="form.password">
@@ -43,7 +43,7 @@
             />
           </template>
         </q-input>
-        <q-input 
+        <q-input filled 
         :type="isPwd ? 'password' : 'text'" 
         placeholder="Konfirmasi Password"
         v-model="form.password_confirmation">

@@ -11,13 +11,12 @@
         
       </q-toolbar>
     </q-header>
+    <form @submit.prevent="submit">
     <div class="q-pa-md q-gutter-y-md">
 
-      <q-input filled label="Title" v-model="form.title" :rules="[val => val && val.length > 0 || 'Wajib diisi']" />
-      <q-input filled autogrow label="Deskripsi" v-model="form.description" />
-      <q-input filled mask="####" label="Urutan" v-model="form.weight"
-      :rules="[val => val && val.length > 0 || 'Wajib diisi']"
-      />
+      <q-input required filled label="Title" v-model="form.title" />
+      <q-input required filled mask="####" label="Urutan" v-model="form.weight" />
+      <q-input filled type="textarea" rows="3" label="Deskripsi" v-model="form.description" />
        <div class="border rounded q-pa-sm">
         <div>
           <q-toggle v-model="form.is_front" label="Tampilkan produk di beranda"></q-toggle>
@@ -69,10 +68,11 @@
         </div>     
     </div>
     <q-footer class="bg-white q-pa-md">
-       <q-btn :loading="loading" class="full-width" @click="submit" label="Simpan Data" color="primary">
+       <q-btn :loading="loading" class="full-width" type="submit" label="Simpan Data" color="primary">
            <q-tooltip class="bg-accent">Simpan Data</q-tooltip>
         </q-btn>
     </q-footer>
+    </form>
   </q-page>
 </template>
 

@@ -35,8 +35,7 @@
     <form @submit.prevent="submit">
       <div class="q-px-md q-gutter-y-md">
          <q-input  
-         filled
-         square
+         outlined
           type="text" 
           v-model="form.title" 
           label="Nama Produk"
@@ -44,18 +43,18 @@
         />
         <div class="row items-start q-gutter-x-sm">
           <div class="col">
-            <money-formatter square filled v-model="form.price" prefix="Rp"/>
+            <money-formatter outlined v-model="form.price" prefix="Rp"/>
           </div>
           <div class="col">
-            <money-formatter square filled v-model="form.stock" label="Stok"/>
+            <money-formatter outlined v-model="form.stock" label="Stok"/>
           </div>
           <div class="col">
-            <money-formatter square filled v-model="form.weight" label="Berat" suffix="GRAM"/>
+            <money-formatter outlined v-model="form.weight" label="Berat" suffix="GRAM"/>
           </div>
         </div>
 
           <q-select
-          square filled 
+          outlined 
             v-model="form.category_id"
             :options="categories"
             label="Kategori"

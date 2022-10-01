@@ -11,45 +11,50 @@
         
       </q-toolbar>
     </q-header>
-    <form @submit.prevent="submitPost">
-      <q-input v-model="form.title" label="Title" :rules="[ val => val && val.length > 0 || 'Required']"></q-input>
-      <q-input v-model="form.tags" label="Kategori"></q-input>
-      <div class="row justify-between items-center text-grey-8 q-py-sm q-my-xs border-b">
-        <div>Tampil di Beranda</div>
-        <div>
-           <q-toggle v-model="form.is_promote" :label="form.is_promote? 'ya' : 'tidak'" left-label></q-toggle>
-        </div>
-      </div>
-      <div class="row justify-between items-center text-grey-8 q-py-sm q-my-xs border-b">
-        <div>Tampil di Halaman</div>
-        <div>
-           <q-toggle v-model="form.is_listing" :label="form.is_listing? 'ya' : 'tidak'" left-label></q-toggle>
-        </div>
-      </div>
-      <div class="q-mt-md">
-        <div class="q-my-sm label-text">
+    <form @submit.prevent="submitPost" class="q-gutter-y-md">
+      <q-input filled v-model="form.title" label="Title" required></q-input>
+      <q-input filled v-model="form.tags" label="Kategori"></q-input>
+      <q-list>
+        <q-item class="q-px-xs">
+          <q-item-section side>
+            <q-item-label>
+              <q-toggle v-model="form.is_promote">Tampil Diberanda</q-toggle>
+            </q-item-label>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>
+              <q-toggle v-model="form.is_listing">Tampil Dihalaman</q-toggle>
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+
+      <div>
+        <div class="label-text">
           Konten
         </div>
         <q-editor v-model="form.body"></q-editor>
       </div>
-      <q-footer class="bg-white q-pa-md">
-        <q-btn label="Update Data" type="submit" color="primary" class="full-width"></q-btn>
+
+    <div style="min-height: 100px;">
+      <q-btn label="Upload Gambar" size="sm" color="primary" icon="eva-upload" class="mt-2 mr-2" type="button" @click.prevent="selectNewImage" />
+        <q-list v-if="imagePreview" class="q-py-md">
+          <q-item>
+            <q-item-section>
+              <img :src="imagePreview" class="shadow-4 q-pa-xs bg-white" style="width:100px;height:70px;object-fit:cover;"/>
+            </q-item-section>
+            <q-space />
+            <q-item-section side>
+                <q-btn @click="removeImage" size="sm" color="red" glossy round icon="eva-trash-2" />
+            </q-item-section>
+          </q-item>
+        </q-list> 
+      </div>
+     <q-footer class="bg-white q-pa-md">
+        <q-btn :loading="loading" label="Simpan Data" type="submit" color="primary" class="full-width"></q-btn>
       </q-footer>
     </form>
-    <div class="q-my-md">
-      <q-btn label="Upload Gambar" size="sm" color="primary" icon="eva-upload" class="mt-2 mr-2" type="button" @click.prevent="selectNewImage" />
-    </div>
-      <q-list v-if="imagePreview">
-        <q-item>
-          <q-item-section>
-            <img :src="imagePreview" class="shadow-4 q-pa-xs bg-white" style="width:100px;height:70px;object-fit:cover;"/>
-          </q-item-section>
-          <q-space />
-          <q-item-section side>
-              <q-btn @click="removeImage" size="sm" color="red" glossy round icon="eva-trash-2" />
-          </q-item-section>
-        </q-item>
-    </q-list> 
+   
     <input type="file" class="hidden" ref="image" @change="updateImagePreview" />
     <q-inner-loading :showing="loading">
         <q-spinner-facebook size="50px" color="primary"/>

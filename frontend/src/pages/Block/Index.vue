@@ -49,42 +49,37 @@
     </q-page-sticky>
     <q-dialog v-model="blockModal">
       <q-card style="width:100%;max-width:450px;" class="bg-white">
+        <div class="card-heading text-md">{{ formType == 'add' ? 'Tambah' : 'Edit' }} Data</div>
         <form @submit.prevent="submitBlock" class="full-width">
-          <q-card-section>
-            <q-input 
-            dense
+          <q-card-section class="q-gutter-y-md">
+            <q-input
+            filled 
+            required
             label="Label" 
             v-model="form.label" 
-            :rules="[
-            val => val && val != '' || 'Tidak boleh kosong'
-            ]"
             />
             <q-select
-            dense
+            filled
             v-model="form.position"
             :options="positionOptions"
             label="Pilih Tipe"
-              :rules="[
-            val => val && val != ''|| 'Tidak boleh kosong'
-            ]"
           />
-           <q-input 
+           <q-input
+           filled 
+           required
             v-if="form.position == 'Featured'"
-            dense
             label="Deskripsi" 
             v-model="form.description" 
             autogrow
             class="q-mb-sm"
             />
-            <q-input 
-            dense
+            <q-input
+            filled 
+            required
             label="Urutan" 
             v-model="form.weight" 
             mask="####"
             :hint="form.position == 'Banner' ? 'Posisi banner: 1 , 2 atau 3' : ''"
-            :rules="[
-            val => val && val > 0 || 'Tidak boleh kosong'
-            ]"
             />
             <div class="q-mt-md">
              <q-toggle label="Link ke Post" v-model="linkToPost" @input="handleLinkPost"></q-toggle>
@@ -114,7 +109,7 @@
             </div>
           </q-card-section>
           <q-card-actions class="justify-end q-pa-md sticky-bottom bg-grey-2">
-            <q-btn @click.prevent="closeModal" type="button" color="secondary" label="Batal"></q-btn>
+            <q-btn @click.prevent="closeModal" type="button" color="primary" outline label="Batal"></q-btn>
             <q-btn :loading="loading" type="submit" color="primary" label="Simpan Data"></q-btn>
           </q-card-actions>
         </form>

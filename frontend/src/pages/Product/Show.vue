@@ -5,7 +5,7 @@
       <div class="flex justify-between">
         <q-btn 
         @click="backButton"
-        flat dense icon="eva-arrow-back" icon-size="27px" style="cursor:pointer;opacity:.9;">
+        flat icon="eva-arrow-back" icon-size="27px" style="cursor:pointer;opacity:.9;">
         </q-btn>
         <shopping-cart />
       </div>
@@ -243,7 +243,7 @@
               </div>
             </div>
             <div class="row justify-end q-gutter-x-sm">
-              <q-btn unelevated type="button" @click.prevent="reviewModal = false" label="Batal" color="secondary"></q-btn>
+              <q-btn unelevated type="button" @click.prevent="reviewModal = false" label="Batal" color="primary" outline></q-btn>
               <q-btn unelevated :disabled="chalengeTesting" type="submit" :loading="loading" label="Kirim Ulasan" color="primary"></q-btn>
             </div>
           </div>
@@ -263,9 +263,9 @@
             </div>
           </div>
         </q-card-section>
-        <q-card-actions class="justify-end">
-          <q-btn @click="closeChatModal" flat label="Batal"></q-btn>
-          <q-btn @click="submitChat" :disabled="!chatText" flat color="primary" label="Kirim"></q-btn>
+        <q-card-actions class="justify-end q-pa-md">
+          <q-btn @click="closeChatModal" outline color="primary" label="Batal"></q-btn>
+          <q-btn @click="submitChat" :disabled="!chatText" color="primary" label="Kirim"></q-btn>
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -369,7 +369,7 @@
     </q-dialog>
     <q-dialog v-model="fullscreen" persistent maximized>
       <div class="max-width relative" v-if="product">
-        <TransitionGroup name="slide" tag="div" class="preview-image relative bg-dark">
+        <TransitionGroup name="slide" tag="div" class="preview-image relative bg-grey-5 text-center">
           <img v-for="(img, idx) in product.assets" :key="idx" v-show="idx == currentSlide" :src="img.src" style="height:100%;width:auto;"/>
         </TransitionGroup>
         <div class="absolute row items-center" style="bottom: 4%; right:4%;">

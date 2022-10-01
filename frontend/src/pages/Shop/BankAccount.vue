@@ -12,37 +12,33 @@
       </q-toolbar>
     </q-header>
     <template v-if="banks.available">
-     <div class="q-pt-md q-pb-xl">
-       <table class="dense full-width">
-         <tbody v-for="bank in banks.data" :key="bank.id">
-           <tr>
-             <td>
-               <tr>
-                <td>Nama Bank</td>
-                <td>:</td>
-                <td>{{ bank.bank_name }} - {{ bank.bank_office }}</td>
-               </tr>
-               <tr>
-                <td>Nomor Rekening</td>
-                <td>:</td>
-                <td>{{ bank.account_number }}</td>
-              </tr>
-              <tr>
-                <td>Nama Akun</td>
-                <td>:</td>
-                <td>{{ bank.account_name }}</td>
-              </tr>
-             </td>
-             <td align="right">
-                 <div class="text-grey-8 column q-gutter-y-sm items-center">
+
+      <q-list separator>
+        <q-item class="bg-grey-2">
+          <q-item-section>Bank</q-item-section>
+          <q-item-section>Akun</q-item-section>
+          <q-item-section>Nomor Rekening</q-item-section>
+          <q-item-section side>Aksi</q-item-section>
+        </q-item>
+        <q-item v-for="bank in banks.data" :key="bank.id">
+          <q-item-section>
+            <q-item-label>{{ bank.bank_name }}</q-item-label>
+            <q-item-label>{{ bank.bank_office }}</q-item-label>
+          </q-item-section>
+          <q-item-section>
+            {{  bank.account_name }}
+          </q-item-section>
+          <q-item-section>
+            {{ bank.account_number }}
+          </q-item-section>
+          <q-item-section side>
+              <div class="text-grey-8 column q-gutter-y-sm items-center">
                   <q-btn @click="remove(bank.id)" size="sm" round icon="eva-trash-2" glossy color="red"/>
                   <q-btn @click="edit(bank)" size="sm" round glossy color="info" icon="eva-edit-2" />
                 </div>
-             </td>
-           </tr>
-         </tbody>
-       </table>
-    </div>
+          </q-item-section>
+        </q-item>
+      </q-list>
     </template>
     <template v-else>
       <div>Tidak ada data</div>
@@ -55,27 +51,31 @@
     </q-page-sticky>
     <q-dialog v-model="modal">
       <q-card style="width:100%;max-width:400px;">
+        <div class="card-heading text-md">{{ formType == 'add' ? 'Tambah' : 'Edit' }} Data</div>
         <form @submit.prevent="submit">
           <q-card-section>
-            <div class="text-weight-bold text-md">{{ formType == 'add' ? 'Tambah ' : 'Edit ' }} Data Bank</div>
             <q-input
+              filled
               v-model="form.bank_name"
               label="Nama Bank"
               :rules="[val => val && val.length > 0 || 'Wajib Diisi']"
               placeholder="BCA"
              />
             <q-input
+              filled
               v-model="form.bank_office"
               label="Kantor Cabang"
               :rules="[val => val && val.length > 0 || 'Wajib Diisi']"
               placeholder="Yogyakarta"
              />
             <q-input
+              filled
               v-model="form.account_name"
               label="Nama Akun"
               :rules="[val => val && val.length > 0 || 'Wajib Diisi']"
              />
             <q-input
+              filled
               v-model="form.account_number"
               label="Nomor Rekening"
               :rules="[val => val && val.length > 0 || 'Wajib Diisi']"
@@ -83,7 +83,7 @@
              />
           </q-card-section>
           <q-card-actions class="justify-end q-pa-md sticky-bottom bg-grey-2">
-            <q-btn :disabled="loading" label="Batal" type="button" color="secondary" @click.prevent="closeModal"></q-btn>
+            <q-btn :disabled="loading" label="Batal" type="button" color="primary" outline @click.prevent="closeModal"></q-btn>
             <q-btn :loading="loading" unelevated label="Simpan Data" type="submit" color="primary"></q-btn>
           </q-card-actions>
           

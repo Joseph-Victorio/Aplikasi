@@ -107,7 +107,7 @@
               </q-input>
             </q-card-section>
             <q-card-actions class="justify-end q-pa-md sticky-bottom bg-grey-2">
-              <q-btn v-close-popup outline type="button" color="secondary" label="Batal"></q-btn>
+              <q-btn v-close-popup outline type="button" color="primary" label="Batal"></q-btn>
               <q-btn :loading="loading" unelevated type="submit" color="primary" label="Simpan Data"></q-btn>
             </q-card-actions>
           </form>

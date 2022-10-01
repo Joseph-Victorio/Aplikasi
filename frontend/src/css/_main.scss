@@ -213,6 +213,10 @@ ul {
   width: 108px;
   height: auto;
 }
+.label-text {
+  color: grey;
+  margin-bottom: 5px;
+}
 .text-list-title {
   font-size: 16px;
   font-weight: 500;
@@ -596,7 +600,7 @@ table.table td, table.table td * {
 }
 @media (min-width: 600px) {
   .q-layout-padding {
-      padding: 10px 20px;
+      padding: 20px;
   }
 }
 .payment-container {

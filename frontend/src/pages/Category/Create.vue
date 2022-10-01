@@ -14,7 +14,6 @@
     <div class="q-pa-md q-gutter-y-md">
       <q-input filled label="Title" v-model="form.title"></q-input>
       <q-input filled type="number" label="Urutan" v-model="form.weight"
-      :rules="[val => val && val > 0 || 'Data tidak boleh kosong']"
       ></q-input>
        <div class="text-xs text-red q-my-md" v-if="errors.title"> {{ errors.title[0]}}</div>
        <div class="border rounded q-pa-sm">

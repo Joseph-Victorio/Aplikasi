@@ -8,30 +8,28 @@
         <q-toolbar-title v-if="promo">
          {{ promo.label }}
         </q-toolbar-title>
-          <q-btn @click="handleAddProductPromo" unelevated color="accent">
-            <q-icon name="add"></q-icon>
-            <span>Produk</span>
-          </q-btn> 
       </q-toolbar>
     </q-header>
-    <div v-if="promo">
+    <div v-if="promo" class="q-pa-md">
       <q-list separator>
         <q-item>
           <q-item-section>Label</q-item-section>
-          <q-item-section side>{{ promo.label }}</q-item-section>
+          <q-item-section>{{ promo.label }}</q-item-section>
         </q-item>
         <q-item>
           <q-item-section>Start</q-item-section>
-          <q-item-section side>{{ promo.start }}</q-item-section>
+          <q-item-section>{{ promo.start }}</q-item-section>
         </q-item>
         <q-item>
           <q-item-section>Selesai</q-item-section>
-          <q-item-section side>{{ promo.start }}</q-item-section>
+          <q-item-section>{{ promo.start }}</q-item-section>
         </q-item>
         <q-item>
           <q-item-section>Status</q-item-section>
-          <q-item-section side>
-            <span class="q-px-md q-py-xs rounded-borders text-white" :class="promo.is_active ? 'bg-green' : 'bg-grey-7'">{{ promo.is_active ? 'Active' : 'Inactive' }}</span>
+          <q-item-section>
+            <q-item-label>
+            <q-badge class="q-px-md q-py-xs rounded-borders text-white" :class="promo.is_active ? 'bg-green' : 'bg-grey-7'">{{ promo.is_active ? 'Active' : 'Inactive' }}</q-badge>
+            </q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
@@ -40,6 +38,10 @@
      <div v-if="promo">
       <div class="row items-center justify-between q-pa-md bg-grey-2">
          <div class="text-md text-weight-bold">Total Produk {{ products.length }}</div>
+           <q-btn @click="handleAddProductPromo" unelevated color="accent">
+            <q-icon name="add"></q-icon>
+            <span>Produk</span>
+          </q-btn> 
       </div>
       <div class="">
         <q-list separator v-if="products.length">
