@@ -24,7 +24,7 @@
           </q-input>
       </div>
     </div>
-    <template v-if="orders.ready && orders.count > 0">
+    <template v-if="orders.count > 0">
       <div>
         <q-separator></q-separator>
         <q-list separator>
@@ -110,9 +110,7 @@
         <q-btn outline :loading="orders.isLoadMore" v-if="orders.count > orders.data.length" label="loadmore..." @click="loadMore" unelevated color="primary"></q-btn>
       </div>
     </template>
-     <template v-else>
-      <div class="text-center q-pt-xl">Tidak ada data</div>
-    </template>
+      <div v-if="orders.ready && orders.count <= 0" class="text-center q-pt-xl">Tidak ada data</div>
     <q-dialog v-model="followUpModal">
       <follow-up @close="followUpModal= false" :order="currentOrder" />
     </q-dialog>
@@ -408,7 +406,7 @@ export default {
 <style scoped lang="scss">
 .order-btn-group {
   .q-btn {
-    min-width:100px;
+    min-width:80px;
     width:100%;
   }
 }
