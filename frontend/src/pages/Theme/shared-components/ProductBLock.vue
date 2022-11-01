@@ -13,7 +13,7 @@
           <div v-if="item.description" class="block-subtitle">{{ item.description }}</div>
           <div class="banner" v-if="item.banner_src">
             <router-link :to="{name: 'ProductCategory', params:{ id: item.category_id }}">
-            <img :src="item.banner_src" :alt="item.title" class="cursor-pointer" />
+            <img :src="item.banner_src" :alt="item.title" class="cursor-pointer q-mt-sm" />
               </router-link>
             </div>
           </div>

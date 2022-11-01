@@ -1,17 +1,16 @@
 <template>
   <div class="">
      <div id="courier" ref="courier" class="q-mb-lg">
-      <div class="text-md text-weight-medium ">Pilih Metode Pengiriman</div>
+      <div  v-if="config.can_shipping">
+        <div class="text-md text-weight-medium ">Pilih Metode Pengiriman</div>
 
-      <div class="q-py-sm q-gutter-x-sm" v-if="config.can_shipping">
-        <q-radio v-model="shipping_method" val="EKSPEDISI" label="Via Ekspedisi"></q-radio>
-        <q-radio v-model="shipping_method" val="COD" label="Via Kurir Toko ( COD )">
-        </q-radio>
+        <div class="q-py-sm q-gutter-x-sm">
+          <q-radio v-model="shipping_method" val="EKSPEDISI" label="Via Ekspedisi"></q-radio>
+          <q-radio v-model="shipping_method" val="COD" label="Via Kurir Toko ( COD )">
+          </q-radio>
+        </div>
       </div>
-      <!-- <div class="bg-green-1 q-px-sm q-py-xs text-green-9 q-mb-md" style="font-size:13.4px;"> 
-        Dikirim dari {{ originAddressFormat }}.
-      </div> -->
-
+   
       <div id="shipping_destination" class="q-mt-md">
         <div v-if="shipping_method == 'EKSPEDISI' && config.can_shipping">
 
@@ -425,6 +424,14 @@ export default {
         this.useDataUserPrompt = true
       }
     }
+
+    if(this.config && !this.config.can_shipping) {
+      this.shipping_method = 'COD'
+
+      setTimeout(() => {
+        console.log(this.formOrder);
+      })
+    }
   },
   methods: {
     clearShipping() {
@@ -550,7 +557,9 @@ export default {
       
       let data = JSON.parse(localStorage.getItem('user_data'))
 
-      this.selectSubdistrict(data.shipping_destination)
+      if(this.config.can_shipping) {
+        this.selectSubdistrict(data.shipping_destination)
+      }
 
       this.customer_address = data.customer_address
       this.customer_name = data.customer_name

@@ -37,6 +37,7 @@ const routes = [
       { path: 'checkout', name: 'Checkout', component: () => import('src/pages/Checkout/Index.vue')},
       { path: 'direct-checkout', name: 'DirectCheckout', component: () => import('src/pages/Checkout/DirectWithShipping.vue')},
       { path: 'invoice/:order_ref', name: 'UserInvoice', component: () => import('src/pages/Invoice/Index.vue')},
+      { path: 'tagihan-detail/:order_ref', name: 'PaymentDetail', component: () => import('src/pages/Invoice/PaymentDetail.vue')},
     ]
   },
   {

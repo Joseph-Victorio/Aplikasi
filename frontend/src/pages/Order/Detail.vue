@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pb-lg bg-grey-2">
+  <q-page class="q-pb-lg bg-grey-1">
     <q-header class="no-print box-shadow">
       <q-toolbar>
         <q-btn v-go-back.single
@@ -27,174 +27,134 @@
       </q-toolbar>
     </q-header>
     <div v-if="invoice" class="no-print">
-      <div class="q-pt-md q-gutter-y-md">
-        <div class="q-mt-md q-pb-lg bg-white q-pa-md">
-          <div class="flex justify-between text-grey-8">
-            <div class="q-mb-sm">
-              <div class="text-weight-bold text-lg">{{ shop.name }}</div>
-              <div class="text-weight-regular">Phone: {{ shop.phone }}</div>
-              <div class="text-weight-regular" v-html="shop.address"></div>
-            </div>
-            <div>
-              <table>
-                <tr>
-                  <td>Invoice</td>
-                  <td>{{ invoice.order_ref }}</td>
-                </tr>
-                <tr>
-                  <td>Referensi</td>
-                  <td>{{ invoice.transaction.payment_ref }}</td>
-                </tr>
-                <tr>
-                  <td>Dibuat</td>
-                  <td>{{ invoice.created_at }}</td>
-                </tr>
-                <tr>
-                  <td colspan="2">
-                    <div class="full-width q-px-md q-py-xs text-white text-center" :class="statusColor(invoice.order_status)">
-                      {{ invoice.status_label }}
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-          <div class="q-mt-lg text-grey-8">
-            <table class="table-order-item" v-if="invoice.items">
-              <tr>
-                <th align="left">Item</th>
-                <th align="left">qty</th>
-                <th align="right">Harga</th>
-              </tr>
-              <tr v-for="(item, index) in invoice.items" :key="index">
-                <td class="">
-                  <div>{{ item.name }}</div>
-                  <div class="text-caption tet-grey-6">{{ item.note }}</div>
-                </td>
-                <td>{{ item.quantity }}</td>
-                <td align="right">{{ moneyIDR(item.price) }}</td>
-              </tr>
-            </table>
-           <div class="column justify-end items-end q-py-sm">
-              <table class="dense">
-                <tr>
-                  <td align="right">SubTotal</td>
-                  <td>:</td>
-                  <td>Rp</td>
-                  <td align="right">{{ $money(invoice.order_subtotal) }}</td>
-                </tr>
-                <tr>
-                  <td align="right">Ongkos Kirim</td>
-                  <td>:</td>
-                  <td>Rp</td>
-                  <td align="right">{{ $money(invoice.shipping_cost) }}</td>
-                </tr>
-                <tr v-if="invoice.order_unique_code">
-                  <td align="right">Kode Unik</td>
-                  <td>:</td>
-                  <td></td>
-                  <td align="right">-{{ invoice.order_unique_code }}</td>
-                </tr>
-                <tr v-if="invoice.discount">
-                  <td align="right">Diskon</td>
-                  <td align="right">:</td>
-                  <td>Rp</td>
-                  <td align="right">-{{ invoice.discount? $money(invoice.discount) : 0 }}</td>
-                </tr>
-
-                <tr v-if="invoice.service_fee">
-                  <td align="right">{{ config.service_fee_label }}</td>
-                  <td>:</td>
-                   <td>Rp</td>
-                  <td align="right">{{ $money(invoice.service_fee) }}</td>
-                </tr>
-                <tr v-if="invoice.payment_fee > 0">
-                  <td align="right">Jasa Pembayaran <span class="text-xs text-grey-7"> [ {{ invoice.transaction.payment_name }} ] </span></td>
-                  <td>:</td>
-                   <td>Rp</td>
-                  <td align="right">{{ $money(invoice.payment_fee) }}</td>
-                </tr>
-                <tr>
-                  <th align="right">Total Bayar</th>
-                  <th align="right">:</th>
-                  <th>Rp</th>
-                  <th align="right">{{ $money(invoice.grand_total) }}</th>
-                </tr>
-              </table>
-            </div>
-          </div>
+      <div class="q-gutter-y-md">
+        <div class="q-mt-md q-pb-lg bg-white q-py-md q-px-sm">
+          <q-list dense >
+            <q-item>
+              <q-item-section>
+                <q-item-label class="text-md">Invoice</q-item-label>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>
+                  {{ invoice.order_ref }}
+                  <q-icon name="eva-copy" size="18px" class="q-ml-xs cursor-pointer" @click="copy(invoice.order_ref)"></q-icon>
+                  </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>Tanggal Pembelian</q-item-section>
+              <q-item-section>{{ invoice.created_at }}</q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>Status Pesanan</q-item-section>
+              <q-item-section>
+                <q-item-label>
+                  <span class="q-px-md rounded-borders text-white q-py-xs"
+                   :class="statusColorClass"
+                  >{{ invoice.status_label }}</span>
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
         </div>
-        <q-card class=" shadow" flat square>
-            <div class="card-heading">Informasi Penerima</div>
+       <q-card class="no-print bg-white shadow" square>
+          <div class="card-heading">Produk Detil</div>
           <q-card-section>
-            <div class="text-grey-9">
-              <table class="dense">
-                <tr>
-                  <td>Nama</td>
-                  <td>:</td>
-                  <td>{{ invoice.customer_name }}</td>
-                </tr>
-                <tr>
-                  <td>Whatsapp</td>
-                  <td>:</td>
-                  <td>{{ invoice.customer_whatsapp }}</td>
-                </tr>
-                <tr>
-                  <td style="vertical-align:top;">Alamat</td>
-                  <td style="vertical-align:top;">:</td>
-                  <td> <div v-html="invoice.shipping_address"></div> </td>
-                </tr>
-              </table>
-            </div>
+            <q-separator color="teal q-pt-xs" />
+            <q-list separator>
+              <q-item class="bg-green-1">
+                <q-item-section>Produk</q-item-section>
+                <q-item-section>Qty</q-item-section>
+                <q-item-section>Harga</q-item-section>
+              </q-item>
+              <q-item v-for="(item, index) in invoice.items" :key="index">
+                <q-item-section>
+                  <div class="text-md">{{ item.name }}</div>
+                  <div class="text-caption tet-grey-6">{{ item.note }}</div>
+                </q-item-section>
+                <q-item-section>{{ item.quantity }}</q-item-section>
+                <q-item-section>{{ moneyIDR(item.price) }}</q-item-section>
+              </q-item>
+            </q-list>
           </q-card-section>
         </q-card>
-        <q-card class=" bg-white shadow" square>
-            <div class="card-heading">Informasi Ekspedisi</div>
-          <q-card-section>
-            <div class="text-grey-9">
-              <table class="dense">
-                <tr>
-                  <td>Kurir</td>
-                  <td>:</td>
-                  <td>{{ invoice.shipping_courier_name }}</td>
-                </tr>
-                <tr>
-                  <td>Service</td>
-                  <td>:</td>
-                  <td>{{ invoice.shipping_courier_service ? invoice.shipping_courier_service : '-' }}</td>
-                </tr>
-                <tr v-if="invoice.shipping_courier_code">
-                  <td>No Resi</td>
-                  <td>:</td>
-                  <td>{{ invoice.shipping_courier_code }}</td>
-                </tr>
-              </table>
-            </div>
+        <q-card class="no-print bg-white shadow" square>
+          <div class="card-heading">
+              <div>Info Pengiriman</div>
+          </div>
+          <q-card-section class="q-px-sm">
+            <q-list dense>
+              <q-item>
+                <q-item-section>Kurir</q-item-section>
+                <q-item-section>{{ invoice.shipping_courier_name }} {{ invoice.shipping_courier_service ? '' + ' - ' + invoice.shipping_courier_service : '' }}</q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label>No Resi <q-icon v-if="invoice.shipping_courier_code" name="eva-copy" size="18px" class="q-ml-sm cursor-pointer" @click="copy(invoice.shipping_courier_code)"></q-icon> </q-item-label>
+                </q-item-section>
+                <q-item-section>{{ invoice.shipping_courier_code ? invoice.shipping_courier_code  : ''  }}</q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section top>
+                  <q-item-label>Alamat <q-icon name="eva-copy" size="18px" class="q-ml-md cursor-pointer" @click="copyAddress"></q-icon></q-item-label>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="text-weight-bold">{{ invoice.customer_name }}</q-item-label>
+                  <q-item-label>{{ invoice.customer_whatsapp }}</q-item-label>
+                  <q-item-label>
+                    <div v-html="invoice.shipping_address"></div>
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
           </q-card-section>
         </q-card>
-        <q-card class=" bg-white shadow" square>
-          <div class="card-heading border-b">Informasi Pembayaran</div>
-          <q-card-section>
-              <table class="dense">
-                <tr>
-                  <td>Metode</td>
-                  <td>:</td>
-                  <td>{{ invoice.transaction.payment_method.split('_').join(' ') }}</td>
-                </tr>
-                <tr>
-                  <td style="vertical-align:top;">Detil</td>
-                  <td style="vertical-align:top;">:</td>
-                  <td><div v-html="invoice.transaction.payment_name"></div></td>
-                </tr>
-                <tr>
-                  <td>Referensi</td>
-                  <td>:</td>
-                  <td>{{ invoice.transaction.payment_ref }}</td>
-                </tr>
-              </table>
+        <q-card class="no-print bg-white shadow" square>
+          <div class="card-heading border-b">Rincian Pembayaran</div>
+          <q-card-section class="q-px-sm">
+            <q-list dense>
+              <q-item>
+                <q-item-section>Referensi</q-item-section>
+                <q-item-section>{{  invoice.transaction.payment_ref  }}</q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>Metode Pembayaran</q-item-section>
+                <q-item-section>{{ invoice.transaction.payment_method.split('_').join(' ') }}</q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>Total Belanja</q-item-section>
+                <q-item-section>{{  moneyIDR(invoice.order_subtotal) }}</q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>Total Ongkos Kirim ({{ invoice.order_weight }} gram)</q-item-section>
+                <q-item-section>{{  moneyIDR(invoice.shipping_cost) }}</q-item-section>
+              </q-item>
+              <q-item v-if="invoice.order_unique_code">
+                <q-item-section>Kode Unik</q-item-section>
+                <q-item-section>{{  invoice.order_unique_code }}</q-item-section>
+              </q-item>
+              <q-item v-if="invoice.discount">
+                <q-item-section>Diskon</q-item-section>
+                <q-item-section>{{  moneyIDR(invoice.discount) }}</q-item-section>
+              </q-item>
+              <q-item v-if="invoice.payment_fee">
+                <q-item-section>Payment Fee [ {{ invoice.transaction.payment_name }} ]</q-item-section>
+                <q-item-section>{{ moneyIDR(invoice.payment_fee) }}</q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="text-weight-bold q-py-sm text-md">Total Tagihan</q-item-label>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="text-weight-bold q-py-sm text-md">{{  moneyIDR(invoice.order_total) }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
           </q-card-section>
         </q-card>
+
       </div>
+
     </div>
     <q-inner-loading :showing="loading" class="no-print">
         <q-spinner-facebook size="50px" color="primary"/>
@@ -245,8 +205,8 @@
                 <div class="" v-html="shop.address"></div>
               </div>
             </div>
-            <div class="">
-              <div class="text-weight-bold q-mb-xs">Detil Pesanan:</div>
+            <div class="relative q-pt-xs">
+              <div class="text-weight-bold q-my-xs">Detil Pesanan:</div>
               <table class="table-order-item" v-if="invoice.items">
                 <tr>
                   <th align="left">Item</th>
@@ -316,7 +276,7 @@
     <div v-if="invoice" :class="{'no-print': isPrintInvoice}">
       <div class="print-packing">
         <div class="bg-white">
-          <div class="flex justify-between">
+          <div class="flex justify-between q-mb-sm">
             <div class="" style="width:45%">
               <div class="text-weight-medium q-mb-xs text-weight-bold">Penerima:</div>
               <div class="text-md">{{ invoice.customer_name }}</div>
@@ -332,7 +292,7 @@
               </div>
             </div>
           </div>
-          <div class="">
+          <div >
             <div class="q-mb-xs text-weight-bold">Detil Pesanan</div>
             <table class="table-order-item" v-if="invoice.items">
               <tr>
@@ -394,26 +354,7 @@
                 </table>
             </div>
           </div>
-          <!-- <div class="">
-            <div class="q-mb-xs text-weight-bold">Kurir:</div>
-            <table>
-              <tr>
-                <td>Kurir</td>
-                <td>:</td>
-                <td>{{ invoice.shipping_courier_name }}</td>
-              </tr>
-              <tr>
-                <td>Service</td>
-                <td>:</td>
-                <td>{{ invoice.shipping_courier_service ? invoice.shipping_courier_service : '-' }}</td>
-              </tr>
-              <tr>
-                <td>No Resi</td>
-                <td>:</td>
-                <td>{{ invoice.shipping_courier_code? invoice.shipping_courier_code : '-'  }}</td>
-              </tr>
-            </table>
-          </div> -->
+
         </div>
       </div>
     </div>
@@ -448,6 +389,14 @@ export default {
     },
     isPaymentType: function() {
       return this.invoice.transaction.payment_type == 'DIRECT' ? 'DirectPayment' : 'PaymentGateway';
+    },
+    statusColorClass() {
+      if(this.invoice) {
+        if(this.invoice.order_status == 'SHIPPING') return 'bg-teal'
+        if(this.invoice.order_status == 'COMPLETE') return 'bg-green'
+        if(this.invoice.order_status == 'CANCELED') return 'bg-red'
+      }
+      return 'bg-grey-8'
     },
   },
   created() {
@@ -533,7 +482,7 @@ export default {
       .then(() => {
         this.$q.notify({
           type: 'positive',
-          message: 'Berhasil menyalin nomor rekening'
+          message: 'Berhasil menyalin'
         })
       })
       .catch(() => {
@@ -562,6 +511,10 @@ export default {
       } else {
         clearTimeout(this.timeout)
       }
+    },
+    copyAddress() {
+      let addr = `${this.invoice.customer_name}\n${this.invoice.customer_whatsapp}\n${this.invoice.shipping_address}`
+      this.copy(addr)
     },
     printInvoice() {
       if(!this.qrData) {
@@ -601,8 +554,7 @@ export default {
       padding:.5rem;
     }
     th {
-      background-color: #666;  
-      color: #ccc;
+      background-color: rgb(151, 250, 196);  
     }
     td {
       border-bottom: 1px solid #eee;

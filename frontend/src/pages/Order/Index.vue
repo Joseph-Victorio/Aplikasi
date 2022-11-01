@@ -44,10 +44,10 @@
             {{ index+1 }}
           </q-item-section>
           <q-item-section top>
-            <div class="text-sm">
+            <div>
               <table class="dense">
                 <tr>
-                  <td>INVOICE</td>
+                  <td>Invoice</td>
                   <td>{{ order.order_ref}}</td>
                 </tr>
                 <tr>
@@ -64,30 +64,6 @@
                     <q-badge :color="changeBadgeColor(order.order_status)">{{ order.status_label }}</q-badge>
                   </td>
                 </tr>
-                <template v-if="isMobile">
-                  <tr>
-                  <td>Nama</td>
-                  <td>{{ order.customer_name }}</td>
-                </tr>
-                <tr>
-                  <td>Ponsel</td>
-                  <td>{{ order.customer_whatsapp }}</td>
-                </tr>
-                <tr>
-                  <td>Pengiriman</td>
-                  <td>{{ order.shipping_courier_name }}</td>
-                </tr>
-                <tr>
-                  <td>Pembayaran</td>
-                  <td>{{ order.transaction? order.transaction.payment_method.split('_').join(' ') : '' }}</td>
-                </tr>
-                </template>
-              </table>
-            </div>
-          </q-item-section>
-          <q-item-section top v-if="!isMobile">
-            <div class="text-sm">
-              <table class="dense">
                 <tr>
                   <td>Nama</td>
                   <td>{{ order.customer_name }}</td>
@@ -104,36 +80,27 @@
                   <td>Pembayaran</td>
                   <td>{{ order.transaction? order.transaction.payment_method.split('_').join(' ') : '' }}</td>
                 </tr>
-               
               </table>
             </div>
           </q-item-section>
           <q-item-section side top>
-            <div class="fab-custom">
-              <q-fab 
-              color="primary" 
-              icon="eva-chevron-down" 
-              direction="down" 
-              padding="5px" 
-              unelevated 
-              vertical-actions-align="right"  
-              >
-                <q-fab-action padding="5px" label-position="left" external-label icon="eva-paper-plane" @click="handleFollowUp(order)" :label="messageButtonLabel(order.order_status)" color="green-7"></q-fab-action>
+            <div class="q-gutter-xs column order-btn-group">
+                <q-btn unelevated no-caps padding="6px 12px" size="12px" label="Detail" color="purple-7" :to="{name: 'AdminOrderShow', params: {order_ref: order.order_ref}}"></q-btn>
 
-                <q-fab-action padding="5px" label-position="left" external-label icon="eva-eye" label="Detail" color="purple-7" :to="{name: 'AdminOrderShow', params: {order_ref: order.order_ref}}"></q-fab-action>
+                <q-btn unelevated no-caps padding="6px 12px" size="12px" @click="handleFollowUp(order)" :label="messageButtonLabel(order.order_status)" color="green-7"></q-btn>
 
-                <q-fab-action padding="5px" label-position="left" external-label icon="eva-file-text" v-if="canInputResi(order)" label="Input Resi" color="blue" @click="handleInputResi(order)"></q-fab-action>
 
-                <q-fab-action padding="5px" label-position="left" external-label icon="eva-car" v-if="canShip(order)" label="Kirim COD" color="teal" @click="handleKirimCod(order)"></q-fab-action>
+                <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canInputResi(order)" label="Input Resi" color="blue" @click="handleInputResi(order)"></q-btn>
 
-                <q-fab-action padding="5px" label-position="left" external-label icon="eva-checkmark-circle-2" v-if="canComplete(order)" label="Order Selesai" color="blue-6" @click="handleCompletionOrder(order)"></q-fab-action>
+                <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canShip(order)" label="Kirim COD" color="teal" @click="handleKirimCod(order)"></q-btn>
 
-                <q-fab-action padding="5px" label-position="left" external-label icon="eva-save" v-if="canConfirm(order)" label="Konfirmasi" color="blue-7" @click="handleConfirmationOrder(order.id)"></q-fab-action>
+                <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canComplete(order)" label="Order Selesai" color="blue-6" @click="handleCompletionOrder(order)"></q-btn>
 
-                <q-fab-action padding="5px" label-position="left" external-label icon="eva-close" v-if="canCancelOrder(order)" label="Batalkan" color="red" @click="handleCancelOrder(order)"></q-fab-action>
+                <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canConfirm(order)" label="Konfirmasi" color="blue-7" @click="handleConfirmationOrder(order.id)"></q-btn>
 
-                <q-fab-action padding="5px" label-position="left" external-label icon="eva-trash-2" label="Hapus" color="red-7" @click="handleDeleteOrder(order.id)"></q-fab-action>
-              </q-fab>
+                <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canCancelOrder(order)" label="Batalkan" color="orange" @click="handleCancelOrder(order)"></q-btn>
+
+                <q-btn unelevated no-caps padding="6px 12px" size="12px" label="Hapus" color="red-7" @click="handleDeleteOrder(order.id)"></q-btn>
             </div>
           </q-item-section>
         </q-item>
@@ -221,7 +188,7 @@ export default {
       loading: state => state.loading
     }),
     isMobile() {
-      return window.innerWidth <= 500
+      return window.innerWidth <= 800
     }
   },
   created() {
@@ -439,9 +406,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.btn-order {
-  min-width:114px;
-  width:100%;
+.order-btn-group {
+  .q-btn {
+    min-width:105px;
+    width:100%;
+  }
 }
 
 </style>

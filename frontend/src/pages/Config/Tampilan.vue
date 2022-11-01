@@ -77,12 +77,12 @@
       <q-item class="q-mt-md">
         <q-item-section>
           <q-item-label class="text-weight-medium">Social Proof Popup</q-item-label>
-          <div class="q-mb-sm text-caption text-blue q-mt-sm">
+          <div class="q-mb-sm text-caption q-mt-sm">
             Pengaturan social proof notifikasi.
           </div>
         </q-item-section>
         <q-item-section side top>
-          <q-toggle v-model="form.is_notifypro" :label="form.is_notifypro? 'Active' : 'Disabled'" left-label color="blue"></q-toggle>
+          <q-toggle v-model="form.is_notifypro" :label="form.is_notifypro? 'Active' : 'Inactive'" left-label color="blue"></q-toggle>
         </q-item-section>
       </q-item>
       <q-item v-if="form.is_notifypro">

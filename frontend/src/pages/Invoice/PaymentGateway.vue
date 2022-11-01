@@ -1,6 +1,6 @@
 <template>
   <div class="text-grey-9">
-    <div class="q-gutter-y-lg" v-if="transaction">
+    <div class="q-gutter-y-md" v-if="transaction">
       <q-card square class="shadow">
         <div class="q-py-md">
           <q-list>
@@ -91,8 +91,8 @@
                  </q-list>
               </q-card>
             </q-expansion-item>
-        </template>
-      </q-list>
+          </template>
+        </q-list>
       </div>
     </div>
     <q-dialog v-model="viewQrModal" persistent maximized >

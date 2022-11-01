@@ -11,10 +11,10 @@
           <div class="flex justify-between items-center q-py-sm">
             <div>
               <div class="text-weight-medium">Pembayaran Ditempat</div>
-              <div class="q-mb-sm text-caption text-grey-7">Opsi pembayaran ditempat oleh kurir</div>
+              <div class="q-mb-sm text-caption text-grey-7">Opsi pembayaran ditempat oleh kurir toko</div>
             </div>
             <div>
-              <q-toggle class="text-grey-8" color="blue" v-model="formdata.is_cod_payment" left-label :label="formdata.is_cod_payment ? 'Active' : 'Disabled'"> </q-toggle>
+              <q-toggle class="text-grey-8" color="blue" v-model="formdata.is_cod_payment" left-label :label="formdata.is_cod_payment ? 'Active' : 'Inactive'"> </q-toggle>
             </div>
           </div>
           <div class="q-mt-md">

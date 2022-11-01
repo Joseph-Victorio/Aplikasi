@@ -1,6 +1,6 @@
 <template>
   <div class="text-grey-9">
-    <div class="q-gutter-y-lg" v-if="transaction">
+    <div class="q-gutter-y-md" v-if="transaction">
       <q-card square class="shadow">
         <div class="q-py-md">
           <q-list>
@@ -15,7 +15,7 @@
           </q-list>
         </div>
       </q-card>
-      <q-card square class="shadow">
+      <q-card flat square class="shadow">
         <div class="card-heading">Metode Pembayaran</div>
         <q-card-section>
           <div class="">
@@ -29,7 +29,7 @@
           </div>
         </q-card-section>
       </q-card>
-      <q-card square class="shadow">
+      <q-card flat square class="shadow">
         <div class="card-heading">Informasi Pembayaran</div>
         <q-card-section>
            <div class="q-gutter-y-sm">
@@ -49,39 +49,41 @@
         </q-card-section>
       </q-card>
 
-      <div class="bg-white">
+      <q-card flat square>
         <div class="card-heading">Panduan Pembayaran</div>
-        <q-list bordered class="text-grey-9">
-          <template>
-            <q-expansion-item
-              group="somegroup"
-              label="Bank Transfer"
-              default-opened
-              header-class="bg-grey-7 text-white"
-              expand-icon-class="text-white"
-            >
-              <q-card class="q-py-md q-pb-xl">
-                 <q-list bordered>
-                  <q-item v-for="(step, index) in instructions" :key="step">
-                    <q-item-section avatar>
-                      <q-avatar color="grey-7" text-color="white" size="sm">
-                        {{ index+1 }}
-                      </q-avatar>
-                    </q-item-section>
+        <q-card-section>
+          <q-list class="text-grey-9">
+            <template>
+              <q-expansion-item
+                group="somegroup"
+                label="Bank Transfer"
+                default-opened
+                header-class="bg-grey-7 text-white"
+                expand-icon-class="text-white"
+              >
+                <q-card class="q-py-md q-pb-xl">
+                  <q-list bordered>
+                    <q-item v-for="(step, index) in instructions" :key="step">
+                      <q-item-section avatar>
+                        <q-avatar color="grey-7" text-color="white" size="sm">
+                          {{ index+1 }}
+                        </q-avatar>
+                      </q-item-section>
 
-                    <q-item-section>
-                      <q-item-label v-html="step"></q-item-label>
-                    </q-item-section>
-                  </q-item>
-                 </q-list>
-              </q-card>
-            </q-expansion-item>
-        </template>
-      </q-list>
-      <div class="sticky-bottom q-pa-md bg-white">
-         <q-btn @click.prevent="kirimBuktiTransfer" unelevated no-caps label="Kirim Bukti Transfer Disini" class="full-width" color="primary" text-color="white" style="border-radius:none;"></q-btn>
-      </div>
-      </div>
+                      <q-item-section>
+                        <q-item-label v-html="step"></q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-card>
+              </q-expansion-item>
+          </template>
+          </q-list>
+        </q-card-section>
+        <div class="sticky-bottom q-pa-sm bg-white">
+          <q-btn @click.prevent="kirimBuktiTransfer" unelevated no-caps label="Kirim Bukti Transfer Disini" class="full-width" color="primary" text-color="white" style="border-radius:none;"></q-btn>
+        </div>
+      </q-card>
     </div>
   </div>
 </template>

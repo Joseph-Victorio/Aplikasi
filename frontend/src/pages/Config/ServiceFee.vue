@@ -4,10 +4,10 @@
       <div class="flex items-center justify-between">
           <div class="text-subtitle1 text-weight-bold">Pengaturan Biaya Layanan</div>
           <div>
-            <q-toggle v-model="form.is_service_fee" :label="form.is_service_fee? 'Active' : 'Disabled'" left-label color="blue" class="text-grey-8"></q-toggle>
+            <q-toggle v-model="form.is_service_fee" :label="form.is_service_fee? 'Active' : 'Inactive'" left-label color="blue" class="text-grey-8"></q-toggle>
           </div>
         <div class="text-caption text-grey-7">
-        Biaya tambahan penggunaan layanan, akan ditambahkan pada pesanan kustomer
+        Biaya tambahan penggunaan layanan, akan ditambahkan pada pesanan pelanggan
         </div>
       </div>
      <form @submit.prevent="updateData" class="q-mt-md q-gutter-y-sm">
