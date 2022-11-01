@@ -24,91 +24,91 @@
           </q-input>
       </div>
     </div>
-    <template v-if="orders.count > 0">
-    <div>
-      <q-separator></q-separator>
-      <q-list separator>
-        <q-item class="bg-grey-2">
-          <q-item-section side>
-           #
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Detail</q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <q-item-label>Actions</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item v-for="(order, index) in orders.data" :key="index">
-          <q-item-section side top>
-            {{ index+1 }}
-          </q-item-section>
-          <q-item-section top>
-            <div>
-              <table class="dense">
-                <tr>
-                  <td>Invoice</td>
-                  <td>{{ order.order_ref}}</td>
-                </tr>
-                <tr>
-                  <td>Dibuat</td>
-                  <td>{{ order.created_at }}</td>
-                </tr>
-                <tr>
-                  <td>Total</td>
-                  <td>{{ moneyIDR(order.grand_total) }}</td>
-                </tr>
-                <tr>
-                  <td>Status</td>
-                  <td>
-                    <q-badge :color="changeBadgeColor(order.order_status)">{{ order.status_label }}</q-badge>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Nama</td>
-                  <td>{{ order.customer_name }}</td>
-                </tr>
-                <tr>
-                  <td>Ponsel</td>
-                  <td>{{ order.customer_whatsapp }}</td>
-                </tr>
-                <tr>
-                  <td>Pengiriman</td>
-                  <td>{{ order.shipping_courier_name }}</td>
-                </tr>
-                <tr>
-                  <td>Pembayaran</td>
-                  <td>{{ order.transaction? order.transaction.payment_method.split('_').join(' ') : '' }}</td>
-                </tr>
-              </table>
-            </div>
-          </q-item-section>
-          <q-item-section side top>
-            <div class="q-gutter-xs column order-btn-group">
-                <q-btn unelevated no-caps padding="6px 12px" size="12px" label="Detail" color="purple-7" :to="{name: 'AdminOrderShow', params: {order_ref: order.order_ref}}"></q-btn>
+    <template v-if="orders.ready && orders.count > 0">
+      <div>
+        <q-separator></q-separator>
+        <q-list separator>
+          <q-item class="bg-grey-2">
+            <q-item-section side>
+            #
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Detail</q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <q-item-label>Actions</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item v-for="(order, index) in orders.data" :key="index">
+            <q-item-section side top>
+              {{ index+1 }}
+            </q-item-section>
+            <q-item-section top>
+              <div>
+                <table class="dense">
+                  <tr>
+                    <td>Invoice</td>
+                    <td>{{ order.order_ref}}</td>
+                  </tr>
+                  <tr>
+                    <td>Dibuat</td>
+                    <td>{{ order.created_at }}</td>
+                  </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td>{{ moneyIDR(order.grand_total) }}</td>
+                  </tr>
+                  <tr>
+                    <td>Status</td>
+                    <td>
+                      <q-badge :color="changeBadgeColor(order.order_status)">{{ order.status_label }}</q-badge>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Nama</td>
+                    <td>{{ order.customer_name }}</td>
+                  </tr>
+                  <tr>
+                    <td>Ponsel</td>
+                    <td>{{ order.customer_whatsapp }}</td>
+                  </tr>
+                  <tr>
+                    <td>Pengiriman</td>
+                    <td>{{ order.shipping_courier_name }}</td>
+                  </tr>
+                  <tr>
+                    <td>Pembayaran</td>
+                    <td>{{ order.transaction? order.transaction.payment_method.split('_').join(' ') : '' }}</td>
+                  </tr>
+                </table>
+              </div>
+            </q-item-section>
+            <q-item-section side top>
+              <div class="q-gutter-xs column order-btn-group">
+                  <q-btn unelevated no-caps padding="6px 12px" size="12px" label="Detail" color="purple-7" :to="{name: 'AdminOrderShow', params: {order_ref: order.order_ref}}"></q-btn>
 
-                <q-btn unelevated no-caps padding="6px 12px" size="12px" @click="handleFollowUp(order)" :label="messageButtonLabel(order.order_status)" color="green-7"></q-btn>
+                  <q-btn unelevated no-caps padding="6px 12px" size="12px" @click="handleFollowUp(order)" :label="messageButtonLabel(order.order_status)" color="green-7"></q-btn>
 
 
-                <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canInputResi(order)" label="Input Resi" color="blue" @click="handleInputResi(order)"></q-btn>
+                  <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canInputResi(order)" label="Input Resi" color="blue" @click="handleInputResi(order)"></q-btn>
 
-                <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canShip(order)" label="Kirim COD" color="teal" @click="handleKirimCod(order)"></q-btn>
+                  <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canShip(order)" label="Kirim COD" color="teal" @click="handleKirimCod(order)"></q-btn>
 
-                <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canComplete(order)" label="Order Selesai" color="blue-6" @click="handleCompletionOrder(order)"></q-btn>
+                  <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canComplete(order)" label="Order Selesai" color="blue-6" @click="handleCompletionOrder(order)"></q-btn>
 
-                <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canConfirm(order)" label="Konfirmasi" color="blue-7" @click="handleConfirmationOrder(order.id)"></q-btn>
+                  <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canConfirm(order)" label="Konfirmasi" color="blue-7" @click="handleConfirmationOrder(order.id)"></q-btn>
 
-                <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canCancelOrder(order)" label="Batalkan" color="orange" @click="handleCancelOrder(order)"></q-btn>
+                  <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canCancelOrder(order)" label="Batalkan" color="orange" @click="handleCancelOrder(order)"></q-btn>
 
-                <q-btn unelevated no-caps padding="6px 12px" size="12px" label="Hapus" color="red-7" @click="handleDeleteOrder(order.id)"></q-btn>
-            </div>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </div>
-   <div class="flex justify-center q-py-xl">
-     <q-btn outline :loading="orders.isLoadMore" v-if="orders.count > orders.data.length" label="loadmore..." @click="loadMore" unelevated color="primary"></q-btn>
-   </div>
+                  <q-btn unelevated no-caps padding="6px 12px" size="12px" label="Hapus" color="red-7" @click="handleDeleteOrder(order.id)"></q-btn>
+              </div>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </div>
+      <div class="flex justify-center q-py-xl">
+        <q-btn outline :loading="orders.isLoadMore" v-if="orders.count > orders.data.length" label="loadmore..." @click="loadMore" unelevated color="primary"></q-btn>
+      </div>
     </template>
      <template v-else>
       <div class="text-center q-pt-xl">Tidak ada data</div>
@@ -337,7 +337,7 @@ export default {
 
     },
     messageButtonLabel(status) {
-      if(status == 'UNPAID' || status == 'OVERDUE') return 'FollowUp Order'
+      if(status == 'UNPAID' || status == 'OVERDUE') return 'Follow Up'
       return 'Kirim Pesan'
     },
     handleDeleteOrder(id) {
@@ -408,7 +408,7 @@ export default {
 <style scoped lang="scss">
 .order-btn-group {
   .q-btn {
-    min-width:105px;
+    min-width:100px;
     width:100%;
   }
 }
