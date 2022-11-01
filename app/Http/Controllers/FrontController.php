@@ -53,11 +53,13 @@ class FrontController extends Controller
         $featuredImage = $product->assets[0]->src;
         $desc= $product->description ? $this->createTeaser($product->description) : $this->shop->description;
 
+        $schema = $this->getSingleProductSchema($product);
+
         return View::vue([
             'title' => $product->title . ' | ' . $this->shop->name,
             'description' => $desc,
             'featured_image' => $featuredImage,
-            'json_schema' => $this->getSingleProductSchema($product)
+            'json_schema' => $schema
         ]);
 
     }
