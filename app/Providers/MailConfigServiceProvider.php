@@ -19,7 +19,7 @@ class MailConfigServiceProvider extends ServiceProvider
         if (Schema::hasTable('mail_configs')) {
             $mail = DB::table('mail_configs')->first();
             
-            if ($mail && $mail->is_ready) //checking if table is not empty
+            if ($mail && $mail->is_active) //checking if table is not empty
             {
 
                 $pwd = env('MAIL_PASSWORD_DEMO');

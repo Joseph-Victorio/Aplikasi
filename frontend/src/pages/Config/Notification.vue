@@ -33,7 +33,11 @@
       <q-card-section>
         <div class="flex items-center justify-between">
           <div class="text-subtitle1 text-weight-bold">Konfigurasi SMTP Email</div>
-          <div v-if="mailConfig" class="q-px-sm rounded-borders text-white" :class="mailConfig.is_ready? 'bg-green' : 'bg-grey-6'">{{ mailConfig.is_ready? 'Active' : 'Disabled' }}</div>
+          <q-toogle
+            color="green"
+            :label="mailConfig.is_active? 'Active' : 'Disabled'"
+            v-model="is_active">
+          </q-toogle>
         </div>
         <div class="text-caption text-grey-7">Konfigurasi pengiriman notifikasi via email</div>
       <form @submit.prevent="updateMailConfig">
