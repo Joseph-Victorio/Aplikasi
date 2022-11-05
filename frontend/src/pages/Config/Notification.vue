@@ -200,7 +200,7 @@ export default {
     },
     getMailConfig(){
       Api().get('mailConfig').then(res => {
-        if(res.status == 200 && res.data.results.success) {
+        if(res.status == 200 && res.data.success) {
           this.setEmailConfig(res.data.results)
         }
       })
