@@ -50,7 +50,7 @@ class UpdateApp extends Command
 
         } catch (\Exception $e) {
             
-            Log::info($e->getMesssage());
+            Log::info('error site update');
         }
     }
 }
