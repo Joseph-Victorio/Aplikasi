@@ -238,15 +238,13 @@ export default {
 
           if(response.status == 200) {
 
-            this.$store.commit('order/SET_INVOICE', response.data.results)
-            
             setTimeout(() => {
               this.$store.dispatch('cart/clearCart', this.session_id)
             }, 20000)
 
-            this.$router.push({ name: 'UserInvoice', params: { order_ref: response.data.results.order_ref }})
+            this.$router.push({ name: 'UserInvoice', params: { order_ref: response.data.results.order_ref }, query: { pay: true }})
 
-            this.sendMessageNotification(response.data.results.order_ref)
+            this.sendMessageNotification(response.data.results.id)
           }
         })
         .catch(() => {
@@ -254,9 +252,9 @@ export default {
           this.$store.commit('SET_LOADING', false)
         })
     },
-    sendMessageNotification(order_ref) {
+    sendMessageNotification(orderId) {
       setTimeout(() => {
-        Api().post('sendNotify', {url: this.getRoutePath(order_ref), order_ref: order_ref})
+        Api().post('sendOrderNotify', { order_id: orderId})
       },12000)
     },
     formatAddressCod(addr) {

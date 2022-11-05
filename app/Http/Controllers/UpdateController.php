@@ -55,6 +55,8 @@ class UpdateController extends Controller
             
             Artisan::call('migrate', ['--force' => true]);
 
+            Artisan::call('site:update');
+
             DB::commit();
             
             return response()->json([

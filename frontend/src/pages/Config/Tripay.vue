@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between q-mb-xs">
       <div class="text-md text-weight-bold">Tripay Payment Gateway</div>
       <div>
-        <q-toggle class="text-grey-8" v-model="form.is_payment_gateway" :label="form.is_payment_gateway? 'Active' : 'Inactive'" left-label @input="checkIsReady" color="blue"></q-toggle>
+        <q-toggle class="text-grey-8" v-model="form.is_payment_gateway" :label="form.is_payment_gateway? 'Active' : 'Inactive'" left-label @input="checkIsReady" color="green"></q-toggle>
       </div>
     </div>
     <form @submit.prevent="updateDate">
@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="flex justify-end q-pt-lg">
-        <q-btn unelevated size="12px" type="submit" label="Simpan Pengaturan" color="blue-7"></q-btn>
+        <q-btn unelevated size="12px" type="submit" label="Simpan Pengaturan" color="primary"></q-btn>
       </div>
     </form>
   </div> 

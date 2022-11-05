@@ -5,7 +5,7 @@
         <q-card-section>
           <div class="flex items-center justify-between">
             <div class="text-md text-weight-bold">Ekspedisi</div>
-             <q-toggle v-model="formdata.is_shipping_active" :label="formdata.is_shipping_active? 'Active' : 'Inactive'" left-label color="blue" class="text-grey-8"></q-toggle>
+             <q-toggle v-model="formdata.is_shipping_active" :label="formdata.is_shipping_active? 'Active' : 'Inactive'" left-label color="green" class="text-grey-8"></q-toggle>
           </div>
           <div class="text-caption text-grey-7">
             <div>Pengaturan ongkir otomatis by Rajaongkir</div>
@@ -27,13 +27,13 @@
                 <div class="text-grey-8 text-weight-medium q-py-md">Pengaturan Kurir Aktif</div>
                   <div class="q-gutter-sm">
                     <q-btn unelevated rounded size="10px" v-for="(name, index) in theCouriers" :key="index" 
-                    :color="isCourierActive(name)? 'blue' : 'grey-5'" @click="handleSelectCourier(name)" :label="name"></q-btn>
+                    :color="isCourierActive(name)? 'primary' : 'grey-5'" @click="handleSelectCourier(name)" :label="name"></q-btn>
                   </div>
               </div>
           </div>
         </q-card-section>
         <q-card-actions class="q-pa-md justify-end">
-          <q-btn type="submit" unelevated size="12px" label="Simpan Pengaturan" color="blue-7"></q-btn>
+          <q-btn type="submit" unelevated size="12px" label="Simpan Pengaturan" color="primary"></q-btn>
         </q-card-actions>
       </q-card>
     </form>

@@ -168,6 +168,8 @@ return [
         Silehage\Rajaongkir\RajaongkirServiceProvider::class,
         Silehage\Tripay\TripayServiceProvider::class,
         Silehage\Starsender\StarsenderServiceProvider::class,
+        App\Providers\ConfigApiProvider::class,
+        App\Providers\MailConfigServiceProvider::class,
         
         /*
         * Application Service Providers...
@@ -178,7 +180,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        App\Providers\ConfigApiProvider::class,
 
     ],
 

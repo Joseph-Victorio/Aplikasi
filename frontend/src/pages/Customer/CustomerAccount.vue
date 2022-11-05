@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="q-pb-xl">
     <q-header class="bg-primary" dark>
       <q-toolbar>
         <q-toolbar-title>
@@ -11,38 +11,38 @@
         icon-right="eva-arrow-forward" />
       </q-toolbar>
     </q-header>
-    <div class="header">
-        <div class="header-inner q-pt-sm q-pb-lg large">
-          <q-card class="bg-primary q-py-lg" flat dark square>
-            <q-list>
-              <q-item>
-                <q-item-section avatar>
-                  <q-avatar color="pink" text-color="white" size="70px">{{ initialName }}</q-avatar>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label class="text-h5 text-weight-bold">{{ user.name }}</q-item-label>
-                  <q-item-label class="text-grey-1">{{ user.phone }}</q-item-label>
-                  <q-item-label class="text-grey-4">{{ user.email }}</q-item-label>
-                </q-item-section>
-                <q-item-section side top >
-                  <div class="column q-gutter-y-sm">
-                    <q-btn icon="eva-edit-2" round size="11px" color="grey-4" text-color="dark" :to="{ name: 'CustomerAccountEdit' }">
-                      <q-tooltip content-class="bg-indigo" :offset="[10, 10]">Edit Akun</q-tooltip>
-                    </q-btn>
-                    <q-btn icon="eva-log-out" round size="11px" color="grey-4" text-color="dark" @click="logout">
-                     <q-tooltip content-class="bg-amber text-black" :offset="[10, 10]">Keluar</q-tooltip>
-                    </q-btn>
-                  </div>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-card>
-        </div>
+    <div class="header_banner">
+      <div class="header_banner--inner large">
+        <q-card class="bg-primary" flat dark square>
+          <q-list>
+            <q-item>
+              <q-item-section avatar>
+                <q-avatar color="pink" text-color="white" size="70px">{{ initialName }}</q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-h5 text-weight-bold">{{ user.name }}</q-item-label>
+                <q-item-label class="text-grey-1">{{ user.phone }}</q-item-label>
+                <q-item-label class="text-grey-4">{{ user.email }}</q-item-label>
+              </q-item-section>
+              <q-item-section side top >
+                <div class="column q-gutter-y-sm">
+                  <q-btn icon="eva-edit-2" round size="11px" color="grey-4" text-color="dark" :to="{ name: 'CustomerAccountEdit' }">
+                    <q-tooltip content-class="bg-indigo" :offset="[10, 10]">Edit Akun</q-tooltip>
+                  </q-btn>
+                  <q-btn icon="eva-log-out" round size="11px" color="grey-4" text-color="dark" @click="logout">
+                    <q-tooltip content-class="bg-amber text-black" :offset="[10, 10]">Keluar</q-tooltip>
+                  </q-btn>
+                </div>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card>
+      </div>
       </div>
       <div class="q-mt-lg q-pa-sm">
         <div class="flex justify-between q-pa-sm items-center">
           <div class="text-weight-bold text-md">Transaksi Terbaru</div>
-          <q-btn color="primary" label="Selengkapnya" flat no-caps icon-right="eva-chevron-right" :to="{ name: 'CustomerOrder' }"></q-btn>
+          <q-btn color="primary" label="Selengkapnya" flat dense no-caps icon-right="eva-chevron-right" :to="{ name: 'CustomerOrder' }"></q-btn>
         </div>
 
         <q-list separator>

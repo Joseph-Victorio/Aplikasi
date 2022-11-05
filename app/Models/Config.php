@@ -102,7 +102,7 @@ class Config extends Model
     public function getIsMailReadyAttribute()
     {
         $mail = config('mail.mailers.smtp');
-        if($mail['username'] && $mail['host'] && $mail['port'] && $mail['password']) {
+        if($mail && $mail['username'] && $mail['host'] && $mail['port'] && $mail['password']) {
             return true;
         }
         return false;

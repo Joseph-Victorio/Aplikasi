@@ -29,6 +29,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'My Shop',
             'slug' => 'my-shop'
         ]);
+
         \App\Models\Config::create();
+
+        \App\Models\MailConfig::create();
+
     }
 }

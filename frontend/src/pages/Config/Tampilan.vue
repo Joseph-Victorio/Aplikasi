@@ -27,9 +27,9 @@
           </q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-btn-group rounded unelevated>
+          <q-btn-group unelevated>
             <q-btn size="12px" @click="changeHomeViewMode('grid')" unelevated 
-            color="blue" 
+            color="primary" 
             :outline="form.home_view_mode != 'grid'" 
             icon="grid_view">
               <q-tooltip>
@@ -37,7 +37,7 @@
               </q-tooltip>
             </q-btn>
             <q-btn size="12px" @click="changeHomeViewMode('list')" unelevated 
-            color="blue" 
+            color="primary" 
             :outline="form.home_view_mode != 'list'" 
             icon="eva-list">
               <q-tooltip>
@@ -54,9 +54,9 @@
           </q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-btn-group rounded unelevated>
+          <q-btn-group unelevated>
             <q-btn size="12px" @click="changeProductViewMode('grid')" no-caps unelevated 
-            color="blue" 
+            color="primary" 
             :outline="form.product_view_mode != 'grid'" 
              icon="grid_view">
               <q-tooltip>
@@ -64,7 +64,7 @@
               </q-tooltip>
             </q-btn>
             <q-btn size="12px" @click="changeProductViewMode('list')" no-caps unelevated 
-            color="blue" 
+            color="primary" 
             :outline="form.product_view_mode != 'list'" 
             icon="eva-list">
               <q-tooltip>
@@ -82,7 +82,7 @@
           </div>
         </q-item-section>
         <q-item-section side top>
-          <q-toggle v-model="form.is_notifypro" :label="form.is_notifypro? 'Active' : 'Inactive'" left-label color="blue"></q-toggle>
+          <q-toggle v-model="form.is_notifypro" :label="form.is_notifypro? 'Active' : 'Inactive'" left-label color="green"></q-toggle>
         </q-item-section>
       </q-item>
       <q-item v-if="form.is_notifypro">
@@ -95,7 +95,7 @@
       </q-item>
     </q-list>
     <q-card-section class="flex justify-end">
-      <q-btn unelevated size="12px" label="Simpan Pengaturan" color="blue" @click="saveTampilan"></q-btn>
+      <q-btn unelevated size="12px" label="Simpan Pengaturan" color="primary" @click="saveTampilan"></q-btn>
     </q-card-section>
   </q-card>
 </template>

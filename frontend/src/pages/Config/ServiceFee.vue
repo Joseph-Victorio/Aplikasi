@@ -4,7 +4,7 @@
       <div class="flex items-center justify-between">
           <div class="text-subtitle1 text-weight-bold">Pengaturan Biaya Layanan</div>
           <div>
-            <q-toggle v-model="form.is_service_fee" :label="form.is_service_fee? 'Active' : 'Inactive'" left-label color="blue" class="text-grey-8"></q-toggle>
+            <q-toggle v-model="form.is_service_fee" :label="form.is_service_fee? 'Active' : 'Inactive'" left-label color="green" class="text-grey-8"></q-toggle>
           </div>
         <div class="text-caption text-grey-7">
         Biaya tambahan penggunaan layanan, akan ditambahkan pada pesanan pelanggan
@@ -26,7 +26,7 @@
         label="Biaya Layanan"
         />
       <div class="flex justify-end q-mt-md">
-        <q-btn unelevated size="12px" type="submit" label="Simpan Pengaturan" color="blue-7"></q-btn>
+        <q-btn unelevated size="12px" type="submit" label="Simpan Pengaturan" color="primary"></q-btn>
       </div>
     </form>
   </q-card-section>

@@ -12,7 +12,7 @@
         <q-item-label caption>Memungkinan user untuk bisa checkout langsung via whatsapp ( Order tidak tersimpan di database )</q-item-label>
       </q-item-section>
       <q-item-section side>
-        <q-toggle v-model="form.is_whatsapp_checkout" :label="form.is_whatsapp_checkout? 'Active' : 'Inactive'" left-label color="blue"></q-toggle>
+        <q-toggle v-model="form.is_whatsapp_checkout" :label="form.is_whatsapp_checkout? 'Active' : 'Inactive'" left-label color="green"></q-toggle>
       </q-item-section>
     </q-item>
     <q-item>
@@ -21,12 +21,12 @@
         <q-item-label caption>Memunginkan checkout tanpa harus login / register</q-item-label>
       </q-item-section>
       <q-item-section side>
-        <q-toggle v-model="form.is_guest_checkout" :label="form.is_guest_checkout? 'Active' : 'Inactive'" left-label color="blue"></q-toggle>
+        <q-toggle v-model="form.is_guest_checkout" :label="form.is_guest_checkout? 'Active' : 'Inactive'" left-label color="green"></q-toggle>
       </q-item-section>
     </q-item>
   </q-list>
   <div class="flex justify-end q-pa-md">
-      <q-btn unelevated size="12px" @click="updateData" label="Simpan Pengaturan" color="blue-7"></q-btn>
+      <q-btn unelevated size="12px" @click="updateData" label="Simpan Pengaturan" color="primary"></q-btn>
     </div>
   </q-card>
 </template>

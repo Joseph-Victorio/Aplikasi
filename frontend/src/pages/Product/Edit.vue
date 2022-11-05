@@ -284,7 +284,6 @@ export default {
         this.form.featured_asset = null
       }
 
-      console.log(this.form.featured_asset);
     },
     onDeleteProductOldImage(filename) {
       this.productOldImages = this.productOldImages.filter(k => k.filename != filename)
@@ -451,7 +450,6 @@ export default {
        this.form.featured_asset = cr[cr.length-1]
      }
 
-     console.log(this.form.featured_asset);
     },
     setData() {
       this.form.id = this.product.id

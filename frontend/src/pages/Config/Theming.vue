@@ -24,7 +24,7 @@
         </q-item>
       </q-list>
       <q-card-section class="flex justify-end">
-        <q-btn unelevated size="12px" type="submit" label="Simpan Pengaturan" color="blue-7"></q-btn>
+        <q-btn unelevated size="12px" type="submit" label="Simpan Pengaturan" color="primary"></q-btn>
       </q-card-section>
     </form>
   </q-card>

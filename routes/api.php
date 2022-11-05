@@ -20,6 +20,7 @@ use App\Http\Controllers\PromoteController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\FrontApiController;
+use App\Http\Controllers\MailConfigController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\PasswordResetController;
@@ -81,6 +82,12 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->group(function() {
     Route::post('submitProductPromo', [ProductController::class, 'submitProductPromo']);
     Route::get('getProductPromo/{promoId}', [ProductController::class, 'getProductPromo']);
     Route::get('findProductWithoutPromo/{key}', [ProductController::class, 'findProductWithoutPromo']);
+
+    Route::get('testingTelegram', [NotifyController::class, 'testingTelegram']);
+    Route::get('testingEmail', [NotifyController::class, 'testingEmail']);
+
+    Route::get('mailConfig', [MailConfigController::class, 'show']);
+    Route::post('mailConfig', [MailConfigController::class, 'update']);
     
 });
 
@@ -130,9 +137,6 @@ Route::get('shop', [StoreController::class, 'index']);
 Route::get('category', [CategoryController::class, 'index']);
 Route::get('category/{id}', [CategoryController::class, 'show']);
 
-
-
-
 Route::get('blocks',[BlockController::class, 'index']);
 Route::get('blocks/{id}',[BlockController::class, 'show']);
 
@@ -162,7 +166,7 @@ Route::put('carts', [CartController::class, 'update']);
 Route::post('cart/delete', [CartController::class, 'destroy']);
 Route::post('clearCart', [CartController::class, 'clear']);
 
-Route::post('sendNotify', [NotifyController::class, 'sendNotify']);
+Route::post('sendOrderNotify', [NotifyController::class, 'sendOrderNotify']);
 
 Route::get('coupons/getByCode/{code}', [CouponController::class, 'getByCode']);
 Route::post('redeemCoupon', [CouponController::class, 'redeemCoupon']);

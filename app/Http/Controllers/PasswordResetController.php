@@ -55,7 +55,7 @@ class PasswordResetController extends Controller
                 'created_at' => now()
             ]);
 
-            $delay = now()->addSeconds(5);
+            $delay = now()->addSeconds(10);
             
             $user->notify((new ResetPasswordNotification($token))->delay($delay));
 

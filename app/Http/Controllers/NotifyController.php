@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Order;
 use App\Models\Config;
+use App\Models\MailConfig;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use App\Notifications\OrderNotification;
+use App\Mail\MailNotification;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
-use App\Notifications\AdminNotificationOrder;
-use App\Notifications\AdminNotificationTelegram;
+use App\Notifications\TelegramNotification;
 
 class NotifyController extends Controller
 {
@@ -19,11 +18,21 @@ class NotifyController extends Controller
     {
         $this->config =  Config::first();
     }
-    public function sendNotify(Request $request)
+    public function sendOrderNotify(Request $request)
     {
-        if(config('app.env') != 'production') return;
+        $request->validate([
+            'order_id' => 'required'
+        ]);
 
-        $order = Order::with('transaction')->where('order_ref', $request->order_ref)->first();
+        if(config('app.env') != 'production') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Development Mode',
+                'env' => config('app.env')
+            ]);
+        };
+
+        $order = Order::with('transaction')->find($request->order_id);
 
         if(!$order) {
             return response([
@@ -32,93 +41,131 @@ class NotifyController extends Controller
             ], 200);
         }
 
-        $order['url'] = $request->url;
+        $result = [
+            'success' => true,
+            'admin_tele' => 'Not Define',
+            'admin_mail' => 'Not Define',
+            'user_mail' => 'Not Define',
+        ];
 
-        $adminMsg = '';
-        $userMsg = '';
+        $customerPayload = generateUserEmailOrderCreated($order);
+        $adminPayload = generateAdminEmailOrderCreated($order);
 
-        if(!$this->config->is_demo_mode) {
+        $mailConfig = MailConfig::first();
 
-            if($this->sendAdminNotificationOrder($order)) {
-    
-                $adminMsg = 'OK';
-            };
+        if($this->config->is_telegram_ready) {
+            
+            try {
+                Notification::route('telegram', config('telegram.user_id'))
+                ->notify(new TelegramNotification($adminPayload));
 
-            if($this->sendUserNotificationOrder($order)) {
-    
-                $userMsg = 'OK';
-            };
+                $result['admin_tele'] = 'OK';
+
+            } catch (\Throwable $th) {
+                
+                $result['admin_tele'] = $th->getMessage();
+            }
         }
 
+        if($this->config->is_mail_ready) {
 
-        return response([
-            'adminMsg' => $adminMsg,
-            'userMsg' => $userMsg,
-        ], 200);
+            try {
+                Mail::to($mailConfig->mail_admin)
+                ->later(now()->addSeconds(10), new MailNotification($adminPayload));
+
+                $result['admin_mail'] = 'OK';
+
+            } catch (\Throwable $th) {
+               $result['admin_mail'] = $th->getMessage();
+            }
+
+            try {
+
+                Mail::to($order->customer_email)
+                    ->later(now()->addSeconds(10), new MailNotification($customerPayload));
+
+                $result['user_mail'] = 'OK';
+
+            } catch (\Throwable $th) {
+               $result['user_mail'] = $th->getMessage();
+            } 
+
+        }
+
+        return response($result, 200);
         
     }
 
-    protected function sendAdminNotificationOrder($order)
+    public function testingTelegram()
     {
+        $res = [
+            'success' => true,
+            'results' => [
+                'type' => 'positive',
+                'message' => 'Berhasil mengirim telegram'
+            ]
+        ];
 
         if($this->config->is_telegram_ready) {
 
             try {
+
+                $message= "Halo admin!\nTesting notifikasi telegram berhasil";
+
                 Notification::route('telegram', config('telegram.user_id'))
-                    ->notify(new AdminNotificationTelegram($order));
-      
-                return true;
+                    ->notify(new TelegramNotification($message));
     
             } catch (\Throwable $th) {
     
-                Log::error($th->getMessage());
-                return false;
+                $res['success']= false;
+                $res['results']['type'] = 'negative';
+                $res['results']['message'] = $th->getMessage();
             }
+            
+        }else {
+            $res['success']= false;
+                $res['results']['type'] = 'negative';
+                $res['results']['message'] = 'Pengaturan telegram belum sesuai';
+        }
 
-            return false;
-            
-        }
-        if($this->config->is_mail_ready) {
-            
-            try {
-                
-                $admin = User::where('role', 'admin')->first();
-                
-                $admin->notify(new AdminNotificationOrder($order));
-                
-                return true;
-                
-            } catch (\Throwable $th) {
-                
-                Log::error($th->getMessage());
-                return false;
-            }
-        }
-        return false;
-        
-        
+        return response()->json($res);
     }
-    
-    protected function sendUserNotificationOrder($order)
+    public function testingEmail()
     {
+        $res = [
+            'success' => true,
+            'results' => [
+                'type' => 'positive',
+                'message' => 'Berhasil mengirim email'
+            ]
+        ];
+
+        $mailConfig = MailConfig::first();
         
-        if($this->config->is_mail_ready) {
+        if($mailConfig->is_ready) {
             
             try {
                 
-                Notification::route('mail', $order->customer_email)
-                ->notify(new OrderNotification($order));
-                
-                return true;
-                
+                $payload = [
+                    'subject' => "Testing email notifikasi",
+                    'body' => "Halo admin!\nTesting notifikasi smtp berhasil",
+                ];
+
+                Mail::to($mailConfig->mail_admin)->send(new MailNotification($payload));
+    
             } catch (\Throwable $th) {
-                
-                Log::error($th->getMessage());
-                return false;
+    
+                $res['success']= false;
+                $res['results']['type'] = 'negative';
+                $res['results']['message'] = $th->getMessage();
             }
+            
+        }else {
+            $res['success']= false;
+                $res['results']['type'] = 'negative';
+                $res['results']['message'] = 'Pengaturan email belum sesuai';
         }
 
-        return false;
-  
+        return response()->json($res);
     }
 }

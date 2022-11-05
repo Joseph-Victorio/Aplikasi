@@ -2,7 +2,7 @@
   <div id="product" v-if="products.data.length">
     <template v-for="item in products.data">
       <div :key="item.id" v-if="item.items.length" class="block-container bg-linear">
-        <div class="auto-padding">
+        <div class="auto-padding q-mb-xs">
           <div class="row items-end justify-between">
             <div class="block-title"><h2>{{ item.title }}</h2></div>
             <q-btn flat no-caps color="primary" padding="4px" :to="{name: 'ProductCategory', params:{ id: item.category_id }}">
@@ -10,7 +10,7 @@
               <q-icon name="eva-arrow-forward" size="16px"></q-icon>
             </q-btn>
           </div> 
-          <div v-if="item.description" class="block-subtitle">{{ item.description }}</div>
+          <div v-if="item.description" class="block-subtitle q-mt-sm">{{ item.description }}</div>
           <div class="banner" v-if="item.banner_src">
             <router-link :to="{name: 'ProductCategory', params:{ id: item.category_id }}">
             <img :src="item.banner_src" :alt="item.title" class="cursor-pointer q-mt-sm" />

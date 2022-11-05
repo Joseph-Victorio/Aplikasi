@@ -427,10 +427,6 @@ export default {
 
     if(this.config && !this.config.can_shipping) {
       this.shipping_method = 'COD'
-
-      setTimeout(() => {
-        console.log(this.formOrder);
-      })
     }
   },
   methods: {

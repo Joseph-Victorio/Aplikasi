@@ -44,7 +44,6 @@ export default {
     state.config.home_view_mode = payload
   },
   LOAD_DEMO_CONFIG: (state) => {
-    console.log('fired demo config');
     if(localStorage.getItem('__wck')) {
       let wck = localStorage.getItem('__wck')
       state.config.is_whatsapp_checkout =  wck == true || wck == 'true' ? true : false

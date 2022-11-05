@@ -148,7 +148,7 @@
         <q-card flat square class="max-width bg-grey-1">
           <q-toolbar class="bg-white sticky-top border-b">
             <q-toolbar-title><span class="text-weight-bold card-heading">Pembayaran</span></q-toolbar-title>
-            <q-btn flat round dense icon="eva-close" v-close-popup />
+            <q-btn flat round dense icon="eva-close" @click="closeModalPayment" />
           </q-toolbar>
           <keep-alive>
           <component v-bind:is="isPaymentType" v-bind:transaction="invoice.transaction" @kirimBukti="kirimBuktiTransfer"></component>
@@ -185,7 +185,8 @@ export default {
       timeout: null,
       requestCount: 1,
       whatsappUrl: 'https://api.whatsapp.com',
-      qrData: ''
+      qrData: '',
+      autoShowModal: false
     }
   },
   computed: {
@@ -231,8 +232,11 @@ export default {
   },
   mounted() {
     if(this.$q.platform.is.desktop) {
-        this.whatsappUrl = 'https://web.whatsapp.com'
-      }
+      this.whatsappUrl = 'https://web.whatsapp.com'
+    }
+    if(this.$route.query.pay) {
+      this.autoShowModal = true
+    }
   },
   methods: {
     ...mapActions('order', ['getOrderById']),
@@ -269,6 +273,9 @@ export default {
         this.getOrderById(this.$route.params.order_ref).then(response => {
           if(response.status == 200) {
             this.$store.commit('order/SET_INVOICE', response.data.results)
+          }
+          if(this.autoShowModal && this.invoice.order_status == 'UNPAID' && this.invoice.transaction.payment_method != 'COD') {
+            this.modalPayment = true
           }
           this.$store.commit('SET_LOADING', false)
           this.checkOrderStatus()
@@ -332,6 +339,10 @@ export default {
     handlePaymentModal() {
       this.modalPayment = true
     },
+    closeModalPayment() {
+      this.modalPayment = false
+      this.autoShowModal = false
+    },
     getCheckOrder() {
        this.getOrderById(this.$route.params.order_ref).then(response => {
           if(response.status == 200) {
@@ -341,14 +352,24 @@ export default {
         })
     },
     checkOrderStatus() {
-      if(this.invoice.order_status == 'UNPAID' || this.invoice.order_status == 'PROCESS' && this.requestCount < 10) {
-        this.timeout = setTimeout(() => {
+
+      if(this.requestCount < 10) {
+        if(this.invoice.order_status == 'UNPAID' || this.invoice.order_status == 'PROCESS') {
+  
           this.requestCount++
-          this.getCheckOrder()
-        }, 20000)
-      } else {
+          this.timeout = setTimeout(() => {
+            this.getCheckOrder()
+          }, 25000)
+
+        } else {
+          clearTimeout(this.timeout)
+        }
+
+      }else {
+
         clearTimeout(this.timeout)
       }
+
     }
   },
   beforeDestroy() {

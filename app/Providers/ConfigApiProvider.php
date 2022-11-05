@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class ConfigApiProvider extends ServiceProvider
@@ -15,11 +16,12 @@ class ConfigApiProvider extends ServiceProvider
      */
     public function register()
     {
-        try {
-            //code...
-            $setting = DB::table('configs')->first();
 
+        if (Schema::hasTable('configs')) {
+
+            $setting = DB::table('configs')->first();
             $apiPro = env('RAJAONGKIR_API_PRO', null);
+
             if ($setting) //checking if table is not empty
             {
                 $rajaongkir = array(
@@ -53,14 +55,13 @@ class ConfigApiProvider extends ServiceProvider
                     ]);
                 }
             }
-
+    
             Config::set('demo',[
                 'is_demo' => env('IS_DEMO_MODE', false),
                 'phone' => env('DEMO_PHONE', '')
             ]);
-        } catch (\Throwable $th) {
-            //throw $th;
         }
+
     }
 
     /**

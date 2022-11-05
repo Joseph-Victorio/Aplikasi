@@ -1,5 +1,5 @@
 <template>
-  <div class="notif-content" :class="{'show' : isShowen }" v-if="orderItem">
+  <div data-nosnippet class="notif-content" :class="{'show' : isShowen }" v-if="orderItem">
     <q-list>
       <q-item>
         <q-item-section avatar>

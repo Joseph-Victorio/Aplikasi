@@ -344,15 +344,26 @@ h1,h2,h3,h4,h5,h6 {
     border-bottom: 1px solid #eee;
   }
 }
-.header {
+.header_banner {
     position: relative;
     overflow: hidden;
     
+    &--inner {
+      position: relative;
+      overflow: hidden;
+      z-index: 5;
+      height: 170px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
 
-  &-inner {
-    position: relative;
-    overflow: hidden;
-    z-index: 5;
+      @media (min-width: 800px) {
+        height: 230px;
+      }
+      > div {
+        position: relative;
+        bottom: 1rem;
+      }
 
     &:after {
       content: "";
