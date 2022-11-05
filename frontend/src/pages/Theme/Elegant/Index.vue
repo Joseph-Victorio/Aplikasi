@@ -19,8 +19,8 @@
         </q-toolbar>
       </q-header>
     <template v-if="!loading">
-      <div class="header">
-        <div class="header-inner q-pt-sm q-pb-md" v-if="sliders.data.length">
+      <div class="header_elegant">
+        <div class="header_elegant--inner q-pt-sm q-pb-md" v-if="sliders.data.length">
           <slider :datas="sliders.data" />
         </div>
       </div>
