@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\MailConfig;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
 class UpdateApp extends Command
@@ -41,6 +42,8 @@ class UpdateApp extends Command
     {
 
         try {
+
+            Artisan::call('migrate', ['--force' => true]);
 
             $mailConfig = MailConfig::firstOrNew();
             $mailConfig->save();
