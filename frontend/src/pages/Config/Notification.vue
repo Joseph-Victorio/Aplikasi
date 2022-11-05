@@ -33,11 +33,11 @@
       <q-card-section>
         <div class="flex items-center justify-between">
           <div class="text-subtitle1 text-weight-bold">Konfigurasi SMTP Email</div>
-          <q-toogle
+          <q-toggle
             color="green"
-            :label="mailConfig.is_active? 'Active' : 'Disabled'"
-            v-model="is_active">
-          </q-toogle>
+            :label="formEmail.is_active? 'Active' : 'Disabled'"
+            v-model="formEmail.is_active">
+          </q-toggle>
         </div>
         <div class="text-caption text-grey-7">Konfigurasi pengiriman notifikasi via email</div>
       <form @submit.prevent="updateMailConfig">
@@ -128,7 +128,7 @@ export default {
     'formEmail.is_active': function(val, old) {
       if(val) {
         for(let key in this.formEmail) {
-          if(this.formEmail[key] == '') {
+          if(this.formEmail[key] == '' || this.formEmail[key] == null) {
             this.formEmail.is_active = false
             this.$q.notify({
               type: 'negative',
