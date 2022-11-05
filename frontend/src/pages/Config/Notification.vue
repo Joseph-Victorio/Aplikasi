@@ -46,7 +46,7 @@
             <q-input required filled
             v-model="formEmail.smtp_port"
             label="Smtp Port"
-            placeholder="eg: 465"
+            placeholder="eg: 587"
             />
             <q-input required filled
             v-model="formEmail.smtp_encryption"
@@ -56,7 +56,7 @@
             <q-input required filled
             v-model="formEmail.smtp_username"
             label="Smtp Username"
-            placeholder="eg: noreply@yourdomain.com"
+            placeholder="eg: youremail@yourdomain.com"
             />
             <q-input required filled
             v-model="formEmail.smtp_password"
@@ -77,7 +77,7 @@
             v-model="formEmail.mail_admin"
             label="Admin Email"
             placeholder="Email Admin"
-            hint="Alamat Email admin notifikasi"
+            hint="Email admin, semua notifikasi admin akan dikirim ke alamat email ini"
             type="email"
             :error="isErrorEmail"
             >
