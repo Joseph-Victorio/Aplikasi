@@ -18,6 +18,7 @@ class MailConfigServiceProvider extends ServiceProvider
     {
         if (Schema::hasTable('mail_configs')) {
             $mail = DB::table('mail_configs')->first();
+            
             if ($mail && $mail->is_active) //checking if table is not empty
             {
 

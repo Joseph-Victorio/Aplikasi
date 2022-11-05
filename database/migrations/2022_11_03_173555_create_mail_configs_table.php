@@ -15,7 +15,7 @@ class CreateMailConfigsTable extends Migration
     {
         Schema::create('mail_configs', function (Blueprint $table) {
             $table->id();
-            $table->string('smtp_host')->defaulr('smtp.google.com');
+            $table->string('smtp_host')->default('smtp.google.com');
             $table->string('smtp_port')->default('465');
             $table->string('smtp_encryption')->default('ssl');
             $table->string('smtp_username')->nullable();

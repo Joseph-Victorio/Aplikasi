@@ -12,9 +12,9 @@ class MailConfig extends Model
     protected $fillable = [
         'smtp_host',
         'smtp_port',
+        'smtp_encryption',
         'smtp_username',
         'smtp_password',
-        'smtp_encryption',
         'from_name',
         'from_address',
         'mail_admin',

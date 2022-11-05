@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Models\MailConfig;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
 
 class UpdateApp extends Command
 {
@@ -45,8 +45,14 @@ class UpdateApp extends Command
 
             Artisan::call('migrate', ['--force' => true]);
 
-            $mailConfig = MailConfig::firstOrNew();
-            $mailConfig->save();
+            
+            if (Schema::hasTable('mail_configs')) {
+
+                $mailConfig =  \App\Models\MailConfig::firstOrNew(); 
+                $mailConfig->save();  
+
+            }
+                
 
         } catch (\Exception $e) {
             
