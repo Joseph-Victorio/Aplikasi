@@ -117,7 +117,7 @@ class FrontController extends Controller
     {
         $str = strip_tags($html);
 
-        return substr($str, 0, 155); 
+        return substr($str, 0, 155) .'..'; 
     }
     public function sitemap()
     {
