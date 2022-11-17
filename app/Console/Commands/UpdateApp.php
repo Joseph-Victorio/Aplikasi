@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Category;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -51,6 +52,13 @@ class UpdateApp extends Command
                 $mailConfig =  \App\Models\MailConfig::firstOrNew(); 
                 $mailConfig->save();  
 
+            }
+            
+            $categories = Category::whereNull('updated_at')->get();
+
+            foreach($categories as $category) {
+                $category->updated_at = now();
+                $category->save();
             }
                 
 
