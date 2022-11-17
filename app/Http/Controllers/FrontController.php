@@ -123,7 +123,8 @@ class FrontController extends Controller
     {
         $categories = Category::select('id', 'slug', 'updated_at')->get();
         $products = Product::select('id', 'slug', 'updated_at')->get();
-        return response()->view('sitemap', compact('categories', 'products'))
+        $posts = Post::select('id', 'slug', 'updated_at')->get();
+        return response()->view('sitemap', compact('categories', 'products', 'posts'))
                 ->header('Content-Type', 'text/xml');
         
     }

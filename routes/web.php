@@ -12,7 +12,7 @@ Route::get('products', [FrontController::class, 'products']);
 Route::get('products/category/{category}', [FrontController::class, 'productCategory'])->name('product.category');
 Route::get('product/{slug}', [FrontController::class, 'productDetail'])->name('product.show');
 Route::get('posts', [FrontController::class, 'postIndex']);
-Route::get('post/{slug}', [FrontController::class, 'postDetail']);
+Route::get('post/{slug}', [FrontController::class, 'postDetail'])->name('post.show');
 Route::get('p/invoice/{id}', [FrontController::class, 'showInvoice'])->name('invoice');
 Route::get('sitemap.xml', [FrontController::class, 'sitemap']);
 Route::get('clear-cache', [FrontController::class, 'clearCache']);

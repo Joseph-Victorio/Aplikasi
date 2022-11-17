@@ -19,4 +19,12 @@
 		<priority>0.8</priority>
 	</url>
 	<?php } ?>
+	<?php foreach($posts as $post) { ?>
+		<url>
+		<loc><?= route('post.show', $post->slug); ?></loc>
+		<lastmod><?php echo $post->updated_at; ?></lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>0.8</priority>
+	</url>
+	<?php } ?>
 </urlset>
