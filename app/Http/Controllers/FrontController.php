@@ -44,13 +44,12 @@ class FrontController extends Controller
     }
     public function productDetail($slug)
     {
-       $product =  Product::with(['assets'])
+       $product =  Product::select('id', 'title', 'description')->with(['featuredImage'])
             ->withCount('reviews')
             ->withAvg('reviews', 'rating')
             ->where('slug', $slug) 
             ->first();
 
-        $featuredImage = $product->assets[0]->src;
         $desc= $product->description ? $this->createTeaser($product->description) : $this->shop->description;
 
         $schema = $this->getSingleProductSchema($product);
@@ -58,7 +57,7 @@ class FrontController extends Controller
         return View::vue([
             'title' => $product->title . ' | ' . $this->shop->name,
             'description' => $desc,
-            'featured_image' => $featuredImage,
+            'featured_image' => $product->featuredImage->src,
             'json_schema' => $schema
         ]);
 
@@ -83,7 +82,7 @@ class FrontController extends Controller
     }
     public function postDetail($slug)
     {
-        $post = Post::where('slug', $slug)->first();
+        $post = Post::select('id','title', 'body', 'image')->where('slug', $slug)->first();
         
         return View::vue([
             'title' => $post->title . ' | ' . $this->shop->name,
@@ -130,7 +129,6 @@ class FrontController extends Controller
     }
     protected function getSingleProductSchema($product)
     {
-        $featuredImage = $product->assets[0]->src;
         $desc= $product->description ? $this->createTeaser($product->description) : $this->shop->description;
         $rating= $product->reviews_avg_rating ? number_format($product->reviews_avg_rating, 1) : 0;
 
@@ -139,7 +137,7 @@ class FrontController extends Controller
             "@type" => "Product",
             "description" => $desc,
             "name" => $product->title,
-            "image" => $featuredImage,
+            "image" => $product->featuredImage->src,
             "offers" => [
               "@type" => "Offer",
               "availability" => "https://schema.org/InStock",
