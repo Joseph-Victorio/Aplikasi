@@ -119,6 +119,14 @@ class FrontController extends Controller
 
         return substr($str, 0, 155); 
     }
+    public function sitemap()
+    {
+        $categories = Category::select('id', 'slug', 'updated_at')->get();
+        $products = Product::select('id', 'slug', 'updated_at')->get();
+        return response()->view('sitemap', compact('categories', 'products'))
+                ->header('Content-Type', 'text/xml');
+        
+    }
     protected function getSingleProductSchema($product)
     {
         $featuredImage = $product->assets[0]->src;
