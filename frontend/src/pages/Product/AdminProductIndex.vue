@@ -48,14 +48,14 @@
                       <q-item-section>{{ varian.label }} {{ varian.value }} </q-item-section>
                       <q-item-section>{{ subvarian.label }} {{ subvarian.value }}</q-item-section>
                       <q-item-section>Stok {{ subvarian.stock }}</q-item-section>
-                      <q-item-section>Harga {{ moneyIDR(product.price+subvarian.price) }}</q-item-section>
+                      <q-item-section>Harga {{ moneyIDR(subvarian.price) }}</q-item-section>
                     </q-item>
                   </q-list>
                   <q-list v-if="!varian.has_subvarian" dense separator bordered>
                     <q-item>
                       <q-item-section>{{ varian.label }} {{ varian.value }} </q-item-section>
                       <q-item-section>Stok {{ varian.stock }}</q-item-section>
-                      <q-item-section>Harga {{ moneyIDR(product.price+varian.price) }}</q-item-section>
+                      <q-item-section>Harga {{ moneyIDR(varian.price) }}</q-item-section>
                     </q-item>
                   </q-list>
                 </div>

@@ -52,7 +52,7 @@
                   <money-formatter outlined  v-model="form.stock" label="Stok"/>
                 </div>
                 <div class="col">
-                  <money-formatter outlined  v-model="form.weight" label="Berat" suffix="GRAM"/>
+                  <money-formatter outlined  v-model="form.weight" label="Berat" suffix="Gram"/>
                 </div>
               </div>
               <div class="text-xs text-grey-7 q-pa-xs">Input harga terendah jika menggunakan varian</div>
@@ -105,7 +105,7 @@
                         <q-input stack-label filled square required v-model="form.varians[varIndex].subvarian[subIndex].value" dense :label="form.varians[varIndex].subvarian[subIndex].label"></q-input>
                       </q-item-label>
                       <q-item-label>
-                      <money-formatter stack-label dense filled required v-model="form.varians[varIndex].subvarian[subIndex].weight"  label="Berat"/>
+                      <money-formatter stack-label dense filled required v-model="form.varians[varIndex].subvarian[subIndex].weight"  label="Berat" suffix="Gram"/>
                       </q-item-label>
                     </q-item-section>
 
@@ -139,17 +139,20 @@
                       <q-btn round unelevated padding="2px" icon="remove" size="9px" color="red" @click="deleteVarian(vIndex)"></q-btn>
                     </q-item-section>
                     <q-item-section>
+                      <q-item-label class="q-mb-xs">
                       <q-input stack-label filled square required v-model="form.varians[vIndex].value" dense :label="form.varians[vIndex].label"></q-input>
-    
+                      </q-item-label>
+                      <q-item-label>
+                        <money-formatter stack-label dense filled required v-model="form.varians[vIndex].weight" label="Berat" suffix="Gram"/>
+                      </q-item-label>
                     </q-item-section>
                     <q-item-section>
+                      <q-item-label class="q-mb-xs">
                       <money-formatter stack-label dense filled required v-model="form.varians[vIndex].price" prefix="Rp" label="Harga Jual"/>
-                    </q-item-section>
-                    <q-item-section>
+                      </q-item-label>
+                      <q-item-label>
                       <money-formatter stack-label dense filled required v-model="form.varians[vIndex].stock" label="Stok"/>
-                    </q-item-section>
-                    <q-item-section>
-                      <money-formatter stack-label dense filled required v-model="form.varians[vIndex].weight" label="Berat"/>
+                      </q-item-label>
                     </q-item-section>
 
                   </q-item>

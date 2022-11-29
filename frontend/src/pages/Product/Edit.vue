@@ -72,7 +72,7 @@
       </div>
         <input type="file" class="hidden" ref="image" @change="updateImagePreview" multiple>
     <!-- Start Product Variants -->
-       <div id="variants" style="min-height:200px;">
+      <div id="variants" style="min-height:200px;">
           <div class="row items-center justify-between q-mt-xl q-pa-md bg-green-1">
             <div class="text-md2 text-weight-medium">Produk Variasi</div>
             <q-btn v-if="canAddVarian" label="Tambah Variasi" @click="varianModal = true" color="accent" size="12px"></q-btn>
@@ -134,17 +134,20 @@
                       <q-btn round unelevated padding="2px" icon="remove" size="9px" color="red" @click="deleteVarian(vIndex)"></q-btn>
                     </q-item-section>
                     <q-item-section>
+                      <q-item-label class="q-mb-xs">
                       <q-input stack-label filled square required v-model="form.varians[vIndex].value" dense :label="form.varians[vIndex].label"></q-input>
-    
+                      </q-item-label>
+                      <q-item-label>
+                        <money-formatter stack-label dense filled required v-model="form.varians[vIndex].weight" label="Berat" suffix="Gram"/>
+                      </q-item-label>
                     </q-item-section>
                     <q-item-section>
+                      <q-item-label class="q-mb-xs">
                       <money-formatter stack-label dense filled required v-model="form.varians[vIndex].price" prefix="Rp" label="Harga Jual"/>
-                    </q-item-section>
-                    <q-item-section>
+                      </q-item-label>
+                      <q-item-label>
                       <money-formatter stack-label dense filled required v-model="form.varians[vIndex].stock" label="Stok"/>
-                    </q-item-section>
-                    <q-item-section>
-                      <money-formatter stack-label dense filled required v-model="form.varians[vIndex].weight" label="Berat" suffix="Gram"/>
+                      </q-item-label>
                     </q-item-section>
 
                   </q-item>
