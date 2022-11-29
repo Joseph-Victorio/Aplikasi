@@ -100,7 +100,7 @@
 
                   <q-btn unelevated no-caps padding="6px 12px" size="12px" v-if="canCancelOrder(order)" label="Batalkan" color="orange" @click="handleCancelOrder(order)"></q-btn>
 
-                  <q-btn unelevated no-caps padding="6px 12px" size="12px" label="Hapus" color="red-7" @click="handleDeleteOrder(order.id)"></q-btn>
+                  <!-- <q-btn unelevated no-caps padding="6px 12px" size="12px" label="Hapus" color="red-7" @click="handleDeleteOrder(order.id)"></q-btn> -->
               </div>
             </q-item-section>
           </q-item>
