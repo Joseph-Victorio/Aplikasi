@@ -6,7 +6,7 @@
           Dashboard
         </q-toolbar-title>
          <q-btn :to="{ name: 'Home', query: { load: 'true'}}"
-          flat icon-right="arrow_forward" label="Lihat Toko" no-caps/>
+          flat icon-right="eva-arrow-forward" label="Lihat Toko" no-caps/>
       </q-toolbar>
     </q-header>
 

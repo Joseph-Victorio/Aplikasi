@@ -7,7 +7,7 @@
       <post-list v-for="(post, index) in posts" :key="index" v-bind="post" />
     </div>
     <div class="block-footer flex justify-center auto-padding">
-      <q-btn label="Selengkapnya" icon-right="trending_flat" color="primary" :to="{name: 'FrontPostIndex'}"></q-btn>
+      <q-btn label="Selengkapnya" icon-right="eva-arrow-forward-outline" color="primary" :to="{name: 'FrontPostIndex'}"></q-btn>
     </div>
   </div>
 </template>

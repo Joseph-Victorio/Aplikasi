@@ -69,9 +69,9 @@
               v-model="productRating"
               readonly
               color="accent"
-              icon="eva-star-outline"
-              icon-selected="eva-star"
-              icon-half="eva-star"
+              icon="ion-star-outline"
+              icon-selected="ion-star"
+              icon-half="ion-star-half"
               size="1.3rem" 
             />
             <div class="text-weight-medium text-sm"> {{ product.reviews_count > 0 ? product.reviews_count +' ulasan' : ''}}</div>
@@ -146,9 +146,9 @@
                     readonly
                     v-model="productRating"
                     color="accent"
-                    icon="eva-star-outline"
-                    icon-selected="eva-star"
-                    icon-half="eva-star"
+                    icon="ion-star-outline"
+                    icon-selected="ion-star"
+                    icon-half="ion-star-half"
                     size="30px"
                   />
                 </div>
@@ -168,9 +168,9 @@
                             readonly
                             v-model="review.rating"
                             color="accent"
-                            icon="eva-star-outline"
-                            icon-selected="eva-star"
-                            icon-half="eva-star"
+                            icon="ion-star-outline"
+                            icon-selected="ion-star"
+                            icon-half="ion-star-half"
                             size="1.1rem"
                           />
                         </q-item-section>
@@ -212,9 +212,9 @@
             <q-rating 
               v-model="form.rating"
               color="amber"
-              icon="eva-star-outline"
-              icon-selected="eva-star"
-              icon-half="eva-star"
+              icon="ion-star-outline"
+              icon-selected="ion-star"
+              icon-half="ion-star-half"
               size="sm" 
             />
           <div class="q-my-md q-gutter-y-xs">

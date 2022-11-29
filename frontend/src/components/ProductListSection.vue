@@ -4,7 +4,7 @@
       <div class="block-title">
         <h2 class="text-capitalize">{{ title }}</h2>
       </div>
-      <q-btn class="text-xs text-primary" flat no-caps icon-right="chevron_right" label="more" v-if="path" @click="detail"></q-btn>
+      <q-btn class="text-xs text-primary" flat no-caps icon-right="eva-chevron-right" label="more" v-if="path" @click="detail"></q-btn>
     </div>
     <div :class="pageWidth >= 768 ? 'row q-px-sm' : 'column q-gutter-y-sm'">
       <template v-if="ready">

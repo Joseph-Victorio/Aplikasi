@@ -9,7 +9,7 @@
       </template>
     </div>
     <!-- <div class="q-my-lg q-py-lg flex justify-center">
-      <q-btn unelevated label="Selengkapnya" icon-right="trending_flat" color="primary" :to="{name: 'ProductCategory', params:{ id: products.category_id }}"></q-btn>
+      <q-btn unelevated label="Selengkapnya" icon-right="eva-arrow-forward-outline" color="primary" :to="{name: 'ProductCategory', params:{ id: products.category_id }}"></q-btn>
     </div> -->
   </section>
 </template>

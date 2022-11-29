@@ -34,7 +34,7 @@ module.exports = function (ctx ) {
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
-      // 'ionicons-v4',
+      'ionicons-v4',
       // 'mdi-v5',
       // 'fontawesome-v5',
       'eva-icons',
@@ -226,7 +226,7 @@ module.exports = function (ctx ) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'wa-commerce'
+        appId: 'id.my.nextshop'
       },
 
       // More info: https://v1.quasar.dev/quasar-cli/developing-electron-apps/node-integration
