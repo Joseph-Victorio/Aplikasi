@@ -47,12 +47,12 @@
               <div class="flex items-center text-secondary">
                   <span class="text-md">Rp</span>
                   <span class="text-lg text-weight-medium">
-                  {{ $money(parseInt(totalPrice)) }} 
+                  {{ $money(parseInt(getCurrentPrice * this.quantity)) }} 
                   </span>
                 </div>
                 <div class="flex items-center text-strike text-xs q-ml-xs" v-if="product.pricing.is_discount">
                   <span class="text-sm">Rp</span>
-                  <span class="text-md">{{ $money(product.pricing.default_price * quantity) }} </span>
+                  <span class="text-md">{{ $money(getDefaultPrice * this.quantity) }} </span>
                 </div>
               <div>
               </div>
@@ -196,62 +196,61 @@
       </q-card>
     </div>
     <q-footer class="q-gutter-x-sm flex q-pa-md bg-white">
-        <!-- <q-btn @click="btnFavorite" icon="favorite" outline round :color="isLike? 'pink' : 'dark'"></q-btn> -->
-        <q-btn unelevated rounded outline @click="chat" icon="eva-message-circle-outline" label="Chat" color="primary" class="col"></q-btn>
-        <q-btn unelevated rounded @click="addNewItem" icon="eva-shopping-cart-outline" label="Beli" color="primary" class="col"></q-btn>
+      <q-btn unelevated rounded outline @click="chatModal = true" icon="eva-message-circle-outline" label="Chat" color="primary" class="col"></q-btn>
+      <q-btn unelevated rounded @click="addNewItem" icon="eva-shopping-cart-outline" label="Beli" color="primary" class="col"></q-btn>
     </q-footer>
     </template>
-      <q-inner-loading :showing="!ready">
-        <q-spinner-facebook size="50px" color="primary"/>
-      </q-inner-loading>
-      <q-dialog v-model="reviewModal" persistent>
-        <div class="q-card" style="width:100%;max-width:360px;">
-          <q-card-section>
-          <form @submit.prevent="submitReview">
-            <div>
-            <div class="text-subtitle2 q-mb-sm">Berikan Ulasan Anda</div>
-              <q-rating 
-                v-model="form.rating"
-                color="amber"
-                icon="eva-star-outline"
-                icon-selected="eva-star"
-                icon-half="eva-star"
-                size="sm" 
-              />
-            <div class="q-my-md q-gutter-y-xs">
-              <q-input 
-              dense 
-              label="Nama Anda" 
-              v-model="form.name"
-              :rules="[val => val && val != '' || 'Wajib disisi']"
-              ></q-input>
-              <q-input 
-              dense 
-              label="Ulasan Anda" 
-              type="textarea" 
-              v-model="form.comment" 
-              rows="3"
-              :rules="[val => val && val != '' || 'Wajib disisi']"
-              ></q-input>
-            </div>
-            <div class="q-gutter-y-sm q-my-md items-center text-grey">
-              <div class="text-grey text-xs">Jawab tantangan berikut, hanya untuk memastikan anda bukan robot</div>
-              <div class="row q-gutter-x-sm items-center">
-                <div class="text-weight-bold bg-dark text-white q-px-sm q-py-xs rounded">{{ number2 }} + {{ number1 }} </div> 
-                <div class="text-weight-bold"> = </div> 
-               <input class="rounded text-grey-9" type="text" ref="jawaban" v-model="jawaban" style="width:60px;padding:3px 6px;border:1px solid grey">
-              </div>
-            </div>
-            <div class="row justify-end q-gutter-x-sm">
-              <q-btn unelevated type="button" @click.prevent="closeReviewModal" label="Batal" color="primary" outline></q-btn>
-              <q-btn unelevated :disabled="chalengeTesting" type="submit" :loading="loading" label="Kirim Ulasan" color="primary"></q-btn>
+    <q-inner-loading :showing="!ready">
+      <q-spinner-facebook size="50px" color="primary"/>
+    </q-inner-loading>
+    <q-dialog v-model="reviewModal" persistent>
+      <div class="q-card" style="width:100%;max-width:360px;">
+        <q-card-section>
+        <form @submit.prevent="submitReview">
+          <div>
+          <div class="text-subtitle2 q-mb-sm">Berikan Ulasan Anda</div>
+            <q-rating 
+              v-model="form.rating"
+              color="amber"
+              icon="eva-star-outline"
+              icon-selected="eva-star"
+              icon-half="eva-star"
+              size="sm" 
+            />
+          <div class="q-my-md q-gutter-y-xs">
+            <q-input 
+            dense 
+            label="Nama Anda" 
+            v-model="form.name"
+            :rules="[val => val && val != '' || 'Wajib disisi']"
+            ></q-input>
+            <q-input 
+            dense 
+            label="Ulasan Anda" 
+            type="textarea" 
+            v-model="form.comment" 
+            rows="3"
+            :rules="[val => val && val != '' || 'Wajib disisi']"
+            ></q-input>
+          </div>
+          <div class="q-gutter-y-sm q-my-md items-center text-grey">
+            <div class="text-grey text-xs">Jawab tantangan berikut, hanya untuk memastikan anda bukan robot</div>
+            <div class="row q-gutter-x-sm items-center">
+              <div class="text-weight-bold bg-dark text-white q-px-sm q-py-xs rounded">{{ number2 }} + {{ number1 }} </div> 
+              <div class="text-weight-bold"> = </div> 
+              <input class="rounded text-grey-9" type="text" ref="jawaban" v-model="jawaban" style="width:60px;padding:3px 6px;border:1px solid grey">
             </div>
           </div>
-          </form>
-          </q-card-section>
+          <div class="row justify-end q-gutter-x-sm">
+            <q-btn unelevated type="button" @click.prevent="closeReviewModal" label="Batal" color="primary" outline></q-btn>
+            <q-btn unelevated :disabled="chalengeTesting" type="submit" :loading="loading" label="Kirim Ulasan" color="primary"></q-btn>
+          </div>
         </div>
-      </q-dialog>
-      <q-dialog v-model="chatModal">
+        </form>
+        </q-card-section>
+      </div>
+    </q-dialog>
+    <q-dialog v-model="chatModal">
       <q-card style="max-width:450px;width:100%;" class="text-grey-9">
         <div class="text-weight-bold q-py-sm q-px-md bg-primary text-white">Kirim pesan / tanya ke penjual</div>
         <q-card-section class="transition-height">
@@ -269,24 +268,6 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <!-- <q-dialog 
-    v-model="cartModal"
-    transition-show="slide-up"
-    transition-hide="slide-down"
-    >
-      <q-card flat class="card-lg bg-white" v-if="product">
-        <q-linear-progress size="10px" :value="100" />
-          <q-card-section class="text-center block__padding">
-            <q-img :src="product.assets[0].src" width="100px" class="rounded-borders"></q-img>
-            <div class="text-md text-weight-bold q-mt-md">Berhasil menmbahkan {{ product.title }} ke keranjang</div>
-              <div class="text-grey-7">Anda dapat lanjut kehalaman checkout atau memilih berbelanja kembali</div>
-          <div class="q-gutter-y-sm q-pt-lg">
-            <q-btn class="full-width" unelevated no-caps :to="{ name: 'Cart' }" label="Lanjut Checkout" color="primary"></q-btn>
-            <q-btn class="full-width" flat no-caps @click="cartModal = false" label="Berbelanja Lagi" color="primary"></q-btn>
-          </div>
-        </q-card-section>
-      </q-card>
-    </q-dialog> -->
     <q-dialog 
     v-model="cartModal"
     transition-show="slide-up"
@@ -334,7 +315,7 @@
       >
       <q-card class="max-width" flat v-if="product && product.varians.length">
         <q-card-section>
-          <div class="text-weight-medium text-lg q-mb-sm text-secondary">{{ moneyIDR(parseInt(totalPrice)) }}</div>
+          <div class="text-weight-medium text-lg q-mb-sm text-secondary">{{ moneyIDR(parseInt(getCurrentPrice)) }}</div>
             <div>
               <div class="text-md">Pilih Varian <span class="text-sm text-weight-normal text-grey-7"></span></div>
               <div class="q-mt-sm">
@@ -455,17 +436,7 @@ export default {
       return parseFloat(this.product.rating)
     },
     carts() {
-      // return this.$store.getters['cart/getCarts']
       return this.$store.state.cart.carts
-    },
-    favorites: function() {
-      return this.$store.state.product.favorites
-    },
-    isLike() {
-      if(this.favorites.length > 0) {
-         return this.favorites.find(el => el == this.$route.params.id) ? true : false
-      }
-      return false;
     },
     cStyle() {
       if(!this.fullscreen && this.$q.screen.width < 560 && this.$q.screen.width > 200) {
@@ -533,58 +504,83 @@ export default {
         }
       }
       return this.product.sku ? this.product.sku : this.product.id
-    },
-    realPrice() {
-      if(this.varianSelected) {
-
-        if(!this.varianSelected.has_subvarian) {
-          return this.product.pricing.current_price + this.varianSelected.price
-        }
-
-        if(this.subvarianSelected) {
-  
-          return  this.product.pricing.current_price + this.subvarianSelected.price
+    }, 
+    getDiscountAmount() {
+      if(this.product.pricing.is_discount) {
+        if(this.product.pricing.discount_type == 'PERCENT') {
+          return (parseInt(this.getDefaultPrice)*parseInt(this.product.pricing.discount_amount))/100
+        }else {
+          return parseInt(this.product.pricing.discount_amount)
         }
       }
-      return this.product.pricing.current_price
+      return 0
     },
-    totalPrice() {
+    getDefaultPrice() {
       if(this.varianSelected) {
 
         if(!this.varianSelected.has_subvarian) {
 
-          return (this.product.pricing.current_price + this.varianSelected.price) * this.quantity
+          return  parseInt(this.varianSelected.price)
 
         } else {
 
           if(this.subvarianSelected) {
     
-            return (this.product.pricing.current_price + this.subvarianSelected.price) * this.quantity
+            return parseInt(this.subvarianSelected.price)
           } 
   
-            return (this.product.pricing.current_price + this.varianSelected.subvarian[0].price) * this.quantity
+            return parseInt(this.varianSelected.subvarian[0].price)
         }
 
       }
 
-      return this.product.pricing.current_price * this.quantity
+      return parseInt(this.product.pricing.default_price)
     },
-    cartTextButton() {
-       if(this.currentStock >= 1) {
-            return 'Beli'
-          }
-        return 'Habis'
-    },
-    cartTextColor() {
-      if(this.currentStock >=1){
-        return 'primary'
+    getCurrentPrice() {
+      if(this.varianSelected) {
+
+        if(!this.varianSelected.has_subvarian) {
+
+          return  parseInt(this.varianSelected.price) - this.getDiscountAmount
+
+        } else {
+
+          if(this.subvarianSelected) {
+    
+            return parseInt(this.subvarianSelected.price) - this.getDiscountAmount
+          } 
+  
+            return parseInt(this.varianSelected.subvarian[0].price) - this.getDiscountAmount
+        }
+
       }
-      return 'grey-7'
+
+      return parseInt(this.product.pricing.default_price) - this.getDiscountAmount
+    },
+    getCurrentWeight() {
+      if(this.varianSelected) {
+
+        if(!this.varianSelected.has_subvarian) {
+
+          return  parseInt(this.varianSelected.weight)
+
+        } else {
+
+          if(this.subvarianSelected) {
+    
+            return parseInt(this.subvarianSelected.weight)
+          } 
+  
+            return parseInt(this.varianSelected.subvarian[0].weight)
+        }
+
+      }
+
+      return parseInt(this.product.weight)
     },
 
   },
   methods: {
-    ...mapMutations('product',['ADD_REMOVE_TO_FAVORITE']),
     ...mapActions('product', ['getProductBySlug', 'loadProductReview', 'addProductReview']),
     selectProductVarian(item) {
       this.varianSelected = item
@@ -602,74 +598,7 @@ export default {
         this.$router.push({name: 'ProductIndex'})
       }
     },
-    getIcon(rating) {
-      let rtg = parseInt(rating)
-
-      if(rtg <= 2) {
-        return 'sentiment_very_dissatisfied'
-      } else if(rtg == 3) {
-        return 'sentiment_neutral'
-      } else if(rtg == 4) {
-        return 'sentiment_satisfied_alt'
-      }else {
-         return 'sentiment_very_satisfied'
-      }
-    },
-    varItemGetColor(id) {
-      if(this.varianSelected) {
-        return this.varianSelected.id == id ?  false : true
-      }
-      return true
-    },
-    varValueGetColor(id) {
-      if(this.subvarianSelected) {
-        return this.subvarianSelected.id == id ? false : true
-      }
-      return true
-    },
-    handleVariantItemSelectted(item) {
-      this.varianSelected = item
-      this.subvarianSelected = null
-      this.quantity = 1
-      this.setViewProductPattern()
-    },
-    handleSelectedItemValue(value) {
-      this.subvarianSelected = value
-      this.quantity = 1
-      this.setViewProductPattern()
-    },
-    discountPriceFormat() {
-      return (this.subtotal()*this.discount)/100
-    },
-    subQty() {
-      if(this.carts.length > 1) {
-        return this.carts.reduce((a,b) => a.quantity + b.quantity) 
-      }
-      return this.carts[0].quantity
-    },
-    subtotal() {
-      if(this.carts.length > 1) {
-        let j = [];
-        this.carts.forEach(element => {
-          j.push(element.quantity*element.price)
-        });
-        return j.reduce((a,b) => a + b)
-      }
-      return this.carts[0].quantity * this.carts[0].price
-    },
-    total () {
-      if(this.discount || this.discount !== 0) {
-        return (this.subtotal() - this.discountPriceFormat())
-      }
-      return this.subtotal()
-    },
-    stockStyle() {
-      if(this.currentStock > 0 && this.currentStock <= 5) return 'text-amber'
-      if(this.currentStock <= 0 ) return 'text-red'
-      return 'text-green'
-    },
     addToCart() {
-      
       this.formVariantModal = false
 
       let cartItem = {
@@ -678,14 +607,13 @@ export default {
         product_stock: this.currentStock, 
         sku: this.currentProductSku, 
         name: this.product.title, 
-        price: this.realPrice, 
+        price: this.getCurrentPrice, 
         quantity: this.quantity, 
         note: this.getVarianTextNote(),
         product_url: this.getRoutePath(), 
         image_url: this.product.assets[0].src, 
-        weight: this.product.weight
+        weight: this.getCurrentWeight
       }
-
 
       this.$store.dispatch('cart/addToCart' , cartItem)
 
@@ -779,12 +707,6 @@ export default {
       });
 
       return location.origin + props.href;
-    },
-    btnFavorite() {
-      this.ADD_REMOVE_TO_FAVORITE(this.product.id)
-    },
-    setPrice() {
-      this.priceTotal = this.price*this.quantity
     },
     checkVarianIsReady() {
       if(this.isHasVarian) {
@@ -934,9 +856,6 @@ export default {
       }
 
       return formatted;
-    },
-    chat() {
-      this.chatModal = true
     },
     closeChatModal() {
       this.chatText = ''

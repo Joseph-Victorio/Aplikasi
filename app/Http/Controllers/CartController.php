@@ -10,9 +10,14 @@ class CartController extends Controller
 {
     public function get()
     {
+        $carts = [];
+
+        if(getSessionUser()) {
+            $carts = Cart::all();
+        }
         
         return response()->json([
-            'results' => Cart::all(),
+            'results' => $carts,
         ], 200);
     }
     

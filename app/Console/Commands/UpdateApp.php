@@ -44,23 +44,23 @@ class UpdateApp extends Command
 
         try {
 
+            // Call Migration
             Artisan::call('migrate', ['--force' => true]);
 
+             // Update Version 2.3.3
+
+            Artisan::call('site:update-v-233');
+            $this->info('run 233');
             
-            if (Schema::hasTable('mail_configs')) {
-
-                $mailConfig =  \App\Models\MailConfig::firstOrNew(); 
-                $mailConfig->save();  
-
-            }
+            // Update Version > 2.3.4
             
-            $categories = Category::whereNull('updated_at')->get();
-
-            foreach($categories as $category) {
-                $category->updated_at = now();
-                $category->save();
-            }
-                
+            Artisan::call('site:update-v-234');
+            $this->info('run 234');
+            
+            // Update Version 2.4.0
+            Artisan::call('site:update-v-240');
+            $this->info('run 240');
+                    
 
         } catch (\Exception $e) {
             

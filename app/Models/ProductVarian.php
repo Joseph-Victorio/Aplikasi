@@ -20,6 +20,7 @@ class ProductVarian extends Model
         'stock',
         'has_subvarian',
         'varian_id',
+        'weight'
     ];
     protected $casts = [
         'has_subvarian' => 'boolean'
@@ -42,4 +43,13 @@ class ProductVarian extends Model
             }
         });
     }
+    public function parent()
+    {
+        return $this->belongsTo(ProductVarian::class, 'varian_id', 'id');
+    }
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
 }

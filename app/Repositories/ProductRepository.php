@@ -165,7 +165,6 @@ class ProductRepository
                         'category' => $newCat,
                         'asset'  =>  $product->featuredImage,
                         'description' =>  $product->description,
-                        // 'promo' => $product->promo
                     ];
                 });
 
@@ -236,11 +235,17 @@ class ProductRepository
                             ]);
         
                             foreach($data['subvarian'] as $item) {
+                                $item['product_id'] = $product->id;
+                                $item['price'] = str_replace(".", "", $item['price']);
+                                $item['weight'] = str_replace(".", "", $item['weight']);
+                                
                                 $varian->subvarian()->create($item);
                             }
         
                     } else {
-                    
+
+                        $data['price'] = str_replace(".", "", $data['price']);
+                        $data['weight'] = str_replace(".", "", $data['weight']);
                         $product->varians()->create($data);
                     }
 
@@ -371,12 +376,16 @@ class ProductRepository
                         $varian->save();
     
                         foreach($data['subvarian'] as $item) {
+
+                            $item['product_id'] = $product->id;
+                            $item['price'] = str_replace(".", "", $item['price']);
+                            $item['weight'] = str_replace(".", "", $item['weight']);
     
                             if(isset($item['id'])) {
 
                                 ProductVarian::find($item['id'])->update($item);
-                                
-                            }else {
+
+                            }else {  
                                 $varian->subvarian()->create($item);
                             }
                             
@@ -384,12 +393,14 @@ class ProductRepository
         
                     } else {
 
+                        $data['price'] = str_replace(".", "", $data['price']);
+                        $data['weight'] = str_replace(".", "", $data['weight']);
+
                         if(isset($data['id'])) {
 
                             ProductVarian::find($data['id'])->update($data);
 
                         }else {
-
                             $product->varians()->create($data);
                         }
                         
@@ -399,7 +410,6 @@ class ProductRepository
                 
             }
 
-            
             DB::commit();
             
             $product->fresh();
@@ -458,45 +468,18 @@ class ProductRepository
 
             $pricing = [
                 'default_price' => $defaultPrice,
-                'current_price' => $defaultPrice,
-                'discount_percent' => 0,
+                'discount_type' => 'PERCENT',
                 'discount_amount' => 0,
                 'is_discount' => false,
             ];
-
-
-            $disc = null;
     
             if($product->productPromo) {
-                $disc = $product->productPromo;
-            } 
 
-            if($disc) {
+                $disc = $product->productPromo;
 
                 $pricing['is_discount'] = true;
-
-                $discountVal = 0;
-                
-
-                if($disc->discount_type == 'PERCENT') {
-    
-                    $discountVal = ($defaultPrice*$disc->discount_amount) / 100;
-
-                    $pricing['current_price'] = $defaultPrice - (int) $discountVal;
-
-                    $pricing['discount_percent'] = (int) $disc->discount_amount;
-                    
-                } else{
-    
-                    $discountVal = $disc->discount_amount;
-
-                    $pricing['current_price'] = $defaultPrice - (int) $discountVal;
-
-                    $pricing['discount_percent'] = number_format(((int)$disc->discount_amount / $defaultPrice)*100, 0);
-    
-                }
-
-                $pricing['discount_amount'] = $discountVal;
+                $pricing['discount_type'] = $disc->discount_type;
+                $pricing['discount_amount'] = $disc->discount_amount;
             }
         
             return $pricing;

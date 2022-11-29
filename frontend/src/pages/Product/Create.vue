@@ -34,7 +34,7 @@
       </div>
       <form @submit.prevent="submit" class="q-pt-sm"> 
         <div class="q-gutter-y-md q-px-md">
-            <q-input  
+          <q-input  
               outlined 
             type="text" 
             v-model="form.title" 
@@ -43,16 +43,20 @@
             ></q-input>
             <div class="text-xs text-red" v-if="errors.title"> {{ errors.title[0]}}</div>
 
-            <div class="row items-center q-gutter-x-sm">
-              <div class="col">
-                <money-formatter outlined v-model="form.price" prefix="Rp"/>
+            <div>
+              <div class="row items-center q-gutter-x-sm">
+                <div class="col">
+                  <money-formatter outlined v-model="form.price" prefix="Rp"/>
+                </div>
+                <div class="col">
+                  <money-formatter outlined  v-model="form.stock" label="Stok"/>
+                </div>
+                <div class="col">
+                  <money-formatter outlined  v-model="form.weight" label="Berat" suffix="GRAM"/>
+                </div>
               </div>
-              <div class="col">
-                <money-formatter outlined  v-model="form.stock" label="Stok"/>
-              </div>
-              <div class="col">
-                <money-formatter outlined  v-model="form.weight" label="Berat" suffix="GRAM"/>
-              </div>
+              <div class="text-xs text-grey-7 q-pa-xs">Input harga terendah jika menggunakan varian</div>
+
             </div>
               <q-select
                 outlined 
@@ -93,19 +97,28 @@
                 <q-list class="bg-white q-pa-sm q-mt-xs" v-if="form.varians[varIndex].subvarian.length">
                   <q-item class="q-px-sm" v-for="(subvarian, subIndex) in form.varians[varIndex].subvarian" :key="subIndex">
                     <q-item-section side>
-                      <q-btn round unelevated padding="2px" icon="remove" size="9px" color="red" @click="deleteSubvarian(varIndex, subIndex)"></q-btn>
-                    </q-item-section>
-                    <q-item-section>
-                      <q-input stack-label filled square required v-model="form.varians[varIndex].subvarian[subIndex].value" dense :label="form.varians[varIndex].subvarian[subIndex].label"></q-input>
-    
-                    </q-item-section>
-                    <q-item-section>
-                      <q-input stack-label filled square required v-model="form.varians[varIndex].subvarian[subIndex].price" dense label="Tambahan Harga" mask="###########"></q-input>
-                    </q-item-section>
-                    <q-item-section>
-                      <q-input stack-label filled square required v-model="form.varians[varIndex].subvarian[subIndex].stock" dense label="Stok"  mask="#######"></q-input>
+                        <q-btn round unelevated padding="2px" icon="remove" size="9px" color="red" @click="deleteSubvarian(varIndex, subIndex)"></q-btn>
                     </q-item-section>
 
+                    <q-item-section>
+                      <q-item-label class="q-mb-xs">
+                        <q-input stack-label filled square required v-model="form.varians[varIndex].subvarian[subIndex].value" dense :label="form.varians[varIndex].subvarian[subIndex].label"></q-input>
+                      </q-item-label>
+                      <q-item-label>
+                      <money-formatter stack-label dense filled required v-model="form.varians[varIndex].subvarian[subIndex].weight"  label="Berat"/>
+                      </q-item-label>
+                    </q-item-section>
+
+                    <q-item-section>
+                      <q-item-label class="q-mb-xs">
+                        <money-formatter stack-label dense filled required v-model="form.varians[varIndex].subvarian[subIndex].price" prefix="Rp" label="Harga Jual"/>
+                        
+                      </q-item-label>
+                      <q-item-label>
+                      <money-formatter stack-label dense filled required v-model="form.varians[varIndex].subvarian[subIndex].stock"  label="Stok"/>
+
+                      </q-item-label>
+                    </q-item-section>
                   </q-item>
                 </q-list>
               </div>
@@ -130,10 +143,13 @@
     
                     </q-item-section>
                     <q-item-section>
-                      <q-input stack-label filled square required v-model="form.varians[vIndex].price" dense label="Tambahan Harga"  mask="###########"></q-input>
+                      <money-formatter stack-label dense filled required v-model="form.varians[vIndex].price" prefix="Rp" label="Harga Jual"/>
                     </q-item-section>
                     <q-item-section>
-                      <q-input stack-label filled square required v-model="form.varians[vIndex].stock" dense label="Stok"  mask="######"></q-input>
+                      <money-formatter stack-label dense filled required v-model="form.varians[vIndex].stock" label="Stok"/>
+                    </q-item-section>
+                    <q-item-section>
+                      <money-formatter stack-label dense filled required v-model="form.varians[vIndex].weight" label="Berat"/>
                     </q-item-section>
 
                   </q-item>
@@ -298,18 +314,22 @@ export default {
     pushSubVarian(varIndex) {
       let varian = this.form.varians[varIndex]
 
-      let tpl = { label: varian.subvarian[0].label, value: '', stock: 0, price: 0 }
+      let tpl = { label: varian.subvarian[0].label, value: '', stock: 0, price: varian.price ?? 0, weight: varian.weight?? 0 }
 
       this.form.varians[varIndex].subvarian.push(tpl)
     },
     pushVarian() {
-      this.form.varians.push({ has_subvarian: false,  label: this.form.varians[0].label, value: '', stock: 0, price: 0 })
+      this.form.varians.push({ has_subvarian: false,  label: this.form.varians[0].label, value: '', stock: 0, price: this.form.price ?? 0, weight: this.form.weight ?? 0 })
 
     },
     handleAddVarian() {
       this.varianModal = true
     },
     addVarianProduk() {
+
+      let defaultPrice = this.form.price ?? 0;
+      let weight = this.form.weight ?? 0;
+      let stock = this.form.stock ?? 0;
 
       let varianArr = this.tempVarian.value.split(',')
 
@@ -322,7 +342,7 @@ export default {
           let subArr = this.tempSubvarian.value.split(',')
   
             subArr.forEach(el => {
-              let sub = { label: this.tempSubvarian.label, value: el, stock: 0, price: 0  }
+              let sub = { label: this.tempSubvarian.label, value: el, stock: stock, price: defaultPrice, weight: weight }
               varian.subvarian.push(sub)
             })
   
@@ -334,7 +354,7 @@ export default {
          varianArr.forEach(v => {
          
          let varian = null
-           varian = { has_subvarian: false,  label: this.tempVarian.label, value: v, stock: 0, price: 0  }
+           varian = { has_subvarian: false,  label: this.tempVarian.label, value: v, stock: stock, price: defaultPrice, weight: weight }
  
           this.form.varians.push(varian)
   
@@ -343,6 +363,8 @@ export default {
 
 
       this.varianModal = false
+      this.tempVarian.value = ''
+      this.tempSubvarian.value = ''
     },
     // Submit Product
     submit() {

@@ -17,29 +17,29 @@
               readonly
               v-model="rating"
               color="accent"
-              icon="eva-star-outline"
-              icon-selected="eva-star"
-              icon-half="eva-star"
+              icon="ion-star-outline"
+              icon-selected="ion-star"
+              icon-half="ion-star-half"
               :size="ratingSize"
             />
               <favorite-button :product_id="product.id" />
           </div>
           <div class="full-width q-mt-xs">
-            <div class="text-subtitle2 ellipsis-2-lines">{{ product.title }}</div>
+            <div class="text-subtitle ellipsis-2-lines">{{ product.title }}</div>
           </div>
         </div>
        <div class="card-price-container">
           <div class="card-price text-secondary">
             <span class="prefix">Rp</span>
-            <span class="amount">{{ $money(product.pricing.current_price) }}</span>
+             <span class="amount">{{ $money(parseInt(product.pricing.default_price)- getDIscountAmount) }}</span>
           </div>
-          <div v-if="product.pricing.is_discount" class="card-discount text-strike text-grey-8">
+          <div v-if="getDiscountPercent" class="card-discount text-strike text-grey-8">
             <span class="prefix">Rp</span>
-            <span class="amount">{{ $money(product.pricing.default_price) }}</span>
+            <span class="amount">{{ $money(parseInt(product.pricing.default_price)) }}</span>
             </div>
         </div>
       </div>
-         <div v-if="product.pricing.is_discount" class="absolute top-0 z-50 bg-red-6 text-white" style="padding:2px;font-size:13px;">{{ product.pricing.discount_percent }}%</div>
+         <div v-if="getDiscountPercent" class="absolute top-0 z-50 bg-red-6 text-white" style="padding:2px;font-size:13px;">{{ getDiscountPercent }}%</div>
     </div>
   </div>
 </template>
@@ -55,6 +55,26 @@ export default {
     }
   },
   computed: {
+    getDIscountAmount() {
+      if(this.product.pricing.is_discount) {
+        if(this.product.pricing.discount_type == 'PERCENT') {
+          return (parseInt(this.product.pricing.default_price)*parseInt(this.product.pricing.discount_amount))/100
+        }else {
+          return parseInt(this.product.pricing.discount_amount)
+        }
+      }
+      return 0
+    },
+    getDiscountPercent() {
+       if(this.product.pricing.is_discount) {
+        if(this.product.pricing.discount_type == 'PERCENT') {
+          return parseInt(this.product.pricing.discount_amount)
+        }else {
+          return parseInt((parseInt(this.product.pricing.discount_amount) / parseInt(this.product.pricing.default_price))*100)
+        }
+      }
+      return 0
+    },
     ratingSize() {
       if(window.innerWidth < 481) {
         return '.9rem'
@@ -63,6 +83,9 @@ export default {
     }
   },
   methods: {
+    money(number) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number)
+    },
     show(slug) {
       this.$router.push({name: 'ProductShow', params: { slug: slug }})
     },

@@ -15,49 +15,19 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
         // return parent::toArray($request);
-
-        $defaultPrice = $this->price;
-
         $pricing = [
-            'default_price' => $defaultPrice,
-            'current_price' => $defaultPrice,
-            'discount_percent' => 0,
+            'default_price' =>  $this->price,
+            'discount_type' => 'PERCENT',
             'discount_amount' => 0,
             'is_discount' => false,
         ];
 
-        $disc = null;
- 
         if($this->productPromo) {
-            $disc = $this->productPromo;
-        } 
-
-        if($disc) {
 
             $pricing['is_discount'] = true;
-
-            $discountVal = 0;
-            
-
-            if($disc->discount_type == 'PERCENT') {
- 
-                $discountVal = ($defaultPrice*$disc->discount_amount) / 100;
-
-                $pricing['current_price'] = $defaultPrice - (int) $discountVal;
-                $pricing['discount_percent'] = (int) $disc->discount_amount;
-                
-             } else{
- 
-                 $discountVal = $disc->discount_amount;
-
-                 $pricing['current_price'] = $defaultPrice - (int) $discountVal;
-
-                 $pricing['discount_percent'] = number_format(((int) $disc->discount_amount / $defaultPrice)*100, 0);
- 
-            }
-
-            $pricing['discount_amount'] = $discountVal;
-         }
+            $pricing['discount_type'] = $this->productPromo->discount_type;
+            $pricing['discount_amount'] = $this->productPromo->discount_amount;
+        }
 
         return [
             'id' => $this->id,
@@ -68,15 +38,12 @@ class ProductResource extends JsonResource
             'stock' => $this->variant_items_sum_item_stock?? $this->stock,
             'description' => $this->description,
             'status' => $this->status,
-            'sold' => $this->sold,
             'rating' => $this->reviews_avg_rating ? number_format($this->reviews_avg_rating, 1) : 0,
             'weight' => $this->weight,
             'category' => $this->category,
             'assets' => $this->assets,
             'reviews_count' => $this->reviews_count,
             'varians' => $this->varians,
-            'discount' => $disc,
-            'images' => $this->images,
         ];
     }
 }

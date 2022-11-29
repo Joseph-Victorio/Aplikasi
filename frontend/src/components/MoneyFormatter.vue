@@ -5,10 +5,12 @@
     :filled="filled" 
     :outlined="outlined" 
     :square="square" 
+    :dense="dense" 
     :label="label" 
     :prefix="prefix"
     :suffix="suffix"
     @input="updateData" 
+    :stackLabel="stackLabel"
     ></q-input>
   </div>
 </template>
@@ -18,11 +20,13 @@ export default {
   props: {
     label: {
       type: String,
-      default: 'Price'
+      default: 'Harga'
     },
     filled: Boolean,
     outlined: Boolean,
+    stackLabel: Boolean,
     square: Boolean,
+    dense: Boolean,
     value: [String, Number],
     prefix: String,
     suffix: String,

@@ -33,50 +33,24 @@ class ProductListResource extends JsonResource
     protected function setPricing($product)
     {
 
-      $defaultPrice = $product->price;
+        $defaultPrice = $product->price;
 
         $pricing = [
             'default_price' => $defaultPrice,
-            'current_price' => $defaultPrice,
-            'discount_percent' => 0,
+            'discount_type' => 'PERCENT',
             'discount_amount' => 0,
             'is_discount' => false,
         ];
 
-
-        $disc = null;
- 
         if($product->productPromo) {
-            $disc = $product->productPromo;
-        } 
 
-        if($disc) {
+            $disc = $product->productPromo;
 
             $pricing['is_discount'] = true;
-
-            $discountVal = 0;
-            
-
-            if($disc->discount_type == 'PERCENT') {
- 
-                $discountVal = ($defaultPrice*$disc->discount_amount) / 100;
-
-                $pricing['current_price'] = $defaultPrice - $discountVal;
-                $pricing['discount_percent'] = (int) $disc->discount_amount;
-                
-             } else{
- 
-                 $discountVal = $disc->discount_amount;
-
-                 $pricing['current_price'] = $defaultPrice - (int) $discountVal;
-
-                 $pricing['discount_percent'] = number_format(((int)$disc->discount_amount / $defaultPrice)*100, 0);
- 
-            }
-
-            $pricing['discount_amount'] = $discountVal;
-         }
-      
+            $pricing['discount_type'] = $disc->discount_type;
+            $pricing['discount_amount'] = $disc->discount_amount;
+        }
+        
         return $pricing;
     }
 }
