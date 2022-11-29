@@ -32,7 +32,7 @@ class Post extends Model
 
     public function getImageUrlAttribute()
     {
-        return $this->image? config('app.url') .'/upload/images/' . $this->image : '';
+        return $this->image? url('/upload/images/' . $this->image) : '';
     }
     
     public function getCreatedLocaleAttribute()
