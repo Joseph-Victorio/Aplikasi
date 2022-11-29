@@ -75,9 +75,32 @@ export default {
     setTextMessage() {
        if(this.order) {
          if(this.order.order_status == 'UNPAID') {
-           let tmp = `Halo kak ${this.order.customer_name}\nkami dari *${this.shop.name? this.shop.name: '...'}*\nberikut adalah pesanan kakak pada toko kami:\n\nInvoice : *${this.order.order_ref}*\ndi pesan pada : ${this.order.created_at}\nSubtotal : ${this.moneyIDR(this.order.order_subtotal)}\nOngkos Kirim : ${this.moneyIDR(this.order.shipping_cost)}\nKode Unik : - ${this.order.order_unique_code}\n*Total : ${this.moneyIDR(this.order.order_total)}*\n\n${this.setPaymentMessage()}\nUntuk detail tagihan dapat dilihat di ${this.getRoutePath()}\n\nTerima Kasih
-           `
+           let tmp = `Halo kak ${this.order.customer_name}\n`
+
+           tmp += `kami dari *${this.shop.name? this.shop.name: '...'}*\n`
+           tmp += `berikut adalah pesanan kakak pada toko kami:\n\n`
+           tmp += `Invoice : *${this.order.order_ref}*\n`
+           tmp += `Di pesan pada : ${this.order.created_at}\n`
+           tmp += `Subtotal : ${this.moneyIDR(this.order.order_subtotal)}\n`
+           tmp += `Ongkos Kirim : ${this.moneyIDR(this.order.shipping_cost)}\n`
+
+           if(this.order.order_unique_code) {
+             tmp += `Kode Unik : - ${this.order.order_unique_code}\n`
+           }
+           if(this.order.service_fee) {
+             tmp += `Service Fee : ${this.order.service_fee}\n`
+           }
+           if(this.order.payment_fee) {
+             tmp += `Payment Fee: ${this.moneyIDR(this.order.payment_fee)}\n`
+           }
+
+           tmp += `\n*Total : ${this.moneyIDR(this.order.grand_total)}*\n\n`
+          //  tmp += `${this.setPaymentMessage()}\n`
+           tmp += `Untuk detail tagihan dapat dilihat di ${this.getRoutePath()}\n\n`
+           tmp += `Terima Kasih`
+
            this.message = tmp
+
          } else {
             let tmp = `Halo kak ${this.order.customer_name}\nkami dari ${this.shop.name? this.shop.name: '...'}\n\n......\n\nTerima Kasih
            `
