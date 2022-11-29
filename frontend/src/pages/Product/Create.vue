@@ -95,7 +95,7 @@
                 </div>
               <div class="">
                 <q-list class="bg-white q-pa-sm q-mt-xs" v-if="form.varians[varIndex].subvarian.length" separator>
-                  <q-item class="q-px-sm" v-for="(subvarian, subIndex) in form.varians[varIndex].subvarian" :key="subIndex">
+                  <q-item class="q-px-sm q-py-md" v-for="(subvarian, subIndex) in form.varians[varIndex].subvarian" :key="subIndex">
                     
                     <q-item-section>
                       <q-item-label class="q-mb-xs">
@@ -132,7 +132,7 @@
                   </div>
                 </div>
               <q-list class="bg-white q-pa-sm q-mt-xs" separator>
-                <q-item  v-for="(varian, vIndex) in form.varians" :key="vIndex">
+                <q-item  v-for="(varian, vIndex) in form.varians" :key="vIndex" class="q-py-md">
                   
                   <q-item-section>
                     <q-item-label class="q-mb-xs">
