@@ -1,5 +1,5 @@
 <template>
-  <div class="col-6 q-px-xs q-pb-xs q-mb-sm">
+ <div class="q-px-xs q-pb-xs q-mb-sm" :class="page_width >= 800 ? 'col-4' : 'col-6'">
     <div class="column full-height relative bg-white box-shadow">
       <q-img v-if="product.asset" :src="product.asset.src" ratio="1" @click="show(product.slug)" class="cursor-pointer">
          <template v-slot:error>
@@ -49,10 +49,13 @@ export default {
   components: { FavoriteButton },
   data() {
     return {
-      rating: this.product.rating? parseFloat(this.product.rating) : 0.0
+      rating: this.product.rating? parseFloat(this.product.rating) : 0.0,
     }
   },
   computed: {
+    page_width() {
+      return this.$store.state.page_width
+    },
     getDIscountAmount() {
       if(this.product.pricing.is_discount) {
         if(this.product.pricing.discount_type == 'PERCENT') {
@@ -78,6 +81,6 @@ export default {
     show(slug) {
       this.$router.push({name: 'ProductShow', params: {slug: slug}})
     },
-  }
+  },
 }
 </script>

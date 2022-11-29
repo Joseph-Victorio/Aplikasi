@@ -1,6 +1,6 @@
 <template>
-  <q-list class="relative bg-white">
-    <q-item class="q-pa-md relative">
+  <q-list class="relative" :class="page_width >= 800 ? 'col-6 q-pa-xs' : 'bg-white'">
+    <q-item class="q-pa-md relative bg-white">
       <q-item-section avatar top @click.prevent="$router.push({name: 'ProductShow', params:{ slug: product.slug }})" class="cursor-pointer column items-center q-gutter-y-sm">
         <q-img v-if="product.asset" :src="product.asset.src" ratio="1" class="image-list rounded-borders">
           <template v-slot:error>
@@ -56,6 +56,9 @@ export default {
     }
   },
   computed: {
+    page_width() {
+      return this.$store.state.page_width
+    },
     getDIscountAmount() {
       if(this.product.pricing.is_discount) {
         if(this.product.pricing.discount_type == 'PERCENT') {

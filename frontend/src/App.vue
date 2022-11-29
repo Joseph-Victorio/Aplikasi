@@ -11,8 +11,14 @@ export default {
       return this.$store.state.session_id
     }
   },
+  methods: {
+    pageResize(){
+      this.$store.commit('SET_PAGE_WIDTH', window.innerWidth)
+    }
+  },
   mounted() {
     this.$store.dispatch('cart/getCarts')
+    this.pageResize()
   },
   created() {
     this.$store.commit('REMOVE_INSTALL_APP')
@@ -23,11 +29,14 @@ export default {
     window.addEventListener('appinstalled', () => {
       this.$store.commit('REMOVE_INSTALL_APP')
     })
+    window.addEventListener('resize', this.pageResize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.pageResize)
   },
   meta: {
     meta: {
       equiv: { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' },
-      // note: for Open Graph type metadata you will need to use SSR, to ensure page is rendered by the server
       ogUrl:  { property: 'og:url', content: location.href },
     },
     noscript: {

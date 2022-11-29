@@ -96,6 +96,9 @@ export default {
   },
   SET_MENU_CATEGORY: (state, status) => {
     state.isMenuCategory = status
+  },
+  SET_PAGE_WIDTH: ( state, width) => {
+    state.page_width = width
   }
 
 }
