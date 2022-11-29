@@ -146,7 +146,7 @@
                   <q-item-label class="text-weight-bold q-py-sm text-md">Total Tagihan</q-item-label>
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label class="text-weight-bold q-py-sm text-md">{{  moneyIDR(invoice.order_total) }}</q-item-label>
+                  <q-item-label class="text-weight-bold q-py-sm text-md">{{  moneyIDR(invoice.grand_total) }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
