@@ -385,6 +385,7 @@ class ProductController extends Controller
 
         Cache::forget('products');
         Cache::forget('initial_products');
+        Cache::forget($product->slug);
 
         return response()->json([
             'success' => true,
