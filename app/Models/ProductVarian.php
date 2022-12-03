@@ -20,6 +20,7 @@ class ProductVarian extends Model
         'stock',
         'has_subvarian',
         'varian_id',
+        'product_id',
         'weight'
     ];
     protected $casts = [
