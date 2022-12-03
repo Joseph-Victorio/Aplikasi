@@ -148,7 +148,7 @@
                   </q-item-section>
 
                    <q-item-section side>
-                    <q-btn round unelevated padding="2px" icon="eva-close" size="9px" color="red" @click="deleteVarian(vIndex)"></q-btn>
+                    <q-btn round unelevated padding="2px" icon="eva-close" size="9px" color="red" @click="deleteVarian(varian, vIndex)"></q-btn>
                   </q-item-section>
 
                 </q-item>

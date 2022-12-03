@@ -229,7 +229,7 @@ class ProductRepository
                     if($request->boolean('has_subvarian') === true && count($data['subvarian']) > 0) {
 
                         $varian =  $product->varians()->create([
-                                'has_subvarian' => $data['has_subvarian'],
+                                'has_subvarian' => 1,
                                 'label' => $data['label'],
                                 'value' => $data['value'],
                             ]);
