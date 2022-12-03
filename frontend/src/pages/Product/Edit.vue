@@ -84,7 +84,7 @@
                 <div class="row items-start justify-between bg-grey-2 q-pa-md q-pt-lg">
                     <div  class="text-weight-bold text-md">{{ form.varians[varIndex].label}} {{ form.varians[varIndex].value }}</div>
                   <div class="q-gutter-x-sm">
-                    <q-btn unelevated size="10px" color="red" @click="deleteVarian(varIndex)">Hapus {{ form.varians[varIndex].value }}</q-btn>
+                    <q-btn unelevated size="10px" color="red" @click="deleteVarian(varian, varIndex)">Hapus {{ form.varians[varIndex].value }}</q-btn>
                     <q-btn unelevated size="10px" color="teal" @click="pushSubVarian(varIndex)">Tambah Item</q-btn>
                   </div>
                 </div>
@@ -112,7 +112,7 @@
                       </q-item-label>
                     </q-item-section>
                     <q-item-section side>
-                        <q-btn round unelevated padding="2px" icon="eva-close" size="9px" color="red" @click="deleteSubvarian(varIndex, subIndex)"></q-btn>
+                        <q-btn round unelevated padding="2px" icon="eva-close" size="9px" color="red" @click="deleteSubvarian(subvarian, varIndex, subIndex)"></q-btn>
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -308,16 +308,23 @@ export default {
     onDeleteImage(idx) {
       this.form.product_images.splice(idx, 1)
     },
-    deleteVarian(varIndex) {
+    deleteVarian(data, varIndex) {
       this.$q.dialog({
         title: 'Konfirmasi',
         message: 'Yakin akan menghapus varian',
         cancel: true
       }).onOk(() => {
+        if(data.id) {
+          this.form.remove_varian.push(data.id)
+        }
         this.form.varians.splice(varIndex,1)
       })
     },
-    deleteSubvarian(varIndex,subIndex) {
+    deleteSubvarian(data, varIndex,subIndex) {
+
+      if(data.id) {
+        this.form.remove_subvarian.push(data.id)
+      }
 
       this.form.varians[varIndex].subvarian.splice(subIndex,1)
 
