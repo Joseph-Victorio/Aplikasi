@@ -32,7 +32,7 @@
           >
             <q-btn
                dense color="white" text-color="dark" icon="eva-maximize-outline"
-               unelevated size="24px" round
+               unelevated size="18px" round
               @click="fullscreen = !fullscreen"
             />
           </q-carousel-control>
