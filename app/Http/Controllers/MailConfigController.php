@@ -19,13 +19,13 @@ class MailConfigController extends Controller
 
     public function update(Request $request)
     {
-        $data = $request->validate([
+        $request->validate([
             'is_active' => 'required',
         ]);
         
         $mailConfig = MailConfig::first();
 
-        $mailConfig->update($data);
+        $mailConfig->update($request->all());
 
         Artisan::call('optimize:clear');
 

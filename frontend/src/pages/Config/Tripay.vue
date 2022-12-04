@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between q-mb-xs">
       <div class="text-md text-weight-bold">Tripay Payment Gateway</div>
       <div>
-        <q-toggle class="text-grey-8" v-model="form.is_payment_gateway" :label="form.is_payment_gateway? 'ON' : 'OFF'" left-label @input="checkIsReady" color="teal"></q-toggle>
+        <q-toggle class="text-grey-8" v-model="form.is_payment_gateway" :label="form.is_payment_gateway? 'Active' : 'Disabled'" left-label @input="checkIsReady" color="teal"></q-toggle>
       </div>
     </div>
     <form @submit.prevent="updateDate">

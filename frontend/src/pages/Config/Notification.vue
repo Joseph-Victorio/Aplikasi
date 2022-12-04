@@ -36,7 +36,7 @@
           <q-toggle
             left-label
             color="teal"
-            :label="formEmail.is_active? 'ON' : 'OFF'"
+            :label="formEmail.is_active? 'Active' : 'Disabled'"
             v-model="formEmail.is_active">
           </q-toggle>
         </div>

@@ -79,7 +79,7 @@
           <q-item-label class="text-weight-medium">Auto Approved Produk Review</q-item-label>
         </q-item-section>
         <q-item-section side top>
-          <q-toggle v-model="form.review_auto_approved" :label="form.review_auto_approved? 'ON' : 'OFF'" left-label color="teal"></q-toggle>
+          <q-toggle v-model="form.review_auto_approved" :label="form.review_auto_approved? 'Active' : 'Disabled'" left-label color="teal"></q-toggle>
         </q-item-section>
       </q-item>
       <q-item class="q-mt-sm">
@@ -90,7 +90,7 @@
           </div>
         </q-item-section>
         <q-item-section side top>
-          <q-toggle v-model="form.is_notifypro" :label="form.is_notifypro? 'ON' : 'OFF'" left-label color="teal"></q-toggle>
+          <q-toggle v-model="form.is_notifypro" :label="form.is_notifypro? 'Active' : 'Disabled'" left-label color="teal"></q-toggle>
         </q-item-section>
       </q-item>
       <q-item v-if="form.is_notifypro">

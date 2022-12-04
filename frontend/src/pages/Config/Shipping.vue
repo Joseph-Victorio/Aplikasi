@@ -5,7 +5,7 @@
         <q-card-section>
           <div class="flex items-center justify-between">
             <div class="text-md text-weight-bold">Ekspedisi</div>
-             <q-toggle v-model="formdata.is_shipping_active" :label="formdata.is_shipping_active? 'ON' : 'OFF'" left-label color="teal" class="text-grey-8"></q-toggle>
+             <q-toggle v-model="formdata.is_shipping_active" :label="formdata.is_shipping_active? 'Active' : 'Disabled'" left-label color="teal" class="text-grey-8"></q-toggle>
           </div>
           <div class="text-caption text-grey-7">
             <div>Pengaturan ongkir otomatis by Rajaongkir</div>
