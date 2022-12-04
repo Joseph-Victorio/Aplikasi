@@ -60,7 +60,8 @@ class UpdateApp extends Command
             // Update Version 2.4.0
             Artisan::call('site:update-v-240');
             $this->info('run 240');
-                    
+            
+            Artisan::call('asset:update-path');
 
         } catch (\Exception $e) {
             
