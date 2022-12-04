@@ -38,7 +38,7 @@ class UpdateAssetMorphPath extends Command
      */
     public function handle()
     {
-        $assets = Asset::where('assetable_type', 'like', 'App\Models%')->get();
+        $assets = Asset::where('assetable_type', 'like', 'App%')->get();
 
         $this->info($assets->count());
 
