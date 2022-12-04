@@ -40,9 +40,13 @@ class UpdateAssetMorphPath extends Command
     {
         $assets = Asset::where('assetable_type', 'like', 'App\Models%')->get();
 
+        $this->info($assets->count());
+
         if($assets->count() > 0) {
             foreach($assets as $asset) {
-                $asset->assetable_type = str_replace('App\Models\\','', $asset->assetable_type);
+                $this->info($asset->assetable_type);
+                $string = $asset->assetable_type;
+                $asset->assetable_type = str_replace("App\Models\\","", $string);
                 $asset->save();
             }
         }
