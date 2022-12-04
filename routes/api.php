@@ -12,6 +12,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\NotifyController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TripayController;
 use App\Http\Controllers\UpdateController;
@@ -20,8 +21,8 @@ use App\Http\Controllers\PromoteController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\FrontApiController;
-use App\Http\Controllers\MailConfigController;
 use App\Http\Controllers\ShippingController;
+use App\Http\Controllers\MailConfigController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\PasswordResetController;
 
@@ -88,6 +89,10 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->group(function() {
 
     Route::get('mailConfig', [MailConfigController::class, 'show']);
     Route::post('mailConfig', [MailConfigController::class, 'update']);
+
+    Route::get('reviews/{type}', [ReviewController::class, 'index']);
+    Route::put('reviews/{id}', [ReviewController::class, 'publish']);
+    Route::delete('reviews/{id}', [ReviewController::class, 'destroy']);
     
 });
 
@@ -124,8 +129,9 @@ Route::get('post/{slug}', [PostController::class, 'getPostBySlug']);
 Route::get('product/{slug}', [ProductController::class, 'show']);
 Route::get('productById/{id}', [ProductController::class, 'productById']);
 
-Route::post('addProductReview', [ProductController::class, 'addProductReview']);
-Route::get('loadProductReview/{id}', [ProductController::class, 'loadProductReview']);
+Route::post('addProductReview', [ReviewController::class, 'store']);
+Route::get('loadProductReview/{id}', [ReviewController::class, 'show']);
+
 Route::get('products', [ProductController::class, 'index']);
 Route::post('getProductsFavorites', [ProductController::class, 'getProductsFavorites']);
 Route::get('getProductsByCategory/{id}', [ProductController::class, 'getProductsByCategory']);

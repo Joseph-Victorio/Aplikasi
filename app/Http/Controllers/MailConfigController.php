@@ -20,14 +20,6 @@ class MailConfigController extends Controller
     public function update(Request $request)
     {
         $data = $request->validate([
-            'smtp_host' => 'required',
-            'smtp_port' => 'required|numeric',
-            'smtp_username' => 'required',
-            'smtp_password' => 'required',
-            'smtp_encryption' => 'required',
-            'from_name' => 'required',
-            'from_address' => 'required',
-            'mail_admin' => 'required',
             'is_active' => 'required',
         ]);
         

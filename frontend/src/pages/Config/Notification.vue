@@ -4,7 +4,7 @@
       <q-card-section>
         <div class="flex items-center justify-between">
           <div class="text-subtitle1 text-weight-bold">Telegram Notifikasi</div>
-          <div class="q-px-sm rounded-borders text-white" :class="config && config.is_telegram_ready? 'bg-green' : 'bg-grey-6'">{{ config && config.is_telegram_ready? 'Active' : 'Disabled' }}</div>
+          <div class="q-px-sm rounded-borders text-white" :class="config && config.is_telegram_ready? 'bg-teal' : 'bg-grey-6'">{{ config && config.is_telegram_ready? 'Active' : 'Disabled' }}</div>
         </div>
         <div class="text-caption text-grey-7">Notifikasi order untuk admin via telegram</div>
         <div class="text-caption text-grey-7">Silahkan buat bot di telegram untuk mendapatkan token, serta dapatkan user id di bot @infouserid</div>
@@ -34,50 +34,51 @@
         <div class="flex items-center justify-between">
           <div class="text-subtitle1 text-weight-bold">Konfigurasi SMTP Email</div>
           <q-toggle
-            color="green"
-            :label="formEmail.is_active? 'Active' : 'Disabled'"
+            left-label
+            color="teal"
+            :label="formEmail.is_active? 'ON' : 'OFF'"
             v-model="formEmail.is_active">
           </q-toggle>
         </div>
         <div class="text-caption text-grey-7">Konfigurasi pengiriman notifikasi via email</div>
       <form @submit.prevent="updateMailConfig">
          <div class="q-gutter-y-sm q-mt-md">
-            <q-input required filled
+            <q-input filled
             v-model="formEmail.smtp_host"
             label="Smtp Host"
             placeholder="eg: smtp.google.com"
             />
-            <q-input required filled
+            <q-input filled
             v-model="formEmail.smtp_port"
             label="Smtp Port"
             placeholder="eg: 587"
             />
-            <q-input required filled
+            <q-input filled
             v-model="formEmail.smtp_encryption"
             label="Smtp Encryption"
             placeholder="eg: tls"
             />
-            <q-input required filled
+            <q-input filled
             v-model="formEmail.smtp_username"
             label="Smtp Username"
             placeholder="eg: youremail@yourdomain.com"
             />
-            <q-input required filled
+            <q-input filled
             v-model="formEmail.smtp_password"
             label="Smtp Password"
             />
-            <q-input required filled
+            <q-input filled
             v-model="formEmail.from_address"
             label="Mail Sender"
             placeholder="eg: youremail@yourdomain.com"
             type="email"
             />
-            <q-input required filled
+            <q-input filled
             v-model="formEmail.from_name"
             label="Sender Name"
             placeholder="My Application"
             />
-            <q-input required filled
+            <q-input filled
             v-model="formEmail.mail_admin"
             label="Admin Email"
             placeholder="Email Admin"
@@ -222,6 +223,11 @@ export default {
       this.formEmail.is_active = data.is_active
     },
     updateMailConfig() {
+      for(let x in this.formEmail) {
+        if(this.formEmail[x] == null || this.formEmail[x] == '') {
+          this.formEmail.is_active = false
+        }
+      }
       Api().post('mailConfig', this.formEmail).then(res => {
         if(res.status == 200) {
           this.setEmailConfig(res.data.results)

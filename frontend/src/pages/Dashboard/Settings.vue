@@ -26,7 +26,7 @@
         </q-item>
         <q-item clickable v-ripple @click.prevent="logout">
           <q-item-section avatar>
-            <q-avatar color="grey" text-color="white" icon="logout" size="md"/>
+            <q-avatar color="red" text-color="white" icon="logout" size="md"/>
           </q-item-section>
           <q-item-section>
             <q-item-label>Logout</q-item-label>
@@ -63,7 +63,8 @@ export default {
         { label: 'Block', caption: 'Kelola banner, partner dan featured', path: 'AdminBlockIndex', icon: 'space_dashboard', color: 'amber-7'},
         { label: 'Artikel', caption: 'Kelola Artikel / blog', path: 'AdminPostIndex', icon: 'article', color: 'deep-orange'},
         { label: 'Manage User', caption: 'kelola user', path: 'UserList', icon: 'group', color: 'teal'},
-        { label: 'Pengaturan', caption: 'Pengaturan Website dan pengiriman', path: 'Config', icon: 'settings', color: 'accent'},
+        { label: 'Produk Reviews', caption: 'Manage Reviews Produk', path: 'ReviewsIndex', icon: 'comment', color: 'purple'},
+        { label: 'Pengaturan', caption: 'Pengaturan Website dan pengiriman', path: 'Config', icon: 'settings', color: 'blue'},
       ]
     }
   },

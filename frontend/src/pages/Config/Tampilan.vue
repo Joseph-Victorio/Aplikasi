@@ -1,12 +1,12 @@
 <template>
   <q-card flat>
     <q-card-section>
-      <div class="text-subtitle1 text-weight-bold">Pengaturan Tampilan</div>
+      <div class="text-subtitle1 text-weight-bold">Pengaturan Basic</div>
     </q-card-section>
     <q-list>
       <q-item>
         <q-item-section>
-          <q-item-label>Tema</q-item-label>
+          <q-item-label class="text-weight-medium">Tema</q-item-label>
         </q-item-section>
         <q-item-section side>
             <q-select outlined dense v-model="form.theme" :options="themes"></q-select>
@@ -14,7 +14,7 @@
       </q-item>
       <q-item>
         <q-item-section>
-          <q-item-label>Base Color</q-item-label>
+          <q-item-label class="text-weight-medium">Base Color</q-item-label>
         </q-item-section>
         <q-item-section side>
             <input ref="color" type="color" v-model="form.theme_color" style="width:110px;height:20px;"/>
@@ -22,7 +22,7 @@
       </q-item>
       <q-item>
         <q-item-section>
-          <q-item-label>
+          <q-item-label class="text-weight-medium">
             Tampilan produk beranda
           </q-item-label>
         </q-item-section>
@@ -49,7 +49,7 @@
       </q-item>
       <q-item>
         <q-item-section>
-          <q-item-label>
+          <q-item-label class="text-weight-medium">
           Tampilan produk katalog
           </q-item-label>
         </q-item-section>
@@ -76,13 +76,21 @@
       </q-item>
       <q-item class="q-mt-md">
         <q-item-section>
+          <q-item-label class="text-weight-medium">Auto Approved Produk Review</q-item-label>
+        </q-item-section>
+        <q-item-section side top>
+          <q-toggle v-model="form.review_auto_approved" :label="form.review_auto_approved? 'ON' : 'OFF'" left-label color="teal"></q-toggle>
+        </q-item-section>
+      </q-item>
+      <q-item class="q-mt-sm">
+        <q-item-section>
           <q-item-label class="text-weight-medium">Social Proof Popup</q-item-label>
           <div class="q-mb-sm text-caption q-mt-sm">
             Pengaturan social proof notifikasi.
           </div>
         </q-item-section>
         <q-item-section side top>
-          <q-toggle v-model="form.is_notifypro" :label="form.is_notifypro? 'Active' : 'Inactive'" left-label color="green"></q-toggle>
+          <q-toggle v-model="form.is_notifypro" :label="form.is_notifypro? 'ON' : 'OFF'" left-label color="teal"></q-toggle>
         </q-item-section>
       </q-item>
       <q-item v-if="form.is_notifypro">
@@ -113,6 +121,7 @@ export default {
         is_notifypro: false,
         notifypro_interval: 20,
         notifypro_timeout: 4,
+        review_auto_approved: false
       }
     }
   },
@@ -137,6 +146,7 @@ export default {
     this.form.notifypro_timeout = this.config.notifypro_timeout
     this.form.theme = this.config.theme
     this.form.theme_color = this.config.theme_color
+    this.form.review_auto_approved = this.config.review_auto_approved
   },
   methods: {
     changeHomeViewMode(str) {

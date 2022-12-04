@@ -121,6 +121,14 @@ div,
  
  
 }
+.product-review {
+  padding: 12px;
+  border: 1px solid #eee;
+  // background-color: rgb(249, 253, 249);
+  &.review-unaproved {
+    background-color: rgb(245, 240, 231);
+  }
+}
 .q-body--fullscreen-mixin .img-carousel.q-carousel{
   max-height: 100vh!important;
 }

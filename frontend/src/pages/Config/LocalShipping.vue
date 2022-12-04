@@ -14,7 +14,7 @@
               <div class="q-mb-sm text-caption text-grey-7">Opsi pembayaran ditempat oleh kurir toko</div>
             </div>
             <div>
-              <q-toggle class="text-grey-8" color="green" v-model="formdata.is_cod_payment" left-label :label="formdata.is_cod_payment ? 'Active' : 'Inactive'"> </q-toggle>
+              <q-toggle class="text-grey-8" color="teal" v-model="formdata.is_cod_payment" left-label :label="formdata.is_cod_payment ? 'ON' : 'OFF'"> </q-toggle>
             </div>
           </div>
           <div class="q-mt-md">

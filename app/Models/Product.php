@@ -18,7 +18,8 @@ class Product extends Model
 
     protected $casts = [
         'status' > 'boolean',
-        'category_id' => 'integer'
+        'category_id' => 'integer',
+        'price' => 'integer',
     ];
 
     public function category()
@@ -34,6 +35,10 @@ class Product extends Model
         return $this->morphOne(Asset::class, 'assetable')->orderByDesc('variable');
     }
     public function reviews()
+    {
+        return $this->hasMany(Review::class)->latest()->where('is_approved', 1);
+    }
+    public function allReviews()
     {
         return $this->hasMany(Review::class)->latest();
     }

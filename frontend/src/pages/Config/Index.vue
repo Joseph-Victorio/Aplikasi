@@ -71,7 +71,7 @@ import ServiceFee from './ServiceFee.vue'
     return {
       tab: 'Tampilan',
       tabs: [ 
-        { value: 'Tampilan', label: 'Tampilan'},
+        { value: 'Tampilan', label: 'Basic'},
         { value: 'Ekspedisi', label: 'Ekspedisi'}, 
         { value: 'Local', label: 'Pengiriman Lokal'}, 
         { value:'Notifikasi', label: 'Notifikasi'}, 

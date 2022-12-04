@@ -90,6 +90,7 @@ const routes = [
       { path: 'discount', name: 'DiscountIndex', component: () => import('pages/Discount/Index.vue')},
       { path: 'promo', name: 'PromoIndex', component: () => import('pages/Promo/Index.vue')},
       { path: 'promo/:id', name: 'PromoDetail', component: () => import('pages/Promo/Detail.vue')},
+      { path: 'reviews', name: 'ReviewsIndex', component: () => import('pages/Reviews/Index.vue')},
     ]
   },
   // Always leave this as last one,

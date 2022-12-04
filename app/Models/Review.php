@@ -14,11 +14,16 @@ class Review extends Model
         'product_id', 
         'comment', 
         'rating', 
-        'name'
+        'name',
+        'is_approved'
     ];
 
     public $appends = [
         'created'
+    ];
+
+    protected $casts = [
+        'is_approved' => 'boolean'
     ];
 
     public function getCreatedAttribute()
@@ -33,5 +38,14 @@ class Review extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('is_approved', 1);
+    }
+    public function scopeUnapproved($query)
+    {
+        return $query->where('is_approved', 0);
     }
 }

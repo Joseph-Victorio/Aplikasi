@@ -71,6 +71,7 @@ class Config extends Model
         'is_guest_checkout' => 'boolean',
         'is_service_fee' => 'boolean',
         'is_shipping_active' => 'boolean',
+        'review_auto_approved' => 'boolean',
         'cod_list' => 'array',
         'warehouse_address' => 'object'
     ];

@@ -31,8 +31,8 @@
             :offset="[18, 40]"
           >
             <q-btn
-               dense color="dark" text-color="white"
-              :icon="fullscreen ? 'eva-minimize-outline' : 'eva-maximize-outline'"
+               dense color="white" text-color="dark" icon="eva-maximize-outline"
+               unelevated size="24px" round
               @click="fullscreen = !fullscreen"
             />
           </q-carousel-control>
@@ -159,11 +159,14 @@
               </div>
               <div class="q-pt-md">
                 <div class="q-gutter-y-md">
-                  <div v-for="(review, index) in productReviews" :key="index">
+                <div v-for="(review, index) in AllProductReviews" :key="index" 
+                  class="product-review"
+                  :class="{'review-unaproved' : !review.is_approved}"
+                  >
                     <q-list>
                       <q-item class="q-px-xs">
                         <q-item-section>
-                          <q-item-label class="text-md">{{ review.name }}</q-item-label>
+                          <q-item-label class="text-md">{{ review.name }} <span v-if="!review.is_approved" class="text-xs text-grey-6">Menunggu Moderasi</span></q-item-label>
                            <q-rating 
                             readonly
                             v-model="review.rating"
@@ -175,11 +178,11 @@
                           />
                         </q-item-section>
                         <q-item-section side>
-                          <div class="text-xs">{{ review.created_format }}</div>
+                          <div class="text-xs">{{ review.created }}</div>
                         </q-item-section>
                       </q-item>
                     </q-list>
-                    <div class="q-pa-sm bg-grey-1 text-grey-7 text-sm"> {{ review.comment }} </div>
+                      <div class="q-pa-sm bg-grey-1 text-grey-7 text-sm"> {{ review.comment }} </div>
                   </div>
                 </div>
               </div>
@@ -349,29 +352,56 @@
       </q-card>
     </q-dialog>
     <q-dialog v-model="fullscreen" persistent maximized>
-      <div class="max-width relative" v-if="product">
-        <TransitionGroup name="slide" tag="div" class="preview-image relative bg-grey-5 text-center">
-          <img v-for="(img, idx) in product.assets" :key="idx" v-show="idx == currentSlide" :src="img.src" style="height:100%;width:auto;"/>
-        </TransitionGroup>
+      <div class="max-width relative bg-grey-10" v-if="product">
+        <div class="text-center q-py-md absolute" style="top:5px;width:100%;z-index:99;">
+          <div class="flex justify-center">
+            <div class="q-px-md" style="background:rgb(240 240 240 / 90%);">Scroll mouse atau cubit layar untuk zoom</div>
+          </div>
+        </div>
+        <Transition name="slide" tag="div" class="preview-image relative bg-grey-5 text-center">
+          <PinchScrollZoom
+          ref="zoomer"
+          :width="zoomerWidth"
+          :height="zoomerHeight"
+          :scale="scale"
+          >
+          <img ref="zoomerimage" :src="currentImage" :style="zoomImageStyle"/>
+          </PinchScrollZoom>
+        </Transition>
         <div class="absolute row items-center" style="bottom: 4%; right:4%;">
           <div class="q-mr-lg" v-if="product.assets.length > 1">
             <q-btn
               :disable="slide == 1"
-              dense color="dark" text-color="white"
+              dense
+              size="18px"
+              color="teal" round unelevated
               icon="eva-arrow-ios-back"
               @click="slide--"
               class="q-mr-sm"
             />
             <q-btn
               :disable="product.assets.length == slide"
-              dense color="dark" text-color="white"
+              dense
+              size="18px"
+              color="teal" round unelevated
               icon="eva-arrow-ios-forward"
               @click="slide++"
             />
           </div>
             <q-btn
-              dense color="dark" text-color="white"
-              :icon="fullscreen ? 'eva-minimize-outline' : 'eva-maximize-outline'"
+              dense
+              size="18px"
+              color="teal" round unelevated
+              icon="ion-refresh"
+              @click="resetZoom"
+              class="q-mr-sm"
+            />
+            <q-btn
+              dense
+              size="18px"
+              color="teal" round unelevated
+              icon="eva-close"
+             
               @click="fullscreen = !fullscreen"
             />
           </div>
@@ -384,11 +414,13 @@
 import { mapMutations, mapActions } from 'vuex'
 import ShoppingCart from 'components/ShoppingCart.vue'
 import BadgeTick from 'components/BadgeTick.vue'
+import PinchScrollZoom, { PinchScrollZoomEmitData } from "@coddicat/vue-pinch-scroll-zoom";
 export default {
   name: 'ProductShow',
-  components: { ShoppingCart, BadgeTick },
+  components: { ShoppingCart, BadgeTick, PinchScrollZoom },
   data () {
     return {
+      scale: 1,
       tab: 'Description',
       defaultChat: ['Apakah ini masih ada?', 'Apakah bisa grosir?'],
       chatText: '',
@@ -419,10 +451,33 @@ export default {
       formVariantModal: false,
       product: null,
       productReviews: [],
-      imagePreviewIndex: 0
+      imagePreviewIndex: 0,
+      unapproved_review: JSON.parse(localStorage.getItem('unapproved_review')) || null,
     }
   },
   computed: {
+    zoomImageStyle() {
+      return `width:100%;height:100%;object-fit:contain;padding:4%;max-width:${this.zoomerWidth};max-height:${this.zoomerHeight}`
+    },
+    currentImage(){
+      return this.product.assets[this.slide -1].src
+    },
+    zoomerHeight() {
+      return window.innerHeight
+    },
+    zoomerWidth() {
+      if(window.innerWidth > 768) {
+        return 768;
+      }else {
+        return window.innerWidth
+      }
+    },
+    AllProductReviews() {
+      if(this.unapproved_review) {
+        return [this.unapproved_review, ...this.productReviews]
+      }
+      return this.productReviews
+    },
     session_id() {
       return this.$store.state.session_id
     },
@@ -582,6 +637,15 @@ export default {
   },
   methods: {
     ...mapActions('product', ['getProductBySlug', 'loadProductReview', 'addProductReview']),
+    resetZoom() {
+      this.$refs.zoomer.setData({
+        scale: 1,
+        originX: 0,
+        originY: 0,
+        translateX: 0,
+        translateY: 0        
+      });
+    },
     selectProductVarian(item) {
       this.varianSelected = item
       this.subvarianSelected = null
@@ -787,7 +851,23 @@ export default {
       if(this.form.name && this.form.comment && this.form.rating) {
         this.loading = true
         this.reviewModal = false
-        this.addProductReview(this.form).then(() => {
+        this.addProductReview(this.form).then((res) => {
+          let dataReview = res.data.results
+          if(res.status == 200) {
+            this.$q.notify({
+              type: 'positive',
+              message: res.data.message
+            })
+          }
+          if(!dataReview.is_approved) {
+            localStorage.setItem('unapproved_review', JSON.stringify(dataReview))
+            this.unapproved_review = dataReview
+
+            setTimeout(() => {
+              localStorage.removeItem('unapproved_review');
+            }, 80000)
+          }
+
           this.getProduct()
         })
         this.resetForm()
@@ -952,8 +1032,7 @@ position: absolute;
   height:100%;
   width:100%;
   position:relative;
-  overflow-y: hidden;
-  overflow-x: auto;
+  overflow: hidden;
 }
 // .preview-image img {
 //   transition: all ease-in-out 300ms;
