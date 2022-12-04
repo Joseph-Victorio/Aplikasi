@@ -43,6 +43,7 @@ class UpdateAssetMorphPath extends Command
         if($assets->count() > 0) {
             foreach($assets as $asset) {
                 $asset->assetable_type = str_replace('App\Models\\','', $asset->assetable_type);
+                $asset->save();
             }
         }
     }
