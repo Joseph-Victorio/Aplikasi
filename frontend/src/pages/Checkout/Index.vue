@@ -1,5 +1,5 @@
 <template>
-  <q-page class="" padding>
+  <q-page class="bg-white" padding>
     <q-header class="text-primary bg-white box-shadow">
         <q-toolbar>
           <q-btn @click="handleBackButton"
