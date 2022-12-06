@@ -137,7 +137,7 @@
               </div>
             </div>
           </q-tab-panel>
-          <q-tab-panel name="Review" class="q-px-sm">
+          <q-tab-panel name="Review">
             <div id="ulasan" class="q-mt-lg">
               <div class="flex column justify-center items-center">
                 <div class="text-center" v-if="productRating > 0">
