@@ -137,7 +137,7 @@
               </div>
             </div>
           </q-tab-panel>
-          <q-tab-panel name="Review" class="q-px-none">
+          <q-tab-panel name="Review" class="q-px-sm">
             <div id="ulasan" class="q-mt-lg">
               <div class="flex column justify-center items-center">
                 <div class="text-center" v-if="productRating > 0">
@@ -159,9 +159,7 @@
               </div>
               <div class="q-pt-lg">
               <q-list separator>
-                <q-item class="q-py-md" v-for="(review, index) in AllProductReviews" :key="index" 
-                :class="{ 'bg-grey-1' : !review.is_approved }"
-                >
+                <q-item class="q-py-md" v-for="(review, index) in AllProductReviews" :key="index">
                   <q-item-section avatar top>
                     <q-avatar icon="eva-person-outline" color="grey-2" text-color="grey-5"></q-avatar>
                   </q-item-section>
@@ -183,7 +181,7 @@
               </q-list>
               </div>
             <div class="q-my-md row justify-center">
-              <q-btn flat color="primary" :loading="loadMoreLoading" v-if="productReviews.length < product.reviews_count" label="loadmore.." @click="loadReview">
+              <q-btn outline no-caps color="primary" :loading="loadMoreLoading" v-if="productReviews.length < product.reviews_count" label="loadmore..." @click="loadReview">
                 <template v-slot:loading>
                   <q-spinner-facebook />
                 </template>
