@@ -70,6 +70,26 @@
             <div class="q-mt-md q-mb-sm">
               <label for="description" class="text-grey-7 q-pb-sm block">Deskripsi</label>
               <q-editor 
+              :toolbar="[
+                ['left','center','right','justify'],
+                ['bold','italic','underline','strike'],
+                ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link',
+                {
+                    icon: $q.iconSet.editor.formatting,
+                    list: 'no-icons',
+                    options: [
+                      'p',
+                      'h1',
+                      'h2',
+                      'h3',
+                      'h4',
+                      'h5',
+                      'h6',
+                      'code'
+                    ]
+                  },
+                ],
+              ]"
               v-model="form.description"
               />
               <div class="text-xs text-red" v-if="errors.description"> {{ errors.description[0]}}</div>

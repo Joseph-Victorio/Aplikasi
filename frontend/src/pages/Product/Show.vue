@@ -637,15 +637,7 @@ export default {
   },
   methods: {
     ...mapActions('product', ['getProductBySlug', 'loadProductReview', 'addProductReview']),
-    resetZoom() {
-      this.$refs.zoomer.setData({
-        scale: 1,
-        originX: 0,
-        originY: 0,
-        translateX: 0,
-        translateY: 0        
-      });
-    },
+    
     selectProductVarian(item) {
       this.varianSelected = item
       this.subvarianSelected = null

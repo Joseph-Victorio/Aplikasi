@@ -29,16 +29,16 @@ export function productUpdate ({ dispatch, commit }, payload) {
   })
 }
 
-export function getAdminProducts ({ commit }, q = null) {
-  if(q) {
-    Api().get('getAdminProducts?='+q).then(response => {
-       commit('SET_ADMIN_PRODUCTS', response.data.results)
-     })
-  } else {
-    Api().get('getAdminProducts').then(response => {
-       commit('SET_ADMIN_PRODUCTS', response.data.results)
-     })
+export function getAdminProducts ({ commit }, query = null) {
+  let url = 'getAdminProducts'
+
+  if(query) {
+    url = `${url}?${new URLSearchParams(query).toString()}`
   }
+  
+  Api(url).get('getAdminProducts').then(response => {
+     commit('SET_ADMIN_PRODUCTS', response.data.results)
+   })
 }
 export function searchAdminProducts ({ commit }, key) {
   return  Api().get('searchAdminProducts/' + key)

@@ -186,6 +186,7 @@ class ProductRepository
         DB::beginTransaction();
         
         try {
+            
             $slug = Str::slug($request->title);
             $product = new Product();
 
@@ -283,15 +284,16 @@ class ProductRepository
 
         DB::beginTransaction();
 
-        $product->title = $request->title;
-        $product->price = str_replace(".", "", $request->price);
-        $product->stock = str_replace(".", "", $request->stock);
-        $product->weight = str_replace(".", "", $request->weight);
-        $product->description = $request->description;
-        $product->category_id = $request->category_id;
-
+        
         
         try {
+
+            $product->title = $request->title;
+            $product->price = str_replace(".", "", $request->price);
+            $product->stock = str_replace(".", "", $request->stock);
+            $product->weight = str_replace(".", "", $request->weight);
+            $product->description = $request->description;
+            $product->category_id = $request->category_id;
 
             if($request->featured_asset) {
                 foreach($product->assets as $asset) {
@@ -344,12 +346,6 @@ class ProductRepository
                 $varianIds = json_decode($request->remove_varian);
 
                 ProductVarian::whereIn('id', $varianIds)->delete();
-            }
-
-            if($request->remove_subvarian) {
-                $subVarianIds = json_decode($request->remove_subvarian);
-
-                ProductVarian::whereIn('id', $subVarianIds)->delete();
             }
 
             if($request->varians) {

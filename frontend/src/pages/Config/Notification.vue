@@ -45,31 +45,31 @@
          <div class="q-gutter-y-sm q-mt-md">
             <q-input filled
             v-model="formEmail.smtp_host"
-            label="Smtp Host"
+            label="SMTP Host"
             placeholder="eg: smtp.google.com"
             />
             <q-input filled
             v-model="formEmail.smtp_port"
-            label="Smtp Port"
+            label="SMTP Port"
             placeholder="eg: 587"
             />
             <q-input filled
             v-model="formEmail.smtp_encryption"
-            label="Smtp Encryption"
+            label="SMTP Encryption"
             placeholder="eg: tls"
             />
             <q-input filled
             v-model="formEmail.smtp_username"
-            label="Smtp Username"
+            label="SMTP Username"
             placeholder="eg: youremail@yourdomain.com"
             />
             <q-input filled
             v-model="formEmail.smtp_password"
-            label="Smtp Password"
+            label="SMTP Password"
             />
             <q-input filled
             v-model="formEmail.from_address"
-            label="Mail Sender"
+            label="SMTP Mail Sender"
             placeholder="eg: youremail@yourdomain.com"
             type="email"
             />

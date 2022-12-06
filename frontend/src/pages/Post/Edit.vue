@@ -33,7 +33,28 @@
         <div class="label-text">
           Konten
         </div>
-        <q-editor v-model="form.body"></q-editor>
+        <q-editor v-model="form.body"
+        :toolbar="[
+            ['left','center','right','justify'],
+            ['bold','italic','underline','strike'],
+            ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link',
+            {
+                icon: $q.iconSet.editor.formatting,
+                list: 'no-icons',
+                options: [
+                  'p',
+                  'h1',
+                  'h2',
+                  'h3',
+                  'h4',
+                  'h5',
+                  'h6',
+                  'code'
+                ]
+              },
+            ],
+          ]"
+        ></q-editor>
       </div>
 
     <div style="min-height: 100px;">
