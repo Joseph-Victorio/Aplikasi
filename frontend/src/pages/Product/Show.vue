@@ -1,5 +1,5 @@
 <template>
-  <q-page style="background:white;" class="q-pb-xl relative" :class="{'flex flex-center' : !ready }">
+  <q-page class="relative" :class="{'flex flex-center' : !ready }">
     <template v-if="ready && product">
     <div class="q-pa-md header-top">
       <div class="flex justify-between">
@@ -80,7 +80,7 @@
       </q-card>
 
      <div class="box-shadow bg-white q-pa-md q-mt-md" v-if="product.varians.length">
-        <div>
+        <div class="q-pb-md">
           <div class="text-md">Pilih Varian <span class="text-sm text-weight-normal text-grey-7"></span></div>
           <div class="q-mt-sm">
           <div class="q-mb-xs">{{ product.varians[0].label}}</div>
@@ -108,7 +108,7 @@
         </div>
       </div>
      
-      <q-card class="box-shadow q-mt-md">
+      <q-card class="box-shadow q-mt-md bg-white q-pb-xl">
         <q-tabs 
         v-model="tab"
         active-color="accent"
@@ -120,7 +120,7 @@
          <q-separator />
         <q-tab-panels v-model="tab">
           <q-tab-panel name="Description">
-            <div id="description" class="q-mt-md" style="min-height:150px;">
+            <div id="description" class="q-mt-md" style="min-height:180px;">
               <div>
                   <h3 class="text-md q-mb-sm">Deskripsi Produk</h3>
                 <div class="" v-html="product.description"></div>
@@ -137,7 +137,7 @@
               </div>
             </div>
           </q-tab-panel>
-          <q-tab-panel name="Review">
+          <q-tab-panel name="Review" class="q-px-none">
             <div id="ulasan" class="q-mt-lg">
               <div class="flex column justify-center items-center">
                 <div class="text-center" v-if="productRating > 0">
@@ -157,34 +157,30 @@
                 </div>
                 <q-btn outline color="accent" @click="handleReviewModal" label="Berikan ulasan" class="q-my-xs"></q-btn>
               </div>
-              <div class="q-pt-md">
-                <div class="q-gutter-y-md">
-                <div v-for="(review, index) in AllProductReviews" :key="index" 
-                  class="product-review"
-                  :class="{'review-unaproved' : !review.is_approved}"
-                  >
-                    <q-list>
-                      <q-item class="q-px-xs">
-                        <q-item-section>
-                          <q-item-label class="text-md">{{ review.name }} <span v-if="!review.is_approved" class="text-xs text-grey-6">Menunggu Moderasi</span></q-item-label>
-                           <q-rating 
-                            readonly
-                            v-model="review.rating"
-                            color="accent"
-                            icon="ion-star-outline"
-                            icon-selected="ion-star"
-                            icon-half="ion-star-half"
-                            size="1.1rem"
-                          />
-                        </q-item-section>
-                        <q-item-section side>
-                          <div class="text-xs">{{ review.created }}</div>
-                        </q-item-section>
-                      </q-item>
-                    </q-list>
-                      <div class="q-pa-sm bg-grey-1 text-grey-7 text-sm"> {{ review.comment }} </div>
-                  </div>
-                </div>
+              <div class="q-pt-lg">
+              <q-list separator>
+                <q-item class="q-py-md" v-for="(review, index) in AllProductReviews" :key="index" 
+                :class="{ 'bg-grey-1' : !review.is_approved }"
+                >
+                  <q-item-section avatar top>
+                    <q-avatar icon="eva-person-outline" color="grey-2" text-color="grey-5"></q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-md">{{ review.name }} <span v-if="!review.is_approved" class="text-xs text-orange">( Menunggu Moderasi )</span></q-item-label>
+                      <q-rating 
+                      readonly
+                      v-model="review.rating"
+                      color="accent"
+                      icon="ion-star-outline"
+                      icon-selected="ion-star"
+                      icon-half="ion-star-half"
+                      size="1.1rem"
+                    />
+                    <div class="text-xs text-grey-6">{{ review.created }}</div>
+                    <div class="q-pa-xs text-sm text-grey-8"> {{ review.comment }} </div>
+                  </q-item-section>
+                </q-item>
+              </q-list>
               </div>
             <div class="q-my-md row justify-center">
               <q-btn flat color="primary" :loading="loadMoreLoading" v-if="productReviews.length < product.reviews_count" label="loadmore.." @click="loadReview">
@@ -865,7 +861,7 @@ export default {
 
             setTimeout(() => {
               localStorage.removeItem('unapproved_review');
-            }, 80000)
+            }, 30000)
           }
 
           this.getProduct()
