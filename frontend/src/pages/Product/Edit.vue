@@ -109,7 +109,7 @@
       </q-card-section>
 
       <q-card-section v-if="!form.simple_product" class="">
-        <div id="variants" class="q-pa-md">
+        <div id="variants" class="q-pa-sm">
           <div class="row items-center q-gutter-sm q-py-md q-mb-md">
             <h5 class="q-mb-none text-grey-9">Produk Varian</h5>
             <q-btn v-if="canAddVarian" outline icon="add" no-caps label="Tambah Varian" @click="varianModal = true" color="primary" unelevated size="12px"></q-btn>

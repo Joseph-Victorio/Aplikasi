@@ -83,7 +83,7 @@
           </q-card-section>
         </q-card>
 
-        <q-card square flat>
+        <q-card square flat style="min-height:300px;">
           <q-card-section>
             <q-radio class="text-weight-medium text-md" v-model="form.simple_product" :val="true" label="Simple Produk"></q-radio>
             <q-radio class="text-weight-medium text-md" v-model="form.simple_product" :val="false" label="Produk Dengan Varian"></q-radio>
