@@ -22,8 +22,6 @@ class ProductRepository
     
     public function show($slug)
     {
-        Cache::flush();
-
         $product = Cache::remember($slug, now()->addMinutes(5), function() use ($slug) {
 
             return new ProductResource(Product::with(['minPrice', 'maxPrice','assets', 'category:id,title,slug', 'varians.subvarian', 'productPromo' => function($query) {

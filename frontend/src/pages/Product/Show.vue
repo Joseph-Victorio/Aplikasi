@@ -966,7 +966,7 @@ export default {
               this.varianSelected = this.product.varians[0];
             }
           }
-          // this.getReview()
+          this.getReview()
         } else {
           // this.$router.push({name: 'ProductIndex'})
         }
