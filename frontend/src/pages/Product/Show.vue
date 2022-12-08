@@ -595,19 +595,29 @@ export default {
       return 0
     },
     getMaxPrice() {
-      if(this.isHasVarian && this.product.pricing.max_price) {
+      if(this.isHasVarian) {
+
+        let maxPrice = parseInt(this.product.pricing.max_price);
+
+        if(this.varianSelected && this.varianSelected.has_subvarian) {
+
+          maxPrice = parseInt(this.varianSelected.subvarian[this.varianSelected.subvarian.length -1].price)
+
+        }
 
         let discount = 0;
 
         if(this.product.pricing.is_discount) {
           if(this.product.pricing.discount_type == 'PERCENT') {
-            discount = (parseInt(this.product.pricing.max_price)*parseInt(this.product.pricing.discount_amount))/100
+            discount = (parseInt(maxPrice)*parseInt(this.product.pricing.discount_amount))/100
           }else {
             discount = parseInt(this.product.pricing.discount_amount)
           }
         }
 
-        return parseInt(this.product.pricing.max_price) - parseInt(discount)
+
+
+        return maxPrice - discount
       }
       return 0
     },
