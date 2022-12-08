@@ -46,16 +46,23 @@
             <div class="flex items-center">
               <div class="flex items-center text-secondary">
                   <span class="text-md">Rp</span>
-                  <span class="text-lg text-weight-medium">
-                  {{ $money(parseInt(getCurrentPrice * this.quantity)) }} 
-                  </span>
-                </div>
-                <div class="flex items-center text-strike text-xs q-ml-xs" v-if="product.pricing.is_discount">
-                  <span class="text-sm">Rp</span>
-                  <span class="text-md">{{ $money(getDefaultPrice * this.quantity) }} </span>
-                </div>
-              <div>
+                <span class="text-lg text-weight-medium">
+                {{ $money(parseInt(getCurrentPrice * this.quantity)) }} 
+                </span>
               </div>
+              <div class="flex items-center text-strike text-xs q-ml-xs" v-if="renderDiscount">
+                <span class="text-sm">Rp</span>
+                <span class="text-md">{{ $money(getDefaultPrice * this.quantity) }} </span>
+              </div>
+              <template v-if="renderMaxPrice">
+              <div class="q-px-sm text-md text-weight-bold">-</div>
+              <div class="flex items-center text-secondary">
+                <span class="text-md">Rp</span>
+                <span class="text-lg text-weight-medium">{{ $money(getMaxPrice) }} </span>
+              </div>
+              </template>
+              <div>
+            </div>
             </div>
             <div class="row q-gutter-md text-h6 items-center">
               <q-btn flat round icon="eva-minus-circle-outline" size="24" @click="decrementQty" style="cursor:pointer;"></q-btn>
@@ -466,6 +473,20 @@ export default {
         return window.innerWidth
       }
     },
+    renderMaxPrice(){
+      if(this.isHasVarian && !this.isVarianHasSelected) {
+        return true
+      }
+      return false
+    },
+    renderDiscount() {
+      if(this.product.pricing.is_discount) {
+        if(this.isHasVarian && this.isVarianHasSelected) {
+          return true
+        }
+      }
+      return false
+    },
     AllProductReviews() {
       if(this.unapproved_review) {
         return [this.unapproved_review, ...this.productReviews]
@@ -543,6 +564,16 @@ export default {
     isHasVarian() {
       return this.product.varians.length > 0
     },
+    isVarianHasSelected() {
+      if(this.varianSelected) {
+         if(!this.varianSelected.has_subvarian) {
+          return  true
+         }else if(this.subvarianSelected) {
+          return true
+         }
+      }
+      return false
+    },
     currentProductSku() {
       if(this.varianSelected) {
         if(!this.varianSelected.has_subvarian) {
@@ -561,6 +592,23 @@ export default {
         }else {
           return parseInt(this.product.pricing.discount_amount)
         }
+      }
+      return 0
+    },
+    getMaxPrice() {
+      if(this.isHasVarian && this.product.pricing.max_price) {
+
+        let discount = 0;
+
+        if(this.product.pricing.is_discount) {
+          if(this.product.pricing.discount_type == 'PERCENT') {
+            discount = (parseInt(this.product.pricing.max_price)*parseInt(this.product.pricing.discount_amount))/100
+          }else {
+            discount = parseInt(this.product.pricing.discount_amount)
+          }
+        }
+
+        return parseInt(this.product.pricing.max_price) - parseInt(discount)
       }
       return 0
     },
@@ -909,7 +957,7 @@ export default {
               this.varianSelected = this.product.varians[0];
             }
           }
-          this.getReview()
+          // this.getReview()
         } else {
           // this.$router.push({name: 'ProductIndex'})
         }

@@ -30,6 +30,20 @@ class Product extends Model
     {
         return $this->morphMany(Asset::class, 'assetable')->orderByDesc('variable');
     }
+    public function minPrice()
+    {
+        return $this->hasOne(ProductVarian::class)
+            ->where('has_subvarian', 0)
+            ->whereNotNull('price')
+            ->orderBy('price');
+    }
+    public function maxPrice()
+    {
+        return $this->hasOne(ProductVarian::class)
+            ->where('has_subvarian', 0)
+            ->whereNotNull('price')
+            ->orderByDesc('price');
+    }
     public function featuredImage()
     {
         return $this->morphOne(Asset::class, 'assetable')->orderByDesc('variable');

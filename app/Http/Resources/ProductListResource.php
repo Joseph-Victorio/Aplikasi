@@ -15,6 +15,27 @@ class ProductListResource extends JsonResource
     public function toArray($request)
     {
         // return parent::toArray($request);
+
+        $pricing = [
+            'default_price' => $this->price,
+            'discount_type' => 'PERCENT',
+            'discount_amount' => 0,
+            'is_discount' => false,
+        ];
+
+        if($this->productPromo) {
+
+            $disc = $this->productPromo;
+
+            $pricing['is_discount'] = true;
+            $pricing['discount_type'] = $disc->discount_type;
+            $pricing['discount_amount'] = $disc->discount_amount;
+        }
+
+        if($this->minPrice) {
+            $pricing['default_price'] = $this->minPrice->price;
+        }
+
         return [
             'id'      => $this->id,
             'title'   => $this->title,
@@ -23,34 +44,12 @@ class ProductListResource extends JsonResource
             'description' =>  $this->description,
             'status'  =>  $this->status,
             'rating'  =>  $this->reviews_avg_rating ? (float) number_format($this->reviews_avg_rating, 1) : 0,
-            'pricing' =>  $this->setPricing($this),
+            'pricing' =>  $pricing,
             'category' => $this->category,
             'asset'  =>  $this->featuredImage,
             'category_id' => $this->category_id,
             'category_type' => $this->category_type,
           ];
     }
-    protected function setPricing($product)
-    {
 
-        $defaultPrice = $product->price;
-
-        $pricing = [
-            'default_price' => $defaultPrice,
-            'discount_type' => 'PERCENT',
-            'discount_amount' => 0,
-            'is_discount' => false,
-        ];
-
-        if($product->productPromo) {
-
-            $disc = $product->productPromo;
-
-            $pricing['is_discount'] = true;
-            $pricing['discount_type'] = $disc->discount_type;
-            $pricing['discount_amount'] = $disc->discount_amount;
-        }
-        
-        return $pricing;
-    }
 }

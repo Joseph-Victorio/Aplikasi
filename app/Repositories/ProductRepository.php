@@ -22,9 +22,11 @@ class ProductRepository
     
     public function show($slug)
     {
-        $product = Cache::remember($slug, now()->addMinute(), function() use ($slug) {
+        Cache::flush();
 
-            return new ProductResource(Product::with(['assets', 'category:id,title,slug', 'varians.subvarian', 'productPromo' => function($query) {
+        $product = Cache::remember($slug, now()->addMinutes(5), function() use ($slug) {
+
+            return new ProductResource(Product::with(['minPrice', 'maxPrice','assets', 'category:id,title,slug', 'varians.subvarian', 'productPromo' => function($query) {
                 $query->whereHas('promoActive');
             }])
                 ->withCount('reviews')
@@ -40,7 +42,7 @@ class ProductRepository
 
     public function getAll()
     {
-            return Product::with(['featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
+            return Product::with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
                 $query->whereHas('promoActive');
             }])
             ->withAvg('reviews', 'rating')
@@ -50,7 +52,7 @@ class ProductRepository
 
     public function getProductsFavorites($pids)
     {
-        return Product::with(['featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
+        return Product::with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
             $query->whereHas('promoActive');
         }])
             ->whereIn('id', $pids)
@@ -62,7 +64,7 @@ class ProductRepository
     public function search($key)
     {
 
-        return Product::with(['featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
+        return Product::with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
             $query->whereHas('promoActive');
         }])
             ->where('title', 'like', '%'.$key.'%')
@@ -73,7 +75,7 @@ class ProductRepository
 
     public function getProductsByCategory($id)
     {
-        return Product::with(['featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
+        return Product::with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
             $query->whereHas('promoActive');
         }])
             ->where('category_id', $id)
@@ -85,6 +87,7 @@ class ProductRepository
     public function getProductPromo()
     {
         return Promo::active()->with(['products' => function($query) {
+            $query->with('minPrice');
             $query->with('featuredImage');
             $query->with('productPromo', function($q) {
                 $q->whereHas('promoActive');
@@ -124,6 +127,7 @@ class ProductRepository
 
         $data = Category::whereHas('products')
             ->with(['products' => function($query) {
+                $query->with('minPrice');
                 $query->with('featuredImage');
                 $query->with('productPromo', function($q) {
                     $q->whereHas('promoActive');
@@ -284,8 +288,6 @@ class ProductRepository
 
         DB::beginTransaction();
 
-        
-        
         try {
 
             $product->title = $request->title;
@@ -476,6 +478,10 @@ class ProductRepository
                 $pricing['is_discount'] = true;
                 $pricing['discount_type'] = $disc->discount_type;
                 $pricing['discount_amount'] = $disc->discount_amount;
+            }
+
+            if($product->minPrice) {
+                $pricing['default_price'] = $product->minPrice->price;
             }
         
             return $pricing;

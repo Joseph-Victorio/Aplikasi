@@ -96,7 +96,6 @@ export default {
   methods: {
     ...mapActions('user', ['login']),
     submit() {
-      console.log('fired');
      this.login(this.form)
     }
   }

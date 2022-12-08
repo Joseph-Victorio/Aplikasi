@@ -15,8 +15,10 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
         // return parent::toArray($request);
+
         $pricing = [
             'default_price' =>  $this->price,
+            'max_price' =>  null,
             'discount_type' => 'PERCENT',
             'discount_amount' => 0,
             'is_discount' => false,
@@ -27,6 +29,13 @@ class ProductResource extends JsonResource
             $pricing['is_discount'] = true;
             $pricing['discount_type'] = $this->productPromo->discount_type;
             $pricing['discount_amount'] = $this->productPromo->discount_amount;
+        }
+
+        if($this->minPrice) {
+            $pricing['default_price'] = $this->minPrice->price;
+        }
+        if($this->maxPrice) {
+            $pricing['max_price'] = $this->maxPrice->price;
         }
 
         return [
