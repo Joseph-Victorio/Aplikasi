@@ -961,11 +961,12 @@ export default {
         if(response.status == 200) {
           this.product = response.data.data
           this.ready = true
-          // if(this.isHasVarian) {
-          //   if(this.product.varians[0].has_subvarian) {
-          //     this.varianSelected = this.product.varians[0];
-          //   }
-          // }
+          
+          if(this.isHasVarian) {
+            if(this.product.varians[0].has_subvarian) {
+              this.varianSelected = this.product.varians[0];
+            }
+          }
 
           setTimeout(() => {
             this.getReview()
