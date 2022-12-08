@@ -129,7 +129,6 @@
           <q-tab-panel name="Description">
             <div id="description" class="q-mt-md" style="min-height:180px;">
               <div>
-                  <h3 class="text-md q-mb-sm">Deskripsi Produk</h3>
                 <div class="" v-html="product.description"></div>
               </div>
               <div id="product-images" class="q-mt-lg">
