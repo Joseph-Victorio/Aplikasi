@@ -13,4 +13,3 @@ export const favoriteCount = (state) => {
 export const productCount = (state) => {
   return state.products.data.length
 }
-

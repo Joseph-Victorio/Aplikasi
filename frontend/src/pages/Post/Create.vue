@@ -40,15 +40,16 @@
             ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link',
             {
                 icon: $q.iconSet.editor.formatting,
+                label: $q.iconSet.editor.label,
                 list: 'no-icons',
                 options: [
-                  'p',
                   'h1',
                   'h2',
                   'h3',
                   'h4',
                   'h5',
                   'h6',
+                  'p',
                   'code'
                 ]
               },

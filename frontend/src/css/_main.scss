@@ -5,10 +5,6 @@
   width:100%;
   margin:auto;
 }
-h1, h2, h3, h4, h5, h6 {
-  display: block;
-  margin: 0;
-}
 .bg-glass {
   background-image: url("~assets/bg.jpg");
   background-color: white;
@@ -342,9 +338,7 @@ ul {
     font-size: 40px;
   }
 }
-h1,h2,h3,h4,h5,h6 {
-  line-height: normal;
-}
+
 .border {
   &-b{
     border-bottom: 1px solid #eee;

@@ -40,6 +40,6 @@ export default function () {
       ready: false,
       available: true
     },
-    product_promo: []
+    product_promo: [],
   }
 }

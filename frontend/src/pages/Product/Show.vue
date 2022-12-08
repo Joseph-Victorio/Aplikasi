@@ -39,7 +39,7 @@
         </template>
       </q-carousel>
       <q-card class="product-detail relative box-shadow">
-        <q-card-section class="q-pt-xs">
+        <q-card-section class="q-pt-xs q-pb-lg">
           
           <h1 class="text-h6 text-weight-semibold q-mb-md" v-if="product">{{ product.title }}</h1>
           <div class="row items-center justify-between">
@@ -86,10 +86,10 @@
         </q-card-section>
       </q-card>
 
-     <div class="box-shadow bg-white q-pa-md q-mt-md" v-if="product.varians.length">
-        <div class="q-pb-md">
+     <div class="box-shadow bg-white q-px-md q-mt-md q-py-lg" v-if="product.varians.length">
+        <div class="q-pb-sm">
           <div class="text-md">Pilih Varian <span class="text-sm text-weight-normal text-grey-7"></span></div>
-          <div class="q-mt-sm">
+          <div class="q-mt-md">
           <div class="q-mb-xs">{{ product.varians[0].label}}</div>
           <div class="q-gutter-sm">
             <q-btn class="product-varian--btn" outline v-for="item in product.varians" :key="item.id" :label="item.value" :color="varianSelected && varianSelected.id == item.id? 'accent' : 'grey-9'" @click="selectProductVarian(item)">
@@ -163,14 +163,14 @@
                 </div>
                 <q-btn outline color="accent" @click="handleReviewModal" label="Berikan ulasan" class="q-my-xs"></q-btn>
               </div>
-              <div class="q-pt-lg">
+              <div class="q-pt-xl">
               <q-list separator>
                 <q-item class="q-py-md" v-for="(review, index) in AllProductReviews" :key="index">
                   <q-item-section avatar top>
                     <q-avatar icon="eva-person-outline" color="grey-2" text-color="grey-5"></q-avatar>
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label class="text-md">{{ review.name }} <span v-if="!review.is_approved" class="text-xs text-orange">( Menunggu Moderasi )</span></q-item-label>
+                    <q-item-label class="text-md q-mb-xs">{{ review.name }} <span v-if="!review.is_approved" class="text-xs text-orange">( Menunggu Moderasi )</span></q-item-label>
                       <q-rating 
                       readonly
                       v-model="review.rating"
@@ -180,7 +180,7 @@
                       icon-half="ion-star-half"
                       size="1.1rem"
                     />
-                    <div class="text-xs text-grey-6">{{ review.created }}</div>
+                    <div class="text-xs text-grey-6 q-my-xs">{{ review.created }}</div>
                     <div class="q-pa-xs text-sm text-grey-8"> {{ review.comment }} </div>
                   </q-item-section>
                 </q-item>

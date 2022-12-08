@@ -11,6 +11,7 @@
     :suffix="suffix"
     @input="updateData" 
     :stackLabel="stackLabel"
+    id="id"
     ></q-input>
   </div>
 </template>
@@ -30,6 +31,10 @@ export default {
     value: [String, Number],
     prefix: String,
     suffix: String,
+    id: {
+      type: String,
+      default: ''
+    }
   },
   computed: {
     pricing() {

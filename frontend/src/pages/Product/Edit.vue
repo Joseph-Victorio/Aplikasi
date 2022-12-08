@@ -10,124 +10,181 @@
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
-    <div class="q-px-md q-py-md">
-      <div class="">
-        <div class="text-weight-medium text-md q-mb-sm text-grey-7">Gambar Produk</div>
-        <div class="row q-gutter-sm">
-
-          <div class="box-image bordered cursor-pointer flex justify-center items-center" @click="selectNewImage">
-            <q-icon name="add_a_photo" size="lg" color="grey"></q-icon>
-          </div>
-          <div 
-          class="box-image relative cursor-pointer" 
-          :class="{'feature-image-selected' : form.featured_index == index }"
-          v-for="(image, index) in imagePreview" :key="index">
-            <img :src="image" class="bg-white" @click="changeFeaturedImage(image, index)"/>
-            <q-tooltip v-if="form.featured_index == index" class="bg-green text-white">Featured</q-tooltip>
-            <div class="absolute-top-right">
-              <q-btn dense @click.prevent="removeImage(image, index)" size="10px" unelevated icon="close" color="red" padding="1px"/>
-            </div>
-          </div>
-        </div>
-        <div class="text-xs q-py-sm text-grey" v-if="imagePreview.length">Untuk memilih featured image klik pada gambar</div>
-      </div>
-    </div>
+   
     <form @submit.prevent="submit">
-      <div class="q-px-md q-gutter-y-md">
+      <div class="q-pa-md q-gutter-y-md">
          <q-input  
-         outlined
           type="text" 
           v-model="form.title" 
-          label="Nama Produk"
+          label="Title Produk"
           required
         />
-        <div class="row items-start q-gutter-x-sm">
-          <div class="col">
-            <money-formatter outlined v-model="form.price" prefix="Rp"/>
-          </div>
-          <div class="col">
-            <money-formatter outlined v-model="form.stock" label="Stok"/>
-          </div>
-          <div class="col">
-            <money-formatter outlined v-model="form.weight" label="Berat" suffix="Gram"/>
-          </div>
-        </div>
-
-          <q-select
-          outlined 
-            v-model="form.category_id"
-            :options="categories"
-            label="Kategori"
-            emit-value
-            map-options
-           class="q-pb-md"
-            
-          />
+        <q-select
+          v-model="form.category_id"
+          :options="categories"
+          label="Kategori"
+          emit-value
+          map-options
+          class="q-pb-md"
+        />
         <div class="q-mt-md q-mb-sm">
           <label for="description" class="text-grey-7 q-pb-sm block">Deskripsi</label>
           <q-editor v-model="form.description"
-          :toolbar="[
-            ['left','center','right','justify'],
-            ['bold','italic','underline','strike'],
-            ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link',
-            {
-                icon: $q.iconSet.editor.formatting,
-                list: 'no-icons',
-                options: [
-                  'p',
-                  'h1',
-                  'h2',
-                  'h3',
-                  'h4',
-                  'h5',
-                  'h6',
-                  'code'
-                ]
-              },
-            ],
-          ]"
+            min-height="15rem"
+            :toolbar="[
+              ['left','center','right','justify'],
+              ['bold','italic','underline','strike'],
+              ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link',
+              {
+                  icon: $q.iconSet.editor.formatting,
+                  list: 'no-icons',
+                  options: [
+                    'h1',
+                    'h2',
+                    'h3',
+                    'h4',
+                    'h5',
+                    'h6',
+                    'p',
+                    'code'
+                  ]
+                },
+              ],
+            ]"
           />
           <div class="text-xs text-red" v-if="errors.description"> {{ errors.description[0]}}</div>
         </div>
       </div>
-        <input type="file" class="hidden" ref="image" @change="updateImagePreview" multiple>
-    <!-- Start Product Variants -->
-      <div id="variants" style="min-height:200px;">
-          <div class="row items-center justify-between q-mt-xl q-pa-md bg-green-1">
-            <div class="text-md2 text-weight-medium">Produk Variasi</div>
-            <q-btn v-if="canAddVarian" label="Tambah Variasi" @click="varianModal = true" color="accent" size="12px"></q-btn>
+
+      <q-card square flat class="q-pa-xs">
+        <q-card-section>
+          <div class="text-weight-medium text-md q-mb-sm text-grey-9">Gambar Produk</div>
+          <div class="q-py-md">
+            <div class="">
+              <div class="row q-gutter-md">
+
+                <div class="box-image bordered cursor-pointer flex justify-center items-center" @click="selectNewImage">
+                  <q-icon name="add_a_photo" size="lg" color="grey"></q-icon>
+                </div>
+                <div 
+                class="box-image relative cursor-pointer" 
+                :class="{'feature-image-selected' : form.featured_index == index }"
+                v-for="(image, index) in imagePreview" :key="index">
+                    <img :src="image" class="bg-white" @click="changeFeaturedImage(index)"/>
+                    <div class="absolute-top-right">
+                      <q-btn dense @click.prevent="removeImage(image, index)" size="10px" unelevated icon="close" color="red" padding="1px"/>
+                    </div>
+                  </div>
+              </div>
+              <div class="text-xs text-grey q-mt-md" v-if="imagePreview.length">Untuk memilih featured image klik pada gambar</div>
+            </div>
+          </div>
+        </q-card-section>
+      </q-card>
+      <input type="file" class="hidden" ref="image" @change="updateImagePreview" multiple>
+
+    <q-card square flat style="min-height:300px;">
+      <q-card-section>
+        <q-radio class="text-weight-medium text-md" v-model="form.simple_product" :val="true" label="Simple Produk"></q-radio>
+        <q-radio class="text-weight-medium text-md" v-model="form.simple_product" :val="false" label="Produk Dengan Varian"></q-radio>
+        <div class="q-pa-xs text-xs text-orange-9" v-if="form.simple_product && form.varians.length">
+         <span class="text-sm text-weight-bold"> Note:</span> Perubahan ke simple produk akan menghapus varian sebelumnya
+        </div>
+      </q-card-section>
+      <q-separator></q-separator>
+      <q-card-section v-if="form.simple_product" class="q-pb-xl q-px-lg">
+        <h5 class="q-py-md">Simple Produk</h5>
+        <div class="row items-center q-gutter-x-sm">
+          <div class="col">
+            <money-formatter required outlined v-model="form.price" prefix="Rp"/>
+          </div>
+          <div class="col">
+            <money-formatter required outlined  v-model="form.stock" label="Stok"/>
+          </div>
+          <div class="col">
+            <money-formatter required outlined  v-model="form.weight" label="Berat" suffix="Gram"/>
+          </div>
+        </div>
+        <!-- <div class="text-xs text-grey-7 q-pa-xs">Input harga terendah jika menggunakan varian</div> -->
+      </q-card-section>
+
+      <q-card-section v-if="!form.simple_product" class="">
+        <div id="variants" class="q-pa-md">
+          <div class="row items-center q-gutter-sm q-py-md q-mb-md">
+            <h5 class="q-mb-none text-grey-9">Produk Varian</h5>
+            <q-btn v-if="canAddVarian" outline icon="add" no-caps label="Tambah Varian" @click="varianModal = true" color="primary" unelevated size="12px"></q-btn>
           </div>
           <div v-if="form.varians.length">
-            <div v-if="form.varians[0].has_subvarian">
+          <div v-if="form.varians[0].has_subvarian">
 
-              <div v-for="(varian, varIndex) in form.varians" :key="varIndex">
-                <div class="row items-start justify-between bg-grey-2 q-pa-md q-pt-lg">
+            <q-card v-for="(varian, varIndex) in form.varians" :key="varIndex" class="q-mb-lg bg-grey-1" flat bordered>
+              <q-card-section class="">
+                <div class="row items-center justify-between q-mb-sm">
                     <div  class="text-weight-bold text-md">{{ form.varians[varIndex].label}} {{ form.varians[varIndex].value }}</div>
-                  <div class="q-gutter-x-sm">
-                    <q-btn unelevated size="10px" color="red" @click="deleteVarian(varian, varIndex)">Hapus {{ form.varians[varIndex].value }}</q-btn>
-                    <q-btn unelevated size="10px" color="teal" @click="pushSubVarian(varIndex)">Tambah Item</q-btn>
-                  </div>
+                    <q-btn-dropdown 
+                    flat
+                    dropdown-icon="more_vert"
+                    unelevated
+                    auto-close
+                    fab-mini
+                    no-icon-animation
+                    padding="xs"
+                    >
+                    <q-list separator bordered>
+                      <q-item clickable v-close-popup @click="handleEditLabel(varIndex)">
+                        <q-item-section side>
+                          <q-icon name="eva-edit" color="blue"></q-icon>
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label>Edit Label</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item clickable v-close-popup @click="pushSubVarian(varIndex)">
+                        <q-item-section side>
+                          <q-icon name="eva-plus-circle" color="teal"></q-icon>
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label>Tambah Item</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item clickable v-close-popup @click="duplicateVarian(varIndex, 'main-var-')" >
+                        <q-item-section side>
+                          <q-icon name="eva-copy" color="purple"></q-icon>
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label>Duplikat Varian</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item clickable v-close-popup @click="deleteVarian(varIndex)" >
+                        <q-item-section side>
+                          <q-icon name="eva-close" color="red"></q-icon>
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label>Hapus Varian</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      </q-list>
+
+                    </q-btn-dropdown>
                 </div>
-              <div class="">
-                <q-list class="bg-white q-pa-sm q-mt-xs" v-if="form.varians[varIndex].subvarian.length" separator>
-                  <q-item class="q-px-sm q-py-md" v-for="(subvarian, subIndex) in form.varians[varIndex].subvarian" :key="subIndex">
-                  
+                <q-list class="" v-if="form.varians[varIndex].subvarian.length">
+                  <q-item class="bg-white q-mb-sm box-shadow" v-for="(subvarian, subIndex) in form.varians[varIndex].subvarian" :key="subIndex">
+                    
                     <q-item-section>
                       <q-item-label class="q-mb-xs">
-                        <q-input stack-label filled square required v-model="form.varians[varIndex].subvarian[subIndex].value" dense :label="form.varians[varIndex].subvarian[subIndex].label"></q-input>
+                        <q-input class="multi-varian" :class="'main-var-' + varIndex" stack-label required v-model="form.varians[varIndex].subvarian[subIndex].value" :label="form.varians[varIndex].subvarian[subIndex].label"></q-input>
                       </q-item-label>
                       <q-item-label>
-                        <money-formatter stack-label dense filled required v-model="form.varians[varIndex].subvarian[subIndex].price" prefix="Rp" label="Harga Jual"/>
+                        <money-formatter stack-label required v-model="form.varians[varIndex].subvarian[subIndex].price" prefix="Rp" label="Harga Jual"/>
                       </q-item-label>
                     </q-item-section>
 
                     <q-item-section>
                       <q-item-label class="q-mb-xs">
-                      <money-formatter stack-label dense filled required v-model="form.varians[varIndex].subvarian[subIndex].weight"  label="Berat" suffix="Gram"/>
-                        
+                      <money-formatter stack-label required v-model="form.varians[varIndex].subvarian[subIndex].weight"  label="Berat" suffix="Gram"/> 
                       </q-item-label>
                       <q-item-label>
-                      <money-formatter stack-label dense filled required v-model="form.varians[varIndex].subvarian[subIndex].stock"  label="Stok"/>
+                      <money-formatter stack-label required v-model="form.varians[varIndex].subvarian[subIndex].stock"  label="Stok"/>
 
                       </q-item-label>
                     </q-item-section>
@@ -136,47 +193,51 @@
                     </q-item-section>
                   </q-item>
                 </q-list>
-              </div>
-            </div>
+              </q-card-section>
+            </q-card>
 
-            </div>
-            <div v-else>
-              <div class="row items-start justify-between bg-grey-2 q-pa-md q-pt-lg">
-                    <div  class="text-weight-bold text-md">{{ form.varians[0].label}} </div>
-                  <div class="q-gutter-x-sm">
-                    <q-btn unelevated size="10px" color="teal" @click="pushVarian">Tambah Item</q-btn>
-                  </div>
+          </div>
+          <q-card v-else class="q-mb-lg bg-grey-1" flat>
+            <q-card-section>
+              <div class="row items-center q-gutter-sm q-mb-md">
+                <div  class="text-weight-bold text-lg">{{ form.varians[0].label}} </div>
+                <div>
+                  <q-btn unelevated size="10px" color="teal" @click="pushVarian">Tambah Item</q-btn>
                 </div>
-              <q-list class="bg-white q-pa-sm q-mt-xs" separator>
-                <q-item  v-for="(varian, vIndex) in form.varians" :key="vIndex" class="q-py-md">
-                 
+              </div>
+              <q-list >
+                <q-item class="bg-white q-mb-sm box-shadow" v-for="(varian, vIndex) in form.varians" :key="vIndex">
+                  
                   <q-item-section>
-                    <q-item-label class="q-mb-xs">
-                    <q-input stack-label filled square required v-model="form.varians[vIndex].value" dense :label="form.varians[vIndex].label"></q-input>
+                    <q-item-label class="q-mb-xs" >
+                    <q-input class="single-varian" :class="'input-var-' + vIndex" stack-label square required v-model="form.varians[vIndex].value" :label="form.varians[vIndex].label"></q-input>
                     </q-item-label>
-                    <q-item-label>
-                    <money-formatter stack-label dense filled required v-model="form.varians[vIndex].price" prefix="Rp" label="Harga Jual"/>
+                    <q-item-label >
+                    <money-formatter stack-label required v-model="form.varians[vIndex].price" prefix="Rp" label="Harga Jual"/>
                     </q-item-label>
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label class="q-mb-xs">
-                      <money-formatter stack-label dense filled required v-model="form.varians[vIndex].weight" label="Berat" suffix="Gram"/>
+                    <q-item-label class="q-mb-xs" >
+                      <money-formatter stack-label required v-model="form.varians[vIndex].weight" label="Berat" suffix="Gram"/>
                     </q-item-label>
                     <q-item-label>
-                    <money-formatter stack-label dense filled required v-model="form.varians[vIndex].stock" label="Stok"/>
+                    <money-formatter stack-label required v-model="form.varians[vIndex].stock" label="Stok"/>
                     </q-item-label>
                   </q-item-section>
 
-                   <q-item-section side>
-                    <q-btn round unelevated padding="2px" icon="eva-close" size="9px" color="red" @click="deleteVarian(varian, vIndex)"></q-btn>
+                  <q-item-section side>
+                    <q-btn unelevated padding="4px" icon="eva-close" size="9px" color="red" @click="deleteVarian(vIndex)"></q-btn>
+                    <q-btn unelevated padding="4px" icon="eva-copy" size="9px" color="blue" class="q-mt-sm" @click="duplicateVarian(vIndex,`input-var-`)"></q-btn>
                   </q-item-section>
 
                 </q-item>
               </q-list>
-            </div>
+            </q-card-section>
+          </q-card>
           </div>
         </div>
-      <!-- End Product Variants -->
+      </q-card-section>
+    </q-card>
     <q-footer class="bg-white q-pa-md">
        <q-btn color="primary" type="submit" :loading="loading" class="full-width" label="Simpan Data">
            <q-tooltip class="bg-accent">Simpan Data</q-tooltip>
@@ -184,33 +245,26 @@
     </q-footer>
     </form>
     <q-dialog v-model="varianModal">
-      <q-card class="card-medium">
-        <div class="card-heading">Tambah varian</div>
-        <form @submit.prevent="addVarianProduk">
+      <q-dialog v-model="varianModal" persistent>
+        <FormVarianModal 
+          :mustHaveSubvarian="mustHaveSubvarian" 
+          :canToggleSubvarian="canToggleSubvarian"
+          :has_subvarian="form.has_subvarian"
+          @changeSubvarian="(val) => form.has_subvarian = val"
+          @addVarian="addVarianProduk"
+        ></FormVarianModal>
+      </q-dialog>
+    </q-dialog>
+    <q-dialog v-model="editLabelModal" persistent>
+      <q-card class="card-md" v-if="form.varians.length">
+        <form @submit.prevent="submitEditLabel">
           <q-card-section>
-            
-            <div>
-              <div class="text-md">Varian</div>
-              <q-input label="Label" v-model="tempVarian.label" placeholder="contoh: Ukuran"></q-input>
-              <q-input label="Item" v-model="tempVarian.value" placeholder="contoh: Small, Medium, Large"></q-input>
-              <div class="text-grey-7 text-xs q-py-xs">Untuk multiple item, gunakan sparator koma</div>
-              
-            </div>
-            <div v-if="canToggleSubvarian">
-              <q-checkbox v-model="form.has_subvarian" label="Subvarian?"></q-checkbox>
-            </div>
-            <div class="q-mt-md" v-if="mustHaveSubvarian"> 
-              <div class="text-md">Subvarian</div>
-              <q-input label="Label" v-model="tempSubvarian.label" placeholder="contoh: Warna"></q-input>
-              <q-input label="Item" v-model="tempSubvarian.value" placeholder="contoh: Merah, Biru, Ungu"> </q-input>
-              <div class="text-grey-7 text-xs q-py-xs">Untuk multiple item, gunakan sparator koma</div>
-              
-            </div>
-            <div class="flex justify-end q-mt-md q-gutter-sm">
-              <q-btn label="Tutup" v-close-popup flat color="primary"></q-btn>
-              <q-btn unelevated label="Tambah" type="submit" color="primary"></q-btn>
-            </div>
+            <q-input required v-model="form.varians[editLabelIndex].label" label="Varian Label"></q-input>
+            <q-input required v-model="form.varians[editLabelIndex].value" label="Label"></q-input>
           </q-card-section>
+          <q-card-actions class="q-pa-md">
+            <q-btn color="primary" unelevated label="Simpan" type="submit"></q-btn>
+          </q-card-actions>
         </form>
       </q-card>
     </q-dialog>
@@ -219,27 +273,15 @@
 
 <script>
 import { mapActions } from 'vuex'
+import FormVarianModal from './VarianFormModal.vue'
 export default {
   name: 'ProductFormEdit',
+  components: { FormVarianModal },
   data () {
     return {
+      editLabelIndex: 0,
+      editLabelModal: false,
       varianModal: false,
-      tempVarian: {
-        label: '',
-        value: '',
-      },
-      tempSubvarian: {
-        label: '',
-        value: '',
-        stock: '',
-        is_preorder: false,
-        price: '',
-        sku: '',
-        items: ''
-      },
-      requiredRules: [
-        val => (val && val.length > 0) || 'Field harus diisi.'
-      ],
       product: null,
       form: {
         id: '',
@@ -256,14 +298,13 @@ export default {
         remove_varian:[],
         remove_subvarian:[],
         featured_index: 0,
-        featured_asset: null
+        featured_asset: null,
+        simple_product: false
 
       },
       imagePreview: [],
       oldImages: [],
-      variantModalForm: false,
       productOldImages: [],
-      chatOptions: []
     }
   },
   computed: {
@@ -307,6 +348,13 @@ export default {
   methods: {
     ...mapActions('product', ['productUpdate', 'getProductById']),
     ...mapActions('category', ['getCategories']),
+    handleEditLabel(index) {
+      this.editLabelIndex = index
+      this.editLabelModal = true
+    },
+    submitEditLabel() {
+      this.editLabelModal = false
+    },
      onUpdateImage(data) {
       this.form.product_images.push(data)
     },
@@ -358,29 +406,67 @@ export default {
       let tpl = { label: varian.subvarian[0].label, value: '', stock: 0, price: varian.price ?? 0, weight: varian.weight?? 0 }
 
       this.form.varians[varIndex].subvarian.push(tpl)
+
+      setTimeout(() => {
+        let col = document.querySelectorAll('.multi-varian')
+       let nodes = [...col]
+
+        let label = nodes[nodes.length - 1]
+        this.jumpToInputClass(label)
+
+      }, 500)
     },
     pushVarian() {
       this.form.varians.push({ has_subvarian: false,  label: this.form.varians[0].label, value: '', stock: 0, price: this.form.price ?? 0, weight: this.form.weight ?? 0 })
 
-    },
-    addVarianProduk() {
+      setTimeout(() => {
+        let col = document.querySelectorAll('.single-varian')
+       let nodes = [...col]
 
+        let label = nodes[nodes.length - 1]
+        this.jumpToInputClass(label)
+
+      }, 500)
+
+    },
+    duplicateVarian(varIndex, key) {
+      let varian = this.form.varians[varIndex]
+
+      this.form.varians.splice(varIndex, 0, {...varian})
+
+      let cls = `.${key}${varIndex + 1}`;
+
+      setTimeout(() => {
+        let label = document.querySelector(cls);
+        this.jumpToInputClass(label)
+      }, 500)
+
+      if(key.startsWith('main')) {
+          setTimeout(() => {
+            this.handleEditLabel(varIndex + 1)
+
+          }, 1000)
+      }
+    },
+    jumpToInputClass(node){
+      node.querySelector('INPUT').focus()
+      node.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      })
+    },
+    addVarianProduk(data) {
       let defaultPrice = this.form.price ?? 0;
       let weight = this.form.weight ?? 0;
       let stock = this.form.stock ?? 0;
 
-      let varianArr = this.tempVarian.value.split(',')
-
       if(this.form.has_subvarian) {
         
-        varianArr.forEach(v => {
-          let varian = null
-           varian = { has_subvarian: true, label: this.tempVarian.label, value: v, subvarian: [] }
+        data.tempVarian.value.forEach(v => {
+          let varian = { has_subvarian: true, label: data.tempVarian.label, value: v, subvarian: [] }
   
-          let subArr = this.tempSubvarian.value.split(',')
-  
-            subArr.forEach(el => {
-              let sub = { label: this.tempSubvarian.label, value: el, stock: stock, price: defaultPrice, weight: weight }
+            data.tempSubvarian.value.forEach(el => {
+              let sub = { label: data.tempSubvarian.label, value: el, stock: stock, price: defaultPrice, weight: weight }
               varian.subvarian.push(sub)
             })
   
@@ -389,29 +475,43 @@ export default {
         })
       } else {
 
-         varianArr.forEach(v => {
-         
-         let varian = null
-           varian = { has_subvarian: false,  label: this.tempVarian.label, value: v, stock: stock, price: defaultPrice, weight: weight }
- 
-          this.form.varians.push(varian)
-  
+         data.tempVarian.value.forEach(val => {
+          this.form.varians.push({ 
+            has_subvarian: false,  label: data.tempVarian.label, value: val, stock: stock, price: defaultPrice, weight: weight 
+            })
+
         })
       }
 
-
       this.varianModal = false
-      this.tempVarian.value = ''
-      this.tempSubvarian.value = ''
-    },
 
+    },
     handleAddVarian() {
       this.varianModal = true
     },
     // submit
     submit() {
+      if(!this.form.description) {
+
+        this.$q.notify({
+          type: 'negative',
+          message: 'Deskripsi tidak boleh kosong'
+        })
+        return
+      } 
+
+      if(!this.form.simple_product && !this.form.varians.length) {
+
+        this.$q.notify({
+          type: 'negative',
+          message: 'produk varian tidak boleh kosong'
+        })
+        return
+      } 
+
       let formData = new FormData();
 
+      formData.append('simple_product', this.form.simple_product)
       formData.append('id', this.form.id)
       formData.append('title', this.form.title)
       formData.append('price', this.form.price)
@@ -509,6 +609,8 @@ export default {
       this.form.has_subvarian = this.product.varians.length ? this.product.varians[0].has_subvarian : false
       
       this.imagePreview = this.product.assets.map(el => el.src)
+
+      this.form.simple_product = !this.product.varians.length
 
       this.form.featured_index =  this.product.assets.findIndex(el => el.variable == 'featured')
 

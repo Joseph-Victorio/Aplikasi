@@ -194,15 +194,24 @@ class ProductRepository
 
             $product->title = $request->title;
             $product->slug = $slug;
-            $product->price = str_replace(".", "", $request->price);
-            $product->stock = str_replace(".", "", $request->stock);
-            $product->weight = str_replace(".", "", $request->weight);
-            $product->sku = 'PF-'. $request->sku;
-            
             $product->category_id =  $request->category_id;
-
             $product->description = $request->description;
 
+            $is_simple_product = $request->boolean('simple_product');
+
+            if($is_simple_product) {
+
+                $product->price = str_replace(".", "", $request->price);
+                $product->stock = str_replace(".", "", $request->stock);
+                $product->weight = str_replace(".", "", $request->weight);
+
+            }else {
+
+                $product->price = 0;
+                $product->stock = 0;
+                $product->weight = 0;
+            }
+              
             $product->save();
 
             if($request->images && count($request->images) > 0) {
@@ -224,7 +233,7 @@ class ProductRepository
 
             $product->fresh();
 
-            if($request->varians) {
+            if(!$is_simple_product && $request->varians) {
                 $datas = json_decode($request->varians, true);
 
                 foreach($datas as $data) {
@@ -288,12 +297,23 @@ class ProductRepository
 
         try {
 
+            $is_simple_product = $request->boolean('simple_product');
+
             $product->title = $request->title;
-            $product->price = str_replace(".", "", $request->price);
-            $product->stock = str_replace(".", "", $request->stock);
-            $product->weight = str_replace(".", "", $request->weight);
             $product->description = $request->description;
             $product->category_id = $request->category_id;
+
+            if($is_simple_product) {
+
+                $product->price = str_replace(".", "", $request->price);
+                $product->stock = str_replace(".", "", $request->stock);
+                $product->weight = str_replace(".", "", $request->weight);
+
+                $product->varians()->delete();
+
+            }
+
+            $product->save();
 
             if($request->featured_asset) {
                 foreach($product->assets as $asset) {
@@ -340,15 +360,13 @@ class ProductRepository
                 }
             }
 
-            $product->save();
-
             if($request->remove_varian) {
                 $varianIds = json_decode($request->remove_varian);
 
                 ProductVarian::whereIn('id', $varianIds)->delete();
             }
 
-            if($request->varians) {
+            if(!$is_simple_product && $request->varians) {
                 $datas = json_decode($request->varians, true);
 
                 foreach($datas as $data) {

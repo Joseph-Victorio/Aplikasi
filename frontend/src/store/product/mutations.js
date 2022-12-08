@@ -143,3 +143,7 @@ export function SET_PRODUCT_FAVORITE_STATUS (state, payload)
   state.productFavorites.ready = payload.ready
   state.productFavorites.available = payload.available
 }
+export function UPDATE_FIELD_PRODUCT (state, payload) 
+{
+  state.form[payload.key] = payload.value
+}
