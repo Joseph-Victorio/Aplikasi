@@ -109,7 +109,7 @@
       </q-card-section>
 
       <q-card-section v-if="!form.simple_product" class="">
-        <div id="variants" class="q-pa-sm">
+        <div id="variants">
           <div class="row items-center q-gutter-sm q-py-md q-mb-md">
             <h5 class="q-mb-none text-grey-9">Produk Varian</h5>
             <q-btn v-if="canAddVarian" outline icon="add" no-caps label="Tambah Varian" @click="varianModal = true" color="primary" unelevated size="12px"></q-btn>
@@ -118,8 +118,8 @@
           <div v-if="form.varians[0].has_subvarian">
 
             <q-card v-for="(varian, varIndex) in form.varians" :key="varIndex" class="q-mb-lg bg-grey-1" flat bordered>
-              <q-card-section class="">
-                <div class="row items-center justify-between q-mb-sm">
+              <q-card-section class="q-px-sm">
+                <div class="row items-center justify-between q-mb-sm q-px-sm">
                     <div  class="text-weight-bold text-md">{{ form.varians[varIndex].label}} {{ form.varians[varIndex].value }}</div>
                     <q-btn-dropdown 
                     flat
@@ -199,7 +199,7 @@
           </div>
           <q-card v-else class="q-mb-lg bg-grey-1" flat>
             <q-card-section>
-              <div class="row items-center q-gutter-sm q-mb-md">
+              <div class="row items-center q-gutter-sm q-mb-md q-px-sm">
                 <div  class="text-weight-bold text-lg">{{ form.varians[0].label}} </div>
                 <div>
                   <q-btn unelevated size="10px" color="teal" @click="pushVarian">Tambah Item</q-btn>
