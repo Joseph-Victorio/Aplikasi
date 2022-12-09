@@ -457,7 +457,10 @@ export default {
   },
   watch: {
     tab: function(val, oldval) {
-      if(val != oldval && val == 'Review' && !this.productReviews.length) {
+      if(val != oldval 
+      && val == 'Review' 
+      && !this.productReviews.length 
+      && this.product.reviews_count > 0) {
          this.getReview()
       } 
     }
