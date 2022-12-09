@@ -484,7 +484,9 @@ export default {
     },
     renderMaxPrice(){
       if(this.isHasVarian && !this.isVarianHasSelected) {
-        return true
+        if(parseInt(this.getCurrentPrice) < parseInt(this.getMaxPrice)) {
+          return true
+        }
       }
       return false
     },
