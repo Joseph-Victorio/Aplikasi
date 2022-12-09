@@ -626,9 +626,6 @@ export default {
             discount = parseInt(this.product.pricing.discount_amount)
           }
         }
-
-
-
         return maxPrice - discount
       }
       return 0
