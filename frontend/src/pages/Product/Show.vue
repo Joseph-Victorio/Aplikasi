@@ -455,6 +455,13 @@ export default {
       unapproved_review: JSON.parse(localStorage.getItem('unapproved_review')) || null,
     }
   },
+  watch: {
+    tab: function(val, oldval) {
+      if(val != oldval && val == 'Review' && !this.productReviews.length) {
+         this.getReview()
+      } 
+    }
+  },
   computed: {
     zoomImageStyle() {
       return `width:100%;height:100%;object-fit:contain;padding:4%;max-width:${this.zoomerWidth};max-height:${this.zoomerHeight}`
@@ -918,7 +925,7 @@ export default {
               localStorage.removeItem('unapproved_review');
             }, 30000)
           }
-
+          this.getReview()
           this.getProduct()
         })
         this.resetForm()
@@ -967,10 +974,6 @@ export default {
               this.varianSelected = this.product.varians[0];
             }
           }
-
-          setTimeout(() => {
-            this.getReview()
-          }, 1000)
         } else {
           // this.$router.push({name: 'ProductIndex'})
         }
