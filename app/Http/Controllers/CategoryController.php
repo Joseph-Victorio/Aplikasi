@@ -181,7 +181,7 @@ class CategoryController extends Controller
         $cat = Category::find($id);
         
         File::delete('upload/images/'. $cat->filename);
-        File::delete('upload/images/'. $cat->bannerName);
+        File::delete('upload/images/'. $cat->banner);
         
         $cat->delete();
         
