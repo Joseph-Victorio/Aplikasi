@@ -29,7 +29,7 @@ import SwiperProductCard from 'components/SwiperProductCard'
         glideOptions: {
           dragThreshold: 20,
           swipeThreshold: 10,
-          touchRatio: 0.2,
+          touchAngle: 30,
           rewind: false,
           perView: 2,
           gap: 8,
