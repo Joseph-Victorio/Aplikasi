@@ -36,7 +36,7 @@ import { Api } from 'boot/axios'
           dragThreshold: 10,
           swipeThreshold: false,
           rewind: false,
-          perView: 3,
+          perView: 2,
           gap: 8,
           bound: true,
           peek: {
@@ -44,6 +44,13 @@ import { Api } from 'boot/axios'
            after: 50
           },
           breakpoints: {
+            3000: {
+              perView: 3,
+              peek: {
+                before: 0, 
+                after: 50
+              },
+            },
             900: {
               perView: 2,
               peek: {
@@ -52,7 +59,7 @@ import { Api } from 'boot/axios'
               },
             },
             400: {
-              perView: 0,
+              perView: 2,
               peek: {
                 before: 0, 
                 after: 0

@@ -30,7 +30,7 @@ import SwiperProductCard from 'components/SwiperProductCard'
           dragThreshold: 10,
           swipeThreshold: false,
           rewind: false,
-          perView: 3,
+          perView: 2,
           gap: 8,
           bound: true,
           peek: {
@@ -38,6 +38,13 @@ import SwiperProductCard from 'components/SwiperProductCard'
            after: 50
           },
           breakpoints: {
+            3000: {
+              perView: 3,
+              peek: {
+                before: 0, 
+                after: 50
+              },
+            },
             900: {
               perView: 2,
               peek: {
@@ -46,7 +53,7 @@ import SwiperProductCard from 'components/SwiperProductCard'
               },
             },
             400: {
-              perView: 0,
+              perView: 2,
               peek: {
                 before: 0, 
                 after: 0
