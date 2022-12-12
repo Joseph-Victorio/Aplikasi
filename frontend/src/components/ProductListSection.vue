@@ -6,7 +6,7 @@
       </div>
       <q-btn class="text-xs text-primary" flat no-caps icon-right="eva-chevron-right" label="more" v-if="path" @click="detail"></q-btn>
     </div>
-    <div :class="pageWidth >= 768 ? 'row q-px-sm' : 'column q-gutter-y-sm'">
+    <div :class="page_width >= 768 ? 'row q-px-sm' : 'column q-gutter-y-sm'">
       <template v-if="ready">
         <product-list v-for="(product, index) in products" :key="index" :product="product" />
       </template>
@@ -40,8 +40,8 @@ export default {
     }
   },
   computed: {
-    pageWidth() {
-      return window.innerWidth
+    page_width() {
+      return this.$store.state.page_width
     }
   },
   methods: {
@@ -57,7 +57,3 @@ export default {
 
 }
 </script>
-
-<style>
-
-</style>

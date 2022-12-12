@@ -18,7 +18,6 @@ export default {
   },
   mounted() {
     this.$store.dispatch('cart/getCarts')
-    this.pageResize()
   },
   created() {
     this.$store.commit('REMOVE_INSTALL_APP')

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div :class="pageWidth >= 768 ? 'row q-px-sm' : 'column q-gutter-y-sm'">
+    <div :class="page_width >= 768 ? 'row q-px-sm' : 'column q-gutter-y-sm'">
       <template v-if="ready">
         <product-list v-for="(product, index) in products.items" :key="index" :product="product" />
       </template>
@@ -37,8 +37,8 @@ export default {
     }
   },
   computed: {
-    pageWidth() {
-      return window.innerWidth
+    page_width() {
+      return this.$store.state.page_width
     }
   },
   methods: {
@@ -54,7 +54,3 @@ export default {
 
 }
 </script>
-
-<style>
-
-</style>

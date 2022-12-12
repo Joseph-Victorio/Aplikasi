@@ -57,7 +57,7 @@ export default function (/* { ssrContext } */) {
       deferredPrompt: null,
       isMenuCategory: false,
       session_id: null,
-      page_width: 800,
+      page_width: window.innerWidth,
       forgot_password: {
         token: '',
         email: '',

@@ -22,7 +22,7 @@
               <product-list-section :ready="products.ready" :products="item" />
             </div>
             <div v-else class="auto-padding-side">
-              <swiper-product :products="item" />
+              <GlideProduct :products="item" />
             </div>
           </div>
       </div>
@@ -32,11 +32,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import SwiperProduct from 'components/GlideProduct.vue'
+import GlideProduct from 'components/GlideProduct.vue'
 import ProductListSection from 'components/ProductListSectionHome.vue'
 export default {
   props: ['products'],
-  components: { SwiperProduct, ProductListSection },
+  components: { GlideProduct, ProductListSection },
   computed: {
     ...mapState({
       config: state => state.config
