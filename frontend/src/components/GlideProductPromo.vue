@@ -34,7 +34,8 @@ import { Api } from 'boot/axios'
       return {
         glideOptions: {
           dragThreshold: 10,
-          swipeThreshold: false,
+          swipeThreshold: 10,
+          touchAngle: 10,
           rewind: false,
           perView: 2,
           gap: 8,
