@@ -36,7 +36,7 @@ import SwiperProductCard from 'components/SwiperProductCard'
           bound: true,
           peek: {
            before: 0, 
-           after: 50
+           after: 30
           },
           breakpoints: {
             3000: {
@@ -50,14 +50,14 @@ import SwiperProductCard from 'components/SwiperProductCard'
               perView: 2,
               peek: {
                 before: 0, 
-                after: 50
+                after: 60
               },
             },
             400: {
               perView: 2,
               peek: {
                 before: 0, 
-                after: 0
+                after: 30
               },
             },
           }
