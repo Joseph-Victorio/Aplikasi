@@ -54,14 +54,12 @@ export function getPaginateCustomerOrder ({ commit }, payload) {
     commit('SET_LOAD_MORE_CUSTOMER', false)
   })
 }
-export function getOrderById ({}, order_ref) {
-  return Api().get('orders/'+ order_ref)
-}
+
 export function getTransactionDetail ({}, ref) {
   return Api().get('transaction/detail?reference='+ref)
 }
 export function storeOrder ({}, payload) {
-  return Api().post('orders', payload)
+  return Api().post('storeOrder', payload)
 }
 export function updateOrder ({dispatch}, payload) {
   Api().post('orders/'+ payload.id, payload).then(response => {
@@ -85,4 +83,8 @@ export function inputResi ({ dispatch }, payload) {
 }
 export function updateStatusOrder ({dispatch, commit}, payload) {
  return Api().post('updateStatusOrder', payload)
+}
+
+export function getInvoice ({}, order_ref) {
+  return Api().get('getInvoice/'+ order_ref)
 }

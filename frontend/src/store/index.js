@@ -58,6 +58,13 @@ export default function (/* { ssrContext } */) {
       isMenuCategory: false,
       session_id: null,
       page_width: window.innerWidth,
+      products: {
+        data: [],
+        ready: false,
+        available: true,
+        links: null,
+        meta: null
+      },
       forgot_password: {
         token: '',
         email: '',

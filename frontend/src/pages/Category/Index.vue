@@ -88,7 +88,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions('category',['getCategories', 'categoryDelete']),
+    ...mapActions('category',['getAdminCategories', 'categoryDelete']),
     remove (id) {
       this.removeId = id
       this.$q.dialog({
@@ -105,11 +105,7 @@ export default {
     }
   },
   created () {
-    if(!this.categories.data.length) this.getCategories()
+    if(!this.categories.data.length) this.getAdminCategories()
   }
 }
 </script>
-
-<style>
-
-</style>

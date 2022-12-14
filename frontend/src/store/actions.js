@@ -37,7 +37,7 @@ export default {
   },
   getInitialData: ({commit}) => {
     commit('SET_LOADING', true)
-    Api().get('getInitialData').then(response => {
+    Api().get('homepage').then(response => {
       if(response.status == 200) {
         commit('SET_SHOP', response.data.results.shop),
         commit('SET_CONFIG', response.data.results.config)
@@ -53,5 +53,10 @@ export default {
     }).catch(() => {
       commit('SET_LOADING', false)
     })
+  },
+  getProducts: ({ commit }) => {
+    Api().get('getProducts').then(response => {
+       commit('SET_FRONT_PRODUCTS', response.data)
+     })
   }
 }

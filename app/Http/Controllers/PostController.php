@@ -110,13 +110,6 @@ class PostController extends Controller
             'results' => Post::findOrFail($id)
         ]);
     }
-    public function getPostBySlug($slug)
-    {
-        return response()->json([
-            'success' => true,
-            'results' => Post::where('slug', $slug)->first()
-        ]);
-    }
 
     /**
      * Update the specified resource in storage.

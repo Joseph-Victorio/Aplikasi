@@ -178,7 +178,7 @@ export default {
     if(!this.shop) {
       this.$store.dispatch('getShop')
     }
-    this.$store.dispatch('getConfig')
+    // this.$store.dispatch('getConfig')
   },
   mounted() {
     if(this.coupon_discount) {

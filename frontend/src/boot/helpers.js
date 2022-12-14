@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import MoneyFormatter from 'components/MoneyFormatter'
 
+window.app_ready = false
+
 Vue.mixin({
   components: { MoneyFormatter },
   methods: {
@@ -47,6 +49,9 @@ Vue.mixin({
       let result = this.getRandomString(39)
       
       this.$store.commit('SET_SESSION_ID', result);
+    },
+    mounted() {
+      console.log('mounted from helper');
     }
   },
 })

@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Post;
 use App\Models\Block;
 use App\Models\Store;
 use App\Models\Config;
 use App\Models\Slider;
 use App\Models\Category;
+use App\Models\BankAccount;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use App\Repositories\ProductRepository;
 
@@ -21,7 +24,7 @@ class FrontApiController extends Controller
     {
         $this->productRepository = $productRepository;
     }
-    public function home()
+    public function homepage()
     {
 
         $sliders = Cache::rememberForever('sliders', function () {
@@ -73,5 +76,112 @@ class FrontApiController extends Controller
             ]
             
         ],200);
+    }
+
+    public function getSliders()
+    {
+        return response([
+            'success' => true,
+            'results' =>  Slider::OrderBy('weight', 'asc')->get()
+        ], 200);
+    }
+
+    public function getShop()
+    {
+        $shop = Cache::rememberForever('shop', function () {
+            return Store::first();
+        });
+        $config = Cache::rememberForever('shop_config', function () {
+            return Config::first();
+        });
+        return response([
+            'success' => true,
+            'results' => [
+                'shop' => $shop,
+                'config' => $config
+            ]
+        ], 200);
+    }
+
+    public function getCategories()
+    {
+        return response([
+            'success' => true, 
+            'results' => Category::orderBy('weight', 'asc')->get()
+            
+        ],200);
+    }
+
+    public function showCategory($id)
+    {
+        return response([
+            'success' => true, 
+            'results' => Category::find($id)
+            
+        ],200);
+    }
+
+    public function getBlocks()
+    {
+        return response()->json([
+            'success' => true,
+            'results' => Block::with('post:id,slug,title')->orderBy('position', 'desc')->get()
+        ]);
+    }
+
+    public function showBlock($id)
+    {
+        return response()->json([
+            'success' => true,
+            'results' => Block::find($id)->load('post')
+        ]);
+    }
+    
+    public function getConfig()
+    {
+        return response([
+            'success' => true,
+            'results' => Config::first()
+        ], 200);
+    }
+
+    public function getBanks()
+    {
+        return response(['success' => true, 'results' => BankAccount::all()], 200);
+    }
+
+    public function getPosts(Request $request)
+    {
+        $posts = [];
+        if($request->query('q') == 'listing'){
+
+            $posts = Cache::rememberForever('listing_post', function() {
+                return Post::listing()->latest()->get();
+            });
+
+        }elseif($request->query('q') == 'promote'){
+
+            $posts = Cache::rememberForever('promote_post', function() {
+                return Post::promote()->latest()->get();
+            });
+
+        } else {
+
+            $posts = Cache::rememberForever('all_post', function() {
+                return Post::latest()->get();
+            });
+        }
+
+        return response()->json([
+            'success' => true,
+            'results' => $posts
+        ]);
+    }
+    public function getPostDetail($slug)
+    {
+        return response()->json([
+            'success' => true,
+            'results' => Post::where('slug', $slug)->first()
+        ]);
     }
 }

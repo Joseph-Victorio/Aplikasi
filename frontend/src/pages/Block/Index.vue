@@ -66,7 +66,6 @@
           />
            <q-input
            filled 
-           required
             v-if="form.position == 'Featured'"
             label="Deskripsi" 
             v-model="form.description" 

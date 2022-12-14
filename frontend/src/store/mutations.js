@@ -99,6 +99,13 @@ export default {
   },
   SET_PAGE_WIDTH: ( state, width) => {
     state.page_width = width
+  },
+  SET_FRONT_PRODUCTS: (state, payload) => {
+    state.products.data = payload.data
+    state.products.links = payload.links
+    state.products.meta = payload.meta
+    state.products.ready = true
+    state.products.available = payload.data.length > 0 ? true : false
   }
 
 }

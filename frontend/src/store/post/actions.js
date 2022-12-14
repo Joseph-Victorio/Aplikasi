@@ -54,8 +54,8 @@ export function getAllPost (context) {
     }
   })
 }
-export function listingPost (context) {
-  Api().get('posts?q=listing').then(response => {
+export function getPosts (context) {
+  Api().get('getPosts?q=listing').then(response => {
     if(response.status == 200) {
       context.commit('SET_LISTING_POST', response.data.results)
     }
@@ -64,7 +64,7 @@ export function listingPost (context) {
 export function getSinglePost (context, id) {
   return Api().get('posts/'+ id)
 }
-export function getSinglePostBySlug (context,slug) {
-  return Api().get('post/'+slug)
+export function getPostDetail (context,slug) {
+  return Api().get('getPostDetail/'+slug)
 }
 

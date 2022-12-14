@@ -284,6 +284,7 @@ export default {
       varianModal: false,
       product: null,
       form: {
+        _method: 'PUT',
         id: '',
         title: '',
         price: '',
@@ -509,52 +510,7 @@ export default {
         return
       } 
 
-      let formData = new FormData();
-
-      formData.append('simple_product', this.form.simple_product)
-      formData.append('id', this.form.id)
-      formData.append('title', this.form.title)
-      formData.append('price', this.form.price)
-      formData.append('weight', this.form.weight)
-      formData.append('has_subvarian', this.form.has_subvarian)
-      formData.append('stock', this.form.stock)
-      formData.append('description', this.form.description)
-      formData.append('featured_index', this.form.featured_index)
-      if(this.form.featured_asset) {
-        formData.append('featured_asset', this.form.featured_asset)
-      }
-
-      if(this.form.category_id) {
-        formData.append('category_id', this.form.category_id)
-      }
-      if(this.form.varians.length) {
-        formData.append('varians', JSON.stringify(this.form.varians))
-      }
-
-      if(this.form.remove_varian.length) {
-        formData.append('remove_varian', JSON.stringify(this.form.remove_varian))
-      }
-      if(this.form.remove_subvarian.length) {
-        formData.append('remove_subvarian', JSON.stringify(this.form.remove_subvarian))
-      }
-
-      if(this.form.images.length > 0) {
-
-        for( var i = 0; i < this.form.images.length; i++ ){
-          let file = this.form.images[i];
-
-          formData.append('images[' + i + ']', file);
-        }
-      }
-      if(this.form.del_images.length > 0) {
-
-        for( var j = 0; j < this.form.del_images.length; j++ ){
-          let file = this.form.del_images[j];
-
-          formData.append('del_images[' + j + ']', file);
-        }
-      }
-      this.productUpdate(formData)
+      this.productUpdate(this.form)
     },
     selectNewImage() {
         this.$refs.image.click();

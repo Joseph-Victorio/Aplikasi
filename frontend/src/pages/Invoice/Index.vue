@@ -220,10 +220,10 @@ export default {
   },
   created() {
     if(!this.invoice){
-      this.getOrder()
+      this.getData()
     } else {
       if(this.invoice.order_ref != this.$route.params.order_ref) {
-        this.getOrder()
+        this.getData()
       } else {
         this.ready = true
         this.checkOrderStatus()
@@ -239,7 +239,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('order', ['getOrderById']),
+    ...mapActions('order', ['getInvoice']),
     statusColor(status) {
       if(status == 'UNPAID') return 'bg-grey-7'
       if(status == 'CANCELED') return 'bg-red-6'
@@ -267,10 +267,10 @@ export default {
 
       return location.origin + props.href;
     },
-    getOrder() {
+    getData() {
       this.$store.commit('SET_LOADING', true)
       if(this.$route.params.order_ref) {
-        this.getOrderById(this.$route.params.order_ref).then(response => {
+        this.getInvoice(this.$route.params.order_ref).then(response => {
           if(response.status == 200) {
             this.$store.commit('order/SET_INVOICE', response.data.results)
           }
@@ -344,7 +344,7 @@ export default {
       this.autoShowModal = false
     },
     getCheckOrder() {
-       this.getOrderById(this.$route.params.order_ref).then(response => {
+       this.getInvoice(this.$route.params.order_ref).then(response => {
           if(response.status == 200) {
             this.$store.commit('order/SET_INVOICE', response.data.results)
             this.checkOrderStatus()

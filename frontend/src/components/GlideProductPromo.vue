@@ -56,7 +56,7 @@ import { Api } from 'boot/axios'
               perView: 2,
               peek: {
                 before: 0, 
-                after: 60
+                after: 30
               },
             },
             400: {

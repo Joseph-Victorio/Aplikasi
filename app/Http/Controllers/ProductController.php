@@ -27,26 +27,6 @@ class ProductController extends Controller
 
     public function index()
     {
-
-        try {
-
-            return new ProductListCollection($this->productRepository->getAll());
-
-        } catch (Exception $e) {
-
-            $this->result = [
-                'status' => 500,
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
-        }
-
-        return response()->json($this->result, $this->result['status']);
-
-
-    }
-    public function getAdminProducts()
-    {
         try {
 
             $this->result['results'] = Product::with(['featuredImage', 'category', 'varians.subvarian'])
@@ -84,76 +64,7 @@ class ProductController extends Controller
         return response()->json($this->result, $this->result['status']);
     }
 
-    public function getProductsFavorites(Request $request)
-    {
-        $request->validate([
-            'pids' => 'required'
-        ]);
-
-        try {
-
-            return new ProductListCollection($this->productRepository->getProductsFavorites($request->pids));
-
-        } catch (Exception $e) {
-
-            return response()->json(['status' => 500, 'success' => false,'message' => $e->getMessage()]);
-        }
-
-        return response()->json($this->result, $this->result['status']);
-       
-    }
-    public function getProductsByCategory($id)
-    {     
-
-        try {
-            
-            return new ProductListCollection($this->productRepository->getProductsByCategory($id));
-
-
-        } catch (Exception $e) {
-
-            return response()->json(['status' => 500, 'success' => false,'message' => $e->getMessage()]);
-        }
-
-
-       
-    }
-
-    public function search($key)
-    {
-        if(!$key) {
-            return response([
-                'success' => false,
-            ], 404);
-         }
- 
-         $key = filter_var($key, FILTER_SANITIZE_SPECIAL_CHARS);
- 
-         try {
-             
-            return new ProductListCollection($this->productRepository->search($key));
- 
-            return view('welcome');
- 
-         } catch (Exception $e) {
- 
-             return response()->json(['status' => 500, 'success' => false,'message' => $e->getMessage()]);
-         }
-    }
-
-    public function show($slug)
-    {
-       
-        try {
-            
-            return $this->productRepository->show($slug);
-
-       } catch (Exception $e) {
-
-           return response()->json(['status' => 500, 'success' => false,'message' => $e->getMessage()]);
-       }
-    }
-    public function productById($id)
+    public function show($id)
     {
 
         try {
@@ -194,9 +105,9 @@ class ProductController extends Controller
         
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $product = Product::find($request->id);
+        $product = Product::find($id);
 
         $request->validate([
             'id' => 'required',
@@ -366,38 +277,5 @@ class ProductController extends Controller
         }
 
         return response()->json($this->result, $this->result['status']);
-    }
-    public function addProductReview(Request $request)
-    {
-        $request->validate([
-            'product_id' => ['required'],
-            'name' => ['required'],
-            'comment' => ['required'],
-            'rating' => ['required', 'numeric', 'min:1', 'max:5'],
-        ]);
-        $product = Product::findOrFail($request->product_id);
-
-        $product->reviews()->create([
-            'comment' => $request->comment,
-            'rating' => $request->rating,
-            'name' => $request->name,
-        ]);
-
-        Cache::forget('products');
-        Cache::forget('initial_products');
-        Cache::forget($product->slug);
-
-        return response()->json([
-            'success' => true,
-        ], 201);
-
-    }
-    public function loadProductReview(Request $request, $id)
-    {
-        $reviews = Review::where('product_id', $id)->latest()->skip($request->skip?? 0)->take(5)->get();
-        return response()->json([
-            'success' => true,
-            'results' => $reviews
-        ]);
     }
 }

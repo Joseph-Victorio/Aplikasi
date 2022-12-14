@@ -215,7 +215,7 @@ export default {
       }
     },
     getLocalBanks() {
-      Api().get('banks').then(response => {
+      Api().get('getBanks').then(response => {
         if(response.status == 200) {
           this.paymentChanels.localbanks = response.data.results
         }

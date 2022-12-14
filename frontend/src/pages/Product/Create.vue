@@ -293,7 +293,7 @@ export default {
       images: [],
       has_subvarian: false,
       featured_index: 0,
-      simple_product: false
+      simple_product: true
     },
     imagePreview: [],
     }
