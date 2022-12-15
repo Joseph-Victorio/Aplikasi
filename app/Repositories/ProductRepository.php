@@ -367,6 +367,12 @@ class ProductRepository
             }
 
             if(!$is_simple_product && $request->varians) {
+
+                $product->stock = 0;
+                $product->price = 0;
+                $product->weight = 0;
+                $product->save();
+                
                 $datas = json_decode($request->varians, true);
 
                 foreach($datas as $data) {

@@ -155,7 +155,7 @@
                           <q-item-label>Duplikat Varian</q-item-label>
                         </q-item-section>
                       </q-item>
-                      <q-item clickable v-close-popup @click="deleteVarian(varIndex)" >
+                      <q-item clickable v-close-popup @click="deleteVarian(varian, varIndex)" >
                         <q-item-section side>
                           <q-icon name="eva-close" color="red"></q-icon>
                         </q-item-section>
@@ -226,7 +226,7 @@
                   </q-item-section>
 
                   <q-item-section side>
-                    <q-btn unelevated padding="4px" icon="eva-close" size="9px" color="red" @click="deleteVarian(vIndex)"></q-btn>
+                    <q-btn unelevated padding="4px" icon="eva-close" size="9px" color="red" @click="deleteVarian(varian, vIndex)"></q-btn>
                     <q-btn unelevated padding="4px" icon="eva-copy" size="9px" color="blue" class="q-mt-sm" @click="duplicateVarian(vIndex,`input-var-`)"></q-btn>
                   </q-item-section>
 
