@@ -573,10 +573,11 @@ export default {
     },
   },
   mounted() {
+    this.$q.loading.show()
     this.getProductById(this.$route.params.id).then((response) => {
       this.product = response.data.results
       this.setData() 
-    })
+    }).finally(() => this.$q.loading.hide())
     this.getCategories()
   },
 }
