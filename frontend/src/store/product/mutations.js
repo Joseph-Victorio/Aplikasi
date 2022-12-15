@@ -12,12 +12,11 @@ export function SET_PRODUCTS (state, payload)
   state.products.available = payload.data.length > 0 ? true : false
 
 }
-export function SET_PAGINATE (state, payload) 
+export function PAGINATE_PRODUCTS (state, payload) 
 {
   state.products.data = [...state.products.data, ...payload.data]
   state.products.links = payload.links
   state.products.meta = payload.meta
-
 }
 
 export function SET_PRODUCT_PROMO (state, payload) 

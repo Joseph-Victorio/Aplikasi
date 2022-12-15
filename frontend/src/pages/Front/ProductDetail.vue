@@ -85,33 +85,24 @@
           </div>
         </q-card-section>
       </q-card>
-
-     <div class="box-shadow bg-white q-px-md q-mt-md q-py-lg" v-if="product.varians.length">
+     <div class="box-shadow bg-white q-px-md q-mt-md q-py-lg" v-if="product && product_varian_item_render.length">
         <div class="q-pb-sm">
-          <div class="text-md">Pilih Varian <span class="text-sm text-weight-normal text-grey-7"></span></div>
+          <div class="text-md">Pilih Varian</div>
+          <div class="q-mt-m" v-if="product.varian_attributes.length">
+            <div class="q-mb-xs">{{ product.varian_attributes[0].label}}</div>
+            <div class="q-gutter-sm">
+              <q-btn class="product-varian--btn" outline v-for="attr in product.varian_attributes" :key="attr.id" :label="attr.value" :color="product_attribute_selected && product_attribute_selected.id == attr.id? 'accent' : 'grey-9'" @click="selectVarianAttribute(attr)">
+              <badge-tick v-if="product_attribute_selected && product_attribute_selected.id == attr.id " />
+              </q-btn>
+            </div>
+          </div>
           <div class="q-mt-md">
-          <div class="q-mb-xs">{{ product.varians[0].label}}</div>
-          <div class="q-gutter-sm">
-            <q-btn class="product-varian--btn" outline v-for="item in product.varians" :key="item.id" :label="item.value" :color="varianSelected && varianSelected.id == item.id? 'accent' : 'grey-9'" @click="selectProductVarian(item)">
-            <badge-tick v-if="varianSelected && varianSelected.id == item.id " />
-            </q-btn>
-          </div>
-          </div>
-            <div class="q-mt-md" v-if="varianSelected && varianSelected.has_subvarian">
-              <div class="q-mb-xs">{{ varianSelected.subvarian[0].label }}</div>
-              <div class="q-gutter-sm">
-                <q-btn outline v-for="item in varianSelected.subvarian" 
-                :key="item.id" 
-                :label="item.value" 
-                :disable="item.stock < 1 && !item.is_preorder"
-                @click="selectProductSubvarian(item)" 
-                :color="subvarianSelected && subvarianSelected.id == item.id ? 'accent' : 'grey-9'" 
-                class="relative product-variation product-varian--btn"
-                >
-                  <badge-tick v-if="subvarianSelected && subvarianSelected.id == item.id " />
-                </q-btn>
-              </div>
-          </div>
+            <div class="q-gutter-sm">
+              <q-btn class="product-varian--btn" outline v-for="item in product_varian_item_render" :key="item.id" :label="item.value" :color="product_varian_selected && product_varian_selected.id == item.id? 'accent' : 'grey-9'" @click="selectVarianItem(item)">
+              <badge-tick v-if="product_varian_selected && product_varian_selected.id == item.id " />
+              </q-btn>
+            </div>
+            </div>
         </div>
       </div>
      
@@ -310,7 +301,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog 
+    <!-- <q-dialog 
       v-model="formVariantModal"
       position="bottom"
       transition-show="slide-up"
@@ -323,8 +314,8 @@
               <div class="text-md">Pilih Varian <span class="text-sm text-weight-normal text-grey-7"></span></div>
               <div class="q-mt-sm">
               <div class="q-mb-xs">{{ product.varians[0].label}}</div>
-              <div class="q-gutter-sm">
-                <q-btn class="product-varian--btn" outline v-for="item in product.varians" :key="item.id" :label="item.value" :color="varianSelected && varianSelected.id == item.id? 'accent' : 'grey-9'" @click="selectProductVarian(item)">
+              <div class="q-gutter-sm" v-if="product.varian_attributes.length">
+                <q-btn class="product-varian--btn" outline v-for="item in product.varian_attributes" :key="item.id" :label="item.value" :color="varianSelected && varianSelected.id == item.id? 'accent' : 'grey-9'" @click="selectVarianItem(item)">
                 <badge-tick v-if="varianSelected && varianSelected.id == item.id " />
                 </q-btn>
               </div>
@@ -350,7 +341,7 @@
         <q-btn unelevated @click="addNewItem" name="eva-shopping-cart-outline" label="Beli Sekarang" color="primary" class="full-width"></q-btn>
         </q-card-section>
       </q-card>
-    </q-dialog>
+    </q-dialog> -->
     <q-dialog v-model="fullscreen" persistent maximized>
       <div class="max-width relative" v-if="product" style="background:rgb(240 240 240 / 90%);">
         <div class="text-center q-py-md absolute" style="top:5px;width:100%;z-index:99;">
@@ -419,7 +410,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import ShoppingCart from 'components/ShoppingCart.vue'
 import BadgeTick from 'components/BadgeTick.vue'
 import PinchScrollZoom, { PinchScrollZoomEmitData } from "@coddicat/vue-pinch-scroll-zoom";
@@ -454,13 +445,14 @@ export default {
       },
       cartModal: false,
       alreadyItemModal: false,
-      varianSelected: null,
-      subvarianSelected: null,
       formVariantModal: false,
       product: null,
       productReviews: [],
       imagePreviewIndex: 0,
       unapproved_review: JSON.parse(localStorage.getItem('unapproved_review')) || null,
+      has_varian: false,
+      product_attribute_selected: null,
+      product_varian_selected: null
     }
   },
   watch: {
@@ -474,6 +466,12 @@ export default {
     }
   },
   computed: {
+    product_varian_item_render() {
+      if(this.product_attribute_selected) {
+        return this.product.varian_items.filter(v => v.varian_id == this.product_attribute_selected.id)
+      }
+      return this.product.varian_items
+    },
     zoomImageStyle() {
       return `width:100%;height:100%;object-fit:contain;padding:4%;max-width:${this.zoomerWidth};max-height:${this.zoomerHeight}`
     },
@@ -494,7 +492,7 @@ export default {
       }
     },
     renderMaxPrice(){
-      if(this.isHasVarian && !this.isVarianHasSelected) {
+      if(this.has_varian && !this.product_varian_selected) {
         if(parseInt(this.getCurrentPrice) < parseInt(this.getMaxPrice)) {
           return true
         }
@@ -503,7 +501,7 @@ export default {
     },
     renderDiscount() {
       if(this.product.pricing.is_discount) {
-        if(this.isHasVarian && this.isVarianHasSelected) {
+        if(! this.renderMaxPrice) {
           return true
         }
       }
@@ -540,41 +538,17 @@ export default {
       return this.$q.screen.width+'px'
     },
     productStock() {
-      if(this.product.varians.length) {
-        if(this.subvarianSelected) {
-          return this.subvarianSelected.stock
-        }
-        return 0
+      if(this.has_varian && this.product_varian_selected) {
+        return this.product_varian_selected.stock
       } 
       return this.product.stock
     },
     currentStock() {
       let hasCart = this.carts.find(el => el.sku == this.currentProductSku)
 
-      if(this.isHasVarian) {
+      if(this.has_varian && this.product_varian_selected) {
 
-        if(this.varianSelected) {  
-        
-          if(!this.varianSelected.has_subvarian) {
-            return hasCart != undefined ? this.varianSelected.stock-hasCart.quantity : this.varianSelected.stock
-          }
-
-          if(this.subvarianSelected) {
-  
-            return hasCart != undefined ? this.subvarianSelected.stock-hasCart.quantity : this.subvarianSelected.stock
-          }
-
-          return hasCart != undefined ? this.productStock-hasCart.quantity : this.productStock
-
-        } else {
-
-           if(this.subvarianSelected) {
-
-            return hasCart != undefined ? this.subvarianSelected.stock-hasCart.quantity :  this.productStock
-          }
-
-          return hasCart != undefined ?  this.productStock-hasCart.quantity :  this.productStock
-        }
+        return hasCart != undefined ? this.product_varian_selected.stock-hasCart.quantity : this.product_varian_selected.stock
 
       }else {
 
@@ -583,27 +557,9 @@ export default {
       }
 
     },
-    isHasVarian() {
-      return this.product.varians.length > 0
-    },
-    isVarianHasSelected() {
-      if(this.varianSelected) {
-         if(!this.varianSelected.has_subvarian) {
-          return  true
-         }else if(this.subvarianSelected) {
-          return true
-         }
-      }
-      return false
-    },
     currentProductSku() {
-      if(this.varianSelected) {
-        if(!this.varianSelected.has_subvarian) {
-          return this.varianSelected.sku
-        }
-        if(this.subvarianSelected) {
-          return this.subvarianSelected.sku
-        }
+      if(this.has_varian && this.product_varian_selected) {
+        return this.product_varian_selected.sku
       }
       return this.product.sku ? this.product.sku : this.product.id
     }, 
@@ -618,88 +574,39 @@ export default {
       return 0
     },
     getMaxPrice() {
-      if(this.isHasVarian) {
+      if(this.has_varian) {
 
         let maxPrice = parseInt(this.product.pricing.max_price);
 
-        if(this.varianSelected && this.varianSelected.has_subvarian) {
+        if(this.product_attribute_selected) {
 
-          maxPrice = parseInt(this.varianSelected.subvarian[this.varianSelected.subvarian.length -1].price)
+          maxPrice = parseInt(this.product_varian_item_render[this.product_varian_item_render.length -1].price)
 
         }
 
-        let discount = 0;
+        let discount = this.getcurrentDiscount(maxPrice);
 
-        if(this.product.pricing.is_discount) {
-          if(this.product.pricing.discount_type == 'PERCENT') {
-            discount = (parseInt(maxPrice)*parseInt(this.product.pricing.discount_amount))/100
-          }else {
-            discount = parseInt(this.product.pricing.discount_amount)
-          }
-        }
         return maxPrice - discount
       }
       return 0
     },
     getDefaultPrice() {
-      if(this.varianSelected) {
+      if(this.product_varian_selected) {
+        return parseInt(this.product_varian_selected.price)
+      }
 
-        if(!this.varianSelected.has_subvarian) {
-
-          return  parseInt(this.varianSelected.price)
-
-        } else {
-
-          if(this.subvarianSelected) {
-    
-            return parseInt(this.subvarianSelected.price)
-          } 
-  
-            return parseInt(this.varianSelected.subvarian[0].price)
-        }
-
+      if(this.product_attribute_selected) {
+        return parseInt(this.product_varian_item_render[0].price)
       }
 
       return parseInt(this.product.pricing.default_price)
     },
     getCurrentPrice() {
-      if(this.varianSelected) {
-
-        if(!this.varianSelected.has_subvarian) {
-
-          return  parseInt(this.varianSelected.price) - this.getDiscountAmount
-
-        } else {
-
-          if(this.subvarianSelected) {
-    
-            return parseInt(this.subvarianSelected.price) - this.getDiscountAmount
-          } 
-  
-            return parseInt(this.varianSelected.subvarian[0].price) - this.getDiscountAmount
-        }
-
-      }
-
-      return parseInt(this.product.pricing.default_price) - this.getDiscountAmount
+      return this.getDefaultPrice - this.getDiscountAmount
     },
     getCurrentWeight() {
-      if(this.varianSelected) {
-
-        if(!this.varianSelected.has_subvarian) {
-
-          return  parseInt(this.varianSelected.weight)
-
-        } else {
-
-          if(this.subvarianSelected) {
-    
-            return parseInt(this.subvarianSelected.weight)
-          } 
-  
-            return parseInt(this.varianSelected.subvarian[0].weight)
-        }
-
+      if(this.product_varian_selected) {
+        return  parseInt(this.product_varian_selected.weight)
       }
 
       return parseInt(this.product.weight)
@@ -717,13 +624,23 @@ export default {
         translateY: 0        
       });
     },
-    selectProductVarian(item) {
-      this.varianSelected = item
-      this.subvarianSelected = null
+    getcurrentDiscount(price) {
+      if(this.product.pricing.is_discount) {
+        if(this.product.pricing.discount_type == 'PERCENT') {
+          return (parseInt(price)*parseInt(this.product.pricing.discount_amount))/100
+        }else {
+          return parseInt(this.product.pricing.discount_amount)
+        }
+      }
+      return 0;
+    },
+    selectVarianAttribute(item) {
+      this.product_attribute_selected = item
+      this.product_varian_selected = null
       this.quantity = 1
     },
-    selectProductSubvarian(item) {
-      this.subvarianSelected = item
+    selectVarianItem(item) {
+      this.product_varian_selected = item
       this.quantity = 1
     },
     backButton() {
@@ -765,28 +682,13 @@ export default {
       }
     },
     addNewItem() {
-      if(this.isHasVarian) {
-        if(this.varianSelected) {
-
-          if(this.varianSelected.has_subvarian) {
-
-            if(!this.subvarianSelected) {
-
-              this.showNotifyHasSelectVarian()
-
-              return 
-            }
-          }
-
-        } else {
-          this.showNotifyHasSelectVarian()
-          return
-
-        }
+      if(this.has_varian && !this.product_varian_selected) {
+        this.showNotifyHasSelectVarian()
+        return
       }
 
       if(this.currentStock <= 0) {
-        let item = this.isHasVarian ? 'varian' : 'produk'
+        let item = this.has_varian ? 'varian' : 'produk'
         this.$q.dialog({
           title: 'Stok habis',
           message: `Maaf, stok untuk ${item} ini habis, silahkan pilih ${item} lainnya.`
@@ -826,12 +728,12 @@ export default {
     },
     getVarianTextNote() {
        let str = ''
-      if(this.varianSelected) {
-        if(this.varianSelected.has_subvarian && this.subvarianSelected) {
-          str += `${this.varianSelected.label} ${this.varianSelected.value}, ${this.subvarianSelected.label} ${this.subvarianSelected.value}`
-        } else {
-          str += `${this.varianSelected.label} ${this.varianSelected.value}`
-        }
+      if(this.product_varian_selected) {
+        if(this.product_attribute_selected) {
+          str += `${this.product_attribute_selected.label} ${this.product_attribute_selected.value}, `
+        } 
+
+        str += `${this.product_varian_selected.label} ${this.product_varian_selected.value}`
       }
       return str
     },
@@ -844,12 +746,8 @@ export default {
       return location.origin + props.href;
     },
     checkVarianIsReady() {
-      if(this.isHasVarian) {
-        if(!this.varianSelected) return false
-
-        if(this.varianSelected.has_subvarian) {
-          if(!this.subvarianSelected) return false
-        }
+      if(this.has_varian && !this.product_attribute_selected) {
+        return false
       }
       return true
     },
@@ -979,13 +877,14 @@ export default {
     getProduct() {
       this.getProductDetail(this.$route.params.slug).then(response => {
         if(response.status == 200) {
-          this.product = response.data.data
+          let data = response.data.data
+          this.product = data
           this.ready = true
+
+          this.has_varian = data.varian_items.length > 0
           
-          if(this.isHasVarian) {
-            if(this.product.varians[0].has_subvarian) {
-              this.varianSelected = this.product.varians[0];
-            }
+          if(this.has_varian && data.varian_attributes.length) {
+            this.product_attribute_selected = data.varian_attributes[0];
           }
         } else {
           // this.$router.push({name: 'ProductIndex'})

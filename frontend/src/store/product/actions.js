@@ -14,7 +14,6 @@ export function productStore ({ dispatch, commit }, payload) {
   })
   
 }
-
 export function productUpdate ({ commit }, payload) {
   commit('SET_LOADING', true, { root: true })
     Api().post('products/' + payload.id, _formatData(payload), 
@@ -44,18 +43,8 @@ export function searchAdminProducts ({ commit }, key) {
   return  Api().get('searchAdminProducts/' + key)
 }
 
-export function getProducts ({ commit }) {
-
-  Api().get('products').then(response => {
-     commit('SET_PRODUCTS', response.data)
-   })
-}
-
 export function getProductById ({}, id) {
   return Api().get('products/' + id)
-}
-export function getProductDetail ({}, slug) {
-  return Api().get('getProductDetail/' + slug)
 }
 
 export function productDelete ( { dispatch },  id) {
@@ -64,8 +53,20 @@ export function productDelete ( { dispatch },  id) {
   })
 }
 
+// FRONT
+export function getProducts ({ commit }) {
+
+  Api().get('getProducts').then(response => {
+     commit('SET_PRODUCTS', response.data)
+   })
+}
+
+export function getProductDetail ({}, slug) {
+  return Api().get('getProductDetail/' + slug)
+}
+
 export function searchProducts ({ commit }, q) {
-  return Api().get('search/'+q)
+  return Api().get('searchProduct/'+q)
  }
 
 export function getProductsByCategory ({ commit }, id) {

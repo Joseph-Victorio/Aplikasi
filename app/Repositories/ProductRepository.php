@@ -22,9 +22,10 @@ class ProductRepository
     
     public function show($slug)
     {
+        Cache::forget($slug);
         $product = Cache::remember($slug, now()->addMinutes(5), function() use ($slug) {
 
-            return new ProductResource(Product::with(['minPrice', 'maxPrice','assets', 'category:id,title,slug', 'varians.subvarian', 'productPromo' => function($query) {
+            return new ProductResource(Product::with(['assets', 'varianItems:id,product_id,label,value,price,sku,stock,varian_id,weight', 'varianAttributes:id,product_id,label,value', 'productPromo' => function($query) {
                 $query->whereHas('promoActive');
             }])
                 ->withCount('reviews')

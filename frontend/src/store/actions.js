@@ -54,9 +54,4 @@ export default {
       commit('SET_LOADING', false)
     })
   },
-  getProducts: ({ commit }) => {
-    Api().get('getProducts').then(response => {
-       commit('SET_FRONT_PRODUCTS', response.data)
-     })
-  }
 }

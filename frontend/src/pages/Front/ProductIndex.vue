@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import ProductSection from 'components/ProductSection.vue'
 import ShoppingCart from 'components/ShoppingCart.vue'
 
@@ -35,16 +34,15 @@ export default {
   },
   computed: {
     products() {
-      return this.$store.state.products
+      return this.$store.state.product.products
     },
   },
   methods: {
-    ...mapActions(['getProducts']),
     paginate(url) {
       this.isLoadmore = true
       Api().get(url).then(response => {
         if(response.status == 200) {
-          this.$store.commit('product/SET_PAGINATE', response.data)
+          this.$store.commit('product/PAGINATE_PRODUCTS', response.data)
         }
       }).finally(() =>  this.isLoadmore = false)
     }
@@ -54,7 +52,7 @@ export default {
       this.title = 'Produk ' + this.$route.query.q
     }
     if(!this.products.data.length) {
-      this.getProducts()
+      this.$store.dispatch('product/getProducts')
     }
   },
   meta() {

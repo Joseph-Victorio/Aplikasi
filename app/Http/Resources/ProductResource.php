@@ -17,25 +17,25 @@ class ProductResource extends JsonResource
         // return parent::toArray($request);
 
         $pricing = [
-            'default_price' =>  $this->price,
-            'max_price' =>  null,
+            'default_price' =>  intval($this->price),
+            'max_price' =>  0,
             'discount_type' => 'PERCENT',
             'discount_amount' => 0,
             'is_discount' => false,
         ];
 
+        $varianItems = $this->varianItems;
+
         if($this->productPromo) {
 
             $pricing['is_discount'] = true;
             $pricing['discount_type'] = $this->productPromo->discount_type;
-            $pricing['discount_amount'] = $this->productPromo->discount_amount;
+            $pricing['discount_amount'] = intval($this->productPromo->discount_amount);
         }
 
-        if($this->minPrice) {
-            $pricing['default_price'] = $this->minPrice->price;
-        }
-        if($this->maxPrice) {
-            $pricing['max_price'] = $this->maxPrice->price;
+        if($varianItems->count() > 0) {
+            $pricing['default_price'] = intval($varianItems[0]->price);
+            $pricing['max_price'] = intval($varianItems[$varianItems->count() - 1]->price);
         }
 
         return [
@@ -44,15 +44,15 @@ class ProductResource extends JsonResource
             'pricing' => $pricing,
             'slug' => $this->slug,
             'sku' => $this->sku,
-            'stock' => $this->variant_items_sum_item_stock?? $this->stock,
+            'stock' => intval($this->stock),
             'description' => $this->description,
             'status' => $this->status,
             'rating' => $this->reviews_avg_rating ? number_format($this->reviews_avg_rating, 1) : 0,
-            'weight' => $this->weight,
-            'category' => $this->category,
+            'weight' => intval($this->weight),
             'assets' => $this->assets,
             'reviews_count' => $this->reviews_count,
-            'varians' => $this->varians,
+            'varian_items' => $this->varianItems,
+            'varian_attributes' => $this->varianAttributes,
         ];
     }
 }
