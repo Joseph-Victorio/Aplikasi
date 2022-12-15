@@ -12,6 +12,7 @@ use App\Models\ProductVarian;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Silehage\Tripay\Facades\Tripay;
+use Illuminate\Support\Facades\Cache;
 
 class FrontOrderController extends Controller
 {
@@ -57,23 +58,28 @@ class FrontOrderController extends Controller
 
     public function getRandomOrder()
     {
-        $items = DB::table('order_items')
-        ->select('order_items.id', 'order_items.name', 'order_items.created_at', 'orders.customer_name', 'assets.filename')
-        ->join('orders', 'order_items.order_id', 'orders.id')
-        ->join('products', 'order_items.product_id', 'products.id')
-        ->join('assets', function($join) {
-            $join->on('products.id', '=', 'assets.assetable_id')
-                    ->where('assets.assetable_type', '=', 'Product');
-        })
-        ->inRandomOrder()
-        ->get()->map(function($item) {
-            return [
-                'id' => $item->id,
-                'name' => $item->name,
-                'customer_name' => $item->customer_name,
-                'created' => $item->created_at >= Carbon::now()->subDays(2)? Carbon::parse($item->created_at)->diffForHumans() : 'Beberapa waktu lalu',
-                'image' => url('/upload/images/' . $item->filename)
-            ];
+
+       $items = Cache::remember('order_items_random',  now()->addMinutes(5), function() {
+
+            return DB::table('order_items')
+            ->select('order_items.id', 'order_items.name', 'order_items.created_at', 'orders.customer_name', 'assets.filename')
+            ->join('orders', 'order_items.order_id', 'orders.id')
+            ->join('products', 'order_items.product_id', 'products.id')
+            ->join('assets', function($join) {
+                $join->on('products.id', '=', 'assets.assetable_id')
+                        ->where('assets.assetable_type', '=', 'Product');
+            })
+            ->inRandomOrder()
+            ->get()->map(function($item) {
+                return [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'customer_name' => $item->customer_name,
+                    'created' => $item->created_at >= Carbon::now()->subDays(2)? Carbon::parse($item->created_at)->diffForHumans() : 'Beberapa waktu lalu',
+                    'image' => url('/upload/images/' . $item->filename)
+                ];
+            });
+
         });
 
         return response()->json(['results' => $items], 200);
