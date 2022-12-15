@@ -24,11 +24,11 @@ register(process.env.SERVICE_WORKER_FILE, {
   },
 
   updatefound (/* registration */) {
-    // console.log('New content is downloading.')
+    console.log('New content is downloading.')
   },
 
   updated (/* registration */) {
-    // console.log('New content is available; please refresh.')
+    console.log('New content is available; please refresh.')
   },
 
   offline () {

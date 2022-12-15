@@ -15,7 +15,7 @@ use App\Http\Resources\ProductListCollection;
 
 class ProductController extends Controller
 {
-    public $limit = 10;
+    public $limit = 2;
     private $productRepository;
 
     protected $result = ['status' => 200, 'success' => true];

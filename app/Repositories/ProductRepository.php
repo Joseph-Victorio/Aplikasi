@@ -428,7 +428,7 @@ class ProductRepository
             DB::commit();
             
             $product->fresh();
-            $product->load('featuredImage', 'category', 'varians.subvarian');
+            $product->load('featuredImage', 'category', 'varianItems.parent');
 
             Cache::forget($product->slug);
 
