@@ -29,7 +29,7 @@ class ProductController extends Controller
     {
         try {
 
-            $this->result['results'] = Product::with(['featuredImage', 'category', 'varians.subvarian'])
+            $this->result['results'] = Product::with(['featuredImage', 'category', 'varianItems.parent'])
                     ->latest()
                     ->paginate($this->limit);
 
@@ -49,7 +49,7 @@ class ProductController extends Controller
         try {
 
             $this->result['results'] = Product::where('title', 'like', '%'.$key.'%')
-                ->with(['assets', 'category','varians.subvarian'])
+                ->with(['featuredImage', 'category', 'varianItems.parent'])
                 ->paginate($this->limit);
 
         } catch (Exception $e) {

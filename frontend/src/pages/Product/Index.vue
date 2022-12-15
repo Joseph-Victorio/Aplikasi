@@ -32,36 +32,17 @@
         </q-item-section>
 
         <q-item-section top>
-          <div class="">
-            <q-item-label lines="2" class="text-subtitle2">{{ product.title }}</q-item-label>
-            
-            <q-item-label caption>Harga Dasar {{ moneyIDR(product.price) }}</q-item-label>
-            <q-item-label caption v-if="!product.varians.length">Stok {{ product.stock }}</q-item-label>
+          <div>
+            <q-item-label lines="2" class="text-15 text-weight-medium text-grey-9">{{ product.title }}</q-item-label>
+            <template v-if="product.varian_items.length">
+              <q-item-label caption >{{ renderVarianPrice(product.varian_items) }}</q-item-label>
+              <q-item-label caption >Total Stok : {{ getTotalStock(product.varian_items) }} ( {{ product.varian_items.length }} varian )</q-item-label>
+            </template>
+            <template v-else>
+              <q-item-label caption >{{ moneyIDR(product.price) }}</q-item-label>
+              <q-item-label caption >Stok : {{ product.stock }}</q-item-label>
+            </template>
 
-            <q-item-label>
-              <q-slide-transition>
-              <div v-show="showListId == product.id">
-                <div class="text-weight-bold q-pa-xs q-mt-sm">Detil Varian</div>
-                <div v-for="varian in product.varians" :key="varian.id" class="q-mb-xs">
-                  <q-list v-if="varian.has_subvarian" dense bordered separator>
-                    <q-item v-for="subvarian in varian.subvarian" :key="subvarian.id">
-                      <q-item-section>{{ varian.label }} {{ varian.value }} </q-item-section>
-                      <q-item-section>{{ subvarian.label }} {{ subvarian.value }}</q-item-section>
-                      <q-item-section>Stok {{ subvarian.stock }}</q-item-section>
-                      <q-item-section>Harga {{ moneyIDR(subvarian.price) }}</q-item-section>
-                    </q-item>
-                  </q-list>
-                  <q-list v-if="!varian.has_subvarian" dense separator bordered>
-                    <q-item>
-                      <q-item-section>{{ varian.label }} {{ varian.value }} </q-item-section>
-                      <q-item-section>Stok {{ varian.stock }}</q-item-section>
-                      <q-item-section>Harga {{ moneyIDR(varian.price) }}</q-item-section>
-                    </q-item>
-                  </q-list>
-                </div>
-              </div>
-            </q-slide-transition>
-            </q-item-label>
             </div>
         </q-item-section>
 
@@ -78,13 +59,13 @@
                 <q-tooltip content-class="bg-teal">Lihat</q-tooltip>
               </q-fab-action>
 
-              <q-fab-action v-if="product.varians.length" unelevated @click="selectVarian(product)" round icon="eva-pantone" glossy color="accent">
+              <q-fab-action v-if="product.varian_items.length" unelevated @click="selectVarian(product)" round icon="eva-pantone" glossy color="accent">
                 <q-tooltip content-class="bg-accent">Detil Varian</q-tooltip>
               </q-fab-action>
             </q-fab>
           </div>
           <div class="row q-gutter-xs" v-if="isDesktop">
-            <q-btn size="11px" v-if="product.varians.length" unelevated @click="selectVarian(product)" round icon="eva-pantone" glossy color="accent">
+            <q-btn size="11px" v-if="product.varian_items.length" unelevated @click="selectVarian(product)" round icon="eva-pantone" glossy color="accent">
               <q-tooltip content-class="bg-accent">Detil Varian</q-tooltip>
             </q-btn>
             <q-btn size="11px" unelevated @click="remove(product.id)" round icon="eva-trash-2" glossy color="red">
@@ -130,19 +111,21 @@
           </q-item>
         </q-list>
         <q-separator></q-separator>
-        <div v-for="varian in productSelected.varians" :key="varian.id">
-          <q-list v-if="varian.has_subvarian" dense>
-            <q-item v-for="subvarian in varian.subvarian" :key="subvarian.id">
-              <q-item-section>{{ varian.label }} {{ varian.value }} - {{ subvarian.label }} {{ subvarian.value }}</q-item-section>
-              <q-item-section>Stok : {{ subvarian.stock }}</q-item-section>
-              <q-item-section>Harga : {{ moneyIDR(productSelected.price+subvarian.price) }}</q-item-section>
-            </q-item>
-          </q-list>
-          <q-list v-if="!varian.has_subvarian" dense>
-            <q-item>
-              <q-item-section>{{ varian.label }} {{ varian.value }} </q-item-section>
+        <div >
+          <q-list dense separator>
+            <q-item v-for="varian in productSelected.varian_items" :key="varian.id">
+              <q-item-section>
+                <q-item-label class="q-gutter-x-xs">
+                  <template v-if="varian.parent">
+                  <span v-if="varian.parent">{{ varian.parent.label }} {{ varian.parent.value }}</span>
+                  <span v-if="varian.parent">/</span>
+                  <span>{{ varian.value }}</span>
+                  </template>
+                  <span v-else>{{ varian.label }} {{ varian.value }}</span>
+                </q-item-label>
+              </q-item-section>
               <q-item-section>Stok : {{ varian.stock }}</q-item-section>
-              <q-item-section>Harga : {{ moneyIDR(productSelected.price+varian.price) }}</q-item-section>
+              <q-item-section>Harga : {{ moneyIDR(varian.price) }}</q-item-section>
             </q-item>
           </q-list>
         </div>
@@ -174,13 +157,29 @@ export default {
     }),
     isDesktop() {
       return window.innerWidth > 600
-    }
+    },
   },
   methods: {
     ...mapActions('product', ['getAdminProducts', 'productDelete', 'searchAdminProducts']),
     selectVarian(product) {
       this.varianViewModal = true
       this.productSelected = product
+    },
+    renderVarianPrice(items) {
+      if(items.length) {
+        let minPrice = parseInt(items[0].price)
+        let maxPrice = parseInt(items[items.length - 1].price)
+
+        if(minPrice < maxPrice) {
+          return `${this.moneyIDR(minPrice)} - ${this.moneyIDR(maxPrice)}`
+        }
+        
+        return `@ ${this.moneyIDR(minPrice)}`
+      }
+      return 0
+    },
+    getTotalStock(items){
+      return items.reduce((acc, obj) => parseInt(acc) + parseInt(obj.stock), 0)
     },
     searchProduct() {
       this.$store.commit('SET_LOADING', true)

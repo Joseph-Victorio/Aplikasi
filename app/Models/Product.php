@@ -22,6 +22,20 @@ class Product extends Model
         'price' => 'integer',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            try {
+                $model->sku = Generator::uuid4()->toString();
+            } catch (\Exception $e) {
+                $model->sku = Str::upper(Str::random(32));
+                Log::info($e->getMessage());
+            }
+        });
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -80,17 +94,17 @@ class Product extends Model
             ->whereNull('varian_id')
             ->orderBy('price');
     }
-    protected static function boot()
+    public function varianAttributes()
     {
-        parent::boot();
-
-        static::creating(function ($model) {
-            try {
-                $model->sku = Generator::uuid4()->toString();
-            } catch (\Exception $e) {
-                $model->sku = Str::upper(Str::random(32));
-                Log::info($e->getMessage());
-            }
-        });
+        return $this->hasMany(ProductVarian::class)
+            ->where('has_subvarian', 1)
+            ->orderBy('price');
     }
+    public function varianItems()
+    {
+        return $this->hasMany(ProductVarian::class)
+            ->where('has_subvarian', 0)
+            ->orderBy('price');
+    }
+    
 }
