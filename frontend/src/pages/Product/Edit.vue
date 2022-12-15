@@ -147,7 +147,7 @@
                           <q-item-label>Tambah Item</q-item-label>
                         </q-item-section>
                       </q-item>
-                      <q-item clickable v-close-popup @click="duplicateVarian(varIndex, 'main-var-')" >
+                      <q-item clickable v-close-popup @click="duplicateVarian(varian, varIndex, 'main-var-')" >
                         <q-item-section side>
                           <q-icon name="eva-copy" color="purple"></q-icon>
                         </q-item-section>
@@ -227,7 +227,7 @@
 
                   <q-item-section side>
                     <q-btn unelevated padding="4px" icon="eva-close" size="9px" color="red" @click="deleteVarian(varian, vIndex)"></q-btn>
-                    <q-btn unelevated padding="4px" icon="eva-copy" size="9px" color="blue" class="q-mt-sm" @click="duplicateVarian(vIndex,`input-var-`)"></q-btn>
+                    <q-btn unelevated padding="4px" icon="eva-copy" size="9px" color="blue" class="q-mt-sm" @click="duplicateVarian(varian, vIndex,`input-var-`)"></q-btn>
                   </q-item-section>
 
                 </q-item>
@@ -259,8 +259,8 @@
       <q-card class="card-md" v-if="form.varians.length">
         <form @submit.prevent="submitEditLabel">
           <q-card-section>
-            <q-input required v-model="form.varians[editLabelIndex].label" label="Varian Label"></q-input>
-            <q-input required v-model="form.varians[editLabelIndex].value" label="Label"></q-input>
+            <q-input required v-model="form.varians[editLabelIndex].label" label="Varian"></q-input>
+            <q-input required v-model="form.varians[editLabelIndex].value" label="Subvarian"></q-input>
           </q-card-section>
           <q-card-actions class="q-pa-md">
             <q-btn color="primary" unelevated label="Simpan" type="submit"></q-btn>
@@ -282,7 +282,6 @@ export default {
       editLabelIndex: 0,
       editLabelModal: false,
       varianModal: false,
-      product: null,
       form: {
         _method: 'PUT',
         id: '',
@@ -299,7 +298,6 @@ export default {
         remove_varian:[],
         remove_subvarian:[],
         featured_index: 0,
-        featured_asset: null,
         simple_product: false
 
       },
@@ -366,7 +364,6 @@ export default {
         let asset = img.split('/')
         this.form.featured_asset = asset[asset.length-1]
       }else {
-        this.form.featured_asset = null
       }
 
     },
@@ -389,7 +386,7 @@ export default {
         this.form.varians.splice(varIndex,1)
       })
     },
-    deleteSubvarian(data, varIndex,subIndex) {
+    deleteSubvarian(data,varIndex,subIndex) {
 
       if(data.id) {
         this.form.remove_varian.push(data.id)
@@ -409,8 +406,9 @@ export default {
       this.form.varians[varIndex].subvarian.push(tpl)
 
       setTimeout(() => {
-        let col = document.querySelectorAll('.multi-varian')
-       let nodes = [...col]
+        let cls = `.main-var-${varIndex}`
+        let col = document.querySelectorAll(cls)
+        let nodes = [...col]
 
         let label = nodes[nodes.length - 1]
         this.jumpToInputClass(label)
@@ -430,13 +428,44 @@ export default {
       }, 500)
 
     },
-    duplicateVarian(varIndex, key) {
-      let varian = this.form.varians[varIndex]
+    duplicateVarian(varian, varIndex, key) {
 
-      this.form.varians.splice(varIndex, 0, {...varian})
+      let newTpl = null
+
+       if(varian.has_subvarian) {
+        
+        newTpl = { 
+            has_subvarian: true, 
+            label: varian.label, 
+            value: varian.value, 
+            subvarian: []
+         }
+ 
+           varian.subvarian.forEach(el => {
+             let sub = { 
+              label: el.label, 
+              value: '', 
+              stock: el.stock, 
+              price: el.price, 
+              weight: el.weight 
+            }
+             newTpl.subvarian.push(sub)
+           })
+ 
+      } else {
+        newTpl = { 
+          has_subvarian: false,  
+          label: varian.label, 
+          value: '', 
+          stock: varian.stock, 
+          price: varian.price, 
+          weight: varian.weight 
+        }
+      }
+
+      this.form.varians.splice(varIndex + 1, 0, newTpl)
 
       let cls = `.${key}${varIndex + 1}`;
-
       setTimeout(() => {
         let label = document.querySelector(cls);
         this.jumpToInputClass(label)
