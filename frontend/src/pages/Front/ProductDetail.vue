@@ -73,7 +73,7 @@
 
           <div class="row items-center q-gutter-x-sm">
             <q-rating 
-              data-nosnippet
+              data-nosnippet="true"
               v-model="productRating"
               readonly
               color="accent"
@@ -141,7 +141,7 @@
                 <div class="text-center" v-if="productRating > 0">
                   <div class="text-3xl text-weight-bold">{{ product.rating }}</div>
                   <q-rating 
-                    data-nosnippet
+                    data-nosnippet="true"
                     readonly
                     v-model="productRating"
                     color="accent"
@@ -165,7 +165,7 @@
                   <q-item-section>
                     <q-item-label class="text-md q-mb-xs">{{ review.name }} <span v-if="!review.is_approved" class="text-xs text-orange">( Menunggu Moderasi )</span></q-item-label>
                       <q-rating 
-                      data-nosnippet
+                      data-nosnippet="true"
                       readonly
                       v-model="review.rating"
                       color="accent"
@@ -207,7 +207,7 @@
           <div>
           <div class="text-subtitle2 q-mb-sm">Berikan Ulasan Anda</div>
             <q-rating 
-              data-nosnippet
+              data-nosnippet="true"
               v-model="form.rating"
               color="amber"
               icon="ion-star-outline"
