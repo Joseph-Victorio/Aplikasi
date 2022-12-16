@@ -34,9 +34,9 @@
         <q-item-section top>
           <div>
             <q-item-label lines="2" class="text-15 text-weight-medium text-grey-9">{{ product.title }}</q-item-label>
-            <template v-if="product.varian_items.length">
+            <template v-if="product.varian_items_count > 0">
               <q-item-label caption >{{ renderVarianPrice(product) }}</q-item-label>
-              <q-item-label caption >Total Stok : {{ getTotalStock(product.varian_items) }} ( {{ product.varian_items.length }} varian )</q-item-label>
+              <q-item-label caption >Total Stok : {{ product.varian_items_sum_stock }} ( {{ product.varian_items_count }} varian )</q-item-label>
             </template>
             <template v-else>
               <q-item-label caption >{{ moneyIDR(product.price) }}</q-item-label>
@@ -59,13 +59,16 @@
                 <q-tooltip content-class="bg-teal">Lihat</q-tooltip>
               </q-fab-action>
 
-              <q-fab-action v-if="product.varian_items.length" unelevated @click="selectVarian(product)" round icon="eva-pantone" glossy color="accent">
+              <!-- <q-fab-action v-if="product.varian_items.length" unelevated @click="selectVarian(product)" round icon="eva-pantone" glossy color="accent">
+                <q-tooltip content-class="bg-accent">Detil Varian</q-tooltip>
+              </q-fab-action> -->
+              <q-fab-action v-if="product.varian_items_count > 0" unelevated @click="getDetailVarian(product)" round icon="eva-pantone" glossy color="accent">
                 <q-tooltip content-class="bg-accent">Detil Varian</q-tooltip>
               </q-fab-action>
             </q-fab>
           </div>
           <div class="row q-gutter-xs" v-if="isDesktop">
-            <q-btn size="11px" v-if="product.varian_items.length" unelevated @click="selectVarian(product)" round icon="eva-pantone" glossy color="accent">
+            <q-btn size="11px" v-if="product.varian_items_count > 0" unelevated @click="getDetailVarian(product)" round icon="eva-pantone" glossy color="accent">
               <q-tooltip content-class="bg-accent">Detil Varian</q-tooltip>
             </q-btn>
             <q-btn size="11px" unelevated @click="remove(product.id)" round icon="eva-trash-2" glossy color="red">
@@ -97,7 +100,7 @@
       <q-btn fab icon="add" color="primary" :to="{name: 'ProductCreate'}" glossy/>
     </q-page-sticky>
     <q-dialog v-model="varianViewModal" persistent position="bottom">
-      <q-card v-if="productSelected" class="max-width" style="min-height:300px;">
+      <q-card v-if="productSelected" class="max-width q-pb-lg" style="min-height:400px;">
         <q-list>
           <q-item>
             <q-item-section>
@@ -113,22 +116,23 @@
         <q-separator></q-separator>
         <div >
           <q-list dense separator>
-            <q-item v-for="varian in productSelected.varian_items" :key="varian.id">
+            <q-item v-for="varian in varian_items" :key="varian.id">
               <q-item-section>
                 <q-item-label class="q-gutter-x-xs">
-                  <template v-if="varian.parent">
-                  <span v-if="varian.parent">{{ varian.parent.label }} {{ varian.parent.value }}</span>
-                  <span v-if="varian.parent">/</span>
-                  <span>{{ varian.value }}</span>
+                  <template v-if="varian.attribute_value">
+                    <span >{{ varian.attribute_label}} {{ varian.attribute_value}}</span>
+                    <span >/</span>
+                    <span>{{ varian.value }}</span>
                   </template>
                   <span v-else>{{ varian.label }} {{ varian.value }}</span>
                 </q-item-label>
               </q-item-section>
               <q-item-section>Stok : {{ varian.stock }}</q-item-section>
-              <q-item-section>Harga : {{ moneyIDR(varian.price) }}</q-item-section>
+              <q-item-section>Harga : {{ moneyIDR(parseInt(varian.price)) }}</q-item-section>
             </q-item>
           </q-list>
         </div>
+        <q-inner-loading :showing="is_loading_varian"></q-inner-loading>
       </q-card>
     </q-dialog>
   </q-page>
@@ -147,7 +151,9 @@ export default {
       search: '',
       productSearch: [],
       showListId: null,
-      isLoadmore: false
+      isLoadmore: false,
+      is_loading_varian: false,
+      varian_items: []
     }
   },
   computed: {
@@ -180,9 +186,6 @@ export default {
 
       return '';
       
-    },
-    getTotalStock(items){
-      return items.reduce((acc, obj) => parseInt(acc) + parseInt(obj.stock), 0)
     },
     searchProduct() {
       this.$store.commit('SET_LOADING', true)
@@ -229,6 +232,18 @@ export default {
           this.$store.commit('product/PAGINATE_ADMIN_PRODUCTS', response.data.results)
         }
       }).finally(() => this.isLoadmore = false)
+    },
+    getDetailVarian(product) {
+      this.varianViewModal = true
+      if(this.productSelected && this.productSelected.id == product.id) return
+      this.varian_items = []
+      this.is_loading_varian = true
+      this.productSelected = product
+      Api().get('getProductVariansByProduct/' + product.id).then(res => {
+        if(res.status == 200) {
+          this.varian_items = res.data.results
+        }
+      }).finally(() => this.is_loading_varian = false)
     }
   },
   created() {

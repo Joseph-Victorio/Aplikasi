@@ -38,6 +38,7 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->group(function() {
     Route::get('getProductPromo/{promoId}', [ProductController::class, 'getProductPromo']);
     Route::get('findNotDiscountProduct', [ProductController::class, 'findNotDiscountProduct']);
     Route::get('searchAdminProducts/{key}', [ProductController::class, 'searchAdminProducts']);
+    Route::get('getProductVariansByProduct/{productId}', [ProductController::class, 'getProductVariansByProduct']);
 
     Route::apiResource('sliders', SliderController::class);
     Route::post('update-slider-weight', [SliderController::class, 'updateSliderWeight']);

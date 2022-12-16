@@ -7,6 +7,7 @@ use App\Models\Promo;
 use App\Models\Product;
 use App\Models\ProductPromo;
 use Illuminate\Http\Request;
+use App\Models\ProductVarian;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Cache;
 use App\Repositories\ProductRepository;
@@ -27,7 +28,9 @@ class ProductController extends Controller
     {
         try {
 
-            $this->result['results'] = Product::with(['minPrice:id,product_id,price', 'maxPrice:id,product_id,price','featuredImage', 'category', 'varianItems.parent'])
+            $this->result['results'] = Product::with(['minPrice:id,product_id,price', 'maxPrice:id,product_id,price','featuredImage'])
+                    ->withCount('varianItems')
+                    ->withSum('varianItems', 'stock')
                     ->latest()
                     ->paginate($this->limit);
 
@@ -41,6 +44,29 @@ class ProductController extends Controller
         }
         return response()->json($this->result, $this->result['status']);
     }
+    public function getProductVariansByProduct($productId)
+    {
+        try {
+
+            $this->result['results'] = ProductVarian::leftJoin('product_varians as parent', 'product_varians.varian_id', 'parent.id')
+            ->select('parent.label as attribute_label', 'parent.value as attribute_value', 'product_varians.label','product_varians.value', 'product_varians.price','product_varians.stock')
+            ->where('product_varians.product_id', $productId)->where('product_varians.has_subvarian', 0)
+            ->orderBy('attribute_value')
+            ->orderBy('product_varians.price')
+            ->get();
+            
+
+        } catch (Exception $e) {
+
+            $this->result = [
+                'status' => 500,
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+        return response()->json($this->result, $this->result['status']);
+    }
+    
 
     public function searchAdminProducts($key)
     {
