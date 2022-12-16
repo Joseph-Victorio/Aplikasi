@@ -27,7 +27,7 @@ class ProductController extends Controller
     {
         try {
 
-            $this->result['results'] = Product::with(['featuredImage', 'category', 'varianItems.parent'])
+            $this->result['results'] = Product::with(['minPrice:id,product_id,price', 'maxPrice:id,product_id,price','featuredImage', 'category', 'varianItems.parent'])
                     ->latest()
                     ->paginate($this->limit);
 
@@ -47,7 +47,7 @@ class ProductController extends Controller
         try {
 
             $this->result['results'] = Product::where('title', 'like', '%'.$key.'%')
-                ->with(['featuredImage', 'category', 'varianItems.parent'])
+                ->with(['minPrice', 'maxPrice','featuredImage', 'category', 'varianItems.parent'])
                 ->paginate($this->limit);
 
         } catch (Exception $e) {

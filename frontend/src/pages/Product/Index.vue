@@ -35,7 +35,7 @@
           <div>
             <q-item-label lines="2" class="text-15 text-weight-medium text-grey-9">{{ product.title }}</q-item-label>
             <template v-if="product.varian_items.length">
-              <q-item-label caption >{{ renderVarianPrice(product.varian_items) }}</q-item-label>
+              <q-item-label caption >{{ renderVarianPrice(product) }}</q-item-label>
               <q-item-label caption >Total Stok : {{ getTotalStock(product.varian_items) }} ( {{ product.varian_items.length }} varian )</q-item-label>
             </template>
             <template v-else>
@@ -165,18 +165,21 @@ export default {
       this.varianViewModal = true
       this.productSelected = product
     },
-    renderVarianPrice(items) {
-      if(items.length) {
-        let minPrice = parseInt(items[0].price)
-        let maxPrice = parseInt(items[items.length - 1].price)
+    renderVarianPrice(product) {
 
+      if(product.min_price && product.max_price) {
+        let minPrice = parseInt(product.min_price.price)
+        let maxPrice = parseInt(product.max_price.price)
+  
         if(minPrice < maxPrice) {
           return `${this.moneyIDR(minPrice)} - ${this.moneyIDR(maxPrice)}`
         }
         
         return `@ ${this.moneyIDR(minPrice)}`
       }
-      return 0
+
+      return '';
+      
     },
     getTotalStock(items){
       return items.reduce((acc, obj) => parseInt(acc) + parseInt(obj.stock), 0)
