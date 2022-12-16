@@ -9,6 +9,18 @@ export default {
   computed: {
     session_id() {
       return this.$store.state.session_id
+    },
+    loading() {
+      return this.$store.state.loading
+    }
+  },
+  watch: {
+    loading(val) {
+      if(val == true) {
+        document.body.classList.add('is_loading')
+      }else {
+        document.body.classList.remove('is_loading')
+      }
     }
   },
   methods: {

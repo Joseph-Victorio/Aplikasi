@@ -178,7 +178,7 @@ export default {
         localStorage.setItem('order_filter', newVal)
         this.filterOrder(newVal)
       }
-    }
+    },
   },
   computed: {
     ...mapState({

@@ -13,6 +13,11 @@
   background-position: center top;
   background-attachment: fixed;
 }
+body.is_loading .q-inner-loading,
+body.is_loading {
+  max-height: 100vh;
+  overflow: hidden;
+}
 .install-modal {
   width:380px;
 }

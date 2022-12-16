@@ -404,7 +404,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('order', ['getOrderById']),
+    ...mapActions('order', ['getOrderByRef']),
     statusColor(status) {
       if(status == 'UNPAID') return 'bg-grey-7'
       if(status == 'CANCELED') return 'bg-red-6'
@@ -435,7 +435,7 @@ export default {
     getOrder() {
       this.$store.commit('SET_LOADING', true)
       if(this.$route.params.order_ref) {
-        this.getOrderById(this.$route.params.order_ref).then(response => {
+        this.getOrderByRef(this.$route.params.order_ref).then(response => {
           if(response.status == 200) {
             this.$store.commit('order/SET_INVOICE', response.data.results)
 
@@ -496,7 +496,7 @@ export default {
       this.modalPayment = true
     },
     getCheckOrder() {
-      this.getOrderById(this.$route.params.order_ref).then(response => {
+      this.getOrderByRef(this.$route.params.order_ref).then(response => {
         if(response.status == 200) {
           this.$store.commit('order/SET_INVOICE', response.data.results)
           this.checkOrderStatus()

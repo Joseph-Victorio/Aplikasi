@@ -1,10 +1,15 @@
 import { Api } from 'boot/axios'
+
 export function getOrders ({commit}) {
+  commit('SET_LOADING', true, { root: true})
   Api().get('orders').then(response => {
     if(response.status == 200) {
       commit('SET_ORDERS', response.data)
     }
-  })
+  }).finally(() => commit('SET_LOADING', false, { root: true}))
+}
+export function getOrderByRef ({commit}, ref) {
+  return Api().get('orders/' + ref)
 }
 export function getPaginateOrder ({commit}, payload) {
   commit('SET_LOAD_MORE', true)

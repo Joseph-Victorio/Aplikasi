@@ -2,17 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Tripay;
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\Transaction;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-
 use App\Models\ProductVarian;
-use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
