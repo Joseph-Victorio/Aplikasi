@@ -50,20 +50,12 @@
           <div v-if="!isDesktop">
             <q-fab color="primary" icon="eva-chevron-left" direction="left" glossy padding="sm" unelevated>
               <q-fab-action unelevated @click="remove(product.id)" round icon="eva-trash-2" glossy color="red">
-                <q-tooltip content-class="bg-red">Hapus</q-tooltip>
               </q-fab-action>
               <q-fab-action unelevated :to="{ name: 'ProductEdit', params: {id: product.id }}" round glossy color="info" icon="eva-edit-2">
-                <q-tooltip content-class="bg-info">Edit</q-tooltip>
               </q-fab-action>
               <q-fab-action unelevated :to="{ name: 'ProductShow', params: {slug: product.slug }}" round glossy color="teal" icon="eva-external-link-outline">
-                <q-tooltip content-class="bg-teal">Lihat</q-tooltip>
               </q-fab-action>
-
-              <!-- <q-fab-action v-if="product.varian_items.length" unelevated @click="selectVarian(product)" round icon="eva-pantone" glossy color="accent">
-                <q-tooltip content-class="bg-accent">Detil Varian</q-tooltip>
-              </q-fab-action> -->
               <q-fab-action v-if="product.varian_items_count > 0" unelevated @click="getDetailVarian(product)" round icon="eva-pantone" glossy color="accent">
-                <q-tooltip content-class="bg-accent">Detil Varian</q-tooltip>
               </q-fab-action>
             </q-fab>
           </div>
