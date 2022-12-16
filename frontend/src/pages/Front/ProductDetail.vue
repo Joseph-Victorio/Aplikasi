@@ -3,7 +3,7 @@
     <template v-if="ready && product">
     <div class="q-pa-md header-top">
       <div class="flex justify-between">
-        <q-btn aria-labelledby="Kembali"
+        <q-btn aria-label="Kembali"
         @click="backButton"
         flat icon="eva-arrow-back" icon-size="27px" style="cursor:pointer;opacity:.9;">
         </q-btn>
@@ -30,7 +30,7 @@
             position="bottom-right"
             :offset="[18, 40]"
           >
-            <q-btn aria-labelledby="Fullscreen"
+            <q-btn aria-label="Fullscreen"
                dense color="white" text-color="dark" icon="eva-maximize-outline"
                unelevated size="18px" round
               @click="fullscreen = !fullscreen"
@@ -65,9 +65,9 @@
             </div>
             </div>
             <div class="row q-gutter-md text-h6 items-center">
-              <q-btn aria-labelledby="decrement" flat round icon="eva-minus-circle-outline" size="24" @click="decrementQty" style="cursor:pointer;"></q-btn>
+              <q-btn aria-label="decrement" flat round icon="eva-minus-circle-outline" size="24" @click="decrementQty" style="cursor:pointer;"></q-btn>
               <div>{{ quantity }}</div>
-              <q-btn aria-labelledby="increment" flat round icon="eva-plus-circle-outline" size="24" @click="incrementQty" style="cursor:pointer;"></q-btn>
+              <q-btn aria-label="increment" flat round icon="eva-plus-circle-outline" size="24" @click="incrementQty" style="cursor:pointer;"></q-btn>
             </div>
           </div>
 
@@ -92,14 +92,14 @@
           <div class="q-mt-m" v-if="product.varian_attributes.length">
             <div class="q-mb-xs">{{ product.varian_attributes[0].label}}</div>
             <div class="q-gutter-sm">
-              <q-btn aria-labelledby="Product Attribute" class="product-varian--btn" outline v-for="attr in product.varian_attributes" :key="attr.id" :label="attr.value" :color="product_attribute_selected && product_attribute_selected.id == attr.id? 'accent' : 'grey-9'" @click="selectVarianAttribute(attr)">
+              <q-btn aria-label="Product Attribute" class="product-varian--btn" outline v-for="attr in product.varian_attributes" :key="attr.id" :label="attr.value" :color="product_attribute_selected && product_attribute_selected.id == attr.id? 'accent' : 'grey-9'" @click="selectVarianAttribute(attr)">
               <badge-tick v-if="product_attribute_selected && product_attribute_selected.id == attr.id " />
               </q-btn>
             </div>
           </div>
           <div class="q-mt-md">
             <div class="q-gutter-sm">
-              <q-btn aria-labelledby="Product Varian" class="product-varian--btn" outline v-for="item in product_varian_item_render" :key="item.id" :label="item.value" :color="product_varian_selected && product_varian_selected.id == item.id? 'accent' : 'grey-9'" @click="selectVarianItem(item)">
+              <q-btn aria-label="Product Varian" class="product-varian--btn" outline v-for="item in product_varian_item_render" :key="item.id" :label="item.value" :color="product_varian_selected && product_varian_selected.id == item.id? 'accent' : 'grey-9'" @click="selectVarianItem(item)">
               <badge-tick v-if="product_varian_selected && product_varian_selected.id == item.id " />
               </q-btn>
             </div>
