@@ -24,7 +24,7 @@ class ProductRepository
     {
         $product = Cache::remember($slug, now()->addMinutes(5), function() use ($slug) {
 
-            return new ProductResource(Product::with(['assets', 'varianItems:id,product_id,label,value,price,sku,stock,varian_id,weight', 'varianAttributes:id,product_id,label,value', 'productPromo' => function($query) {
+            return new ProductResource(Product::with(['assets', 'varianItemSortByPrice:id,product_id,label,value,price,sku,stock,varian_id,weight', 'varianAttributes:id,product_id,label,value', 'productPromo' => function($query) {
                 $query->whereHas('promoActive');
             }])
                 ->withCount('reviews')

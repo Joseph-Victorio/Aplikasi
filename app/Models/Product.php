@@ -103,6 +103,11 @@ class Product extends Model
     public function varianItems()
     {
         return $this->hasMany(ProductVarian::class)
+            ->where('has_subvarian', 0);
+    }
+    public function varianItemSortByPrice()
+    {
+        return $this->hasMany(ProductVarian::class)
             ->where('has_subvarian', 0)
             ->orderBy('price');
     }

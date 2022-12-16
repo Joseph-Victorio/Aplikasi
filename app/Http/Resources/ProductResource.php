@@ -51,7 +51,7 @@ class ProductResource extends JsonResource
             'weight' => intval($this->weight),
             'assets' => $this->assets,
             'reviews_count' => $this->reviews_count,
-            'varian_items' => $this->varianItems,
+            'varian_items' => $this->varianItemSortByPrice,
             'varian_attributes' => $this->varianAttributes,
         ];
     }

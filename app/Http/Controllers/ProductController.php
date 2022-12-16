@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Promo;
-use App\Models\Review;
 use App\Models\Product;
 use App\Models\ProductPromo;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Cache;
 use App\Repositories\ProductRepository;
-use App\Http\Resources\ProductListCollection;
 
 class ProductController extends Controller
 {
