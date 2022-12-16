@@ -2,7 +2,7 @@
   <q-page class="bg-grey-1 elegant" :class="{'flex flex-center' : loading }">
      <q-header reveal class="bg-primary text-white" :class="{ 'auto-padding-side': $q.platform.is.desktop}">
         <q-toolbar class="q-py-md">
-          <img v-if="shop" class="logo" :src="shop.logo? shop.logo : '/icon/icon-192x192.png'" />
+          <img v-if="shop" class="logo" :src="shop.logo? shop.logo : '/icon/icon-192x192.png'" alt="Logo"/>
           <div class="col q-mx-sm inline-flex">
             <q-input dense ref="input" borderless class="input-search text-xs" v-model="search" @keyup.enter="searchNow" placeholder="cari produk..."
               >
@@ -42,7 +42,7 @@
       </div>
 
       <div v-if="banner1" class="banner auto-padding-side block-container">
-        <img :src="banner1.image_url" @click="goToPost(banner1)">
+        <img :src="banner1.image_url" @click="goToPost(banner1)" alt="banner">
       </div>
       
       <product-block :products="products" />
@@ -57,13 +57,13 @@
       </div>
       
       <div v-if="banner2" class="banner auto-padding-side block-container">
-        <img :src="banner2.image_url" @click="goToPost(banner2)">
+        <img :src="banner2.image_url" @click="goToPost(banner2)" alt="banner">
       </div>
 
       <post-block :posts="posts" />
 
       <div v-if="banner3" class="banner auto-padding block-container">
-        <img :src="banner3.image_url" @click="goToPost(banner3)">
+        <img :src="banner3.image_url" @click="goToPost(banner3)" alt="banner">
       </div>
 
       <install-app />

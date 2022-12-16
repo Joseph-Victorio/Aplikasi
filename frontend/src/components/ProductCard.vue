@@ -13,6 +13,7 @@
         <div class="row justify-between">
           <div>
             <q-rating 
+            data-nosnippet
             readonly
             v-model="rating"
             color="accent"

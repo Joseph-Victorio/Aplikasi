@@ -14,6 +14,7 @@
         <div>
           <div class="flex justify-between items-center">
             <q-rating 
+              data-nosnippet
               readonly
               v-model="rating"
               color="accent"

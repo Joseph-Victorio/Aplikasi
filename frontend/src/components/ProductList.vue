@@ -15,6 +15,7 @@
         <div class="cursor-pointer" @click.prevent="$router.push({name: 'ProductShow', params:{slug: product.slug}})">
           <q-item-label class="ellipsis-2-lines text-subtitle2 text-weight-medium">{{ product.title }}</q-item-label>
           <q-rating 
+            data-nosnippet
             readonly
             v-model="rating"
             color="accent"

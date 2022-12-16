@@ -2,7 +2,7 @@
   <q-page class="bg-grey-1 default" :class="{'flex flex-center' : loading }">
     <q-header class="bg-white text-dark box-shadow" :class="{ 'auto-padding-side': $q.platform.is.desktop}">
       <q-toolbar class="items-center sans">
-        <img v-if="shop" class="logo" :src="shop.logo? shop.logo : '/icon/icon-192x192.png'" />
+        <img v-if="shop" class="logo" :src="shop.logo? shop.logo : '/icon/icon-192x192.png'" alt="Logo"/>
         <q-toolbar-title v-if="shop && shop.name" class="text-weight-bold text-primary">{{ shop.name }}</q-toolbar-title>
         <shopping-cart  />
       </q-toolbar>
@@ -29,7 +29,7 @@
       </div>
       
       <div v-if="banner1" class="banner auto-padding-side block-container">
-        <img :src="banner1.image_url" @click="goToPost(banner1)">
+        <img :src="banner1.image_url" @click="goToPost(banner1)" alt="banner">
       </div>
       
       <product-block :products="products" />
@@ -44,13 +44,13 @@
       </div>
       
       <div v-if="banner2" class="banner auto-padding-side block-container">
-        <img :src="banner2.image_url" @click="goToPost(banner2)">
+        <img :src="banner2.image_url" @click="goToPost(banner2)" alt="banner">
       </div>
 
       <post-block :posts="posts" />
 
       <div v-if="banner3" class="banner auto-padding block-container">
-        <img :src="banner3.image_url" @click="goToPost(banner3)">
+        <img :src="banner3.image_url" @click="goToPost(banner3)" alt="banner">
       </div>
 
       <install-app />
