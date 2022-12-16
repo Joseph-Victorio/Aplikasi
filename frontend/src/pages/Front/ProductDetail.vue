@@ -648,11 +648,11 @@ export default {
       this.quantity = 1
     },
     backButton() {
-      if(window.history.length > 2) {
+      if(window.history.length >= 1) {
         window.history.back()
       }else {
+        }
         this.$router.push({name: 'ProductIndex'})
-      }
     },
     addToCart() {
       this.formVariantModal = false
