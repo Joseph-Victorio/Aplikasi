@@ -750,8 +750,8 @@ export default {
       return location.origin + props.href;
     },
     checkVarianIsReady() {
-      if(this.has_varian && !this.product_attribute_selected) {
-        return false
+      if(this.has_varian) {
+        return this.product_attribute_selected ? true : false
       }
       return true
     },
