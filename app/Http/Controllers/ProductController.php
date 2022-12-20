@@ -17,7 +17,7 @@ class ProductController extends Controller
     public $limit = 10;
     private $productRepository;
 
-    protected $result = ['status' => 200, 'success' => true];
+    protected $result = ['code' => 200, 'success' => true];
 
     public function __construct(ProductRepository $productRepository)
     {
@@ -36,13 +36,9 @@ class ProductController extends Controller
 
         } catch (Exception $e) {
 
-            $this->result = [
-                'status' => 500,
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            $this->setErrorResponse($e);
         }
-        return response()->json($this->result, $this->result['status']);
+        return response()->json($this->result, $this->result['code']);
     }
     public function getProductVariansByProduct($productId)
     {
@@ -58,13 +54,9 @@ class ProductController extends Controller
 
         } catch (Exception $e) {
 
-            $this->result = [
-                'status' => 500,
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            $this->setErrorResponse($e);
         }
-        return response()->json($this->result, $this->result['status']);
+        return response()->json($this->result, $this->result['code']);
     }
     
 
@@ -78,14 +70,10 @@ class ProductController extends Controller
 
         } catch (Exception $e) {
 
-            $this->result = [
-                'status' => 500,
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            $this->setErrorResponse($e);
         }
         
-        return response()->json($this->result, $this->result['status']);
+        return response()->json($this->result, $this->result['code']);
     }
 
     public function show($id)
@@ -99,14 +87,10 @@ class ProductController extends Controller
 
         } catch (Exception $e) {
 
-            $this->result = [
-                'status' => 500,
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            $this->setErrorResponse($e);
         }
 
-        return response()->json($this->result, $this->result['status']);
+        return response()->json($this->result, $this->result['code']);
     }
 
     public function store(ProductRequest $request)
@@ -118,14 +102,10 @@ class ProductController extends Controller
 
         } catch (Exception $e) {
 
-            $this->result = [
-                'status' => 500,
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            $this->setErrorResponse($e);
         }
 
-        return response()->json($this->result, $this->result['status']);
+        return response()->json($this->result, $this->result['code']);
         
     }
 
@@ -149,14 +129,10 @@ class ProductController extends Controller
 
         } catch (Exception $e) {
 
-            $this->result = [
-                'status' => 500,
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            $this->setErrorResponse($e);
         }
 
-        return response()->json($this->result, $this->result['status']);
+        return response()->json($this->result, $this->result['code']);
 
     }
 
@@ -168,14 +144,10 @@ class ProductController extends Controller
 
         } catch (Exception $e) {
 
-            $this->result = [
-                'status' => 500,
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            $this->setErrorResponse($e);
         }
 
-        return response()->json($this->result, $this->result['status']);
+        return response()->json($this->result, $this->result['code']);
 
     }
 
@@ -206,14 +178,10 @@ class ProductController extends Controller
 
         } catch (Exception $e) {
 
-            $this->result = [
-                'status' => 500,
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            $this->setErrorResponse($e);
         }
 
-        return response()->json($this->result, $this->result['status']);
+        return response()->json($this->result, $this->result['code']);
     }
     public function destroy($id)
     {
@@ -223,31 +191,25 @@ class ProductController extends Controller
 
         } catch (Exception $e) {
 
-            $this->result = [
-                'status' => 500,
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            $this->setErrorResponse($e);
         }
 
-        return response()->json($this->result, $this->result['status']);
+        return response()->json($this->result, $this->result['code']);
     }
     public function findProductWithoutPromo($key)
     {
         try {
             
-            $this->result['results'] = Product::doesntHave('promo')->where('title', 'like', '%'. $key . '%')->get();
+            $this->result['results'] = Product::doesntHave('promoRelations')
+                ->where('title', 'like', '%'. $key . '%')
+                ->get();
 
         } catch (Exception $e) {
 
-            $this->result = [
-                'status' => 500,
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            $this->setErrorResponse($e);
         }
 
-        return response()->json($this->result, $this->result['status']);
+        return response()->json($this->result, $this->result['code']);
 
     }
     public function getProductPromo($promoId)
@@ -260,14 +222,10 @@ class ProductController extends Controller
 
         } catch (Exception $e) {
 
-            $this->result = [
-                'status' => 500,
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            $this->setErrorResponse($e);
         }
 
-        return response()->json($this->result, $this->result['status']);
+        return response()->json($this->result, $this->result['code']);
 
     }
     public function submitProductPromo(Request $request)
@@ -293,13 +251,18 @@ class ProductController extends Controller
 
         } catch (Exception $e) {
 
-            $this->result = [
-                'status' => 500,
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            $this->setErrorResponse($e);
         }
 
-        return response()->json($this->result, $this->result['status']);
+        return response()->json($this->result, $this->result['code']);
+    }
+
+    protected function setErrorResponse($e) : void
+    {
+        $this->result = [
+            'code' => 400,
+            'success' => false,
+            'message' => $e->getMessage()
+        ];
     }
 }

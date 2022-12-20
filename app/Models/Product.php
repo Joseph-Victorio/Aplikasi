@@ -84,6 +84,10 @@ class Product extends Model
             ->withPivot('discount_type', 'discount_amount')
             ->where('end_date', '>', now());
     }
+    public function promoRelations()
+    {
+        return $this->belongsToMany(Promo::class, 'product_promos', 'product_id', 'promo_id');
+    }
     public function productPromo()
     {
         return $this->hasOne(ProductPromo::class, 'product_id', 'id');

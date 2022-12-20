@@ -172,7 +172,7 @@ export default {
   methods: {
     getPromoDetail() {
       Api().get('getPromoDetail/'+ this.$route.params.id).then(response => {
-       if(response.status == 200) {
+       if(response.status == 200 && response.data.success) {
           this.products = response.data.results.products
           this.promo = response.data.results.promo
         }
@@ -180,7 +180,7 @@ export default {
     },
     getProductPromo() {
       Api().get('getProductPromo/'+ this.$route.params.id).then(response => {
-       if(response.status == 200) {
+       if(response.status == 200 && response.data.success) {
           this.products = response.data.results
         }
       })
@@ -191,7 +191,7 @@ export default {
       this.isLoading = true
       this.productSearch = []
       Api().get('findProductWithoutPromo/' + this.search).then(response => {
-        if(response.status == 200) {
+        if(response.status == 200 && response.data.success) {
           this.productSearch = response.data.results
         }
       })
