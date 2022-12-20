@@ -134,10 +134,11 @@ class PromoController extends Controller
     public function destroy($id)
     {
         $promo = Promo::findOrFail($id);
+        ProductPromo::where('promo_id', $promo->id)->delete();
         $promo->delete();
 
         Cache::flush();
-        
+
         return response([ 'success' => true ], 200);
 
     }
