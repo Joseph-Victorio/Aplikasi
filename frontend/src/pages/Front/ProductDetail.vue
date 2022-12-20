@@ -368,7 +368,7 @@
             <q-btn
               :disable="slide == 1"
               dense
-              size="18px"
+              size="17px"
               color="white"
               text-color="dark" 
               round unelevated
@@ -379,7 +379,7 @@
             <q-btn
               :disable="product.assets.length == slide"
               dense
-              size="18px"
+              size="17px"
               color="white"
               text-color="dark" 
               round unelevated
@@ -389,7 +389,7 @@
           </div>
             <q-btn
               dense
-              size="18px"
+              size="17px"
               color="white"
               text-color="dark" 
               round unelevated
@@ -399,7 +399,7 @@
             />
             <q-btn
               dense
-              size="18px"
+              size="17px"
               color="white"
               text-color="dark" 
               round unelevated
@@ -750,8 +750,8 @@ export default {
       return location.origin + props.href;
     },
     checkVarianIsReady() {
-      if(this.has_varian) {
-        return this.product_attribute_selected ? true : false
+      if(this.has_varian && !this.product_varian_selected) {
+        return false
       }
       return true
     },
