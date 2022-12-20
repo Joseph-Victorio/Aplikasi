@@ -13,11 +13,6 @@ class Promo extends Model
 
     public $appends = ['is_active', 'now', 'start', 'end', 'diff_start', 'diff_end'];
 
-    // protected $casts = [
-    //     'start_date' => 'datetime:d F Y H:i',
-    //     'end_date' => 'datetime:d F Y H:i',
-    // ];
-
     public function getIsActiveAttribute()
     {
         if(Carbon::parse($this->start_date) < Carbon::now() && Carbon::parse($this->end_date) > Carbon::now()) {

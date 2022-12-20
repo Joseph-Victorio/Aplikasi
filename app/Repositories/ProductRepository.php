@@ -468,6 +468,7 @@ class ProductRepository
             }
 
             ProductPromo::where('product_id', $product->id)->delete();
+            
             $product->delete();
 
             DB::commit();

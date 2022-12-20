@@ -30,9 +30,15 @@
             position="bottom-right"
             :offset="[18, 40]"
           >
-            <q-btn aria-label="Fullscreen"
-               dense color="white" text-color="dark" icon="eva-maximize-outline"
-               unelevated size="18px" round
+            <q-btn 
+                aria-label="Fullscreen"
+               dense color="white" 
+               text-color="grey-8" 
+               icon="ion-expand"
+               unelevated 
+               size="15px" 
+               padding="10px"
+               round
               @click="fullscreen = !fullscreen"
             />
           </q-carousel-control>
@@ -267,9 +273,9 @@
       </q-card>
     </q-dialog>
     <q-dialog 
-    v-model="cartModal"
-    transition-show="slide-up"
-    transition-hide="slide-up"
+      v-model="cartModal"
+      transition-show="slide-up"
+      transition-hide="slide-up"
     >
       <q-card flat class="card-lg bg-white" v-if="product">
         <q-linear-progress size="10px" :value="100" />
@@ -277,7 +283,7 @@
           <q-list>
             <q-item class="q-px-xs">
               <q-item-section avatar top>
-                <q-img :src="product.assets[0].src" width="80px" class="rounded-borders"></q-img>
+                <q-img :src="product.assets[0].src" width="80px" class="rounded-borders" ratio="1"></q-img>
               </q-item-section>
               <q-item-section top>
                 <div class="text-md text-weight-meduim q-mb-sm"><span class="text-weight-medium">{{ product.title }}</span> berhasil ditambahkan di keranjang belanja.</div>
@@ -305,49 +311,41 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <!-- <q-dialog 
+    <q-dialog 
       v-model="formVariantModal"
       position="bottom"
       transition-show="slide-up"
       transition-hide="slide-down"
       >
-      <q-card class="max-width" flat v-if="product && product.varians.length">
+      <q-card class="max-width" flat v-if="product && product_varian_item_render.length">
         <q-card-section>
-          <div class="text-weight-medium text-lg q-mb-sm text-secondary">{{ moneyIDR(parseInt(getCurrentPrice)) }}</div>
-            <div>
-              <div class="text-md">Pilih Varian <span class="text-sm text-weight-normal text-grey-7"></span></div>
-              <div class="q-mt-sm">
-              <div class="q-mb-xs">{{ product.varians[0].label}}</div>
-              <div class="q-gutter-sm" v-if="product.varian_attributes.length">
-                <q-btn class="product-varian--btn" outline v-for="item in product.varian_attributes" :key="item.id" :label="item.value" :color="varianSelected && varianSelected.id == item.id? 'accent' : 'grey-9'" @click="selectVarianItem(item)">
-                <badge-tick v-if="varianSelected && varianSelected.id == item.id " />
+          <div class="q-pb-sm" style="min-height:200px;">
+            <div class="text-md">Pilih Varian</div>
+            <div class="q-mt-m" v-if="product.varian_attributes.length">
+              <div class="q-mb-xs">{{ product.varian_attributes[0].label}}</div>
+              <div class="q-gutter-sm">
+                <q-btn aria-label="Product Attribute" class="product-varian--btn" outline v-for="attr in product.varian_attributes" :key="attr.id" :label="attr.value" :color="product_attribute_selected && product_attribute_selected.id == attr.id? 'accent' : 'grey-9'" @click="selectVarianAttribute(attr)">
+                <badge-tick v-if="product_attribute_selected && product_attribute_selected.id == attr.id " />
+                </q-btn>
+              </div>
+            </div>
+            <div class="q-mt-md">
+              <div class="q-mb-xs">{{ product_varian_item_render[0].label}}</div>
+              <div class="q-gutter-sm">
+                <q-btn aria-label="Product Varian" class="product-varian--btn" outline v-for="item in product_varian_item_render" :key="item.id" :label="item.value" :color="product_varian_selected && product_varian_selected.id == item.id? 'accent' : 'grey-9'" @click="selectVarianItem(item)">
+                <badge-tick v-if="product_varian_selected && product_varian_selected.id == item.id " />
                 </q-btn>
               </div>
               </div>
-                <div class="q-mt-md" v-if="varianSelected && varianSelected.has_subvarian">
-                  <div class="q-mb-xs">{{ varianSelected.subvarian[0].label }}</div>
-                  <div class="q-gutter-sm">
-                    <q-btn outline v-for="item in varianSelected.subvarian" 
-                    :key="item.id" 
-                    :label="item.value" 
-                    :disable="item.stock < 1 && !item.is_preorder"
-                    @click="subvarianSelected = item" 
-                    :color="subvarianSelected && subvarianSelected.id == item.id ? 'accent' : 'grey-9'" 
-                    class="relative product-variation product-varian--btn"
-                    >
-                      <badge-tick v-if="subvarianSelected && subvarianSelected.id == item.id " />
-                    </q-btn>
-                  </div>
-              </div>
-            </div>
+          </div>
         </q-card-section>
         <q-card-section>
         <q-btn unelevated @click="addNewItem" name="eva-shopping-cart-outline" label="Beli Sekarang" color="primary" class="full-width"></q-btn>
         </q-card-section>
       </q-card>
-    </q-dialog> -->
+    </q-dialog>
     <q-dialog v-model="fullscreen" persistent maximized>
-      <div class="max-width relative" v-if="product" style="background:rgb(240 240 240 / 90%);">
+      <div class="max-width relative" v-if="product" style="background:rgb(187 187 187 / 96%);">
         <div class="text-center q-py-md absolute" style="top:5px;width:100%;z-index:99;">
           <div class="flex justify-center">
             <div class="q-px-md" style="background:rgb(240 240 240 / 90%);">Scroll mouse atau cubit layar untuk zoom</div>
@@ -368,7 +366,7 @@
             <q-btn
               :disable="slide == 1"
               dense
-              size="17px"
+              size="16px"
               color="white"
               text-color="dark" 
               round unelevated
@@ -379,7 +377,7 @@
             <q-btn
               :disable="product.assets.length == slide"
               dense
-              size="17px"
+              size="16px"
               color="white"
               text-color="dark" 
               round unelevated
@@ -389,7 +387,7 @@
           </div>
             <q-btn
               dense
-              size="17px"
+              size="16px"
               color="white"
               text-color="dark" 
               round unelevated
@@ -399,7 +397,7 @@
             />
             <q-btn
               dense
-              size="17px"
+              size="16px"
               color="white"
               text-color="dark" 
               round unelevated
