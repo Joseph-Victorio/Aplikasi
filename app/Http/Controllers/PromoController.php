@@ -86,10 +86,9 @@ class PromoController extends Controller
             'product_id' => 'required',
             'promo_id' => 'required',
         ]);
-
-        Cache::flush();
-
+        
         ProductPromo::where('promo_id', $request->promo_id)->where('product_id', $request->product_id)->delete();
+        Cache::flush();
 
         return response()->json(['success' => true ]);
     }
@@ -105,7 +104,7 @@ class PromoController extends Controller
     {
         $request->validate([
             'label' => 'required',
-            'start_date' => 'required',
+            'start_date' => 'required|date',
             'end_date' => 'required|date',
         ]);
 
@@ -135,10 +134,10 @@ class PromoController extends Controller
     public function destroy($id)
     {
         $promo = Promo::findOrFail($id);
-        Cache::flush();
-
         $promo->delete();
 
+        Cache::flush();
+        
         return response([ 'success' => true ], 200);
 
     }
