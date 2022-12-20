@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Resources\ProductResource;
+use App\Models\ProductPromo;
 use App\Models\ProductVarian;
 use Ramsey\Uuid\Uuid;
 
@@ -465,6 +466,8 @@ class ProductRepository
                 }
                 $product->assets()->delete();
             }
+
+            ProductPromo::where('product_id', $product->id)->delete();
             $product->delete();
 
             DB::commit();
