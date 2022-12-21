@@ -6,16 +6,16 @@ use stdClass;
 use Exception;
 use App\Models\Asset;
 use App\Models\Promo;
+use Ramsey\Uuid\Uuid;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use App\Models\ProductPromo;
+use App\Models\ProductVarian;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Resources\ProductResource;
-use App\Models\ProductPromo;
-use App\Models\ProductVarian;
-use Ramsey\Uuid\Uuid;
 
 class ProductRepository
 {
@@ -338,6 +338,10 @@ class ProductRepository
                     if(!$request->featured_asset && $i == $request->featured_index) {
 
                         $isFeatured = true;
+
+                        $product->assets()->update([
+                            'variable' => NULL
+                        ]);
                         
                     }
 

@@ -70,7 +70,7 @@
                 class="box-image relative cursor-pointer" 
                 :class="{'feature-image-selected' : form.featured_index == index }"
                 v-for="(image, index) in imagePreview" :key="index">
-                    <img :src="image" class="bg-white" @click="changeFeaturedImage(index)"/>
+                    <img :src="image" class="bg-white" @click="changeFeaturedImage(image, index)"/>
                     <div class="absolute-top-right">
                       <q-btn dense @click.prevent="removeImage(image, index)" size="10px" unelevated icon="close" color="red" padding="1px"/>
                     </div>
@@ -367,10 +367,6 @@ export default {
       }
 
     },
-    onDeleteProductOldImage(filename) {
-      this.productOldImages = this.productOldImages.filter(k => k.filename != filename)
-      this.form.del_product_images.push(filename)
-    },
     onDeleteImage(idx) {
       this.form.product_images.splice(idx, 1)
     },
@@ -552,6 +548,7 @@ export default {
       for(let i=0;i<img.length;i++){
 
         this.form.images.unshift(img[i])
+        this.form.featured_index += 1
 
         const reader = new FileReader();
 
