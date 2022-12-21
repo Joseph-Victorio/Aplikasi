@@ -9,7 +9,7 @@
     </q-header>
     <template v-if="!loading">
 
-      <div id="slider" class="q-pt-sm" v-if="sliders.data.length">
+      <div id="slider" v-if="sliders.data.length">
         <slider :datas="sliders.data" />
       </div>
       <div id="featured" class="auto-padding-side block-container q-pt-md" v-if="blocks.featured.length">

@@ -2,7 +2,7 @@
 <div class="overflow-hidden">
   <vue-glide :options="glideOptions">
       <vue-glide-slide v-for="(img, index) in datas" :key="index">
-         <div class="auto-padding">
+         <div class="slider-padding">
           <img :src="img.src" style="width:100%;height:auto;border-radius:6px;"/>
         </div>
       </vue-glide-slide>

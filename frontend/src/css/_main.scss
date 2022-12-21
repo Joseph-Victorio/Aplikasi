@@ -71,6 +71,12 @@ div,
     font-weight: 700;
   }
 }
+.slider-padding {
+  padding: 1.5rem;
+  @media (min-width: 900px) {
+    padding: 2rem;
+  }
+}
 .bg-glass-blue {
   position: relative;
   overflow: hidden;

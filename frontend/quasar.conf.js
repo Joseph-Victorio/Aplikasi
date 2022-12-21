@@ -59,7 +59,6 @@ module.exports = function (ctx ) {
           ? 'http://localhost:8000/api'
           : '/api'
       },
-
       // transpile: false,
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
@@ -193,7 +192,14 @@ module.exports = function (ctx ) {
       
     },
     sourceFiles: {
-      indexHtmlTemplate:  ctx.dev? 'src/app.template.html' :  'src/app.template.php',
+      indexHtmlTemplate: 'src/app.template.html',
+      // indexHtmlTemplate:  ctx.dev? 'src/app.template.html' :  'src/app.template.php',
+    },
+
+    htmlVariables: {
+      meta_head: ctx.dev ? '' : "@include('partial/meta_head')",
+      json_schema: ctx.dev ? '' : "@include('partial/json_schema')",
+      meta_body: ctx.dev ? '' :"@include('partial/meta_body')",
     },
 
     // Full list of options: https://v1.quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
