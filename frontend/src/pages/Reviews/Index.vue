@@ -11,7 +11,6 @@
       </q-toolbar>
       <q-tabs 
       v-model="tab"
-      active-color="accent"
       class="bg-grey-1 text-grey-8"
       >
         <q-tab name="Unapproved" label="Belum Di Approve"></q-tab>
