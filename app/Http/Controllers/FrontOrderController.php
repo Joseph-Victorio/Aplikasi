@@ -115,7 +115,7 @@ class FrontOrderController extends Controller
         $uniqueCode = $request->payment_type == 'BANK_TRANSFER' ? rand(10, 100) : 0;
         $orderRef = 'INV' .Carbon::now()->format('ymdHs') .  rand(1,99) . Str::upper(Str::random(2));
 
-        $orderTotal = $request->payment_type == 'BANK_TRANSFER' ? $request->total-$uniqueCode : $request->total;
+        $orderTotal = $request->payment_type == 'BANK_TRANSFER' ? $request->total + $uniqueCode : $request->total;
 
         DB::beginTransaction();
 

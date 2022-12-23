@@ -252,7 +252,7 @@
                     <td align="right">Kode Unik</td>
                     <td>:</td>
                     <td></td>
-                    <td align="right">-{{ invoice.order_unique_code }}</td>
+                    <td align="right">{{ invoice.order_unique_code }}</td>
                   </tr>
                   <tr v-if="invoice.discount">
                     <td align="right">Diskon (-)</td>
@@ -337,7 +337,7 @@
                     <td align="right">Kode Unik</td>
                     <td>:</td>
                     <td></td>
-                    <td align="right">-{{ invoice.order_unique_code }}</td>
+                    <td align="right">{{ invoice.order_unique_code }}</td>
                   </tr>
                   <tr v-if="invoice.discount">
                     <td align="right">Diskon (-)</td>

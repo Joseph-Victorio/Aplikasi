@@ -85,7 +85,7 @@ export default {
            tmp += `Ongkos Kirim : ${this.moneyIDR(this.order.shipping_cost)}\n`
 
            if(this.order.order_unique_code) {
-             tmp += `Kode Unik : - ${this.order.order_unique_code}\n`
+             tmp += `Kode Unik : ${this.order.order_unique_code}\n`
            }
            if(this.order.service_fee) {
              tmp += `Service Fee : ${this.order.service_fee}\n`
