@@ -14,8 +14,8 @@ class ShippingController extends Controller
     {
         $config = Config::select('rajaongkir_apikey', 'rajaongkir_type')->first();
 
-        Rajaongkir::setApikey($config->rajaongkir_apikey);
         Rajaongkir::setAccountType($config->rajaongkir_type);
+        Rajaongkir::setApikey($config->rajaongkir_apikey);
 
     }
 

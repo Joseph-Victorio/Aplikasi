@@ -11,7 +11,15 @@ class Rajaongkir
   public function setApiKey($apikey)
   {
     $this->api_key = $apikey;
+
+    if(config('rajaongkir.demo_api_key')) {
+      $this->account_type = 'pro';
+      $this->api_key = config('rajaongkir.demo_api_key');
+      $this->url_endpoint = config('rajaongkir.api_url_pro');
+    }
+    
   }
+  
   public function setAccountType($type)
   {
     $this->account_type = $type;
@@ -22,8 +30,9 @@ class Rajaongkir
       $this->url_endpoint = config('rajaongkir.api_url_pro');
     } 
     if($this->account_type == 'basic') {
-        $this->url_endpoint = config('rajaongkir.api_url_basic');
-    } 
+      $this->url_endpoint = config('rajaongkir.api_url_basic');
+    }
+    
   }
 
   public function province()
