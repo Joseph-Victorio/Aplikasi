@@ -2,89 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Rajaongkir;
-use App\Models\City;
 use App\Models\Config;
-use App\Models\Province;
 use App\Models\Subdistrict;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Silehage\Rajaongkir\Facades\Rajaongkir;
 
 class ShippingController extends Controller
 {
-    public function getProvince()
+    public function __construct()
     {
-        if(Cache::has('provinces')) {
+        $config = Config::select('rajaongkir_apikey', 'rajaongkir_type')->first();
 
-            return response()->json([
-                'success' => true,
-                'results' =>  Cache::get('provinces')
-            ]);
-
-        } else {
-
-            $data = Province::all();
-            Cache::forever('provinces', $data);
-
-            return response()->json([
-                'success' => true,
-                'results' => $data
-            ]);
-
-
-        }
+        Rajaongkir::setApikey($config->rajaongkir_apikey);
+        Rajaongkir::setAccountType($config->rajaongkir_type);
 
     }
-    
-    public function getCity($province_id)
-    {
 
-
-        if(Cache::has('city_by_'. $province_id)) {
-
-           return response()->json([
-                'success' => true,
-                'results' => Cache::get('city_by_'. $province_id)
-            ]);
-
-        } else { 
-            
-            $data = City::where('province_id', $province_id)->get();
-            Cache::forever('city_by_'. $province_id, $data);
-
-            return response()->json([
-                'success' => true,
-                'results' => $data
-            ]);
-
-        }    
-
-    }
-    public function getSubdistrict($city_id)
-    {
-
-
-        if(Cache::has('subdistrict_by_'. $city_id)) {
-
-            return response()->json([
-                'success' => true,
-                'results' => Cache::get('subdistrict_by_'. $city_id)
-            ]);
-
-        } else { 
-
-            $data = Subdistrict::where('city_id', $city_id)->get();
-            Cache::forever('subdistrict_by_'. $city_id, $data);
-
-            return response()->json([
-                'success' => true,
-                'results' => $data
-            ]);
-        
-        }
-
-    }
     public function getCost(Request $request)
     {
         $data = $request->validate([

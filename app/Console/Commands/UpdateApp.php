@@ -63,6 +63,8 @@ class UpdateApp extends Command
             
             Artisan::call('asset:update-path');
 
+            Artisan::call('config:change-field');
+
         } catch (\Exception $e) {
             
             Log::info('error site update');

@@ -4,21 +4,26 @@ namespace Silehage\Rajaongkir;
 
 class Rajaongkir
 {
-  protected $apikey;
+  protected $api_key;
   protected $url_endpoint;
+  protected $account_type = 'starter';
 
-  public function __construct()
+  public function setApiKey($apikey)
   {
-      $this->apikey = config('rajaongkir.api_key');
-      $this->url_endpoint = config('rajaongkir.api_url');
+    $this->api_key = $apikey;
+  }
+  public function setAccountType($type)
+  {
+    $this->account_type = $type;
 
-      if(config('rajaongkir.account_type') == 'pro') {
-          $this->url_endpoint = config('rajaongkir.api_url_pro');
-      } 
-      if(config('rajaongkir.account_type') == 'basic') {
-          $this->url_endpoint = config('rajaongkir.api_url_basic');
-      } 
+    $this->url_endpoint = config('rajaongkir.api_url');
 
+    if($this->account_type == 'pro') {
+      $this->url_endpoint = config('rajaongkir.api_url_pro');
+    } 
+    if($this->account_type == 'basic') {
+        $this->url_endpoint = config('rajaongkir.api_url_basic');
+    } 
   }
 
   public function province()
@@ -81,7 +86,7 @@ class Rajaongkir
     $curl = curl_init();
 
     $header = [
-      'key:'.$this->apikey
+      'key:'.$this->api_key
     ];
 
     curl_setopt_array($curl, array(
@@ -131,7 +136,7 @@ class Rajaongkir
       
       $header = [
         'content-type: application/x-www-form-urlencoded',
-        'key:'.$this->apikey,
+        'key:'.$this->api_key,
       ];
       $curl = curl_init();
 

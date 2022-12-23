@@ -55,18 +55,16 @@
           </div>
           <div class="relative q-mt-md">
             <div class="text-md text-weight-medium q-pb-xs">Pilih Kurir</div>
-            <q-select 
+           <q-select 
               id="inputCourier"
               filled
               square
               stack-label
               label="Pilih Kurir"
               :options="couriers"  
-              v-model="formGetCost.courier" 
-              emit-value
-              map-options
+              v-model="currentSelelectedCourier" 
               :error="errors.shipping_courier_service"
-              @input="courierSelected"
+              @input="selectCourier"
               >
               <template v-slot:error>Kurir belum dipilih</template>
             </q-select>
@@ -250,7 +248,8 @@ export default {
       searchAvailable: true,
       searchReady:false,
       subdistrictOptionsData: [],
-      codSelected: ''
+      codSelected: '',
+      currentSelelectedCourier: null
     }
   },
   watch: {
@@ -353,17 +352,11 @@ export default {
       return `${this.config.warehouse_address.city}, ${this.config.warehouse_address.province}`
     },
     couriers() {
-      let n = [];
-      n.push({label: 'Pilih', value: ''})
+      let n = [{label: 'Pilih', value: ''}]
 
       if(this.config) {
-
-        let av = this.config.rajaongkir_couriers.split(',')
-        av.forEach(function(el) {
-          n.push({label: el.toUpperCase(), value: el})
-        })
+        n = [...n,...this.config.rajaongkir_couriers]
       }
-      
       return n
       
     },
@@ -419,7 +412,7 @@ export default {
       this.customer_email = this.user.email
       this.customer_phone = this.user.phone ? this.user.phone : ''
     }
-    if(localStorage.getItem('user_data')) {
+    if(localStorage.getItem('_nex_user_data')) {
       if(!this.customer_name || !this.customer_phone) {
         this.useDataUserPrompt = true
       }
@@ -478,9 +471,6 @@ export default {
       this.formGetCost.destination = ''
       this.readyAddressBlock = false
       this.clearSelectedCost()
-      // setTimeout(() => {
-      //   this.$refs.search.focus()
-      // },300)
     },
     closeModalAddress() {
       this.changeNewAddress()
@@ -488,7 +478,7 @@ export default {
       this.$emit('closeModal')
     },
     clearAddress() {
-
+      this.currentSelelectedCourier = null
       this.searchSubdistrictKey = '';
       this.subdistrictOptionsData = []
       this.searchReady = false
@@ -551,7 +541,7 @@ export default {
 
     setDataUser() {
       
-      let data = JSON.parse(localStorage.getItem('user_data'))
+      let data = JSON.parse(localStorage.getItem('_nex_user_data'))
 
       if(this.config.can_shipping) {
         this.selectSubdistrict(data.shipping_destination)
@@ -583,14 +573,14 @@ export default {
           shipping_destination: this.formOrder.shipping_destination
         }
   
-        localStorage.setItem('user_data', JSON.stringify(userData))
+        localStorage.setItem('_nex_user_data', JSON.stringify(userData))
 
       }
     },
-
-    courierSelected(evt) {
+    selectCourier(evt) {
       if(!evt) {
         this.clearSelectedCost()
+        this.formGetCost.courier = ''
       }
      
       if(evt == 'cod') {
@@ -598,7 +588,8 @@ export default {
        this.clearSelectedCost()
 
       } else {
-        this.commitFormOrder('shipping_courier_name', this.formGetCost.courier)
+        this.commitFormOrder('shipping_courier_name', this.currentSelelectedCourier.label)
+        this.formGetCost.courier = this.currentSelelectedCourier.value
 
         this.getCost()
       }

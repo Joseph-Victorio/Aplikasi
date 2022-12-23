@@ -20,22 +20,9 @@ class ConfigApiProvider extends ServiceProvider
         if (Schema::hasTable('configs')) {
 
             $setting = DB::table('configs')->first();
-            $apiPro = env('RAJAONGKIR_API_PRO', null);
 
             if ($setting) //checking if table is not empty
             {
-                $rajaongkir = array(
-                    'api_key' => $apiPro?? $setting->rajaongkir_apikey,
-                    'account_type' => $setting->rajaongkir_type,
-                    'api_url' => env('RAJAONGKIR_API_URL', 'https://api.rajaongkir.com/starter/'),
-                    'api_url_basic' => env('RAJAONGKIR_API_BASIC_URL', 'https://api.rajaongkir.com/basic/'),
-                    'api_url_pro' => env('RAJAONGKIR_API_PRO_URL', 'https://pro.rajaongkir.com/api/'),
-                    'courier_starter' => explode(',', env('RAJAONGKIR_STARTER')),
-                    'courier_basic' => explode(',', env('RAJAONGKIR_BASIC')),
-                    'courier_pro' => explode(',', env('RAJAONGKIR_PRO')),
-                );
-                
-                Config::set('rajaongkir', $rajaongkir);
     
                 if($setting->telegram_bot_token && $setting->telegram_user_id) {
                     Config::set('services.telegram-bot-api', ['token' =>$setting->telegram_bot_token]);

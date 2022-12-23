@@ -20,14 +20,16 @@
             >
             </q-input>
           </div>
-          <div v-if="config && config.is_shippable" class="q-mt-lg">
+           <div v-if="config && config.is_shippable" class="q-mt-lg">
             <div class="text-grey-8 text-weight-medium q-py-sm">Pengaturan Gudang Pengiriman</div>
               <div @click="changeWarehouse" class="cursor-pointer q-pa-md full-width border q-filled">{{ warehouseTitle() }}</div>
               <div class="q-mt-md" v-if="theCouriers.length">
                 <div class="text-grey-8 text-weight-medium q-py-md">Pengaturan Kurir Aktif</div>
                   <div class="q-gutter-sm">
-                    <q-btn unelevated rounded size="10px" v-for="(name, index) in theCouriers" :key="index" 
-                    :color="isCourierActive(name)? 'primary' : 'grey-5'" @click="handleSelectCourier(name)" :label="name"></q-btn>
+                    <q-btn no-caps unelevated
+                      :outline="!isCourierActive(name)"
+                     rounded size="10px" v-for="(name, index) in theCouriers" :key="index" 
+                    :color="isCourierActive(name)? 'green' : 'grey-7'" @click="handleSelectCourier(name)" :label="name.label"></q-btn>
                   </div>
               </div>
           </div>
@@ -97,13 +99,6 @@ export default {
     }
   },
   computed: {
-    courierHasSelect() {
-      if(this.formdata.rajaongkir_couriers){
-        return this.formdata.rajaongkir_couriers.split(',')
-      } else {
-        return []
-      }
-    },
     theCouriers() {
       if(this.formdata.rajaongkir_type == 'pro') {
         return this.config.courier_available.pro
@@ -115,7 +110,10 @@ export default {
     },
     config: function() {
       return this.$store.state.config
-    }
+    },
+    isCouriersValueActive() {
+      return this.formdata.rajaongkir_couriers.map(t => t.value)
+    },
   },
   mounted() {
     if(!this.config) {
@@ -141,7 +139,7 @@ export default {
       this.formdata.is_shipping_active = item.is_shipping_active
       this.formdata.rajaongkir_type = item.rajaongkir_type
       this.formdata.rajaongkir_apikey = item.rajaongkir_apikey
-      this.formdata.rajaongkir_couriers = item.rajaongkir_couriers
+      this.formdata.rajaongkir_couriers = item.rajaongkir_couriers && item.rajaongkir_couriers.length? item.rajaongkir_couriers : []
       this.formdata.warehouse_address = item.warehouse_address
       this.formdata.warehouse_id = item.warehouse_id
     },
@@ -149,9 +147,9 @@ export default {
       this.formdata.rajaongkir_couriers = ''
     },
     isCourierActive(name) {
-      if(this.courierHasSelect.length) {
+      if(this.formdata.rajaongkir_couriers.length) {
 
-        if(this.courierHasSelect.includes(name)) {
+        if(this.isCouriersValueActive.includes(name.value)) {
           return true
 
         } else {
@@ -161,18 +159,15 @@ export default {
       return false
     },
     handleSelectCourier(evt) {
-      let courierTemp = this.courierHasSelect
 
-      if(courierTemp.includes(evt)) {
-        courierTemp = courierTemp.filter(el => el != evt)
+      let already = this.formdata.rajaongkir_couriers.find(i => i.value == evt.value)
+
+      if(already != undefined) {
+        this.formdata.rajaongkir_couriers = this.formdata.rajaongkir_couriers.filter(el => el.value != already.value)
       } else {
-        courierTemp.push(evt)
+        this.formdata.rajaongkir_couriers.push(evt)
       }
-      if(courierTemp.length) {
-        this.formdata.rajaongkir_couriers = courierTemp.join(',')
-      }else {
-        this.formdata.rajaongkir_couriers = ''
-      }
+
     },
     updateData() {
       Api().post('config',  this.formdata).then(() => {

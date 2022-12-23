@@ -74,7 +74,8 @@ class Config extends Model
         'is_shipping_active' => 'boolean',
         'review_auto_approved' => 'boolean',
         'cod_list' => 'array',
-        'warehouse_address' => 'object'
+        'warehouse_address' => 'object',
+        'rajaongkir_couriers' => 'array'
     ];
 
 

@@ -7,7 +7,7 @@
       <post-list v-for="(post, index) in posts" :key="index" v-bind="post" />
     </div>
     <div class="block-footer flex justify-center auto-padding">
-      <q-btn label="Selengkapnya" icon-right="eva-arrow-forward-outline" color="primary" :to="{name: 'FrontPostIndex'}"></q-btn>
+      <q-btn label="Selengkapnya" no-caps icon-right="eva-arrow-forward-outline" color="primary" :to="{name: 'FrontPostIndex'}"></q-btn>
     </div>
   </div>
 </template>
@@ -19,7 +19,3 @@ export default {
   components: { PostList }
 }
 </script>
-
-<style>
-
-</style>
