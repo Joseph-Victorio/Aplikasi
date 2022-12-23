@@ -44,7 +44,7 @@
           </div>
           </form>
           <div class="text-center q-mt-sm"> 
-            <q-btn :disabled="isLoading" no-caps flat color="primary" :to="{name: 'Login'}">Kembali ke halaman login</q-btn>
+            <q-btn :disable="isLoading" no-caps flat color="primary" :to="{name: 'Login'}">Kembali ke halaman login</q-btn>
           </div>
         </q-card-section>
       </q-card>

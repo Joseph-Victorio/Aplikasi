@@ -1,6 +1,6 @@
 <template>
   <div class="column">
-    <q-btn unelevated :disabled="currentStock < 1" :label="textButon" no-caps @click="addNewItem" :color="cartTextColor"></q-btn>
+    <q-btn unelevated :disable="currentStock < 1" :label="textButon" no-caps @click="addNewItem" :color="cartTextColor"></q-btn>
     <q-dialog v-model="cartModal">
       <q-card style="width:100%;max-width:350px;">
         <q-card-section>

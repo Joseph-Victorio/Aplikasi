@@ -59,7 +59,7 @@
             size="sm"
             unelevated 
             color="red" 
-            :disabled="syncLoading"
+            :disable="syncLoading"
             @click="syncProduct(product.id)"></q-btn>
         </q-item-section>
       </q-item>

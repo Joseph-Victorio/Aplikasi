@@ -108,13 +108,13 @@
       </div>
         </form>
         <div class="column q-gutter-y-sm text-center q-mt-xs">
-          <div v-if="isRegister">Sudah punya akun <q-btn no-caps color="green-7" padding="xs" flat :disabled="isLoading" label="Login Disini" @click="formType ='login'"></q-btn></div>
+          <div v-if="isRegister">Sudah punya akun <q-btn no-caps color="green-7" padding="xs" flat :disable="isLoading" label="Login Disini" @click="formType ='login'"></q-btn></div>
           <div v-if="!isRegister">
             <div>
-              Belum punya akun <q-btn no-caps color="green-7" padding="xs" flat :disabled="isLoading" label="Daftar Disini" @click="formType ='register'"></q-btn>
+              Belum punya akun <q-btn no-caps color="green-7" padding="xs" flat :disable="isLoading" label="Daftar Disini" @click="formType ='register'"></q-btn>
             </div>
             <div>
-              <q-btn no-caps color="green-7" padding="xs" flat :disabled="isLoading" label="Lupa password?" :to="{ name: 'ForgotPassword'}"></q-btn>
+              <q-btn no-caps color="green-7" padding="xs" flat :disable="isLoading" label="Lupa password?" :to="{ name: 'ForgotPassword'}"></q-btn>
             </div>
           </div>
         </div>

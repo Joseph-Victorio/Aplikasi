@@ -23,7 +23,7 @@
         <q-item-label v-else>Updated</q-item-label>
       </q-item-section>
       <q-item-section side>
-        <q-btn :loading="loading" :disabled="!needUpdate" @click="updateSystem" :label="needUpdate? 'Update Now' : 'No updated found'" unelevated :color="needUpdate? 'primary' : 'grey-7'" size="12px"></q-btn>
+        <q-btn :loading="loading" :disable="!needUpdate" @click="updateSystem" :label="needUpdate? 'Update Now' : 'No updated found'" unelevated :color="needUpdate? 'primary' : 'grey-7'" size="12px"></q-btn>
       </q-item-section>
     </q-item>
     

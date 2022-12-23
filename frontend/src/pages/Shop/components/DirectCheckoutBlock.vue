@@ -26,8 +26,8 @@
           <div class="q-pa-sm bg-grey-2 q-mt-sm" v-html="cartFormat"></div>
         </q-card-section>
         <q-card-actions class="justify-end q-pa-md">
-            <q-btn unelevated color="grey-3" text-color="green-7" type="button" :disabled="loading" label="Batal" @click.prevent="$emit('close')" no-caps></q-btn>
-            <q-btn type="submit" :loading="loading" :disabled="!canDirectCheckout" unelevated label="Order Sekarang" color="green-6" no-caps></q-btn>
+            <q-btn unelevated color="grey-3" text-color="green-7" type="button" :disable="loading" label="Batal" @click.prevent="$emit('close')" no-caps></q-btn>
+            <q-btn type="submit" :loading="loading" :disable="!canDirectCheckout" unelevated label="Order Sekarang" color="green-6" no-caps></q-btn>
         </q-card-actions>
       </q-card>
     </form>

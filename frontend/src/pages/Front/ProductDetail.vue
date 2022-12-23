@@ -247,7 +247,7 @@
           </div>
           <div class="row justify-end q-gutter-x-sm">
             <q-btn unelevated type="button" @click.prevent="closeReviewModal" label="Batal" color="primary" outline></q-btn>
-            <q-btn unelevated :disabled="chalengeTesting" type="submit" :loading="loading" label="Kirim Ulasan" color="primary"></q-btn>
+            <q-btn unelevated :disable="chalengeTesting" type="submit" :loading="loading" label="Kirim Ulasan" color="primary"></q-btn>
           </div>
         </div>
         </form>
@@ -268,7 +268,7 @@
         </q-card-section>
         <q-card-actions class="justify-end q-pa-md">
           <q-btn @click="closeChatModal" outline color="primary" label="Batal"></q-btn>
-          <q-btn @click="submitChat" :disabled="!chatText" color="primary" label="Kirim"></q-btn>
+          <q-btn @click="submitChat" :disable="!chatText" color="primary" label="Kirim"></q-btn>
         </q-card-actions>
       </q-card>
     </q-dialog>

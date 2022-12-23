@@ -83,7 +83,7 @@
              />
           </q-card-section>
           <q-card-actions class="justify-end q-pa-md sticky-bottom bg-grey-2">
-            <q-btn :disabled="loading" label="Batal" type="button" color="primary" outline @click.prevent="closeModal"></q-btn>
+            <q-btn :disable="loading" label="Batal" type="button" color="primary" outline @click.prevent="closeModal"></q-btn>
             <q-btn :loading="loading" unelevated label="Simpan Data" type="submit" color="primary"></q-btn>
           </q-card-actions>
           

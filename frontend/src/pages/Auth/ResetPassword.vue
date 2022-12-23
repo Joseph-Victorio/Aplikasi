@@ -79,7 +79,7 @@
 
         </div>
         <div class="q-py-md text-center">
-          <q-btn :disabled="isLoading" no-caps flat color="primary" :to="{name: 'Login'}">Kembali ke halaman login</q-btn>
+          <q-btn :disable="isLoading" no-caps flat color="primary" :to="{name: 'Login'}">Kembali ke halaman login</q-btn>
         </div>
           </form>
         </q-card-section>

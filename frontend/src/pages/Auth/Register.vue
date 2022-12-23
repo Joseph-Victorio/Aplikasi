@@ -101,7 +101,7 @@
           </form>
           <div class="column text-center q-mt-sm">
           <div>
-          Sudah punya akun <q-btn no-caps color="primary" padding="xs" flat :disabled="isLoading" label="Login Disini" :to="{ name: 'Login'}"></q-btn>
+          Sudah punya akun <q-btn no-caps color="primary" padding="xs" flat :disable="isLoading" label="Login Disini" :to="{ name: 'Login'}"></q-btn>
           </div>
         </div>
         </q-card-section>

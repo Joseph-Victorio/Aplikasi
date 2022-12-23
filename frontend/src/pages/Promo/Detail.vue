@@ -63,7 +63,7 @@
                 round
                 size="11px"
                 color="blue" 
-                :disabled="syncLoading"
+                :disable="syncLoading"
                 @click="handleEdit(product)"></q-btn>
                 <q-btn 
                 icon="eva-trash-2" 
@@ -71,7 +71,7 @@
                 round
                 unelevated 
                 color="red" 
-                :disabled="syncLoading"
+                :disable="syncLoading"
                 @click="handleRemoveProductPromo(product.id)">
                 </q-btn>
               </div>
