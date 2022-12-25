@@ -38,19 +38,18 @@ import SwiperProductCard from 'components/SwiperProductCard'
       styleWidth() {
 
         if(this.page_width > 1024) {
-          return 'width: 220px;'
+          return 'width: 240px;'
         }
 
         if(this.page_width > 800) {
-          return 'width: 200px;'
+          return 'width: 220px;'
         }
 
         if(this.page_width > 400) {
-          return 'width: 160px;'
+          return 'width: 180px;'
         }
 
-        return 'width: 150px;'
-
+        return 'width: 160px;'
       }
     },
     mounted() {
