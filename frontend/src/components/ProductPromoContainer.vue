@@ -13,6 +13,7 @@
           </div>
         </div>
     </div>
+    {{ page_width }}
     <carouselContainer :products="promo.products"/>
   </div>
 </template>
@@ -35,6 +36,11 @@ import { Api } from 'boot/axios'
         countDownDate: null,
         interval: null,
       }
+    },
+    computed: {
+      page_width() {
+        return this.$store.state.page_width
+      },
     },
     mounted() {
       if(this.promo) {
