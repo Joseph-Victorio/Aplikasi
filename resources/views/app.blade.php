@@ -2,4 +2,4 @@
 @include('partial/meta_head') 
 @include('partial/json_schema')<link href=/css/vendor.cdbd4fcd.css rel=stylesheet><link href=/css/app.3fd620b5.css rel=stylesheet><link rel=manifest href=manifest.json><meta name=theme-color content=#048daf><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-status-bar-style content=default><meta name=apple-mobile-web-app-title content="NextShop App"><link rel=apple-touch-icon href=icon/icon-120x120.png><link rel=apple-touch-icon sizes=152x152 href=icon/icon-152X152.png><link rel=apple-touch-icon sizes=167x167 href=icon/icon-167x167.png><link rel=apple-touch-icon sizes=180x180 href=icon/icon-180x180.png><link rel=mask-icon href=icon/favicon.png color=#048daf><meta name=msapplication-TileImage content=icon/icon-144x144.png><meta name=msapplication-TileColor content=#000000></head><body class=bg-blue-grey-1>
 @include('partial/meta_body')
-<div id=q-app></div><script src=/js/vendor.f7c8770d.js></script><script src=/js/app.952e4527.js></script></body></html>
+<div id=q-app></div><script src=/js/vendor.f7c8770d.js></script><script src=/js/app.94061ae9.js></script></body></html>

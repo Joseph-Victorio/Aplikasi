@@ -1,15 +1,25 @@
 <template>
   <div class="carousel-container">
     <div class="carousel-items" ref="carousel"
-    @mousedown="handleMouseDown"
-    @mouseleave="handleMouseLeave"
-    @mouseup="handleMouseUp"
-    @mousemove="handleMouseMove"
+      @mousedown="handleMouseDown"
+      @mouseleave="handleMouseLeave"
+      @mouseup="handleMouseUp"
+      @mousemove="handleMouseMove"
     > 
       <div v-for="product in products" :key="product.id" class="carousel-item" 
       :style="styleWidth"
       >
         <swiper-product-card :product="product" />
+      </div>
+      <div class="carousel-item" v-if="loadmore"
+      :style="styleWidth"
+      >
+        <div class="full-height flex column relative text-center justify-center items-center">
+          <div>
+            <q-btn unelevated icon="eva-arrow-forward" round size="16px" color="primary" :to="{name: 'ProductCategory', params:{ id: loadmore.category }}"></q-btn>
+            <div class="q-pt-md">Selengkapnya <br>di {{ loadmore.title }}</div>
+          </div>
+         </div>
       </div>
     </div>
   </div>
@@ -21,6 +31,7 @@ import SwiperProductCard from 'components/SwiperProductCard'
     name: 'SwipperProduct',
     props: {
       products: Array,
+      loadmore: Object
     },
     components: { SwiperProductCard },
     data () {
@@ -38,11 +49,11 @@ import SwiperProductCard from 'components/SwiperProductCard'
       styleWidth() {
 
         if(this.page_width > 1024) {
-          return 'width: 240px;'
+          return 'width: 225px;'
         }
 
         if(this.page_width > 800) {
-          return 'width: 220px;'
+          return 'width: 210px;'
         }
 
         if(this.page_width > 400) {
@@ -56,6 +67,8 @@ import SwiperProductCard from 'components/SwiperProductCard'
        this.$nextTick(() => {
         this.carousel = this.$refs.carousel
       })
+
+      console.log(this.products);
     },
     methods: {
       handleMouseDown(e) {

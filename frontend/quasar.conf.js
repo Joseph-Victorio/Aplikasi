@@ -193,7 +193,6 @@ module.exports = function (ctx ) {
     },
     sourceFiles: {
       indexHtmlTemplate: 'src/app.template.html',
-      // indexHtmlTemplate:  ctx.dev? 'src/app.template.html' :  'src/app.template.php',
     },
 
     htmlVariables: {

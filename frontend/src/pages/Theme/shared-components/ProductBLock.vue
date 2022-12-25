@@ -13,7 +13,7 @@
           <div v-if="item.description" class="block-subtitle q-mt-sm">{{ item.description }}</div>
           <div class="banner" v-if="item.banner_src">
             <router-link :to="{name: 'ProductCategory', params:{ id: item.category_id }}">
-            <img :src="item.banner_src" :alt="item.title" class="cursor-pointer q-mt-sm" />
+              <img :src="item.banner_src" :alt="item.title" class="cursor-pointer q-mt-sm" />
               </router-link>
             </div>
           </div>
@@ -22,7 +22,10 @@
               <product-list-section :ready="products.ready" :products="item" />
             </div>
             <div v-else class="auto-padding-side">
-              <CarouselContainer :products="item.items" />
+              <CarouselContainer 
+              :products="item.items" 
+              :loadmore="{ title: item.title, category: item.category_id }"
+              />
             </div>
           </div>
       </div>
