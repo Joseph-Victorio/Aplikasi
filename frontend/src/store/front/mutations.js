@@ -30,7 +30,6 @@ export function SET_PRODUCT_CATEGORY ( state, payload ) {
 }
 export function SET_SLIDERS (state, payload) {
 
-  console.log(payload);
   state.sliders.data = payload
   state.sliders.ready = true
   state.sliders.available = payload.length > 0 ? true : false
