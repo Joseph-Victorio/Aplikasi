@@ -103,9 +103,6 @@ export default {
         cancel: {label: 'Batal', flat: true, 'no-caps': true},
       }).onOk(() => {
         this.removeSlider(id)
-      }).onCancel(() => {
-        console.log('Cancel')
-      }).onDismiss(() => {
       })
     },
     handleBtnUpload() {
@@ -128,7 +125,6 @@ export default {
           self.getSliders()
         })
         .catch(function(err){
-          console.log('FAILURE!!');
            self.$store.commit('slider/SET_DATA_STATUS', true)
         });
       },

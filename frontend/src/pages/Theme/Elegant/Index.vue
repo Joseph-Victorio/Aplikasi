@@ -15,90 +15,72 @@
               </template>
               </q-input>
             </div>
-           <shopping-cart noFavorite />
+           <ShoppingCart noFavorite />
         </q-toolbar>
       </q-header>
-    <template v-if="!loading">
-      <div class="header_elegant">
-        <div class="header_elegant--inner q-pt-sm q-pb-md" v-if="sliders.data.length">
-          <slider :datas="sliders.data" />
-        </div>
-      </div>
-
-      <div id="featured" class="auto-padding-side block-container q-pt-md" v-if="blocks.featured.length">
-        <featured-carousel :datas="blocks.featured" />
-      </div>
-      <div id="categories" v-if="categories && categories.data.length > 1" class="auto-padding block-container">
-        <div class="block-heading">
-          <div class="block-title"><h2>Kategori</h2></div>
-        </div>
-        <div class="block-content q-pb-sm">
-          <category-carousel :datas="categories.data" />
-        </div>
-      </div>
-
-      <div id="product-promo" v-if="productPromo.length" >
-        <product-promo :product_promo="productPromo" />
-      </div>
-
-      <div v-if="banner1" class="banner auto-padding-side block-container">
-        <img :src="banner1.image_url" @click="goToPost(banner1)" alt="banner">
-      </div>
-      
-      <product-block :products="products" />
-
-      <div v-if="blocks.partner.length" class="partner auto-padding-side block-container">
-        <div class="block-heading">
-          <div class="block-title"><h2>Partners</h2></div>
-        </div>
-        <div class="block-content">
-          <partner-carousel :datas="blocks.partner" />
-        </div>
-      </div>
-      
-      <div v-if="banner2" class="banner auto-padding-side block-container">
-        <img :src="banner2.image_url" @click="goToPost(banner2)" alt="banner">
-      </div>
-
-      <post-block :posts="posts" />
-
-      <div v-if="banner3" class="banner auto-padding block-container">
-        <img :src="banner3.image_url" @click="goToPost(banner3)" alt="banner">
-      </div>
-
-      <install-app />
-
-      <footer-block />
-    </template>
 
       <q-inner-loading :showing="loading">
         <q-spinner-facebook size="50px" color="primary"/>
       </q-inner-loading>
+
+      <template v-if="initial_data">
+
+        <Slider />  
+
+        <FeaturedCarousel />
+
+        <CategoryCarousel />
+
+        <div id="product-promo" v-if="productPromo.length" >
+          <ProductPromo :product_promo="productPromo" />
+        </div>
+
+        <div v-if="banner1" class="banner auto-padding-side block-container">
+          <img :src="banner1.image_url" @click="goToPost(banner1)" alt="banner">
+        </div>
+        
+        <ProductSectionObserver />
+
+        <div v-if="banner2" class="banner auto-padding-side block-container">
+          <img :src="banner2.image_url" @click="goToPost(banner2)" alt="banner">
+        </div>
+
+        <PostBlock />
+
+        <div v-if="banner3" class="banner auto-padding block-container">
+          <img :src="banner3.image_url" @click="goToPost(banner3)" alt="banner">
+        </div>
+
+        <InstallApp />
+
+        <FooterBock />
+
+      </template>
+
   </q-page>
 </template>
+
 <script>
-import { mapActions, mapState } from 'vuex'
-import ShoppingCart from 'components/ShoppingCart.vue'
+
 import Slider from './block/Slider.vue'
-import ProductBlock from './../shared-components/ProductBLock.vue'
-import featuredCarousel from './../shared-components/FeaturedCarousel.vue'
-import categoryCarousel from './block/CategoryCarousel.vue'
-import productPromo from './../shared-components/ProductPromo.vue'
+import ProductSectionObserver from './../shared-components/ProductSectionObserver.vue'
+import FeaturedCarousel from './../shared-components/FeaturedCarousel.vue'
+import CategoryCarousel from './block/CategoryCarousel.vue'
+import ProductPromo from './../shared-components/ProductPromo.vue'
+import ShoppingCart from 'components/ShoppingCart.vue'
 
 export default {
-  name: 'PageIndex',
+  name: 'ElegantIndex',
   components: {
     ShoppingCart,
     Slider, 
-    ProductBlock, 
-    featuredCarousel,
-    categoryCarousel,
-    productPromo,
-    'post-block': () => import('./../shared-components/PostBlock.vue'), 
-    'partner-carousel': () => import('components/PartnerCarousel.vue'),
-    'post-block': () => import('./../shared-components/PostBlock.vue'), 
-    'footer-block': () => import('./../shared-components/FooterBlock.vue'),
-    'install-app': () => import('components/InstallApp.vue')
+    ProductSectionObserver, 
+    FeaturedCarousel,
+    CategoryCarousel,
+    ProductPromo,
+    PostBlock: () => import('../shared-components/FrontPostBlock.vue'), 
+    FooterBock: () => import('./../shared-components/FooterBlock.vue'),
+    InstallApp: () => import('components/InstallApp.vue')
   },
   data() {
     return {
@@ -108,24 +90,23 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      blocks: state => state.block.blocks,
-      sliders: state => state.slider.sliders ,
-      categories: state => state.category.categories ,
-      products: state => state.product.initial_products,
-      shop: state => state.shop,
-      loading: state => state.loading,
-      posts: state => state.post.initialPost,
-      config: state => state.config,
-      productPromo: state => state.product.product_promo,
-    }),
-    cheight: function() {
-      let n =(this.$q.screen.width /1.7)
-      if(this.$q.screen.width > 600) {
-        return 400 +'px'
-      } else {
-        return (this.$q.screen.width /1.5) +'px'
-      }
+    loading() { 
+      return this.$store.state.loading
+    },
+    initial_data() { 
+      return this.$store.state.initial_data
+    },
+    blocks() { 
+      return this.$store.state.front.blocks
+    },
+    shop() { 
+      return this.$store.state.shop
+    },
+    config() { 
+      return this.$store.state.config
+    },
+    productPromo() { 
+      return this.$store.state.product.product_promo
     },
     banner1() {
       if(this.blocks.banner.length) {
@@ -156,7 +137,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['getInitialData']),
     showProductByCategory(id) {
       this.$router.push({name: 'ProductCategory', params: { id:id }})
     },
@@ -174,11 +154,7 @@ export default {
     if(this.config) {
       this.viewMode = this.config.home_view_mode
     }
-  },
-created() {
-  if(!this.shop || !this.products.data.length || this.$route.query.load) {
-      this.getInitialData()
-    }
   }
 }
+
 </script>

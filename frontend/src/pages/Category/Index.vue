@@ -98,9 +98,6 @@ export default {
         cancel: {label: 'Batal', flat: true, 'no-caps': true},
       }).onOk(() => {
         this.categoryDelete(this.removeId)
-      }).onCancel(() => {
-        console.log('Cancel')
-      }).onDismiss(() => {
       })
     }
   },

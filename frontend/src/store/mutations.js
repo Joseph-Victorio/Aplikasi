@@ -100,4 +100,7 @@ export default {
   SET_PAGE_WIDTH: ( state, width) => {
     state.page_width = width
   },
+  SET_INITIAL_DATA: (state, status) => {
+    state.initial_data = status
+  }
 }

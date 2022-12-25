@@ -81,16 +81,6 @@ export default {
   mounted() {
     this.getCategoryTitle()
   },
-  // watch: {
-  // "$route.params.id": {
-  //     handler: function(value) {
-  //       // console.log(this.$route.name);
-  //       this.getProductsByCategory(value)
-  //     },
-  //     deep: true,
-  //     immediate: true,
-  //   },
-  // },
   created() {
     if(this.products.data.length) {
 

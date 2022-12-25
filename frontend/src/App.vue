@@ -12,7 +12,7 @@ export default {
     },
     loading() {
       return this.$store.state.loading
-    }
+    },
   },
   watch: {
     loading(val) {
@@ -32,6 +32,7 @@ export default {
     this.$store.dispatch('cart/getCarts')
   },
   created() {
+    this.$store.dispatch('getInitialData')
     this.$store.commit('REMOVE_INSTALL_APP')
     window.addEventListener('beforeinstallprompt', (e) => {
       this.$store.commit('SET_INSTALL_APP', e)
@@ -44,6 +45,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.pageResize)
+    window.removeEventListener('beforeinstallprompt')
   },
   meta: {
     meta: {

@@ -14,27 +14,37 @@
     </div>
     <div :class="page_width >= 768 ? 'row q-px-sm' : 'column q-gutter-y-sm'" v-if="config && config.product_view_mode == 'list'">
       <template v-if="products.ready">
-        <product-list v-for="(product, index) in products.data" :key="index" :product="product" />
+        <ProductList v-for="(product, index) in products.data" :key="index" :product="product" />
       </template>
       <template v-else>
         <div :class="{ 'col-6 q-pa-xs' : page_width >= 768 }" v-for="a in 6" :key="a">
-          <product-list-skeleton  />
+          <ProductListSkeleton />
         </div>
       </template>
     </div>
      <div class="row items-stretch auto-padding-side q-mt-sm" v-else>
       <template v-if="products.ready">
-        <product-card v-for="(product, index) in products.data" :key="index" :product="product" />
+        <div 
+          v-for="(product, index) in products.data" :key="index" :product="product" 
+          class="q-px-xs q-pb-xs q-mb-sm" :class="page_width >= 800 ? 'col-4' : 'col-6'"
+        >
+          <ProductCard :product="product"/>
+
+       </div>
       </template>
       <template v-else>
-        <product-card-skeleton v-for="a in 6" :key="a" />
+        <div v-for="a in 6" :key="a" 
+        :class="page_width >= 768 ? 'col-4' : 'col-6'" class="q-pa-xs"
+        >
+          <ProductCardSkeleton :width="skeletonWidth" />
+        </div>
       </template>
     </div>
      <q-dialog
      v-model="isMenuCategory"
       position="bottom"
       >
-        <category-menu />
+        <CategoryMenu />
       </q-dialog>  
   </section>
 </template>
@@ -70,6 +80,13 @@ export default {
     },
     page_width() {
       return this.$store.state.page_width
+    },
+    skeletonWidth() {
+      if(this.page_width >= 768) {
+        return 768 / 3.5
+      }
+
+      return this.page_width / 3
     },
     isMenuCategory: {
       get() {

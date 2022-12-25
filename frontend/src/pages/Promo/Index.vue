@@ -192,10 +192,7 @@ export default {
           this.closeModal()
         })
       }
-    },
-    searchProduct(evt) {
-      // console.log(evt);
-    },  
+    }, 
     closeModal() {
       this.clearForm()
       this.modal = false

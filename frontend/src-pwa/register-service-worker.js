@@ -20,7 +20,7 @@ register(process.env.SERVICE_WORKER_FILE, {
   },
 
   cached (/* registration */) {
-    // console.log('Content has been cached for offline use.')
+    console.log('Content has been cached for offline use.')
   },
 
   updatefound (/* registration */) {

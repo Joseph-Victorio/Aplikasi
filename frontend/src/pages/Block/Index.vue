@@ -139,7 +139,7 @@ export default {
         post_id:''
       },
       imagePreview: '',
-      positionOptions: ['Featured', 'Banner', 'Partner'],
+      positionOptions: ['Featured', 'Banner'],
     }
   },
   computed: {
@@ -218,9 +218,6 @@ export default {
         cancel: {label: 'Batal', flat: true, 'no-caps': true},
       }).onOk(() => {
         this.deleteBlock(id)
-      }).onCancel(() => {
-        console.log('Cancel')
-      }).onDismiss(() => {
       })
     },
     handleAddBlock() {

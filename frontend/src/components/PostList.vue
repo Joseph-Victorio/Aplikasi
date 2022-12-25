@@ -2,7 +2,7 @@
   <q-list class="relative bg-white border-b">
     <q-item class="q-pa-md" clickable :to="{name: 'FrontPostShow', params:{slug: slug}}">
       <q-item-section avatar top>
-          <q-img v-if="image_url" :src="image_url" ratio="1" class="image-list cursor-pointer rounded-borders"/>
+          <img v-if="image_url" :src="image_url" ratio="1" class="image-list cursor-pointer rounded-borders" :alt="title"/>
       </q-item-section>
       <q-item-section top>
         <div class="ellipsis-2-lines text-weight-medium q-mb-xs" style="font-size:16px;">{{ title }}</div>

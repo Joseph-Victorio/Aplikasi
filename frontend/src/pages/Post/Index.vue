@@ -92,9 +92,6 @@ export default {
         cancel: {label: 'Batal', flat: true, 'no-caps': true},
       }).onOk(() => {
         this.deletePost(id)
-      }).onCancel(() => {
-        console.log('Cancel')
-      }).onDismiss(() => {
       })
     },
   },

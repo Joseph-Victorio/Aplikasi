@@ -146,3 +146,11 @@ export function UPDATE_FIELD_PRODUCT (state, payload)
 {
   state.form[payload.key] = payload.value
 }
+export function SET_CATEGORY_PRODUCTS (state, payload) 
+{
+  state.category_products = payload.map(cat => {
+    return {...cat, product_items: [] }
+  })
+
+  console.log(state.category_products);
+}

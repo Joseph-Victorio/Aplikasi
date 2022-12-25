@@ -1,23 +1,22 @@
 <template>
-  <div class="overflow-hidden">
-    <vue-glide :options="carouselOptions">
-      <vue-glide-slide v-for="feature in datas" :key="feature.id">
-        <div class="column col items-center text-center q-gutter-y-xs featured cursor-pointer" @click="showPost(feature)">
-          <img v-if="feature.image" :src="feature.image_url" alt="" width="60" height="60" style="object-fit:contain;"/>
-          <div class="text-sm text-weight-medium">{{ feature.label }}</div>
-          <div v-if="feature.description" class="text-grey-7 text-auto description">{{ feature.description }}</div>
-        </div>
-      </vue-glide-slide>
-    </vue-glide>
+  <div>
+    <div class="overflow-hidden auto-padding-side block-container q-py-md" v-if="blocks.ready && blocks.featured.length">
+      <vue-glide :options="carouselOptions">
+        <vue-glide-slide v-for="feature in blocks.featured" :key="feature.id">
+          <div class="column col items-center text-center q-gutter-y-xs featured cursor-pointer" @click="showPost(feature)">
+            <img v-if="feature.image" :src="feature.image_url" alt="" width="60" height="60" style="object-fit:contain;"/>
+            <div class="text-sm text-weight-medium">{{ feature.label }}</div>
+            <div v-if="feature.description" class="text-grey-7 text-auto description">{{ feature.description }}</div>
+          </div>
+        </vue-glide-slide>
+      </vue-glide>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'CategoryCarousel',
-  props: {
-    datas: Array
-  },
+  name: 'FeaturedCarousel',
   data () {
     return {
       carouselOptions: {
@@ -26,6 +25,11 @@ export default {
         gap: 5,
         bound: true
       }
+    }
+  },
+  computed: {
+    blocks() {
+      return this.$store.state.front.blocks
     }
   },
   methods: {
@@ -37,7 +41,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

@@ -72,8 +72,11 @@ class ProductRepository
 
     }
 
-    public function getProductsByCategory($id)
+    public function getProductsByCategory($id, $request)
     {
+        if($request->limit) {
+            $this->limit = $request->limit;
+        }
         return Product::with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
             $query->whereHas('promoActive');
         }])

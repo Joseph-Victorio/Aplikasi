@@ -259,8 +259,6 @@ export default {
       str += `Kurir: ${this.formOrder.shipping_courier_name}\n`
       str += `Servis: ${this.formOrder.shipping_courier_service}\n`
 
-      // console.log(str); return
-
       let link = whatsappUrl+'/send?phone=' + whatsapp + '&text=' + encodeURI(str);
       setTimeout(() => {
         this.$router.push({ name: 'Cart'})

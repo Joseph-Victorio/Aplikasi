@@ -1,19 +1,19 @@
 <template>
-<div class="overflow-hidden">
+<div class="overflow-hidden header-romance">
+  <template v-if="sliders.ready && sliders.available">
    <vue-glide :options="glideOptions">
-      <vue-glide-slide v-for="(img, index) in datas" :key="index">
+      <vue-glide-slide v-for="(img, index) in sliders.data" :key="index">
          <img :src="img.src" style="width:100%;height:auto;"/>
       </vue-glide-slide>
     </vue-glide> 
+  </template>
+  <q-skeleton v-else height="320px"></q-skeleton>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Front',
-  props: {
-    datas: Array
-  },
+  name: 'FrontSlider',
   data () {
     return {
       glideOptions: {
@@ -23,6 +23,11 @@ export default {
         autoplay: 6000,
         bullet: true
       },
+    }
+  },
+  computed: {
+    sliders() {
+      return this.$store.state.front.sliders
     }
   }
 

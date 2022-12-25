@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import createPersistedState from "vuex-persistedstate";
-import Cookies from 'js-cookie';
 
 import SecureLS from "secure-ls";
 var ls = new SecureLS({ isCompression: false });
@@ -16,9 +15,8 @@ import block from './block'
 import order from './order'
 import bank from './bank'
 import cart from './cart'
-import discount from './discount'
-import coupon from './coupon'
 import promo from './promo'
+import front from './front';
 
 import mutations from './mutations'
 import getters from './getters'
@@ -26,7 +24,7 @@ import actions from './actions'
 
 const stateData = createPersistedState({
   key: '__state',
-  paths: ['user', 'cart', 'shop', 'config', 'session_id', 'product.favorites', 'coupon.coupon_discount', 'forgot_password'],
+  paths: ['user', 'cart', 'shop', 'config', 'session_id', 'product.favorites', 'forgot_password'],
   storage: {
     getItem: (key) => ls.get(key),
     setItem: (key, value) => ls.set(key, value, { expires: 1 }),
@@ -35,15 +33,6 @@ const stateData = createPersistedState({
 })
 
 Vue.use(Vuex)
-
-/*
- * If not building with SSR mode, you can
- * directly export the Store instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Store instance.
- */
 
 export default function (/* { ssrContext } */) {
 
@@ -58,6 +47,7 @@ export default function (/* { ssrContext } */) {
       isMenuCategory: false,
       session_id: null,
       page_width: window.innerWidth,
+      initial_data: false,
       forgot_password: {
         token: '',
         email: '',
@@ -81,9 +71,8 @@ export default function (/* { ssrContext } */) {
       order,
       bank,
       cart,
-      discount,
-      coupon,
       promo,
+      front
     },
     plugins: [stateData],
 

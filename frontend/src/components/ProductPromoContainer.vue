@@ -13,7 +13,7 @@
           </div>
         </div>
     </div>
-    <carouselContainer :products="promo.products"/>
+    <carouselContainer :products="promo.products" ready/>
   </div>
 </template>
 

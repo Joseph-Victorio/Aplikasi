@@ -1,17 +1,13 @@
 <template>
-  <div class="q-pa-xs q-mb-md" :class="page_width >= 800 ? 'col-4' : 'col-6'">
-    <div class="column full-height relative bg-white">
-        <q-skeleton :height="imgHeight" square />
-      <div class="q-mt-sm relative col column justify-between q-pa-sm">
-        <q-skeleton type="text" width="40%"/>
-        <q-skeleton type="text" width="90%"/>
-        <q-skeleton type="text" width="70%"/>
-        <div class="flex justify-between items-center">
-          <q-skeleton type="text" width="50%"/>
-          <q-skeleton type="circle" size="20px" />
-        </div>
-        <q-skeleton height="30px" width="100%"/>
+  <div class="column full-height relative bg-white">
+    <q-skeleton :height="imgHeight" square />
+    <div class="relative col column justify-between q-pa-sm">
+      <div class="flex justify-between items-center">
+        <q-skeleton type="text" width="50%"/>
+        <q-skeleton type="circle" size="20px" />
       </div>
+      <q-skeleton type="text" width="90%"/>
+      <q-skeleton class="q-mt-sm" height="20px" width="50%"/>
     </div>
   </div>
 </template>
@@ -19,12 +15,13 @@
 
 export default{
   name: 'Skeleton',
+  props: ['width'],
   computed: {
     imgHeight() {
-      if(this.$q.screen.width < 480) {
-        return this.$q.screen.width/2.8 + 'px'
+      if(this.width) {
+        return `${this.width}px`
       }
-      return '200px'
+      return '100px'
     },
     page_width() {
       return this.$store.state.page_width

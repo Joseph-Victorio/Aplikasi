@@ -115,6 +115,7 @@ Route::get('getPostDetail/{slug}', [FrontApiController::class, 'getPostDetail'])
 Route::get('getBanks', [FrontApiController::class, 'getBanks']);
 Route::get('getSliders', [FrontApiController::class, 'getSliders']);
 Route::get('getCategories', [FrontApiController::class, 'getCategories']);
+Route::get('getPromotePosts', [FrontApiController::class, 'getPromotePosts']);
 
 Route::get('getProducts', [FrontProductController::class, 'getProducts']);
 Route::get('getProductDetail/{slug}', [FrontProductController::class, 'getProductDetail']);

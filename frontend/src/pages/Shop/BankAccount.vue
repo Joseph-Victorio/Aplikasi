@@ -138,9 +138,6 @@ export default {
         cancel: {label: 'Batal', flat: true, 'no-caps': true},
       }).onOk(() => {
         this.destroyBank(id)
-      }).onCancel(() => {
-        console.log('Cancel')
-      }).onDismiss(() => {
       })
     },
     handleAdd() {

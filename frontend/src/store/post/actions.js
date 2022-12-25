@@ -1,8 +1,6 @@
 import { Api } from 'boot/axios'
 
 export function addPost({ commit, dispatch }, payload) {
-  // console.log(Object.fromEntries(payload));
-  // return
   let formData = new FormData();
   for(const x in payload) {
     if(payload[x] !== '') {

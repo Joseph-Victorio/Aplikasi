@@ -56,12 +56,11 @@ class FrontProductController extends Controller
        
     }
 
-    public function getProductsByCategory($id)
+    public function getProductsByCategory(Request $request, $id)
     {     
 
         try {
-            
-            return new ProductListCollection($this->productRepository->getProductsByCategory($id));
+            return new ProductListCollection($this->productRepository->getProductsByCategory($id, $request));
 
 
         } catch (Exception $e) {

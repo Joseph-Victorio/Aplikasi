@@ -1,18 +1,18 @@
 <template>
   <div class="carousel-container">
-    <div class="carousel-items" ref="carousel"
+    <div class="carousel-items" ref="carousel" v-if="products.length"
       @mousedown="handleMouseDown"
       @mouseleave="handleMouseLeave"
       @mouseup="handleMouseUp"
       @mousemove="handleMouseMove"
     > 
       <div v-for="product in products" :key="product.id" class="carousel-item" 
-      :style="styleWidth"
+      :style="`width: ${cardWidth}px`"
       >
         <swiper-product-card :product="product" />
       </div>
       <div class="carousel-item" v-if="loadmore"
-      :style="styleWidth"
+      :style="`width: ${cardWidth}px`"
       >
         <div class="full-height flex column relative text-center justify-center items-center">
           <div>
@@ -22,18 +22,27 @@
          </div>
       </div>
     </div>
+    <div class="carousel-items" ref="carousel" v-if="!products.length">
+      <div v-for="i in 5" :key="i" class="carousel-item" 
+     :style="`width: ${cardWidth}px`"
+      >
+        <ProductCardSkeleton :width="cardWidth"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import SwiperProductCard from 'components/SwiperProductCard'
+import ProductCardSkeleton from 'components/ProductCardSkeleton'
   export default {
     name: 'SwipperProduct',
+    components: { SwiperProductCard, ProductCardSkeleton },
     props: {
       products: Array,
-      loadmore: Object
+      loadmore: Object,
+      ready: Boolean
     },
-    components: { SwiperProductCard },
     data () {
       return {
         carousel: null,
@@ -46,29 +55,27 @@ import SwiperProductCard from 'components/SwiperProductCard'
       page_width() {
         return this.$store.state.page_width
       },
-      styleWidth() {
-
-        if(this.page_width > 1024) {
-          return 'width: 225px;'
+      cardWidth() {
+         if(this.page_width > 1024) {
+          return 225
         }
 
         if(this.page_width > 800) {
-          return 'width: 210px;'
+          return 210
         }
 
         if(this.page_width > 400) {
-          return 'width: 180px;'
+          return 180
         }
 
-        return 'width: 160px;'
-      }
+        return 160
+      },
     },
     mounted() {
        this.$nextTick(() => {
         this.carousel = this.$refs.carousel
       })
 
-      console.log(this.products);
     },
     methods: {
       handleMouseDown(e) {

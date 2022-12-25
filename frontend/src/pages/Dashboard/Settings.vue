@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="q-pb-xl">
     <q-header>
       <q-toolbar>
         <q-toolbar-title>

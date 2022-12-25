@@ -5,14 +5,6 @@
   width:100%;
   margin:auto;
 }
-.bg-glass {
-  background-image: url("~assets/bg.jpg");
-  background-color: white;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center top;
-  background-attachment: fixed;
-}
 body.is_loading .q-inner-loading,
 body.is_loading {
   max-height: 100vh;
@@ -224,7 +216,8 @@ ul {
 }
 .image-list {
   width: 108px;
-  height: auto;
+  height: 96px;
+  object-fit: cover;
 }
 .label-text {
   color: grey;
@@ -841,7 +834,16 @@ table.table td, table.table td * {
     }
   }
 }
+body.is_loading .block-observe {
+  display: none;
+}
 
+.block-observe {
+  min-height: 50px;
+  &.hidden {
+    display: none;
+  }
+}
 .card-discount {
   margin-left:2px;
   display: inline;

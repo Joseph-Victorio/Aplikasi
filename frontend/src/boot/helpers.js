@@ -50,8 +50,5 @@ Vue.mixin({
       
       this.$store.commit('SET_SESSION_ID', result);
     },
-    mounted() {
-      console.log('mounted from helper');
-    }
   },
 })

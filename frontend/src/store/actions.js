@@ -1,7 +1,6 @@
 import { Api } from 'boot/axios'
 
 export default {
-
   getAdminConfig({commit}) {
     commit('SET_LOADING', true)
     Api().get('adminConfig').then((response) => {
@@ -21,13 +20,6 @@ export default {
       }
     })
   },
-  setShop: ({commit}) => {
-    Api().post('shop').then(response => {
-      if(response.status == 200) {
-        commit('SET_SHOP', response.data.results)
-      }
-    })
-  },
   getConfig: ({commit}) => {
     Api().get('config').then(response => {
       if(response.status == 200) {
@@ -41,17 +33,15 @@ export default {
       if(response.status == 200) {
         commit('SET_SHOP', response.data.results.shop),
         commit('SET_CONFIG', response.data.results.config)
-        commit('block/SET_BLOCKS', response.data.results.blocks, { root: true }),
-        commit('product/SET_INITIAL_PRODUCTS', response.data.results.products, { root: true })
-        commit('product/SET_PRODUCT_PROMO', response.data.results.product_promo, { root: true })
-        commit('category/SET_CATEGORIES', response.data.results.categories, { root: true })
-        commit('slider/SET_SLIDERS', response.data.results.sliders, { root: true })
-        commit('post/SET_INITIAL_POST', response.data.results.posts, { root: true })
-        commit('SET_LOADING', false)
+        commit('front/SET_BLOCKS', response.data.results.blocks, { root: true }),
+        commit('front/SET_PRODUCT_PROMO', response.data.results.product_promo, { root: true })
+        commit('front/SET_CATEGORIES', response.data.results.categories, { root: true })
+        commit('front/SET_SLIDERS', response.data.results.sliders, { root: true })
         commit('SET_SESSION_ID', response.data.results.sess_id)
       }
-    }).catch(() => {
+    }).finally(() => {
       commit('SET_LOADING', false)
+      commit('SET_INITIAL_DATA', true)
     })
   },
 }

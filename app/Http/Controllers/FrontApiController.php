@@ -40,12 +40,15 @@ class FrontApiController extends Controller
         $shop = Cache::rememberForever('shop', function () {
             return Store::first();
         });
-        $categories = Cache::rememberForever('categories', function () {
-            return Category::orderBy('weight', 'asc')->get();
+
+        $categories = Cache::remember('categories',  now()->addSeconds(20), function () {
+            return Category::orderBy('weight', 'asc')->withCount('products')->get();
         });
+
         $posts = Cache::rememberForever('promote_post', function () {
             return Post::promote()->latest()->take(4)->get();
         });
+
         $config = Cache::rememberForever('shop_config', function () {
             return Config::first();
         });
@@ -56,15 +59,14 @@ class FrontApiController extends Controller
 
         });
 
-        $initialProducts = Cache::rememberForever('initial_products', function() {
+        // $initialProducts = Cache::rememberForever('initial_products', function() {
             
-            return $this->productRepository->getInitialProducts();
-        });
+        //     return $this->productRepository->getInitialProducts();
+        // });
 
         return response()->json([
             'success' => true, 
             'results' => [
-                'products' => $initialProducts,
                 'sliders' => $sliders,
                 'categories' => $categories,
                 'blocks' => $blocks,
@@ -72,7 +74,7 @@ class FrontApiController extends Controller
                 'posts' => $posts,
                 'config' => $config,
                 'sess_id' => Str::random(49),
-                'product_promo' => $productPromo
+                'product_promo' => $productPromo,
             ]
             
         ],200);
@@ -148,6 +150,18 @@ class FrontApiController extends Controller
     public function getBanks()
     {
         return response(['success' => true, 'results' => BankAccount::all()], 200);
+    }
+
+    public function getPromotePosts()
+    {
+        $posts = Cache::rememberForever('promote_post', function() {
+            return Post::promote()->latest()->get();
+        });
+        
+        return response()->json([
+            'success' => true,
+            'results' => $posts
+        ]);
     }
 
     public function getPosts(Request $request)

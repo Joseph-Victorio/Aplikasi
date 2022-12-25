@@ -41,5 +41,6 @@ export default function () {
       available: true
     },
     product_promo: [],
+    category_products:[]
   }
 }

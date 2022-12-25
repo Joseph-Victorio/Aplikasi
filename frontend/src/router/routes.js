@@ -87,7 +87,6 @@ const routes = [
       { path: 'order/:order_ref', name: 'AdminOrderShow', component: () => import('pages/Order/Detail.vue')},
       { path: 'banks', name: 'BankIndex', component: () => import('pages/Shop/BankAccount.vue')},
       { path: 'users', name: 'UserList', component: () => import('pages/Account/UserList.vue')},
-      { path: 'discount', name: 'DiscountIndex', component: () => import('pages/Discount/Index.vue')},
       { path: 'promo', name: 'PromoIndex', component: () => import('pages/Promo/Index.vue')},
       { path: 'promo/:id', name: 'PromoDetail', component: () => import('pages/Promo/Detail.vue')},
       { path: 'reviews', name: 'ReviewsIndex', component: () => import('pages/Reviews/Index.vue')},
