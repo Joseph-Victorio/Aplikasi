@@ -646,8 +646,8 @@ export default {
       this.quantity = 1
     },
     backButton() {
-      if(window.history.length >= 1) {
-        window.history.back()
+      if(window.history.state.back) {
+        this.$router.back()
       }else {
         }
         this.$router.push({name: 'ProductIndex'})
