@@ -4,7 +4,7 @@
       <div :key="promo.id" v-if="promo" class="block-container bg-linear">
         <div class="block-content">
           <div class="auto-padding-side">
-            <glide-product-promo :promo="promo" />
+            <ProductPromoContainer :promo="promo" />
           </div>
         </div>
       </div>
@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import GlideProductPromo from 'components/GlideProductPromo.vue'
+import ProductPromoContainer from 'components/ProductPromoContainer.vue'
 export default {
   props: ['product_promo'],
-  components: { GlideProductPromo },
+  components: { ProductPromoContainer },
 }
 </script>

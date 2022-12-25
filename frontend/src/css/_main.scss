@@ -920,3 +920,35 @@ table.table td, table.table td * {
     padding: 2rem;
   }
 }
+
+.carousel-container {
+  .carousel-items {
+    position: relative;
+    display: flex;
+    padding: 0;
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    transition: all 0.2s;
+    transform: scale(0.99);
+    will-change: transform;
+    user-select: none;
+    > *:not(:last-child) {
+      margin-right: 10px;
+    }
+    cursor: pointer;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+
+     &.active {
+      background: rgba(255,255,255,0.3);
+      cursor: grabbing;
+      transform: scale(1);
+    }
+    .carousel-item {
+      flex: none;
+    }
+  }
+}

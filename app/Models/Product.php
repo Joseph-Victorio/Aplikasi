@@ -102,7 +102,7 @@ class Product extends Model
     {
         return $this->hasMany(ProductVarian::class)
             ->where('has_subvarian', 1)
-            ->orderBy('price');
+            ->orderBy('label');
     }
     public function varianItems()
     {
