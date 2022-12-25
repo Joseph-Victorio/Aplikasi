@@ -13,7 +13,6 @@
           </div>
         </div>
     </div>
-    {{ styleWidth }} {{ page_width}}
     <carouselContainer :products="promo.products"/>
   </div>
 </template>
@@ -35,26 +34,6 @@ import { Api } from 'boot/axios'
         secondEl: 0,
         countDownDate: null,
         interval: null,
-      }
-    },
-    computed: {
-      page_width() {
-        return this.$store.state.page_width
-      },
-      styleWidth() {
-
-        if(this.page_width > 1024) {
-          return 'width: 220px;'
-        }
-
-        if(this.page_width > 800) {
-          return 'width: 200px;'
-        }
-
-        if(this.page_width > 400) {
-          return 'width: 180px;'
-        }
-        return 'width: 160px;'
       }
     },
     mounted() {
