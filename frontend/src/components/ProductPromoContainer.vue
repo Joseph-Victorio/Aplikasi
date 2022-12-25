@@ -52,10 +52,10 @@ import { Api } from 'boot/axios'
         }
 
         if(this.page_width > 400) {
-          return 'width: 160px;'
+          return 'width: 170px;'
         }
 
-        return 'width: 150px;'
+        return 'width: 160px;'
 
       }
     },
