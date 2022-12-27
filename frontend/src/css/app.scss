@@ -4,6 +4,7 @@ $default   : #0598c0;
   --blue-light: #c0eec6;
   --default-theme: $default;
   --box-shadow: 0px 14px 16px -10px rgba(48, 48, 48, 0.04);
+  --color-grey: rgb(214, 214, 214);
 }
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
@@ -31,5 +32,9 @@ $default   : #0598c0;
 .h6, h6 {
   font-size: 1rem;
 }
+.absolute-top-right {
+  top:4px;
+  right:4px;
+  }
 @import 'main';
 @import 'responsive';

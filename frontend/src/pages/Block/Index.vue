@@ -1,5 +1,5 @@
 <template>
-  <q-page padding class="q-pb-xl" :class="{'flex flex-center' : !blocks.available}">
+  <q-page class="q-pb-xl" :class="{'flex flex-center' : !blocks.available}">
      <q-header>
       <q-toolbar>
         <q-btn :to="{name: 'Settings'}"
@@ -8,37 +8,41 @@
         <q-toolbar-title>
          List Block
         </q-toolbar-title>
-        <q-btn @click="handleAddBlock" no-caps outline icon="eva-plus-circle" label="Tambah Block" class="gt-xs"/>
+        <q-btn color="white" text-color="primary" size="13px" @click="handleAddBlock" no-caps icon="eva-plus-circle" label="Tambah Block" class="gt-xs"/>
       </q-toolbar>
     </q-header>
-    <template v-if="blocks.available">
     <q-list separator>
-       <q-item v-for="block in blocks.data" :key="block.id">
-
-         <q-item-section side class="q-pr-sm relative">
-           <img v-if="block.image" :src="block.image_url" class="rounded-corners" style="height:50px;width:100px;object-fit:contain;"/>
+      <q-item class="item-header">
+        <q-item-section side style="min-width:60px;" class="text-center">#</q-item-section>
+        <q-item-section>Title</q-item-section>
+        <q-item-section>Type</q-item-section>
+        <q-item-section side>Action</q-item-section>
+      </q-item>
+      <q-item v-for="block in blocks.data" :key="block.id">
+        <q-item-section side>
+          <q-img v-if="block.image" :src="block.image_url" class="bg-white rounded-corners img-thumbnail img-avatar"/>
         </q-item-section>
         <q-item-section >
           <q-item-label class="text-subtitle2">{{ block.label }}</q-item-label>
           <q-item-label v-if="block.description" caption class="" v-html="block.description"></q-item-label>
+        </q-item-section>
+
+        <q-item-section>
           <div class="q-mt-xs">
-            <q-chip size="sm" outline color="pink" text-color="white">Urutan {{ block.weight }}</q-chip>
             <q-chip size="sm" icon="bookmark" outline color="blue-7" text-color="white">{{ block.position }}</q-chip>
-            <q-chip v-if="block.post_id" size="sm" icon="eva-checkmark-circle-2" outline color="teal" text-color="white">Linked</q-chip>
+            <q-chip v-if="block.post_id" size="sm" icon="check_circle" outline color="teal" text-color="white">Linked</q-chip>
           </div>
         </q-item-section>
 
-
         <q-item-section side top>
-          <div class="text-grey-8 column q-gutter-y-sm">
-            <q-btn @click="handleRemoveBlock(block.id)" size="sm" round icon="eva-trash-2" glossy color="red"/>
-            <q-btn @click="handleEditBlock(block)" size="sm" round glossy color="info" icon="eva-edit-2" />
+          <div class="text-grey-8 q-gutter-x-sm">
+            <q-btn @click="handleRemoveBlock(block.id)" size="sm" round icon="delete" color="red"/>
+            <q-btn @click="handleEditBlock(block)" size="sm" round color="blue" icon="edit" />
           </div>
         </q-item-section>
       </q-item>
     </q-list>
-    </template>
-    <template v-else>
+    <template v-if="!blocks.available">
       <div>Tidak ada data</div>
     </template>
      <q-inner-loading :showing="!blocks.ready">

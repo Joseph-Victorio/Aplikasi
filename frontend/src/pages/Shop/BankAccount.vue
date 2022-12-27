@@ -8,7 +8,7 @@
         <q-toolbar-title>
          Bank Account
         </q-toolbar-title>
-        <q-btn class="gt-xs" no-caps outline icon="eva-plus-circle" @click="handleAdd" label="Tambah Akun"/>
+        <q-btn color="white" text-color="primary" size="13px" class="gt-xs" no-caps icon="eva-plus-circle" @click="handleAdd" label="Tambah Akun"/>
       </q-toolbar>
     </q-header>
     <template v-if="banks.available">
@@ -17,24 +17,19 @@
         <q-item class="bg-grey-2">
           <q-item-section>Bank</q-item-section>
           <q-item-section>Akun</q-item-section>
-          <q-item-section>Nomor Rekening</q-item-section>
           <q-item-section side>Aksi</q-item-section>
         </q-item>
         <q-item v-for="bank in banks.data" :key="bank.id">
           <q-item-section>
-            <q-item-label>{{ bank.bank_name }}</q-item-label>
-            <q-item-label>{{ bank.bank_office }}</q-item-label>
+            <q-item-label>{{ bank.bank_name }} / {{ bank.bank_office }}</q-item-label>
           </q-item-section>
           <q-item-section>
-            {{  bank.account_name }}
-          </q-item-section>
-          <q-item-section>
-            {{ bank.account_number }}
+            {{  bank.account_name }} / {{ bank.account_number }}
           </q-item-section>
           <q-item-section side>
-              <div class="text-grey-8 column q-gutter-y-sm items-center">
-                  <q-btn @click="remove(bank.id)" size="sm" round icon="eva-trash-2" glossy color="red"/>
-                  <q-btn @click="edit(bank)" size="sm" round glossy color="info" icon="eva-edit-2" />
+              <div class="text-grey-8 q-gutter-x-sm items-center">
+                  <q-btn @click="remove(bank.id)" size="sm" round icon="eva-trash-2" color="red"/>
+                  <q-btn @click="edit(bank)" size="sm" round color="blue" icon="eva-edit-2" />
                 </div>
           </q-item-section>
         </q-item>

@@ -8,7 +8,7 @@
         <q-toolbar-title>
          List Post
         </q-toolbar-title>
-        <q-btn class="gt-xs" no-caps outline icon="eva-plus-circle" :to="{name: 'PostCreate'}" label="Tambah Post"/>
+        <q-btn color="white" text-color="primary" size="13px" class="gt-xs" no-caps icon="eva-plus-circle" :to="{name: 'PostCreate'}" label="Tambah Post"/>
       </q-toolbar>
     </q-header>
     <template  v-if="posts.available">
@@ -16,15 +16,12 @@
       <q-list separator>
        <q-item v-for="post in posts.data" :key="post.id">
 
-         <q-item-section avatar top class="q-pr-sm">
-           <q-img v-if="post.image" :src="post.image_url" class="bg-white img-product-admin rounded-corners" ratio="1"/>
+         <q-item-section avatar>
+           <q-img v-if="post.image" :src="post.image_url" class="bg-white img-thumbnail img-avatar" ratio="1"/>
         </q-item-section>
 
         <q-item-section top> 
-          <q-item-label class="ellipsis text-md">{{ post.title }}</q-item-label>
-          <q-item-label caption class="ellipsis-2-lines">
-            <div v-html="post.body"></div>
-          </q-item-label>
+          <q-item-label>{{ post.title }}</q-item-label>
           <div class="q-mt-xs">
             <q-chip dense v-if="post.is_listing" label="Listing" size="sm" color="accent" text-color="white" icon="eva-checkmark-circle-2"></q-chip>
             <q-chip dense v-if="post.is_promote" label="Promote" size="sm" color="teal" text-color="white" icon="eva-checkmark-circle-2"></q-chip>
@@ -38,9 +35,9 @@
         </q-item-section>
 
         <q-item-section side top>
-          <div class="text-grey-8 column q-gutter-y-sm">
-            <q-btn @click="remove(post.id)" size="sm" round icon="eva-trash-2" glossy color="red"/>
-            <q-btn :to="{ name: 'PostEdit', params: {id: post.id }}" size="sm" round glossy color="info" icon="eva-edit-2" />
+          <div class="text-grey-8 q-gutter-x-sm">
+            <q-btn @click="remove(post.id)" size="sm" round icon="eva-trash-2" color="red"/>
+            <q-btn :to="{ name: 'PostEdit', params: {id: post.id }}" size="sm" round color="blue" icon="eva-edit-2" />
           </div>
         </q-item-section>
       </q-item>

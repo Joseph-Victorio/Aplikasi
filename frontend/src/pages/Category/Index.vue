@@ -8,13 +8,13 @@
         <q-toolbar-title>
          List Kategori
         </q-toolbar-title>
-      <q-btn class="gt-xs" outline label="Tambah Kategori" no-caps icon="eva-plus-circle" :to="{name: 'CategoryForm'}"/>
+      <q-btn color="white" text-color="primary" size="13px" class="gt-xs" label="Tambah Kategori" no-caps icon="eva-plus-circle" :to="{name: 'CategoryForm'}"/>
       </q-toolbar>
     </q-header>
     <template v-if="categories.available">
     <div class="">
       <q-list separator>
-        <q-item class="bg-grey-2">
+        <q-item class="item-header">
           <q-item-section avatar>
            Ikon
           </q-item-section>
@@ -33,10 +33,9 @@
         </q-item>
         <q-item v-for="cat in categories.data" :key="cat.id">
           <q-item-section avatar>
-            <q-img :src="cat.src" ratio="1"/>
+            <q-img :src="cat.src" ratio="1" class="img-thumbnail img-avatar"/>
           </q-item-section>
           <q-item-section>
-            <!-- <q-chip icon="sell">{{ cat.title }}</q-chip> -->
             <q-item-label>{{ cat.title }}</q-item-label>
           </q-item-section>
           <q-item-section >
@@ -51,9 +50,9 @@
           </q-item-section>
          
           <q-item-section side>
-            <div class="text-grey-8 q-gutter-xs column">
-              <q-btn @click="remove(cat.id)" size="sm" round icon="eva-trash-2" glossy color="red"/>
-              <q-btn :to="{ name: 'CategoryForm', query: {edit: cat.id }}" size="sm" round icon="eva-edit-2" glossy color="info"/>
+            <div class="text-grey-8 q-gutter-x-sm">
+              <q-btn @click="remove(cat.id)" size="sm" round icon="eva-trash-2" color="red"/>
+              <q-btn :to="{ name: 'CategoryForm', query: {edit: cat.id }}" size="sm" round icon="eva-edit-2" color="blue"/>
             </div>
           </q-item-section>
         </q-item>

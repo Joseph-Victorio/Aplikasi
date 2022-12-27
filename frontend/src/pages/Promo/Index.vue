@@ -8,26 +8,22 @@
         <q-toolbar-title>
          Produk Promo
         </q-toolbar-title>
-        <q-btn class="gt-xs" @click="handleAdd" outline icon="eva-plus-circle" label="Promo"></q-btn>
+        <q-btn  color="white" text-color="primary" size="13px" class="gt-xs" @click="handleAdd"  icon="eva-plus-circle" label="Promo"></q-btn>
       </q-toolbar>
       <q-page-sticky class="lt-sm" position="bottom-right" :offset="[12, 12]">
         <q-btn fab icon="add" color="primary" @click="handleAdd" glossy/>
       </q-page-sticky>
-      <div class="bg-white text-dark box-shadow">
-        <q-list>
-          <q-item>
+    </q-header>
+    <div>
+    </div>
+     <div >
+        <q-list separator>
+          <q-item class="item-header">
               <q-item-section side>#</q-item-section>
               <q-item-section>Label / Produk Total</q-item-section>
               <q-item-section>Status</q-item-section>
               <q-item-section side>Action</q-item-section>
             </q-item>
-        </q-list>
-      </div>
-    </q-header>
-    <div>
-    </div>
-     <div class="q-py-sm">
-        <q-list separator>
           <q-item v-for="(item, index) in promos" :key="index">
             <q-item-section side>{{ index+1 }}</q-item-section>
             <q-item-section>

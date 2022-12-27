@@ -37,12 +37,12 @@
       <q-list v-if="imagePreview">
        <q-item>
         <q-item-section top>
-          <img :src="imagePreview" class="shadow-4 q-pa-xs bg-grey" style="width:100px;height:100px;object-fit:contain;"/>
+          <img :src="imagePreview" class="bg-grey-1 img-thumbnail" style="width:100px;height:100px;object-fit:contain;"/>
         </q-item-section>
         <q-space />
         <q-item-section side>
           <div class="text-grey-8 q-gutter-xs">
-            <q-btn @click="removeLogo" size="sm" round icon="eva-trash-2" glossy color="red"/>
+            <q-btn @click="removeLogo" size="12px" round icon="eva-trash-2" color="red"/>
           </div>
           </q-item-section>
         </q-item>

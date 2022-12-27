@@ -8,7 +8,7 @@
         <q-toolbar-title>
          List Produk
         </q-toolbar-title>
-        <q-btn class="gt-xs" no-caps outline icon="eva-plus-circle" :to="{name: 'ProductCreate'}" label="Tambah Produk"/>
+        <q-btn  color="white" text-color="primary" size="13px" class="gt-xs" no-caps icon="eva-plus-circle" :to="{name: 'ProductCreate'}" label="Tambah Produk"/>
       </q-toolbar>
     </q-header>
     <div class="border q-pa-md row item-center q-gutter-x-sm">
@@ -20,15 +20,16 @@
         <q-btn unelevated label="Cari" @click="searchProduct" color="primary"></q-btn>
         <q-btn outline label="Reset" @click="getAdminProducts" color="primary"></q-btn>
       </div>
-    <div class="q-px-md q-pb-sm text-md text-weight-bold">Produk</div>
-    <q-separator></q-separator>
-    <template v-if="products.available">
+
      <div class="q-pt-sm q-pb-xl">
       <q-list separator>
+        <q-item class="item-header">
+          <q-item-section>Produk</q-item-section>
+        </q-item>
        <q-item v-for="product in products.data" :key="product.id">
 
          <q-item-section avatar class="q-pr-md" top>
-           <q-img v-if="product.featured_image" :src="product.featured_image.src" class="bg-white img-product-admin thumbnail" ratio="1" width="55px"/>
+           <q-img v-if="product.featured_image" :src="product.featured_image.src" class="bg-white img-product-admin img-thumbnail" ratio="1" width="55px"/>
         </q-item-section>
 
         <q-item-section top>
@@ -51,7 +52,7 @@
             <q-fab color="primary" icon="eva-chevron-left" direction="left" glossy padding="sm" unelevated>
               <q-fab-action unelevated @click="remove(product.id)" round icon="eva-trash-2" glossy color="red">
               </q-fab-action>
-              <q-fab-action unelevated :to="{ name: 'ProductEdit', params: {id: product.id }}" round glossy color="info" icon="eva-edit-2">
+              <q-fab-action unelevated :to="{ name: 'ProductEdit', params: {id: product.id }}" round glossy color="blue" icon="eva-edit-2">
               </q-fab-action>
               <q-fab-action unelevated :to="{ name: 'ProductShow', params: {slug: product.slug }}" round glossy color="teal" icon="eva-external-link-outline">
               </q-fab-action>
@@ -61,16 +62,16 @@
           </div>
           <div class="row q-gutter-xs" v-if="isDesktop">
             <q-btn size="11px" v-if="product.varian_items_count > 0" unelevated @click="getDetailVarian(product)" round icon="eva-pantone" glossy color="accent">
-              <q-tooltip content-class="bg-accent">Detil Varian</q-tooltip>
+              <q-tooltip content-class="bg-dark">Detil Varian</q-tooltip>
             </q-btn>
             <q-btn size="11px" unelevated @click="remove(product.id)" round icon="eva-trash-2" glossy color="red">
-              <q-tooltip content-class="bg-red">Hapus</q-tooltip>
+              <q-tooltip content-class="bg-dark">Hapus</q-tooltip>
             </q-btn>
-            <q-btn size="11px" unelevated :to="{ name: 'ProductEdit', params: {id: product.id }}" round glossy color="info" icon="eva-edit-2">
-              <q-tooltip content-class="bg-info">Edit</q-tooltip>
+            <q-btn size="11px" unelevated :to="{ name: 'ProductEdit', params: {id: product.id }}" round glossy color="blue" icon="eva-edit-2">
+              <q-tooltip content-class="bg-dark">Edit</q-tooltip>
             </q-btn>
             <q-btn size="11px" unelevated :to="{ name: 'ProductShow', params: {slug: product.slug }}" round glossy color="teal" icon="eva-external-link-outline">
-              <q-tooltip content-class="bg-teal">Lihat</q-tooltip>
+              <q-tooltip content-class="bg-dark">Lihat</q-tooltip>
             </q-btn>
 
           </div>
@@ -84,8 +85,7 @@
     
     </div>
     </div>
-    </template>
-    <template v-else >
+    <template v-if="!products.available">
       <div class="text-center q-pt-xl">Tdak ada data</div>
     </template>
     <q-page-sticky class="lt-sm" position="bottom-left" :offset="[12, 12]">
