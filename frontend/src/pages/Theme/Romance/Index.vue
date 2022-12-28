@@ -35,8 +35,8 @@
 
         <CategoryCarousel />
 
-        <div id="product-promo" v-if="productPromo.length" >
-          <ProductPromo :product_promo="productPromo" />
+        <div id="product-promo" v-if="product_promo.length" >
+          <ProductPromo :product_promo="product_promo" />
         </div>
 
         <div v-if="banner1" class="banner auto-padding-side block-container">
@@ -101,7 +101,7 @@ export default {
       blocks: state => state.front.blocks,
       shop: state => state.shop,
       config: state => state.config,
-      productPromo: state => state.product.product_promo,
+      product_promo: state => state.front.product_promo,
     }),
     banner1() {
       if(this.blocks.banner.length) {
