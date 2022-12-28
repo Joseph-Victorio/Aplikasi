@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Config;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 
 class ConfigController extends Controller
@@ -41,6 +42,10 @@ class ConfigController extends Controller
 
         Cache::forget('shop_config');
         Cache::forget('admin_config');
+
+        if($config->theme_color != $request->theme_color) {
+            Artisan::all('generate:manifest');
+        }
 
         return response([
             'success' => true,
