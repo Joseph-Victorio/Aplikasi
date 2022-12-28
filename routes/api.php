@@ -10,7 +10,6 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ConfigController;
-use App\Http\Controllers\CouponController;
 use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SliderController;
@@ -153,6 +152,3 @@ Route::post('cart/delete', [CartController::class, 'destroy']);
 Route::post('clearCart', [CartController::class, 'clear']);
 
 Route::post('sendOrderNotify', [NotifyController::class, 'sendOrderNotify']);
-
-Route::get('coupons/getByCode/{code}', [CouponController::class, 'getByCode']);
-Route::post('redeemCoupon', [CouponController::class, 'redeemCoupon']);
