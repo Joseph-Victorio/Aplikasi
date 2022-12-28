@@ -18,7 +18,8 @@
         </div>
         <div class="block-content">
           <div v-if="config && config.home_view_mode == 'list'">
-            <product-list-section :ready="products.ready" :products="products" />
+            <product-list-section 
+            :products="products" />
           </div>
           <div v-else class="auto-padding-side">
             <CarouselContainer 
@@ -33,11 +34,13 @@
 
 <script>
 import CarouselContainer from 'components/CarouselContainer.vue'
+import ProductListSection from 'components/ProductListSectionHome.vue'
 import { Api } from 'boot/axios'
 export default {
   props: ['category'],
   components: { 
-    CarouselContainer
+    CarouselContainer,
+    ProductListSection
    },
   data() {
     return {

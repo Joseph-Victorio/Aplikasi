@@ -1,8 +1,8 @@
 <template>
   <section>
     <div :class="page_width >= 768 ? 'row q-px-sm' : 'column q-gutter-y-sm'">
-      <template v-if="ready">
-        <product-list v-for="(product, index) in products.items" :key="index" :product="product" />
+      <template v-if="products.length">
+        <product-list v-for="(product, index) in products" :key="index" :product="product" />
       </template>
       <template v-else>
         <product-list-skeleton />
@@ -21,7 +21,7 @@ export default {
   name: 'ProductListHome',
   components: { ProductList, ProductListSkeleton },
   props: {
-    products: Object,
+    products: Array,
     title: String,
     path: {
       type: String,

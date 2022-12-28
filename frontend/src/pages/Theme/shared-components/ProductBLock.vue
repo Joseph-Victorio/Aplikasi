@@ -39,7 +39,10 @@ import CarouselContainer from 'components/CarouselContainer.vue'
 import ProductListSection from 'components/ProductListSectionHome.vue'
 export default {
   props: ['products'],
-  components: { CarouselContainer, ProductListSection },
+  components: { 
+    CarouselContainer,
+    ProductListSection
+   },
   computed: {
     ...mapState({
       config: state => state.config

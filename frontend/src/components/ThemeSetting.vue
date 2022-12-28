@@ -8,8 +8,8 @@
         />
       </div>
     </div>
-    <q-dialog v-model="OpenThemeSetting" position="right" square v-if="config">
-      <q-card class="text-sm">
+    <q-dialog v-model="OpenThemeSetting" position="right" square  seamless>
+      <q-card class="text-sm" v-if="config">
         <q-linear-progress :value="1" color="primary" />
         <q-card-section >
           <div class="q-pb-sm row items-center justify-between">

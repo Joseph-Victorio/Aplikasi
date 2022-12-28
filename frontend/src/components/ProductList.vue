@@ -14,31 +14,23 @@
       <q-item-section top>
         <div class="cursor-pointer" @click.prevent="$router.push({name: 'ProductShow', params:{slug: product.slug}})">
           <q-item-label class="ellipsis-2-lines text-subtitle2 text-weight-medium">{{ product.title }}</q-item-label>
-          <q-rating 
-            data-nosnippet="true"
-            readonly
-            v-model="rating"
-            color="accent"
-            icon="ion-star-outline"
-            icon-selected="ion-star"
-            icon-half="ion-star-half"
-            size="1rem"
-          />
-            <q-item-label caption class="ellipsis-2-lines q-mt-xs" v-html="getTeaser(product.description)"></q-item-label>
-            <div class="flex items-center q-gutter-x-md q-mt-sm">
+          <div class="row justify-between items-center">
+            <q-rating 
+              data-nosnippet="true"
+              readonly
+              v-model="rating"
+              color="accent"
+              icon="ion-star-outline"
+              icon-selected="ion-star"
+              icon-half="ion-star-half"
+              size="1.1rem"
+            />
+            <favorite-button :product_id="product.id" />
+          </div>
+            <!-- <q-item-label caption class="ellipsis q-mt-xs" v-html="getTeaser(product.description)"></q-item-label> -->
+          <div class="flex items-center q-gutter-x-md q-mt-auto q-pt-sm">
             <div class="text-subtitle1 text-secondary text-weight-bold">{{ moneyIDR(parseInt(product.pricing.default_price)- getDIscountAmount) }}</div>
             <div v-if="getDiscountPercent" class="text-subtitle2 text-weight-medium text-strike text-grey-8">{{ moneyIDR(product.pricing.default_price) }}</div>
-            </div>
-        </div>
-        <div style="margin-top:auto;">
-          <div class="flex justify-between items-end">
-            <q-chip size="sm" v-if="product.category">
-              <q-avatar icon="eva-pricetags" color="primary" text-color="white"></q-avatar>
-              {{ product.category.title }}
-            </q-chip>
-            <div>
-              <favorite-button :product_id="product.id" />
-            </div>
           </div>
         </div>
       </q-item-section>
