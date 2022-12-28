@@ -7,6 +7,7 @@ use App\Models\Config;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Store as Shop;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
@@ -119,6 +120,8 @@ class StoreController extends Controller
 
             DB::commit();
             Cache::forget('shop');
+
+            Artisan::call('generate:manifest');
 
             return response([
                 'success' => true,
