@@ -28,7 +28,6 @@ export default function () {
       shipping_courier_name:'',
       shipping_courier_service: '',
       shipping_cost: 0,
-      coupon_discount: 0,
       customer_name:'',
       customer_email: '',
       customer_phone: '',

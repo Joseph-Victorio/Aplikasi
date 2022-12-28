@@ -157,9 +157,6 @@ export default {
     session_id() {
       return this.$store.state.session_id
     },
-    coupon_discount() {
-      return this.$store.state.coupon.coupon_discount
-    },
     errors() {
       return this.$store.state.errors
     },
@@ -197,21 +194,12 @@ export default {
         this.commitFormOrder('service_fee', this.config.service_fee)
       }
 
-      if(this.coupon_discount) {
-        this.commitFormOrder('coupon_discount', this.getDiscountAmount())
-      }
-
     },
     handleBackButton() {
       if(this.step > 1) {
         this.step -= 1
       } else {
         this.$router.push({ name: 'Cart'})
-      }
-    },
-    checkDiscount() {
-      if(this.coupon_discount) {
-        this.formOrder.coupon_discount = this.getDiscountAmount()
       }
     },
     getLocalBanks() {
@@ -283,7 +271,7 @@ export default {
         numb ++
       })
 
-      str += `Subtotal: *${this.moneyIDR(data.order_subtotal)}*\nOngkir: *${this.moneyIDR(data.shipping_cost)}*\nDiskon: *${this.moneyIDR(data.discount)}*\nTotal: *${this.moneyIDR(data.order_total)}*\n------------------------\n\n*Nama:*\n ${data.customer_name} (${data.customer_whatsapp})\n\n*Alamat:*\n${this.formatAddressCod(data.shipping_address)}\n\n`
+      str += `Subtotal: *${this.moneyIDR(data.order_subtotal)}*\nOngkir: *${this.moneyIDR(data.shipping_cost)}\nTotal: *${this.moneyIDR(data.order_total)}*\n------------------------\n\n*Nama:*\n ${data.customer_name} (${data.customer_whatsapp})\n\n*Alamat:*\n${this.formatAddressCod(data.shipping_address)}\n\n`
 
       str += `Metode Pembayaran: ${data.transaction.payment_name}\n\n`
 
@@ -385,24 +373,6 @@ export default {
     prev() {
       this.step -= 1
     },
-    getDiscountPercent() {
-      if(this.coupon_discount) {
-        if(this.coupon_discount.discount.unit == 'percent') {
-          return parseInt(this.coupon_discount.discount.value)
-        } 
-        return (parseInt(this.coupon_discount.discount.value)/parseInt(this.sumSubtotal()))*100
-      }
-      return 0
-    },
-    getDiscountAmount() {
-      if(this.coupon_discount) {
-        if(this.coupon_discount.discount.unit == 'percent') {
-          return (parseInt(this.coupon_discount.discount.value)/ 100)*parseInt(this.sumSubtotal())
-        }
-        return parseInt(this.coupon_discount.discount.value)
-      }
-      return 0
-    },
     sumQty() {
       if(this.carts.length > 1) {
         let q = [];
@@ -424,9 +394,6 @@ export default {
       return parseInt(this.carts[0].quantity) * parseInt(this.carts[0].price)
     },
     sumGrandTotal() {
-      if(this.coupon_discount) {
-        return (this.sumSubtotal()-this.getDiscountAmount())+parseInt(this.formOrder.shipping_cost)
-      }
       return this.sumSubtotal() + parseInt(this.formOrder.shipping_cost)
 
     },

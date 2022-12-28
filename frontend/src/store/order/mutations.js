@@ -53,7 +53,6 @@ export function COLLECT_ORDER (state, payload) {
   state.formOrder.quantity = payload.qty
   state.formOrder.weight = payload.weight
   state.formOrder.subtotal = payload.subtotal
-  state.formOrder.coupon_discount = payload.discount_amount
   
 }
 

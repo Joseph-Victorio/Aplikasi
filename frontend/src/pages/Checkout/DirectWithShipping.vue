@@ -132,9 +132,7 @@ export default {
     session_id() {
       return this.$store.state.session_id
     },
-    coupon_discount() {
-      return this.$store.state.coupon.coupon_discount
-    },
+
     isOk() {
       if(this.formOrder.customer_name 
           && this.formOrder.customer_phone
@@ -251,7 +249,6 @@ export default {
 
       str += `Subtotal: *${this.moneyIDR(this.formOrder.subtotal)}*\n`
       str += `Ongkir: *${this.moneyIDR(this.formOrder.shipping_cost)}*\n`
-      str += `Diskon: *${this.moneyIDR(this.formOrder.coupon_discount)}*\n`
       str += `Total: *${this.moneyIDR(this.formOrder.total)}*\n`
       str += `-----------------------------------\n\n`
       str += `*Nama:*\n ${this.formOrder.customer_name} (${this.formOrder.customer_phone})\n\n`

@@ -9,8 +9,6 @@ export const getCarts = (state) => {
     subtotal: subtotal,
     weight: getSUmWeight(state.carts),
     qty: getSumQty(state.carts),
-    discount_amount: getDiscountAmount(subtotal, state.coupon_discount),
-    discount_percent: getDiscountPercent(subtotal, state.coupon_discount)
   }
 
   return carts
@@ -63,25 +61,6 @@ function getSumQty(items) {
       return q.reduce((a,b) => a + b)
     }
     return parseInt(items[0].quantity)
-  }
-  return 0
-}
-function getDiscountAmount(subtotal, coupon_discount) {
-  if(coupon_discount) {
-    if(coupon_discount.discount.unit == 'percent') {
-      return (parseInt(coupon_discount.discount.value)/ 100)*parseInt(subtotal)
-    }
-    return parseInt(coupon_discount.discount.value)
-  }
-  return 0
-}
-
-function getDiscountPercent(subtotal, coupon_discount) {
-  if(coupon_discount) {
-    if(coupon_discount.discount.unit == 'percent') {
-      return parseInt(coupon_discount.discount.value)
-    } 
-    return (parseInt(coupon_discount.discount.value)/parseInt(subtotal))*100
   }
   return 0
 }

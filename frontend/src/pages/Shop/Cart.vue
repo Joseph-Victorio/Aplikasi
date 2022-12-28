@@ -139,11 +139,7 @@ export default {
       shop: state => state.shop,
       config: state => state.config,
       user: state => state.user.user,
-      coupon_discount: state => state.cart.coupon_discount
     }),
-    showCouponForm() {
-      return this.isCoupon || this.coupon_discount ? true : false
-    },
     carts() {
       return this.$store.getters['cart/getCarts']
     },
@@ -180,32 +176,7 @@ export default {
     }
     // this.$store.dispatch('getConfig')
   },
-  mounted() {
-    if(this.coupon_discount) {
-      this.couponCode = this.coupon_discount.code
-    }
-  },
   methods: {
-    ...mapActions('coupon', ['redeemCoupon']),
-    handleRedeemCoupon() {
-      this.redeemCoupon({ code: this.couponCode }).then(response => {
-        if(response.status == 200) {
-          this.$store.commit('cart/SET_COUPON_DISCOUNT', response.data.results)
-        }
-      }).catch(err => {
-        if(err && err.response && err.response.status == 404) {
-          this.$q.notify({
-            type: 'negative',
-            message: err.response.data.message
-          })
-          this.couponCode = ''
-        }
-      })
-    },
-    removeCoupon() {
-      this.couponCode = ''
-      this.$store.commit('cart/REMOVE_COUPON')
-    },
     onResponse(evt) {
       if(evt === true) {
         this.loginModal = false
@@ -217,9 +188,6 @@ export default {
         if(this.config.can_shipping || this.config.can_cod) {
           this.$router.push({name: 'Checkout'})
         }
-        // if(this.config.is_codable) {
-        //   this.$router.push({name: 'DirectCheckout'})
-        // }
       } else {
         this.loginModal = true
       }
