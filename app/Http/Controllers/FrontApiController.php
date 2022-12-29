@@ -42,7 +42,7 @@ class FrontApiController extends Controller
         });
 
         $categories = Cache::remember('categories',  now()->addSeconds(20), function () {
-            return Category::orderBy('weight', 'asc')->withCount('products')->get();
+            return Category::select('id','banner', 'filename', 'slug', 'description', 'is_front')->orderBy('weight', 'asc')->withCount('products')->get();
         });
 
         $posts = Cache::rememberForever('promote_post', function () {

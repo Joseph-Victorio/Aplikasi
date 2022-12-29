@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div :class="page_width >= 768 ? 'row q-px-sm' : 'column q-gutter-y-sm'">
+    <div :class="page_width >= 668 ? 'row q-px-sm' : 'column q-gutter-y-sm'">
       <template v-if="products.length">
         <product-list v-for="(product, index) in products" :key="index" :product="product" />
       </template>
@@ -8,9 +8,6 @@
         <product-list-skeleton />
       </template>
     </div>
-    <!-- <div class="q-my-lg q-py-lg flex justify-center">
-      <q-btn unelevated label="Selengkapnya" icon-right="eva-arrow-forward-outline" color="primary" :to="{name: 'ProductCategory', params:{ id: products.category_id }}"></q-btn>
-    </div> -->
   </section>
 </template>
 

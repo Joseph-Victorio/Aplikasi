@@ -20,7 +20,7 @@
             >
             </q-input>
           </div>
-           <div v-if="config && config.is_shippable" class="q-mt-lg">
+           <div v-if="config" class="q-mt-lg">
             <div class="text-grey-8 text-weight-medium q-py-sm">Pengaturan Gudang Pengiriman</div>
               <div @click="changeWarehouse" class="cursor-pointer q-pa-md full-width border q-filled">{{ warehouseTitle() }}</div>
               <div class="q-mt-md" v-if="theCouriers.length">

@@ -197,6 +197,7 @@ module.exports = function (ctx ) {
 
     htmlVariables: {
       meta_head: ctx.dev ? '' : "@include('partial/meta_head')",
+      meta_head: ctx.dev ? '' : "@include('partial/meta_head')",
       json_schema: ctx.dev ? '' : "@include('partial/json_schema')",
       meta_body: ctx.dev ? '' :"@include('partial/meta_body')",
     },

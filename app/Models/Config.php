@@ -81,18 +81,22 @@ class Config extends Model
 
     public function getIsShippableAttribute()
     {
-        return $this->rajaongkir_apikey && $this->rajaongkir_type ? true : false;
+        return $this->rajaongkir_apikey  && $this->rajaongkir_type ? true : false;
+    }
+    public function getCanShippingAttribute()
+    {
+        if($this->rajaongkir_apikey 
+        && $this->rajaongkir_type 
+        && $this->warehouse_address 
+        && $this->rajaongkir_couriers
+        && $this->is_shipping_active) {
+            return true;
+        }
+        return false;
     }
     public function getCanCodAttribute()
     {
         return $this->cod_list ? true : false;
-    }
-    public function getCanShippingAttribute()
-    {
-        if($this->rajaongkir_apikey && $this->rajaongkir_type && $this->warehouse_address && $this->rajaongkir_couriers) {
-            return true;
-        }
-        return false;
     }
     public function getIsTripayReadyAttribute()
     {

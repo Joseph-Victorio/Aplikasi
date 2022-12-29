@@ -12,12 +12,12 @@
         <q-btn @click="changeViewMode('list')" :outline="config.product_view_mode != 'list'" unelevated size="12px" :color="config.product_view_mode == 'list' ? 'secondary' : 'grey-7'" dense icon="eva-list"></q-btn>
       </div>
     </div>
-    <div :class="page_width >= 768 ? 'row q-px-sm' : 'column q-gutter-y-sm'" v-if="config && config.product_view_mode == 'list'">
+    <div :class="page_width >= 668 ? 'row q-px-sm' : 'column q-gutter-y-sm'" v-if="config && config.product_view_mode == 'list'">
       <template v-if="products.ready">
         <ProductList v-for="(product, index) in products.data" :key="index" :product="product" />
       </template>
       <template v-else>
-        <div :class="{ 'col-6 q-pa-xs' : page_width >= 768 }" v-for="a in 6" :key="a">
+        <div :class="{ 'col-6 q-pa-xs' : page_width >= 668 }" v-for="a in 6" :key="a">
           <ProductListSkeleton />
         </div>
       </template>

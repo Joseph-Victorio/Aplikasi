@@ -44,11 +44,12 @@ export function register ({commit, dispatch}, payload) {
   })
 
 }
-export function logout({ commit }) {
+export function logout({ commit, dispatch }) {
   commit('LOGOUT')
   Cookies.remove('__token')
   this.$router.push('/')
   Api().post('user/logout')
+  setTimeout(() => dispatch('getConfig', null, { root: true }), 1000)
 }
 export function exit({ commit }) {
   commit('LOGOUT')
