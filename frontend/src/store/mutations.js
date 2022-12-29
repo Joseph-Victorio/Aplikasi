@@ -43,30 +43,11 @@ export default {
   SET_HOME_VIEW_MODE: (state, payload) => {
     state.config.home_view_mode = payload
   },
-  LOAD_DEMO_CONFIG: (state) => {
-    if(localStorage.getItem('__wck')) {
-      let wck = localStorage.getItem('__wck')
-      state.config.is_whatsapp_checkout =  wck == true || wck == 'true' ? true : false
-    }
-    if(localStorage.getItem('__guest')) {
-      let isGuest = localStorage.getItem('__guest')
-      state.config.is_whatsapp_checkout =  isGuest == true || isGuest == 'true' ? true : false
-    }
-    if(localStorage.getItem('__clr')) {
-      state.config.theme_color =  localStorage.getItem('__clr')
-    }
-    if(localStorage.getItem('__theme')) {
-      state.config.theme =  localStorage.getItem('__theme')
-    }
-  },
   SET_PRODUCT_VIEW_MODE: (state, payload) => {
     state.config.product_view_mode = payload
   },
   SET_THEME: (state, payload) => {
     state.config.theme = payload
-  },
-  SET_DEMO: (state, payload) => {
-    state.isDemoMode = payload
   },
   SET_THEME_COLOR: (state, clr) => {
 

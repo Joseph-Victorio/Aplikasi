@@ -12,12 +12,6 @@ class Rajaongkir
   {
     $this->api_key = $apikey;
 
-    if(config('rajaongkir.demo_api_key')) {
-      $this->account_type = 'pro';
-      $this->api_key = config('rajaongkir.demo_api_key');
-      $this->url_endpoint = config('rajaongkir.api_url_pro');
-    }
-    
   }
   
   public function setAccountType($type)

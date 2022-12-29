@@ -5,7 +5,6 @@ return
   'api_url' => env('RAJAONGKIR_API_URL', 'https://api.rajaongkir.com/starter/'),
   'api_url_basic' => env('RAJAONGKIR_API_BASIC_URL', 'https://api.rajaongkir.com/basic/'),
   'api_url_pro' => env('RAJAONGKIR_API_PRO_URL', 'https://pro.rajaongkir.com/api/'),
-  'demo_api_key' => env('RAJAONGKIR_API_PRO', ''),
   'courier_starter' => 
       [
         ['label' => 'Jalur Eka Nugraha (JNE)', 'value' => 'jne'],

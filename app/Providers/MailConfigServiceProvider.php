@@ -22,15 +22,13 @@ class MailConfigServiceProvider extends ServiceProvider
             if ($mail && $mail->is_active) //checking if table is not empty
             {
 
-                $pwd = env('MAIL_PASSWORD_DEMO');
-
                 $smtp = array(
                     'transport' => 'smtp',
                     'host'       => $mail->smtp_host,
                     'port'       => $mail->smtp_port,
                     'encryption' => $mail->smtp_encryption,
                     'username'   => $mail->smtp_username,
-                    'password'   => $pwd ? $pwd : $mail->smtp_password,
+                    'password'   => $mail->smtp_password,
                     'timeout' => null,
                     'auth_mode' => null,
                 );

@@ -43,10 +43,6 @@ class ConfigApiProvider extends ServiceProvider
                 }
             }
     
-            Config::set('demo',[
-                'is_demo' => env('IS_DEMO_MODE', false),
-                'phone' => env('DEMO_PHONE', '')
-            ]);
         }
 
     }

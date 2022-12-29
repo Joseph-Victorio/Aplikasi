@@ -48,8 +48,6 @@ class Config extends Model
         'is_telegram_ready',
         'courier_available', 
         'is_bank_ready',
-        'is_demo_mode',
-        'demo_phone',
         'is_mail_ready',
         'can_cod',
         'tripay_callback'
@@ -129,15 +127,6 @@ class Config extends Model
             'starter' => config('rajaongkir.courier_starter')
         ];
     }
-    public function getIsDemoModeAttribute()
-    {
-        return config('demo.is_demo');
-    }
-    public function getDemoPhoneAttribute()
-    {
-        return config('demo.phone');
-    }
-
     public function getTripayCallbackAttribute()
     {
         return route('tripay.callback');

@@ -1,7 +1,6 @@
 <template>
   <div>
     <component :is="isActiveComponent" />
-    <ThemeSetting />
   </div>
 </template>
 
@@ -10,7 +9,6 @@
 import defaultTheme from 'pages/Theme/Default/Index.vue';
 import romanceTheme from 'pages/Theme/Romance/Index.vue';
 import elegantTheme from 'pages/Theme/Elegant/Index.vue';
-import ThemeSetting from 'components/ThemeSetting.vue'
 
 export default {
   name: 'PageIndex',
@@ -18,7 +16,6 @@ export default {
     elegant: elegantTheme, 
     default: defaultTheme, 
     romance: romanceTheme,
-    ThemeSetting,
   },
   computed: {
     isActiveComponent() { 

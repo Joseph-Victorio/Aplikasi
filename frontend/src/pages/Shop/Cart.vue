@@ -126,7 +126,6 @@ export default {
   data () {
     return {
       loginModal: false,
-      checkoutDemoModal: false,
       directCheckoutModal: false,
       discount: 0,
       currentOrder: null,

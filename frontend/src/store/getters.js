@@ -10,12 +10,7 @@ const getTheme = (state) => {
   return 'default'
 }
 
-const isDemoMode = (state) => {
-  return state.config.is_demo_mode
-}
-
 export default {
   getApiUrl,
   getTheme,
-  isDemoMode,
 }
