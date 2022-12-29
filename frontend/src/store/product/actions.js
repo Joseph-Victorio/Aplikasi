@@ -48,7 +48,7 @@ export function getProductById ({}, id) {
 }
 
 export function productDelete ( { dispatch },  id) {
-  Api().delete('product/' + id).then(() => {
+  Api().delete('products/' + id).then(() => {
     dispatch('getAdminProducts')
   })
 }
