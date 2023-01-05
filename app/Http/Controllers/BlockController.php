@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Block;
 use Illuminate\Support\Str;
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -18,17 +19,14 @@ class BlockController extends Controller
      */
     public function index()
     {
-        return response()->json([
-            'success' => true,
-            'results' => Block::with('post:id,slug,title')->orderBy('position', 'desc')->get()
-        ]);
+        $data = Block::with('post:id,slug,title')->orderBy('position', 'desc')->get();
+        
+        return ApiResponse::success($data);
     }
     public function show($id)
     {
-        return response()->json([
-            'success' => true,
-            'results' => Block::find($id)->load('post')
-        ]);
+        $data =  Block::find($id)->load('post');
+        return ApiResponse::success($data);
     }
 
     /**
@@ -81,13 +79,12 @@ class BlockController extends Controller
 
             Cache::forget('blocks');
 
-            return response(['success' => true], 201);
+            return ApiResponse::success($block);
 
         } catch (\Throwable $th) {
-            //throw $th;
-            return response([
-                'success' => false
-            ], 400);
+            DB::rollback();
+           
+            return ApiResponse::failed($th);
         }
 
 
@@ -143,13 +140,12 @@ class BlockController extends Controller
 
             Cache::forget('blocks');
 
-            return response(['success' => true], 200);
+            return ApiResponse::success($block);
 
         } catch (\Throwable $th) {
-            //throw $th;
 
             DB::rollBack();
-            return response(['success' => false], 400);
+            return ApiResponse::failed($th);
         }
     }
 
@@ -161,27 +157,21 @@ class BlockController extends Controller
      */
     public function destroy($id)
     {
-        $block = Block::find($id);
-
-        DB::beginTransaction();
-
+        
         try {
+
+            $block = Block::find($id);
+
             if($block->image) {
                 File::delete('upload/images/'. $block->image);
             }
             $block->delete();
 
-            DB::commit();
-
             Cache::forget('blocks');
-
-            return response(['success' => true, 'message' => 'Berhasil menghapus data'], 200);
-
+            return ApiResponse::success();
 
         } catch (\Throwable $th) {
-            DB::rollBack();
-
-            return response(['success' => false, 'message' => 'Gagal menghapus data'], 400);
+            return ApiResponse::failed($th);
         }
     }
 }

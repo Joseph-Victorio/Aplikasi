@@ -39,7 +39,8 @@ class Config extends Model
         'service_fee_label',
         'is_service_fee',
         'is_shipping_active',
-        'review_auto_approved'
+        'review_auto_approved',
+        'order_expired_time'
     ];
     public $appends = [
         'is_shippable', 

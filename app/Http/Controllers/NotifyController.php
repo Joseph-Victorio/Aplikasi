@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Order;
 use App\Models\Config;
 use App\Models\MailConfig;
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
 use App\Mail\MailNotification;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Notification;
 use App\Notifications\TelegramNotification;
+use Illuminate\Support\Facades\Notification;
 
 class NotifyController extends Controller
 {
@@ -20,79 +22,78 @@ class NotifyController extends Controller
     }
     public function sendOrderNotify(Request $request)
     {
+
         $request->validate([
             'order_id' => 'required'
         ]);
 
-        if(config('app.env') != 'production') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Development Mode',
-                'env' => config('app.env')
-            ]);
-        };
-
-        $order = Order::with('transaction')->find($request->order_id);
-
-        if(!$order) {
-            return response([
-                'success' => false,
-                'message' => 'No order found.'
-            ], 200);
-        }
-
         $result = [
-            'success' => true,
-            'admin_tele' => 'Not Define',
-            'admin_mail' => 'Not Define',
-            'user_mail' => 'Not Define',
+            'telegram_admin' => 'Not Defined',
+            'mailed_admin' => 'Not Defined',
+            'mailed_user' => 'Not Defined',
         ];
 
-        $customerPayload = generateUserEmailOrderCreated($order);
-        $adminPayload = generateAdminEmailOrderCreated($order);
+        if(config('app.env') != 'production') {
+            return response()->json(['success' => false, 'message' => 'Development mode']);
+        };
 
-        $mailConfig = MailConfig::first();
+        try {
 
-        if($this->config->is_telegram_ready) {
+            $order = Order::with('transaction')->find($request->order_id);
             
-            try {
-                Notification::route('telegram', config('telegram.user_id'))
-                ->notify(new TelegramNotification($adminPayload));
+            if(!$order) {
+                throw new Exception("Order not found");
+            }
 
-                $result['admin_tele'] = 'OK';
+            $customerPayload = generateUserEmailOrderCreated($order);
+            $adminPayload = generateAdminEmailOrderCreated($order);
 
-            } catch (\Throwable $th) {
+            $mailConfig = MailConfig::first();
+
+            if($this->config->is_telegram_ready) {
                 
-                $result['admin_tele'] = $th->getMessage();
-            }
-        }
+                try {
+                    Notification::route('telegram', config('telegram.user_id'))
+                    ->notify(new TelegramNotification($adminPayload));
 
-        if($this->config->is_mail_ready) {
+                    $result['telegram_admin'] = 'Success';
 
-            try {
-                Mail::to($mailConfig->mail_admin)
-                ->later(now()->addSeconds(10), new MailNotification($adminPayload));
-
-                $result['admin_mail'] = 'OK';
-
-            } catch (\Throwable $th) {
-               $result['admin_mail'] = $th->getMessage();
+                } catch (\Throwable $th) {
+                    
+                    $result['telegram_admin'] = $th->getMessage();
+                }
             }
 
-            try {
+            if($this->config->is_mail_ready) {
 
-                Mail::to($order->customer_email)
-                    ->later(now()->addSeconds(10), new MailNotification($customerPayload));
+                try {
+                    Mail::to($mailConfig->mail_admin)
+                    ->later(now()->addSeconds(10), new MailNotification($adminPayload));
 
-                $result['user_mail'] = 'OK';
+                    $result['mailed_admin'] = 'Success';
 
-            } catch (\Throwable $th) {
-               $result['user_mail'] = $th->getMessage();
-            } 
+                } catch (\Throwable $th) {
+                $result['mailed_admin'] = $th->getMessage();
+                }
 
+                try {
+
+                    Mail::to($order->customer_email)
+                        ->later(now()->addSeconds(10), new MailNotification($customerPayload));
+
+                    $result['mailed_user'] = 'Success';
+
+                } catch (\Throwable $th) {
+                $result['mailed_user'] = $th->getMessage();
+                } 
+
+            }
+
+            return ApiResponse::success($result);
+        
+        } catch (\Throwable $th) {
+            return ApiResponse::failed($th);
         }
-
-        return response($result, 200);
         
     }
 
@@ -129,6 +130,7 @@ class NotifyController extends Controller
         }
 
         return response()->json($res);
+        
     }
     public function testingEmail()
     {
@@ -162,10 +164,11 @@ class NotifyController extends Controller
             
         }else {
             $res['success']= false;
-                $res['results']['type'] = 'negative';
-                $res['results']['message'] = 'Pengaturan email belum sesuai';
+            $res['results']['type'] = 'negative';
+            $res['results']['message'] = 'Pengaturan email belum sesuai';
         }
 
         return response()->json($res);
+        
     }
 }

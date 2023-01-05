@@ -3,60 +3,51 @@
 namespace App\Http\Controllers;
 
 use Exception;
-use App\Models\Promo;
 use App\Models\Product;
-use App\Models\ProductPromo;
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
-use App\Models\ProductVarian;
 use App\Http\Requests\ProductRequest;
-use Illuminate\Support\Facades\Cache;
-use App\Repositories\ProductRepository;
+use App\Repositories\Products\AdminProductRepository;
 
 class ProductController extends Controller
 {
     public $limit = 10;
     private $productRepository;
 
-    protected $result = ['code' => 200, 'success' => true];
-
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(AdminProductRepository $productRepository)
     {
         $this->productRepository = $productRepository;
+
+        if(request('limit')) {
+            $this->limit = request('limit');
+        }
     }
 
     public function index()
     {
         try {
 
-            $this->result['results'] = Product::with(['minPrice:id,product_id,price', 'maxPrice:id,product_id,price','featuredImage'])
-                    ->withCount('varianItems')
-                    ->withSum('varianItems', 'stock')
-                    ->latest()
-                    ->paginate($this->limit);
+            $data = $this->productRepository->index($this->limit);
+
+            return ApiResponse::success($data);
 
         } catch (Exception $e) {
 
-            $this->setErrorResponse($e);
+            return ApiResponse::failed($e);
         }
-        return response()->json($this->result, $this->result['code']);
     }
     public function getProductVariansByProduct($productId)
     {
         try {
 
-            $this->result['results'] = ProductVarian::leftJoin('product_varians as parent', 'product_varians.varian_id', 'parent.id')
-            ->select('parent.label as attribute_label', 'parent.value as attribute_value', 'product_varians.label','product_varians.value', 'product_varians.price','product_varians.stock')
-            ->where('product_varians.product_id', $productId)->where('product_varians.has_subvarian', 0)
-            ->orderBy('attribute_value')
-            ->orderBy('product_varians.price')
-            ->get();
-            
+            $data =  $this->productRepository->productVarianByProductId($productId);
+
+            return ApiResponse::success($data);
 
         } catch (Exception $e) {
 
-            $this->setErrorResponse($e);
+            return ApiResponse::failed($e);
         }
-        return response()->json($this->result, $this->result['code']);
     }
     
 
@@ -64,16 +55,14 @@ class ProductController extends Controller
     {
         try {
 
-            $this->result['results'] = Product::where('title', 'like', '%'.$key.'%')
-                ->with(['minPrice', 'maxPrice','featuredImage', 'category', 'varianItems.parent'])
-                ->paginate($this->limit);
+            $data = $this->productRepository->search($key);
+
+            return ApiResponse::success($data);
 
         } catch (Exception $e) {
 
-            $this->setErrorResponse($e);
+            return ApiResponse::failed($e);
         }
-        
-        return response()->json($this->result, $this->result['code']);
     }
 
     public function show($id)
@@ -81,16 +70,14 @@ class ProductController extends Controller
 
         try {
             
-            $this->result['results'] = Product::with('assets', 'category', 'varians.subvarian')
-            ->where('id', $id) 
-            ->first();
+            $data =  $this->productRepository->show($id);
+
+            return ApiResponse::success($data);
 
         } catch (Exception $e) {
 
-            $this->setErrorResponse($e);
+            return ApiResponse::failed($e);
         }
-
-        return response()->json($this->result, $this->result['code']);
     }
 
     public function store(ProductRequest $request)
@@ -98,134 +85,72 @@ class ProductController extends Controller
 
         try {
             
-            $this->result['results'] = $this->productRepository->store($request);
+            $data =  $this->productRepository->store($request);
+
+            return ApiResponse::success($data);
 
         } catch (Exception $e) {
 
-            $this->setErrorResponse($e);
+            return ApiResponse::failed($e);
         }
-
-        return response()->json($this->result, $this->result['code']);
         
     }
 
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
-        $product = Product::find($id);
-
-        $request->validate([
-            'id' => 'required',
-            'title' => 'required',
-            'price' => 'required',
-            'weight' => 'required',
-            'stock' => 'required',
-            'description' => 'required',
-            'images' => $request->del_images && count($product->assets) == count($request->del_images) && !$request->images?'required' : 'nullable'
-        ]);
 
         try {
             
-            $this->result['results'] = $this->productRepository->update($request);
+            $data = $this->productRepository->update($request, $id);
+
+            return ApiResponse::success($data);
 
         } catch (Exception $e) {
 
-            $this->setErrorResponse($e);
+            return ApiResponse::failed($e);
         }
-
-        return response()->json($this->result, $this->result['code']);
 
     }
 
-    public function findNotDiscountProduct()
-    {
-        try {
-            
-            $this->result['results'] = Product::whereNull('promote_id')->whereNull('discount_id')->get();
-
-        } catch (Exception $e) {
-
-            $this->setErrorResponse($e);
-        }
-
-        return response()->json($this->result, $this->result['code']);
-
-    }
-
-    public function toggleProductPromo(Request $request)
-    {
-        $request->validate([
-            'product_id' => 'required',
-            'promote_id' => 'required',
-        ]);
-
-        try {
-            
-            $product = Product::find($request->product_id);
-
-            if($product->promote_id) {
-
-                $product->promote_id = null;
-
-            } else {
-
-                $product->promote_id = $request->promote_id;
-            }
-    
-            $product->save();
-
-            Cache::forget('products');
-            Cache::forget('initial_products');
-
-        } catch (Exception $e) {
-
-            $this->setErrorResponse($e);
-        }
-
-        return response()->json($this->result, $this->result['code']);
-    }
     public function destroy($id)
     {
         try {
             
-            $this->productRepository->destroy($id);
+            return APiResponse::success($this->productRepository->destroy($id));
 
         } catch (Exception $e) {
 
-            $this->setErrorResponse($e);
+            return ApiResponse::failed($e);
         }
 
-        return response()->json($this->result, $this->result['code']);
     }
     public function findProductWithoutPromo($key)
     {
         try {
             
-            $this->result['results'] = Product::doesntHave('promoRelations')
-                ->where('title', 'like', '%'. $key . '%')
-                ->get();
+            $data = $this->productRepository->findProductWithoutPromo($key);
+
+            return ApiResponse::success($data);
 
         } catch (Exception $e) {
 
-            $this->setErrorResponse($e);
+            return ApiResponse::failed($e);
         }
-
-        return response()->json($this->result, $this->result['code']);
 
     }
     public function getProductPromo($promoId)
     {
         
         try {
-            $promo = Promo::find($promoId);
 
-            $this->result['results'] = $promo->products;
+            $data = $this->productRepository->getProductPromo($promoId);
+
+            return ApiResponse::success($data);
 
         } catch (Exception $e) {
 
-            $this->setErrorResponse($e);
+            return ApiResponse::failed($e);
         }
-
-        return response()->json($this->result, $this->result['code']);
 
     }
     public function submitProductPromo(Request $request)
@@ -239,30 +164,14 @@ class ProductController extends Controller
 
         try {
 
-            $product = ProductPromo::updateOrCreate([
-                'product_id' => $request->product_id
-            ], $data);
-            
-            $this->result['data'] = $product;
+            $data = $this->productRepository->storeProductPromo($data);
 
-            Cache::forget('products');
-            Cache::forget('initial_products');
-            Cache::forget('product_promo');
+            return ApiResponse::success($data);
 
         } catch (Exception $e) {
 
-            $this->setErrorResponse($e);
+            return ApiResponse::failed($e);
         }
-
-        return response()->json($this->result, $this->result['code']);
     }
 
-    protected function setErrorResponse($e) : void
-    {
-        $this->result = [
-            'code' => 400,
-            'success' => false,
-            'message' => $e->getMessage()
-        ];
-    }
 }

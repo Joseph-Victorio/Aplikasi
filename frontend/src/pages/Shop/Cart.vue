@@ -14,7 +14,7 @@
       <q-list class="bg-white" separator padding>
         <q-item v-for="cart in carts.items" :key="cart.sku" :class="{'q-pa-sm' : $q.platform.is.mobile }">
           <q-item-section side class="q-pr-sm">
-           <q-img :src="cart.image_url" style="width:90px;height:90px;"></q-img>
+           <q-img :src="cart.image_url" style="width:90px;height:90px;" class="img-thumbnail"></q-img>
           </q-item-section>
           <q-item-section>
             <div class="col overflow-hidden full-width">

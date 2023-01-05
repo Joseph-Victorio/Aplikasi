@@ -2,7 +2,7 @@
   <q-page class="q-pb-lg">
     <q-header class="text-primary bg-white no-print box-shadow">
       <q-toolbar>
-        <q-btn :to="{name: 'CustomerOrder'}"
+        <q-btn @click="goBack"
           flat round dense
           icon="eva-arrow-back" />
         <q-toolbar-title class="text-weight-bold brand">
@@ -112,6 +112,20 @@
           <q-card-section class="q-px-sm">
             <q-list dense>
               <q-item>
+                <q-item-section>Penerima</q-item-section>
+                <q-item-section>{{ invoice.customer_name }}</q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>Ponsel</q-item-section>
+                <q-item-section>{{ invoice.customer_whatsapp }}</q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section top>Alamat</q-item-section>
+                <q-item-section>
+                  <div v-html="invoice.shipping_address"></div>
+                </q-item-section>
+              </q-item>
+              <q-item>
                 <q-item-section>Kurir</q-item-section>
                 <q-item-section>{{ invoice.shipping_courier_name }} {{ invoice.shipping_courier_service ? '' + ' - ' + invoice.shipping_courier_service : '' }}</q-item-section>
               </q-item>
@@ -120,18 +134,6 @@
                   <q-item-label>No Resi <q-icon v-if="invoice.shipping_courier_code" name="eva-copy" size="18px" class="q-ml-sm cursor-pointer" @click="copy(invoice.shipping_courier_code)"></q-icon> </q-item-label>
                 </q-item-section>
                 <q-item-section>{{ invoice.shipping_courier_code ? invoice.shipping_courier_code  : '-'  }}</q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section top>
-                  <q-item-label>Alamat</q-item-label>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label class="text-weight-bold">{{ invoice.customer_name }}</q-item-label>
-                  <q-item-label>{{ invoice.customer_whatsapp }}</q-item-label>
-                  <q-item-label>
-                    <div v-html="invoice.shipping_address"></div>
-                  </q-item-label>
-                </q-item-section>
               </q-item>
             </q-list>
           </q-card-section>
@@ -290,8 +292,17 @@ export default {
         this.$router.push({name: 'Cart'})
       }
     },
-    money(number) {
-     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR'}).format(number)
+    goBack() {
+      if(this.$route.query._rdr) {
+        this.$router.push(this.$route.query._rdr)
+      }else {
+
+        if(this.$store.state.user.loggedUser) {
+          this.$router.push({ name: 'CustomerAccount'})
+        }else {
+          this.$router.push('/')
+        }
+      }
     },
     chatToAdmin() {
       if(this.shop.phone) {

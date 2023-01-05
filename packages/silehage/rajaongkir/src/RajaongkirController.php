@@ -24,7 +24,7 @@ class RajaongkirController extends Controller
     }
     public function getSubdistrict($provinceId)
     {
-        $result = Rajaongkir::subdistric($provinceId);
+        $result = Rajaongkir::subdistrict($provinceId);
 
         return $result;
     }

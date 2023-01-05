@@ -8,16 +8,18 @@ class Rajaongkir
   protected $url_endpoint;
   protected $account_type = 'starter';
 
-  public function setApiKey($apikey)
+  public function setApiKey($apikey, $account_type)
   {
     $this->api_key = $apikey;
+    $this->account_type = $account_type;
+
+    $this->setAccountType();
 
   }
   
-  public function setAccountType($type)
+  public function setAccountType()
   {
-    $this->account_type = $type;
-
+    
     $this->url_endpoint = config('rajaongkir.api_url');
 
     if($this->account_type == 'pro') {
@@ -64,14 +66,14 @@ class Rajaongkir
     return $result;
   }
 
-  public function cost($payload)
+  public function cost(Array $payload)
   {
      $result = $this->curlPost('/cost', $payload);
 
      return $result;
 
   }
-  public function waybill($payload)
+  public function waybill(Array $payload)
   {
     $result = $this->curlPost('/waybill', $payload);
 
@@ -121,7 +123,7 @@ class Rajaongkir
 
           return json_encode([
             'success' => true,
-            'results' => $data->rajaongkir->results
+            'data' => $data->rajaongkir->results
           ]);
 
         } else {
@@ -181,7 +183,7 @@ class Rajaongkir
 
           return json_encode([
             'success' => true,
-            'results' => $result
+            'data' => $result
           ]);
 
         } else {

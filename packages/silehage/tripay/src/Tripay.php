@@ -34,7 +34,7 @@ class Tripay
   public function createTransaction($payload)
   {
     $payload['callback_url'] = route('tripay.callback');
-    $payload['expired_time'] = (time()+(24*60*60)); // 24 jam
+    $payload['expired_time'] = (time()+(intval($payload['order_expired_time'])*60*60)); // 24 jam
     $payload['signature'] = $this->setSignature($payload['merchant_ref'], $payload['amount']);
 
     $result = $this->curlPost('/transaction/create', $payload);

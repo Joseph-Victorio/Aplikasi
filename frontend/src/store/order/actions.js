@@ -4,7 +4,7 @@ export function getOrders ({commit}) {
   commit('SET_LOADING', true, { root: true})
   Api().get('orders').then(response => {
     if(response.status == 200) {
-      commit('SET_ORDERS', response.data)
+      commit('SET_ORDERS', response.data.results)
     }
   }).finally(() => commit('SET_LOADING', false, { root: true}))
 }
@@ -15,17 +15,17 @@ export function getPaginateOrder ({commit}, payload) {
   commit('SET_LOAD_MORE', true)
   Api().get(`orders?filter=${payload.filter}&skip=${payload.skip}`).then(response => {
     if(response.status == 200) {
-      commit('SET_PAGINATE_ORDERS', response.data)
+      commit('SET_PAGINATE_ORDERS', response.data.results)
     }
   }).finally(() => {
     commit('SET_LOAD_MORE', false)
   })
 }
-export function searchOrder ({dispatch, commit}, search) {
+export function searchOrder ({commit}, search) {
   commit('SET_LOADING', true, { root: true})
   Api().get(`orders?search=${search}`).then(response => {
     if(response.status == 200) {
-      commit('SET_ORDERS', response.data)
+      commit('SET_ORDERS', response.data.results)
     }
   }).finally(() => {
     commit('SET_LOADING', false, { root: true})
@@ -35,7 +35,7 @@ export function filterOrder ({ commit }, payload) {
   commit('SET_LOADING', true, { root: true})
   Api().get('orders?filter='+ payload).then(response => {
     if(response.status == 200) {
-      commit('SET_ORDERS', response.data)
+      commit('SET_ORDERS', response.data.results)
     }
   }).finally(() => {
     commit('SET_LOADING', false, { root: true})
@@ -45,7 +45,7 @@ export function filterOrder ({ commit }, payload) {
 export function getCustomerOrders ({ commit }) {
   Api().get('getCustomerOrders').then(response => {
     if(response.status == 200) {
-      commit('SET_CUSTOMER_ORDERS', response.data)
+      commit('SET_CUSTOMER_ORDERS', response.data.results)
     }
   })
 }
@@ -53,16 +53,13 @@ export function getPaginateCustomerOrder ({ commit }, payload) {
   commit('SET_LOAD_MORE_CUSTOMER', true)
   Api().get('getCustomerOrders?skip=' + payload).then(response => {
     if(response.status == 200) {
-      commit('SET_PAGINATE_CUSTOMER_ORDERS', response.data)
+      commit('SET_PAGINATE_CUSTOMER_ORDERS', response.data.results)
     }
   }).finally(() => {
     commit('SET_LOAD_MORE_CUSTOMER', false)
   })
 }
 
-export function getTransactionDetail ({}, ref) {
-  return Api().get('transaction/detail?reference='+ref)
-}
 export function storeOrder ({}, payload) {
   return Api().post('storeOrder', payload)
 }
@@ -73,20 +70,20 @@ export function updateOrder ({dispatch}, payload) {
     }
   })
 }
-export function destroyOrder ({ dispatch }, id) {
+export function destroyOrder ({}, id) {
   return Api().delete('orders/'+ id)
 }
-export function acceptPayment ({ dispatch }, id) {
+export function acceptPayment ({}, id) {
   return Api().post('paymentAccepted/'+ id)
 }
-export function cancelOrder ({ dispatch }, id) {
+export function cancelOrder ({}, id) {
   return Api().post('cancelOrder/'+ id)
 }
 
-export function inputResi ({ dispatch }, payload) {
+export function inputResi ({}, payload) {
   return Api().post('inputResi', payload)
 }
-export function updateStatusOrder ({dispatch, commit}, payload) {
+export function updateStatusOrder ({}, payload) {
  return Api().post('updateStatusOrder', payload)
 }
 

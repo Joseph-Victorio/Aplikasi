@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Province;
 use Illuminate\Console\Command;
-use Rajaongkir;
+use Silehage\Rajaongkir\Facades\Rajaongkir;
 
 class UpdateProvince extends Command
 {
@@ -43,6 +43,6 @@ class UpdateProvince extends Command
 
         $data = json_decode($provinces, true);
 
-        Province::insert($data['results']);
+        Province::insert($data['data']);
     }
 }

@@ -1,187 +1,37 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Products;
 
-use stdClass;
 use Exception;
 use App\Models\Asset;
 use App\Models\Promo;
-use Ramsey\Uuid\Uuid;
 use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Support\Str;
 use App\Models\ProductPromo;
 use App\Models\ProductVarian;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Resources\ProductResource;
 
-class ProductRepository
+
+class AdminProductRepository
 {
-    protected $limit = 6;
     
-    public function show($slug)
+  	public function index($limit)
     {
-        $product = Cache::remember($slug, now()->addMinutes(5), function() use ($slug) {
-
-            return new ProductResource(Product::with(['assets', 'varianItemSortByPrice:id,product_id,label,value,price,sku,stock,varian_id,weight', 'varianAttributes:id,product_id,label,value', 'productPromo' => function($query) {
-                $query->whereHas('promoActive');
-            }])
-                ->withCount('reviews')
-                ->withAvg('reviews', 'rating')
-                ->where('slug', $slug) 
-                ->orWhere('id', $slug)
-                ->first());
-        });
-
-
-        return $product;
+        return Product::with(['minPrice:id,product_id,price', 'maxPrice:id,product_id,price','featuredImage'])
+			->withCount('varianItems')
+			->withSum('varianItems', 'stock')
+			->latest()
+			->paginate($limit);
+	}
+	public function show($id)
+    {
+		return Product::with('assets', 'category', 'varians.subvarian')
+		->where('id', $id) 
+		->first();          
     }
-
-    public function getAll()
-    {
-            return Product::with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
-                $query->whereHas('promoActive');
-            }])
-            ->withAvg('reviews', 'rating')
-            ->simplePaginate($this->limit);
-        
-    }
-
-    public function getProductsFavorites($pids)
-    {
-        return Product::with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
-            $query->whereHas('promoActive');
-        }])
-            ->whereIn('id', $pids)
-            ->withAvg('reviews', 'rating')
-            ->get();
-
-    }
-  
-    public function search($key)
-    {
-
-        return Product::with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
-            $query->whereHas('promoActive');
-        }])
-            ->where('title', 'like', '%'.$key.'%')
-            ->withAvg('reviews', 'rating')
-            ->get();
-
-    }
-
-    public function getProductsByCategory($id, $request)
-    {
-        if($request->limit) {
-            $this->limit = $request->limit;
-        }
-        return Product::with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
-            $query->whereHas('promoActive');
-        }])
-            ->where('category_id', $id)
-            ->withAvg('reviews', 'rating')
-            ->simplePaginate($this->limit);
-
-        }
-
-    public function getProductPromo()
-    {
-        return Promo::active()->with(['products' => function($query) {
-            $query->with('minPrice');
-            $query->with('featuredImage');
-            $query->with('productPromo', function($q) {
-                $q->whereHas('promoActive');
-            });
-            $query->withAvg('reviews', 'rating');
-        }])
-        ->whereHas('products')
-        ->get()->map(function($item) {
-
-            $promo = new stdClass();
-            $promo->id = $item->id;
-            $promo->label = $item->label;
-            $promo->start_date = $item->start_date;
-            $promo->end_date = $item->end_date;
-
-            $promo->products = $item->products->map(function($product) {
-
-                return [
-                    'id'      => $product->id,
-                    'title'   => $product->title,
-                    'slug'    => $product->slug,
-                    'status'  =>  $product->status,
-                    'rating'  =>  $product->reviews_avg_rating ? (float) number_format($product->reviews_avg_rating, 1) : 0,
-                    'pricing' =>  $this->setPricing($product),
-                    'asset'  =>  $product->featuredImage,
-                ];
-            });
-
-            return $promo;
-
-        });
-        
-    }
-
-    public function getInitialProducts()
-    {
-
-        $data = Category::whereHas('products')
-            ->with(['products' => function($query) {
-                $query->with('minPrice');
-                $query->with('featuredImage');
-                $query->with('productPromo', function($q) {
-                    $q->whereHas('promoActive');
-                });
-                $query->with('varians.subvarian');
-                $query->withAvg('reviews', 'rating');
-            }])
-            ->where('is_front', 1)
-            ->orderBy('weight')
-            ->get()
-            ->map(function($cat) {
-
-                $categoryItem = new stdClass();
-                $categoryItem->title = $cat->title;
-                $categoryItem->category_id = $cat->id;
-                $categoryItem->category_slug = $cat->slug;
-                $categoryItem->id = Str::random(16);
-                $categoryItem->description = $cat->description ?? '';
-                $categoryItem->banner_src = $cat->banner ? url('upload/images/' . $cat->banner) : '';
-
-                $categoryItem->items = $cat->products->map(function($product) use($cat) {
-
-                    // Prevent recursive loop
-                    $newCat = new stdClass();
-                    $newCat->id = $cat->id;
-                    $newCat->title = $cat->title;
-                    $newCat->slug = $cat->slug;
-
-                    $product->category = $newCat;
-
-                    return [
-                        'id'      => $product->id,
-                        'title'   => $product->title,
-                        'sku'   => $product->sku,
-                        'slug'    => $product->slug,
-                        'status'  =>  $product->status,
-                        'rating'  =>  $product->reviews_avg_rating ? (float) number_format($product->reviews_avg_rating, 1) : 0,
-                        'pricing' =>  $this->setPricing($product),
-                        'category' => $newCat,
-                        'asset'  =>  $product->featuredImage,
-                        'description' =>  $product->description,
-                    ];
-                });
-
-                return $categoryItem;
-            });
-
-        return $data;
-
-    }
-  
-    public function store($request)
+	public function store($request)
     {
         $path = public_path('/upload/images');
 
@@ -281,21 +131,22 @@ class ProductRepository
 
             DB::rollBack();
 
-            throw new Exception($e);
+            throw $e;
         }
 
             
     }
 
-    public function update($request)
+    public function update($request, $id)
     {
-        $product = Product::find($request->id);
 
         $path = public_path('/upload/images');
 
         if(! File::exists($path)) {
             File::makeDirectory($path, 0755, true, true);
         }
+
+        $product = Product::find($id);
 
         DB::beginTransaction();
 
@@ -441,7 +292,7 @@ class ProductRepository
             DB::commit();
             
             $product->fresh();
-            $product->load('featuredImage', 'category', 'varianItems.parent');
+            $product->load('featuredImage')->loadCount('varianItems')->loadSum('varianItems', 'stock');
 
             Cache::forget($product->slug);
 
@@ -453,7 +304,7 @@ class ProductRepository
 
             DB::rollBack();
             
-            throw new Exception($e);
+            throw $e;
         }
 
         
@@ -489,38 +340,65 @@ class ProductRepository
 
             DB::rollBack();
 
-            throw new Exception($e);
+            throw $e;
         }
     }
 
-    protected function setPricing($product)
+	public function productVarianByProductId($productId)
     {
-        $defaultPrice = $product->price;
+		return ProductVarian::leftJoin('product_varians as parent', 'product_varians.varian_id', 'parent.id')
+		->select('parent.label as attribute_label', 'parent.value as attribute_value', 'product_varians.label','product_varians.value', 'product_varians.price','product_varians.stock')
+		->where('product_varians.product_id', $productId)->where('product_varians.has_subvarian', 0)
+		->orderBy('attribute_value')
+		->orderBy('product_varians.price')
+		->get();
 
-            $pricing = [
-                'default_price' => $defaultPrice,
-                'discount_type' => 'PERCENT',
-                'discount_amount' => 0,
-                'is_discount' => false,
-            ];
-    
-            if($product->productPromo) {
-
-                $disc = $product->productPromo;
-
-                $pricing['is_discount'] = true;
-                $pricing['discount_type'] = $disc->discount_type;
-                $pricing['discount_amount'] = $disc->discount_amount;
-            }
-
-            if($product->minPrice) {
-                $pricing['default_price'] = $product->minPrice->price;
-            }
-        
-            return $pricing;
     }
-    
-    protected function clearCache()
+
+	public function search($keyword, $limit = 20)
+    {
+		return Product::where('title', 'like', '%'.$keyword.'%')
+			->with(['minPrice', 'maxPrice','featuredImage', 'category', 'varianItems.parent'])
+			->paginate($limit);
+    }
+
+	public function findProductWithoutPromo($key)
+    {
+		return Product::doesntHave('promoRelations')
+			->where('title', 'like', '%'. $key . '%')
+			->get();
+    }
+
+	public function getProductPromo($promoId)
+    {
+        
+		try {
+
+			$promo = Promo::findOrFail($promoId);
+	
+			return $promo->products;
+
+        } catch (Exception $e) {
+
+            throw $e;
+        }
+
+    }
+
+	public function storeProductPromo($data)
+    {
+
+		$product = ProductPromo::updateOrCreate([
+			'product_id' => $data['product_id']
+		], $data);
+		
+		$this->clearCache();
+
+		return $product;
+
+    }
+
+	protected function clearCache()
     {
         Cache::forget('products');
         Cache::forget('initial_products');

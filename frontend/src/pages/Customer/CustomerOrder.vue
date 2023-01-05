@@ -35,7 +35,7 @@
           </div>
         </q-item-section>
         <q-item-section side>
-          <q-btn icon="eva-external-link-outline" round flat :to="{name: 'UserInvoice', params: {order_ref: order.order_ref}}"></q-btn>
+          <q-btn icon="eva-external-link-outline" round flat :to="{name: 'UserInvoice', params: {order_ref: order.order_ref}, query: { _rdr: $route.path }}"></q-btn>
         </q-item-section>
       </q-item>
     </q-list>
@@ -55,26 +55,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 export default {
-  name: 'OrderIndex',
-  data() {
-    return {
-      isSearch: true,
-      options: ['UNPAID', 'PAID', 'PROCESS', 'SHIPPING', 'CANCELED'],
-      isFilter: false,
-      inputResiModal: false,
-      orderSelected: '',
-      followUpModal: false,
-      currentOrder: null,
-      orderFiltered: [],
-      orderBySearch: [],
-      search: '',
-      form: {
-        order_id: '',
-        resi: '',
-        status: ''
-      },
-    }
-  },
+  name: 'CustomerOrderIndex',
   computed: {
     ...mapState({
       orders: state => state.order.customer_order,
@@ -87,29 +68,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions('order', ['getCustomerOrders', 'getPaginateCustomerOrder', 'filterOrder']),
+    ...mapActions('order', ['getCustomerOrders', 'getPaginateCustomerOrder']),
     loadMore() {
       this.getPaginateCustomerOrder(this.orders.data.length)
-    },
-
-    handleSelectMode() {
-      this.isSearch = !this.isSearch
-      this.search = ''
-    },
-
-    handleSearchOrder() {
-      this.$store.commit('SET_LOADING', true)
-      this.searchAdminOrder({key: this.search})
-    },
-    handleFilterOrder() {
-      if(this.search) {
-        this.filterOrder({key: this.search})
-      }
-    },
-    resetOrder() {
-      this.orderFiltered = []
-      this.isFilter = false
-      this.search = ''
     },
     changeBadgeColor(type) {
       if(type == 'PAID' || type == 'SHIPPING') return 'teal'
@@ -117,16 +78,7 @@ export default {
       if(type == 'COMPLETE') return 'green'
       if(type == 'CANCELED') return 'red'
       return 'grey-7'
-    },
-    messageButtonLabel(status) {
-      if(status == 'UNPAID' || status == 'OVERDUE') return 'Follow Up Order'
-      return 'Kirim Pesan'
-    },
-    money(number) {
-     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR'}).format(number)
-    },
- 
-  },
-  
+    }
+  }
 }
 </script>

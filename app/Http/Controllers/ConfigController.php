@@ -49,7 +49,7 @@ class ConfigController extends Controller
 
         return response([
             'success' => true,
-            'results' => null
+            'results' => $config
         ], 200);
     }
 

@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Rajaongkir;
 use App\Models\City;
 use App\Models\Subdistrict;
 use Illuminate\Console\Command;
+use Silehage\Rajaongkir\Facades\Rajaongkir;
 
 class UpdateRajaongkirSubdistrict extends Command
 {
@@ -49,7 +49,7 @@ class UpdateRajaongkirSubdistrict extends Command
     
             $data = json_decode($subdistricts, true);
     
-            Subdistrict::insert($data['results']);
+            Subdistrict::insert($data['data']);
         }
     }
 }

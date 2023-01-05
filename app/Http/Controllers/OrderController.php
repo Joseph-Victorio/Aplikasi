@@ -4,18 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
 use App\Models\ProductVarian;
 
 class OrderController extends Controller
 {
-    protected $data = [
-        'success' => true,
-        'skip' => 0,
-        'limit' => 6,
-        'code' => 200,
-        'results' => null,
-    ];
+    protected $data = ['skip' => 0,'limit' => 6,'data' => null];
 
     public function __construct()
     {
@@ -42,62 +37,37 @@ class OrderController extends Controller
                 $instance->where('order_status', $filter);
             }
 
-            $this->data['results'] = $instance
+            $this->data['data'] = $instance
                 ->orderByDesc('updated_at')
                 ->skip($this->data['skip'])
                 ->take($this->data['limit'])
                 ->get();
 
             $this->data['count'] = $instance->count();
+
+            return ApiResponse::success($this->data);
             
         } catch (\Throwable $th) {
 
-            $this->data['message'] = $th->getMessage();
-            $this->data['code'] = 500;
-            $this->data['success'] = false;
+            return ApiResponse::failed($th);
         }
 
-        return response($this->data);
-    }
-    public function getCustomerOrders(Request $request)
-    {
-       
-        try {
-
-           $this->data['results'] = Order::with('transaction')
-            ->where('user_id', $request->user()->id)
-            ->skip($this->data['skip'])
-            ->latest()
-            ->take($this->data['limit'])
-            ->get();
-
-            $this->data['count'] = Order::where('user_id', $request->user()->id)->count();
-            
-        } catch (\Throwable $th) {
-
-            $this->data['message'] = $th->getMessage();
-            $this->data['code'] = 500;
-            $this->data['success'] = false;
-        }
-
-        return response($this->data);  
     }
 
     public function show($orderRef)
     {
-        return response([
-            'success' => true,
-            'results' => Order::with(['items', 'transaction'])->where('order_ref', $orderRef)->first()
-        ]);
+        $data =  Order::with(['items', 'transaction'])->where('order_ref', $orderRef)->first();
+        return ApiResponse::success($data);
     }
 
     public function destroy($id)
     {
+        
         $order = Order::findOrFail($id);
 
         $order->delete();
 
-        return response([ 'success' => true ], 200);
+        return ApiResponse::success();
 
     }
     public function paymentAccepted($id)
@@ -116,7 +86,7 @@ class OrderController extends Controller
            $this->setStock($item->sku, $item->quantity, true);
         }
 
-        return response([ 'success' => true ], 200);
+        return ApiResponse::success();
     }
     public function filterOrder(Request $request)
     {
@@ -126,7 +96,7 @@ class OrderController extends Controller
 
         try {
 
-            $this->data['results'] = Order::with('transaction')
+            $this->data['data'] = Order::with('transaction')
              ->skip($this->data['skip'])
              ->take($this->data['limit'])
              ->where('order_status', $request->filter)
@@ -134,16 +104,14 @@ class OrderController extends Controller
              ->get();
  
              $this->data['count'] = Order::count();
+
+             return ApiResponse::success($this->data);
              
          } catch (\Throwable $th) {
  
-             $this->data['message'] = $th->getMessage();
-             $this->data['code'] = 500;
-             $this->data['success'] = false;
+            return ApiResponse::failed($th);
          }
  
-         return response($this->data);  
-
     }
     
     public function searchAdminOrder(Request $request)
@@ -156,21 +124,19 @@ class OrderController extends Controller
 
             $q = filter_var($request->key, FILTER_SANITIZE_SPECIAL_CHARS);
 
-            $this->data['results'] = Order::with('transaction')
+            $this->data['data'] = Order::with('transaction')
                 ->where('customer_whatsapp', 'like', '%'.$q .'%')
                 ->orWhere('order_ref', 'like', '%'.$q .'%')
                 ->orderByDesc('updated_at')
                 ->get();
+
+            return ApiResponse::success($this->data);
              
          } catch (\Throwable $th) {
  
-             $this->data['message'] = $th->getMessage();
-             $this->data['code'] = 500;
-             $this->data['success'] = false;
+            return ApiResponse::failed($th);
          }
  
-         return response($this->data);  
-
     }
     public function inputResi(Request $request)
     {
@@ -178,15 +144,22 @@ class OrderController extends Controller
             'order_id' => ['required'],
             'resi' => ['required'],
         ]);
-        $order = Order::findOrFail($request->order_id);
 
-        $order->shipping_courier_code = $request->resi;
-        $order->shipping_delivered = now();
-        $order->order_status = 'SHIPPING';
+        try {
+            $order = Order::findOrFail($request->order_id);
+    
+            $order->shipping_courier_code = $request->resi;
+            $order->shipping_delivered = now();
+            $order->order_status = 'SHIPPING';
+    
+            $order->save();
 
-        $order->save();
+            return ApiResponse::success($order);
+             
+        } catch (\Throwable $th) {
 
-        return response([ 'success' => true ], 200);
+           return ApiResponse::failed($th);
+        }
     }
 
     public function updateStatusOrder(Request $request)
@@ -218,7 +191,8 @@ class OrderController extends Controller
             }
         }
 
-        return response([ 'success' => true ], 200);
+        return ApiResponse::success($order);
+
     }
     public function cancelOrder($id)
     {
@@ -232,8 +206,9 @@ class OrderController extends Controller
 
         $order->update(['order_status' => 'CANCELED']);
 
-        return response()->json(['success' => true]);
+        return ApiResponse::success($order);
     }
+    
     protected function setStock($sku, $qty, $decrement = false)
     {
         $productData = Product::where('sku', $sku)->first();

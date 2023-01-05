@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BankController;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlockController;
@@ -11,19 +10,21 @@ use App\Http\Controllers\PromoController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\NotifyController;
-use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TripayController;
 use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\FrontApiController;
-use App\Http\Controllers\FrontOrderController;
-use App\Http\Controllers\FrontProductController;
-use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\MailConfigController;
-use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\PasswordResetController;
+
+use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\CustomerController;
+use App\Http\Controllers\Frontend\ReviewController;
+use App\Http\Controllers\Frontend\FrontApiController;
+use App\Http\Controllers\Frontend\ShippingController;
+use App\Http\Controllers\Frontend\FrontOrderController;
+use App\Http\Controllers\Frontend\FrontProductController;
 
 Route::middleware(['auth:sanctum', 'auth.admin'])->group(function() {
 
@@ -33,9 +34,7 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->group(function() {
 
     Route::apiResource('products', ProductController::class);
 
-    Route::post('toggleProductPromo', [ProductController::class, 'toggleProductPromo']);
     Route::get('getProductPromo/{promoId}', [ProductController::class, 'getProductPromo']);
-    Route::get('findNotDiscountProduct', [ProductController::class, 'findNotDiscountProduct']);
     Route::get('searchAdminProducts/{key}', [ProductController::class, 'searchAdminProducts']);
     Route::get('getProductVariansByProduct/{productId}', [ProductController::class, 'getProductVariansByProduct']);
 
@@ -58,6 +57,7 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->group(function() {
     Route::post('inputResi', [OrderController::class, 'inputResi']);
     Route::post('cancelOrder/{id}', [OrderController::class, 'cancelOrder']);
     Route::get('orders/{orderRef}',[OrderController::class, 'show']);
+    Route::post('filterOrder', [OrderController::class, 'filterOrder']);
 
     Route::get('update', [UpdateController::class, 'overview']);
     Route::post('update', [UpdateController::class, 'update']);  
@@ -92,9 +92,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('user/logout', [UserController::class, 'logout']);
     Route::post('user/update', [UserController::class, 'update']);
     
-    Route::post('filterOrder', [OrderController::class, 'filterOrder']);
-    Route::get('getCustomerOrders', [OrderController::class, 'getCustomerOrders']);
-    Route::post('refreshToken', [UserController::class, 'refreshToken']);
+    Route::get('getCustomerOrders', [CustomerController::class, 'getOrders']);
     
 });
 
@@ -115,6 +113,8 @@ Route::get('getBanks', [FrontApiController::class, 'getBanks']);
 Route::get('getSliders', [FrontApiController::class, 'getSliders']);
 Route::get('getCategories', [FrontApiController::class, 'getCategories']);
 Route::get('getPromotePosts', [FrontApiController::class, 'getPromotePosts']);
+Route::get('shop', [FrontApiController::class, 'getShop']);
+Route::get('config',[FrontApiController::class, 'getConfig']);
 
 Route::get('getProducts', [FrontProductController::class, 'getProducts']);
 Route::get('getProductDetail/{slug}', [FrontProductController::class, 'getProductDetail']);
@@ -129,11 +129,6 @@ Route::get('getInvoice/{invoice}', [FrontOrderController::class, 'getInvoice']);
 
 Route::post('addProductReview', [ReviewController::class, 'store']);
 Route::get('loadProductReview/{id}', [ReviewController::class, 'show']);
-
-Route::get('shop', [StoreController::class, 'index']);
-Route::get('config',[ConfigController::class, 'show']);
-
-Route::get('transaction/detail',[TransactionController::class, 'show']);
 
 Route::get('shipping/getProvince', [ShippingController::class, 'getProvince']);
 Route::get('shipping/getCity/{province_id}', [ShippingController::class, 'getCity']);

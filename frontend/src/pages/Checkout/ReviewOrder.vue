@@ -38,6 +38,7 @@
           </tr>
         </table>
     </fieldset>
+
     <fieldset class="q-mt-lg">
       <legend class="q-pa-sm">Pembayaran</legend>
         <div class="row q-gutter-sm">
@@ -122,6 +123,12 @@
               <td align="right">:</td>
               <td>Rp</td>
               <td align="right">{{ $money(formOrder.payment_fee) }}</td>
+            </tr>
+            <tr v-if="formOrder.unique_code">
+              <td align="right" class="text-xs">Kode Unik</td>
+              <td align="right">:</td>
+              <td>Rp</td>
+              <td align="right">{{ formOrder.unique_code }}</td>
             </tr>
             <tr>
               <th align="right">Total Bayar</th>

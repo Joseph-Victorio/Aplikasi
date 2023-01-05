@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Frontend;
 
-use App\Models\Cart;
+use Exception;
 use Carbon\Carbon;
+use App\Models\Cart;
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class CartController extends Controller
 {
     public function get()
     {
-        $carts = [];
+        $data = [];
 
         if(getSessionUser()) {
-            $carts = Cart::all();
+            $data = Cart::all();
         }
         
-        return response()->json([
-            'results' => $carts,
-        ], 200);
+        return ApiResponse::success($data);
     }
     
     public function store(Request $request)
@@ -34,15 +35,15 @@ class CartController extends Controller
             'product_stock' => 'required',
         ]);
 
-        $cart = Cart::where('sku', $request->sku)->first();
+        $data = Cart::where('sku', $request->sku)->first();
 
-        if($cart) {
-            $cart->quantity += $request->quantity;
-            $cart->save();
+        if($data) {
+            $data->quantity += $request->quantity;
+            $data->save();
             
         } else {
 
-            Cart::create([
+            $data = Cart::create([
                 'session_id' => getSessionUser(),
                 'price' => $request->price,
                 'name' => $request->name,
@@ -58,36 +59,41 @@ class CartController extends Controller
         }
 
 
-        return response(['status' => true], 200);
+        return ApiResponse::success($data);
     }
 
     public function update(Request $request)
     {
+ 
+        try {
+            $cart = Cart::where('sku', $request->sku)->first();
 
-        $cart = Cart::where('sku', $request->sku)->first();
-
-        if($cart) {
-            
+            if(!$cart) {
+                throw new Exception('Data not found');
+            }
             $cart->quantity = $request->quantity;
     
             $cart->save();
     
-            return response(['status' => true], 200);
+            return ApiResponse::success($cart);
+
+        } catch (Exception $e) {
+
+            return ApiResponse::failed($e);
         }
 
-        return response(['status' => false], 400);
     }
 
     public function destroy(Request $request)
     {
         Cart::where('sku', $request->sku)->delete();
 
-        return response(['status' => true], 200);
+        return ApiResponse::success();
     }
     public function clear()
     {
         Cart::where('session_id', getSessionUser())->delete();
 
-        return response(['status' => true], 200);
+        return ApiResponse::success();
     }
 }

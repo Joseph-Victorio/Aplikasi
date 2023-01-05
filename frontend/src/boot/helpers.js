@@ -11,7 +11,7 @@ Vue.mixin({
     },    
     $money(numb) {
       return numb.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    },  
+    }, 
     generateSku(numb = 32) {
       let result = ''
       var randomChars = 'ABCDEFGHIJKL9MNOPQRST8UVWXYZ01T2343567890';

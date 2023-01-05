@@ -17,7 +17,7 @@
           <q-list>
             <q-item>
               <q-item-section avatar>
-                <q-avatar color="pink" text-color="white" size="70px">{{ initialName }}</q-avatar>
+                <q-avatar color="white" text-color="primary" size="70px">{{ initialName }}</q-avatar>
               </q-item-section>
               <q-item-section>
                 <q-item-label class="text-h5 text-weight-bold">{{ user.name }}</q-item-label>
@@ -69,7 +69,7 @@
               </div>
             </q-item-section>
             <q-item-section side>
-              <q-btn icon="eva-external-link-outline" round flat :to="{name: 'UserInvoice', params: {order_ref: order.order_ref}}"></q-btn>
+              <q-btn icon="eva-external-link-outline" round flat :to="{name: 'UserInvoice', params: {order_ref: order.order_ref}, query: { _rdr: $route.path }}"></q-btn>
             </q-item-section>
           </q-item>
         </q-list>

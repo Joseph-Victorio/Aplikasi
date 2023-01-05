@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Frontend;
 
+use Exception;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Support\Str;
+use App\Helpers\ApiResponse;
+use App\Models\Config;
 use Illuminate\Http\Request;
 use App\Models\ProductVarian;
 use Illuminate\Support\Carbon;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Silehage\Tripay\Facades\Tripay;
 use Illuminate\Support\Facades\Cache;
@@ -18,10 +22,15 @@ class FrontOrderController extends Controller
 {
     public function getInvoice($orderRef)
     {
-        return response([
-            'success' => true,
-            'results' => Order::with(['items', 'transaction'])->where('order_ref', $orderRef)->first()
-        ]);
+        try {
+            $data =  Order::with(['items', 'transaction'])->where('order_ref', $orderRef)->first();
+
+            return ApiResponse::success($data);
+             
+         } catch (\Exception $e) {
+ 
+            return ApiResponse::failed($e);
+         }
     }
 
     public function searchOrder(Request $request)
@@ -35,31 +44,26 @@ class FrontOrderController extends Controller
 
             $q = filter_var($request->key, FILTER_SANITIZE_SPECIAL_CHARS);
 
-            $this->data['results'] = Order::with('transaction')
+            $data =  Order::with('transaction')
                 ->where('customer_whatsapp', $q)
                 ->orWhere('order_ref', $q)
                 ->orderByDesc('updated_at')
                 ->get();
- 
-             $this->data['count'] = Order::where('customer_whatsapp', $q)
-             ->orWhere('order_ref', $q)
-             ->count();
+
+             return ApiResponse::success($data);
              
-         } catch (\Throwable $th) {
+         } catch (\Exception $e) {
  
-             $this->data['message'] = $th->getMessage();
-             $this->data['code'] = 500;
-             $this->data['success'] = false;
+            return ApiResponse::failed($e);
          }
  
-         return response($this->data);  
 
     }
 
     public function getRandomOrder()
     {
 
-       $items = Cache::remember('order_items_random',  now()->addMinutes(5), function() {
+       $data = Cache::remember('order_items_random',  now()->addMinutes(5), function() {
 
             return DB::table('order_items')
             ->select('order_items.id', 'order_items.name', 'order_items.created_at', 'orders.customer_name', 'assets.filename')
@@ -82,7 +86,7 @@ class FrontOrderController extends Controller
 
         });
 
-        return response()->json(['results' => $items], 200);
+        return ApiResponse::success($data);
     }
 
     public function storeOrder(Request $request)
@@ -112,14 +116,12 @@ class FrontOrderController extends Controller
         $name = filter_var($request->customer_name, FILTER_SANITIZE_SPECIAL_CHARS);
         $whatsapp = filter_var($request->customer_phone, FILTER_SANITIZE_SPECIAL_CHARS);
 
-        $uniqueCode = $request->payment_type == 'BANK_TRANSFER' ? rand(10, 100) : 0;
         $orderRef = 'INV' .Carbon::now()->format('ymdHs') .  rand(1,99) . Str::upper(Str::random(2));
-
-        $orderTotal = $request->payment_type == 'BANK_TRANSFER' ? $request->total + $uniqueCode : $request->total;
 
         DB::beginTransaction();
 
         try {
+
             $order = Order::create([
                 'user_id' => $user? $user->id : null,
                 'order_ref' => $orderRef,
@@ -129,9 +131,9 @@ class FrontOrderController extends Controller
                 'shipping_address' => $request->customer_address,
                 'order_qty' => $request->quantity,
                 'order_weight' => $request->weight,
-                'order_unique_code' => $uniqueCode,
+                'order_unique_code' => $request->unique_code,
                 'order_subtotal' => $request->subtotal,
-                'order_total' => $orderTotal,
+                'order_total' => $request->total,
                 'order_status' => 'UNPAID',
                 'shipping_courier_name' => $request->shipping_courier_name,
                 'shipping_courier_service' => $request->shipping_courier_service,
@@ -155,6 +157,8 @@ class FrontOrderController extends Controller
 
             }
 
+            $config = Config::select('order_expired_time')->first();
+
             if($request->payment_type == 'BANK_TRANSFER' || $request->payment_type == 'COD') {
   
                 $transaction = new Transaction();
@@ -167,93 +171,74 @@ class FrontOrderController extends Controller
                 $transaction->amount = $order->order_total;
     
                 $transaction->payment_ref = 'DTR' . Carbon::now()->format('ymd') . rand(10, 99) .Str::upper(Str::random(5));
-                $transaction->expired_time = Carbon::now()->addDays(2)->timestamp;;
+                $transaction->expired_time = Carbon::now()->addHours($config->order_expired_time)->timestamp;
                 $transaction->total_fee = 0;
                 $transaction->amount_received = 0;
     
                 $transaction->save();
 
-                DB::commit();
-    
-                return response([
-                    'success' => true,
-                    'results' => $order->load('items','transaction')
-                ], 200);
-
             } else {
 
                 $payload = [
-                    'method'            => $request->payment_method,
-                    'merchant_ref'      => $order->order_ref,
-                    'amount'            => $order->order_total,
-                    'customer_name'     => $order->customer_name,
-                    'customer_email'    => $order->customer_email,
-                    'customer_phone'    => $order->customer_whatsapp,
-                    'order_items'       => $request->items,
+                    'method'                => $request->payment_method,
+                    'merchant_ref'          => $order->order_ref,
+                    'amount'                => $order->order_total,
+                    'customer_name'         => $order->customer_name,
+                    'customer_email'        => $order->customer_email,
+                    'customer_phone'        => $order->customer_whatsapp,
+                    'order_items'           => $request->items,
+                    'order_expired_time'    => $config->order_expired_time
                 ];
 
                 $json = Tripay::createTransaction($payload);
 
                 $obj = json_decode($json);
 
-
-                if($obj->success) {
-
-                    $transaction = new Transaction();
-
-                    $transaction->order_id = $order->id;
-                    $transaction->payment_type = $request->payment_type;
-                    $transaction->payment_name = $request->payment_name;
-                    $transaction->payment_method = $request->payment_method;
-    
-                    $transaction->qr_url = $obj->data->qr_url ?? '';
-                    
-                    $transaction->payment_code = $obj->data->pay_code ?? '';
-                    $transaction->payment_ref = $obj->data->reference;
-                    $transaction->expired_time = $obj->data->expired_time;
-
-                    $transaction->amount = $obj->data->amount;
-                    $transaction->amount_received = $obj->data->amount_received;
-                    $transaction->total_fee = $obj->data->total_fee;
-                    $transaction->fee_merchant = $obj->data->fee_merchant;
-                    $transaction->fee_customer = $obj->data->fee_customer;
-                    $transaction->instructions = json_encode($obj->data->instructions);
-
-                    $transaction->save();
-
-                    $order->fresh();
-
-                    $order->payment_fee = $obj->data->fee_customer;
-
-                    $order->save();
-
-                    DB::commit();
-
-                    return response([
-                        'success' => true,
-                        'results' => $order->load('transaction', 'items'),
-                    ], 200);
-                        
-
-                } else {
-                    DB::rollBack();
-
-                    return response([
-                        'success' => false,
-                        'results' => null
-                    ], 400);
+                if(!$obj->success) {
+                    throw new Exception('Can\'t not connect host tripay');
                 }
+
+                $transaction = new Transaction();
+
+                $transaction->order_id = $order->id;
+                $transaction->payment_type = $request->payment_type;
+                $transaction->payment_name = $request->payment_name;
+                $transaction->payment_method = $request->payment_method;
+
+                $transaction->qr_url = $obj->data->qr_url ?? '';
+                
+                $transaction->payment_code = $obj->data->pay_code ?? '';
+                $transaction->payment_ref = $obj->data->reference;
+                $transaction->expired_time = $obj->data->expired_time;
+
+                $transaction->amount = $obj->data->amount;
+                $transaction->amount_received = $obj->data->amount_received;
+                $transaction->total_fee = $obj->data->total_fee;
+                $transaction->fee_merchant = $obj->data->fee_merchant;
+                $transaction->fee_customer = $obj->data->fee_customer;
+                $transaction->instructions = json_encode($obj->data->instructions);
+
+                $transaction->save();
+
+                $order->fresh();
+
+                $order->payment_fee = $obj->data->fee_customer;
+
+                $order->save();
+                    
             }
 
-        } catch (\Throwable $th) {
+            DB::commit();
+
+            $data = $order->load('items','transaction');
+
+            return ApiResponse::success($data);
+
+        } catch (\Exception $e) {
 
             DB::rollBack();
 
-            return response([
-                'success' => false,
-                'results' => null,
-                'error' => $th->getMessage()
-            ], 400);
+            return ApiResponse::failed($e);
         }        
         
     }

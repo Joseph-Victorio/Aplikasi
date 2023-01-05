@@ -16,29 +16,34 @@ class MailConfigServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (Schema::hasTable('mail_configs')) {
-            $mail = DB::table('mail_configs')->first();
-            
-            if ($mail && $mail->is_active) //checking if table is not empty
-            {
 
-                $smtp = array(
-                    'transport' => 'smtp',
-                    'host'       => $mail->smtp_host,
-                    'port'       => $mail->smtp_port,
-                    'encryption' => $mail->smtp_encryption,
-                    'username'   => $mail->smtp_username,
-                    'password'   => $mail->smtp_password,
-                    'timeout' => null,
-                    'auth_mode' => null,
-                );
+        try {
+            if (Schema::hasTable('mail_configs')) {
+                $mail = DB::table('mail_configs')->first();
                 
-                $mailFrom  = array('address' => $mail->from_address, 'name' => $mail->from_name);
-
-                Config::set('mail.mailers.smtp', $smtp);
-                Config::set('mail.from', $mailFrom);
-                
+                if ($mail && $mail->is_active) //checking if table is not empty
+                {
+    
+                    $smtp = array(
+                        'transport' => 'smtp',
+                        'host'       => $mail->smtp_host,
+                        'port'       => $mail->smtp_port,
+                        'encryption' => $mail->smtp_encryption,
+                        'username'   => $mail->smtp_username,
+                        'password'   => $mail->smtp_password,
+                        'timeout' => null,
+                        'auth_mode' => null,
+                    );
+                    
+                    $mailFrom  = array('address' => $mail->from_address, 'name' => $mail->from_name);
+    
+                    Config::set('mail.mailers.smtp', $smtp);
+                    Config::set('mail.from', $mailFrom);
+                    
+                }
             }
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 

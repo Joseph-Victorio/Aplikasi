@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Rajaongkir;
 use App\Models\City;
 use Illuminate\Console\Command;
+use Silehage\Rajaongkir\Facades\Rajaongkir;
 
 class UpdateRajaongkirCity extends Command
 {
@@ -43,6 +43,6 @@ class UpdateRajaongkirCity extends Command
 
         $data = json_decode($city, true);
 
-        City::insert($data['results']);
+        City::insert($data['data']);
     }
 }

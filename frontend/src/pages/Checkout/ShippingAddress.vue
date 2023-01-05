@@ -77,10 +77,9 @@
                 <q-icon :name="isSelectedCost && isSelectedCost.service == item.service? 'radio_button_checked' : 'radio_button_unchecked'" :color="isSelectedCost && isSelectedCost.service == item.service? 'primary' : 'grey-6'"></q-icon>
               </q-item-section>
               <q-item-section>
-                <q-item-label>Servis : {{ item.service }}</q-item-label>
-                <q-item-label>Deskripsi : {{ item.description }}</q-item-label>
-                <q-item-label>Ongkir : {{ moneyIDR(item.cost[0].value)}}</q-item-label>
-                <q-item-label>Etd: {{ item.cost[0].etd }} day</q-item-label>
+                <q-item-label>Layanan : {{ item.service }}</q-item-label>
+                <q-item-label>Ongkos kirim : {{ moneyIDR(item.cost[0].value)}}</q-item-label>
+                <q-item-label caption>{{ item.description }} Estimasi {{ item.cost[0].etd }} day</q-item-label>
               </q-item-section>
             </q-item>
             </template>
@@ -149,7 +148,6 @@
         :error="errors.customer_name"
         debounce="1000"
         >
-        <!-- <template v-slot:error>Nama tidak boleh kosong</template> -->
         </q-input>
         <q-input
         v-if="canEmail"
@@ -163,7 +161,6 @@
          :error="errors.customer_email"
         debounce="1000"
         >
-        <!-- <template v-slot:error>Alamat email tidak boleh kosong</template> -->
         </q-input>
         <q-input
           label="No ponsel / Whatsapp"
@@ -175,7 +172,6 @@
           :error="errors.customer_phone"
           debounce="1000"
         >
-        <!-- <template v-slot:error>Nomor Ponsel tidak boleh kosong</template> -->
         </q-input>
         <div>
           <q-input
@@ -188,7 +184,6 @@
             :error="errors.customer_address"
             v-model="customer_address"
           >
-          <!-- <template v-slot:error>Alamat tidak boleh kosong</template> -->
           </q-input>
         </div>
         </div>
@@ -621,7 +616,7 @@ export default {
         Api().post('shipping/getCost', this.formGetCost).then(response => {
           if(response.status == 200) {
 
-            let data = response.data.results[0];
+            let data = response.data.results.data[0];
               this.shippingCost.code = data.code
               this.shippingCost.name = data.name
               this.shippingCost.costs = data.costs

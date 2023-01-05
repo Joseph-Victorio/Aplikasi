@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-grey-2 q-pb-lg">
+  <q-page class="bg-grey-1 q-pb-lg">
     <q-header>
       <q-toolbar>
         <q-btn v-go-back.single
@@ -10,18 +10,18 @@
         </q-toolbar-title>
       </q-toolbar>
       <div class="bg-white box-shadow text-dark">
-        <q-tabs v-model="tab" outside-arrows>
+        <q-tabs v-model="tab" outside-arrows mobile-arrows>
           <q-tab v-for="item in tabs" :key="item.value" :name="item.value" :label="item.label" no-caps></q-tab>
         </q-tabs>
       </div>
       </q-header>
-        <q-tab-panels v-model="tab" animated class="">
-          <q-tab-panel name="Tampilan" >
-              <tampilan />
+        <q-tab-panels v-model="tab" animated class="bg-transparent">
+          <q-tab-panel name="BasicConfig" >
+              <BasicConfig />
           </q-tab-panel>
 
-          <q-tab-panel name="Ekspedisi">
-            <shipping />
+          <q-tab-panel name="ShippingConfig">
+            <ShippingConfig />
           </q-tab-panel>
           <q-tab-panel name="Local">
             <LocalShipping />
@@ -30,8 +30,8 @@
           <q-tab-panel name="Notifikasi">
             <notification />
           </q-tab-panel>
-          <q-tab-panel name="Tripay">
-            <tripay />
+          <q-tab-panel name="Order">
+            <OrderConfig />
           </q-tab-panel>
           <q-tab-panel name="Checkout">
               <checkout-config  />
@@ -43,39 +43,32 @@
             <system-update />
           </q-tab-panel>
         </q-tab-panels>
-      <!-- <div class="q-gutter-y-lg q-pt-md" v-if="config">
-        
-        
-        
-       
-      </div> -->
       <q-inner-loading :showing="loading">
       </q-inner-loading>
   </q-page>
 </template>
 
 <script>
-import Shipping from './Shipping.vue'
-import Tampilan from './Tampilan.vue'
-// import Theming from './Theming.vue'
+import ShippingConfig from './ShippingConfig.vue'
+import BasicConfig from './BasicConfig.vue'
 import CheckoutConfig from './CheckoutConfig.vue'
 import Notification from './Notification.vue'
-import Tripay from './Tripay.vue'
+import OrderConfig from './OrderConfig.vue'
 import SystemUpdate from './SystemUpdate.vue'
 import LocalShipping from './LocalShipping.vue'
 import ServiceFee from './ServiceFee.vue'
  export default {
-  name: 'AdminConfig',
-  components: { Shipping, Tampilan, Notification, Tripay, SystemUpdate, CheckoutConfig, LocalShipping, ServiceFee },
+  name: 'AppConfigIndex',
+  components: { ShippingConfig, BasicConfig, Notification, OrderConfig, SystemUpdate, CheckoutConfig, LocalShipping, ServiceFee },
   data() {
     return {
-      tab: 'Tampilan',
+      tab: 'BasicConfig',
       tabs: [ 
-        { value: 'Tampilan', label: 'Basic'},
-        { value: 'Ekspedisi', label: 'Ekspedisi'}, 
+        { value: 'BasicConfig', label: 'Basic'},
+        { value: 'ShippingConfig', label: 'Ekspedisi'}, 
         { value: 'Local', label: 'Pengiriman Lokal'}, 
         { value:'Notifikasi', label: 'Notifikasi'}, 
-        { value: 'Tripay', label: 'Tripay' }, 
+        { value: 'Order', label: 'Order Config' }, 
         { value: 'Checkout', label: 'Checkout'}, 
         { value: 'Fee', label: 'Fee Aplikasi'}, 
         { value: 'System', label: 'System Update'}

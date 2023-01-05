@@ -1,7 +1,7 @@
 
 export function SET_ORDERS (state, payload) {
 
-  state.orders.data = payload.results
+  state.orders.data = payload.data
   state.orders.ready = true
   state.orders.count = payload.count
   state.orders.limit = payload.limit
@@ -10,12 +10,12 @@ export function SET_ORDERS (state, payload) {
 }
 export function SET_PAGINATE_ORDERS (state, payload) {
 
-  state.orders.data = [...state.orders.data, ...payload.results]
+  state.orders.data = [...state.orders.data, ...payload.data]
 
 }
 
 export function SET_CUSTOMER_ORDERS (state, payload) {
-  state.customer_order.data = payload.results
+  state.customer_order.data = payload.data
   state.customer_order.ready = true
   state.customer_order.count = payload.count
   state.customer_order.limit = payload.limit
@@ -24,7 +24,7 @@ export function SET_CUSTOMER_ORDERS (state, payload) {
 }
 export function SET_PAGINATE_CUSTOMER_ORDERS (state, payload) {
 
-  state.customer_order.data = [...state.customer_order.data, ...payload.results]
+  state.customer_order.data = [...state.customer_order.data, ...payload.data]
   
 }
 export function SET_INVOICE (state, payload) {

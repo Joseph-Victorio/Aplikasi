@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Order;
+use App\Models\Config;
 use App\Models\Product;
 use App\Models\OrderItem;
 use App\Models\ProductVarian;
@@ -45,7 +46,9 @@ class ResetStockByOrder extends Command
      */
     public function handle()
     {
-        $orderExpireds = Order::where('created_at', '<', Carbon::now()->subdays(2))->where('order_status', 'UNPAID')->get();
+        $config = Config::select('order_expired_time')->first();
+        
+        $orderExpireds = Order::where('created_at', '<', Carbon::now()->subHours($config->order_expired_time))->where('order_status', 'UNPAID')->get();
 
         if(count($orderExpireds) > 0) {
 
@@ -56,26 +59,23 @@ class ResetStockByOrder extends Command
 
                 foreach($orderItems as $item) {
 
-                    $productData = Product::where('sku', $item->sku)->first();
-                    if($productData) {
-                        $productData->stock += $item->quantity;
-                        $productData->save();
+                    $product = Product::where('sku', $item->sku)->first();
+                    if(!$product) {
+                        $product = ProductVarian::where('sku', $item->sku)->first();
+                    }
 
-                    } else {
-
-                        $variantData = ProductVarian::where('sku', $item->sku)->first();
-                        if($variantData) {
-                            $productData->stock += $item->quantity;
-                            $variantData->save();
-                        }
+                    if($product) {
+                        $product->stock += $item->quantity;
+                        $product->save();
+    
                     }
                 }
+
 
                 $order->update(['order_status' => 'CANCELED']);
             }
 
         }
 
-        // $this->info(count($orderExpireds));
     }
 }
