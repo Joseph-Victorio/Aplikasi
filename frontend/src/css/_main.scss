@@ -939,7 +939,9 @@ body.is_loading .block-observe {
     padding: 2rem;
   }
 }
-
+.top-0 {
+  top: 0;
+}
 .carousel-container {
   .carousel-items {
     position: relative;
@@ -948,7 +950,6 @@ body.is_loading .block-observe {
     width: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
-    white-space: nowrap;
     transition: all 0.2s;
     transform: scale(0.99);
     will-change: transform;

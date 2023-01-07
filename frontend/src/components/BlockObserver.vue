@@ -7,11 +7,6 @@
 <script>
 export default {
   props: ['BlockObserver'],
-  data() {
-    return {
-      blockId: 'block'
-    }
-  },
   mounted() {
     this.$nextTick(() => {
       setTimeout(() => {
@@ -47,8 +42,6 @@ export default {
         }
       });
     };
-
-    // el.classList.remove('hidden')
 
     let observer = new IntersectionObserver(clb, opts);
       observer.observe(el)

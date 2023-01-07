@@ -24,7 +24,7 @@
         </div>
         <favorite-button :product_id="product.id" />
       </div>
-      <div class="text-subtitle2 ellipsis-2-lines">{{ product.title }}</div>
+      <q-item-label class="text-subtitle2 ellipsis-2-lines">{{ product.title }}</q-item-label>
       <div class="card-price-container">
         <div class="card-price text-secondary">
           <span class="prefix">Rp</span>
