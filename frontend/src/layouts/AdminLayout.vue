@@ -18,7 +18,6 @@ export default {
     })
   },
   created() {
-    this.$store.dispatch('getAdminConfig')
     if(!this.shop) {
       
       this.$store.dispatch('getShop')
@@ -27,6 +26,11 @@ export default {
 
       this.$store.dispatch('user/getUser')
     }
+  },
+  mounted() {
+   if(this.user) {
+      this.$store.dispatch('getAdminConfig')
+   }
   }
 }
 </script>
