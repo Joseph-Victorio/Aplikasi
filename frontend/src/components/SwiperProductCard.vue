@@ -25,7 +25,7 @@
             <favorite-button :product_id="product.id" />
         </div>
         <div class="full-width q-mt-xs">
-          <q-item-label class="text-subtitle ellipsis-2-lines">{{ product.title }}</q-item-label>
+          <q-item-label class="text-subtitle ellipsis-2-lines cursor-pointer" @click="show(product.slug)">{{ product.title }}</q-item-label>
         </div>
       </div>
      <div class="card-price-container">

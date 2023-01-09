@@ -186,7 +186,7 @@
                           </q-item-label>
                         </q-item-section>
                         <q-item-section side>
-                            <q-btn round unelevated padding="2px" icon="eva-close" size="9px" color="red" @click="deleteSubvarian(varIndex, subIndex)"></q-btn>
+                            <q-btn round unelevated padding="2px" icon="eva-close" size="13px" color="red" @click="deleteSubvarian(varIndex, subIndex)"></q-btn>
                         </q-item-section>
                       </q-item>
                     </q-list>
@@ -223,8 +223,8 @@
                       </q-item-section>
 
                        <q-item-section side>
-                        <q-btn unelevated padding="6px" icon="eva-close" size="11px" color="red" @click="deleteVarian(vIndex)"></q-btn>
-                        <q-btn unelevated padding="6px" icon="eva-copy" size="11px" color="blue" class="q-mt-sm" @click="duplicateVarian(varian, vIndex,`input-var-`)"></q-btn>
+                        <q-btn unelevated padding="2px" icon="eva-close" size="13px" color="red" @click="deleteVarian(vIndex)"></q-btn>
+                        <q-btn unelevated padding="2px" icon="eva-copy" size="13px" color="blue" class="q-mt-sm" @click="duplicateVarian(varian, vIndex,`input-var-`)"></q-btn>
                       </q-item-section>
 
                     </q-item>

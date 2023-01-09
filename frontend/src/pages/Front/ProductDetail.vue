@@ -4,6 +4,7 @@
     <div class="q-pa-md header-top">
       <div class="flex justify-between">
         <q-btn aria-label="Kembali"
+        padding="9px 12px"
         @click="backButton"
         flat icon="eva-arrow-back" icon-size="27px" style="cursor:pointer;opacity:.9;">
         </q-btn>

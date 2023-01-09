@@ -6,6 +6,7 @@
         <div>
           <q-input required label="Varian Label" v-model="form.tempVarian.label" placeholder="contoh: Ukuran"></q-input>
           <q-select
+            ref="inputVarian"
             class="q-mt-sm"
             v-model="form.tempVarian.value"
             use-input
@@ -15,7 +16,8 @@
             new-value-mode="add-unique"
             label="Varian Item (multiple)"
             :error="varianError"
-            hint="Ketik item kemudian enter untuk menambahkan"
+            @input-value="handleInputVarian"
+            hint='Gunakan koma (",") untuk menambahkan item'
           >
           <template v-slot:error>Item tidak boleh kosong</template>
           </q-select>
@@ -28,16 +30,18 @@
           <!-- <div class="text-md">Subvarian</div> -->
           <q-input required label="Subvarian Label" v-model="form.tempSubvarian.label" placeholder="contoh: Warna"></q-input>
           <q-select
+          ref="inputsubvarian"
             class="q-mt-sm"
             v-model="form.tempSubvarian.value"
             use-input
             use-chips
             multiple
-              hide-dropdown-icon
+            hide-dropdown-icon
             new-value-mode="add-unique"
             label="Subvarian Item (multiple)"
             :error="subvarianError"
-            hint="Ketik item kemudian enter untuk menambahkan"
+            @input-value="handleInputSubvarian"
+            hint='Gunakan koma (",") untuk menambahkan item'
           >
           <template v-slot:error>Item tidak boleh kosong</template>
           </q-select>
@@ -100,6 +104,36 @@ export default {
     this.subvarianError = false
   },
   methods: {
+    createValue(val, done) {
+      console.log(val);
+      done(val)
+    },
+    handleInputVarian(val) {
+      this.varianError = false
+     if(val.length){
+      let lastChar = val.substr(val.length - 1)
+      if(lastChar == ',') {
+        let newVal = val.slice(0, -1)
+        if(!this.form.tempVarian.value.includes(newVal)) {
+          this.form.tempVarian.value.push(newVal)
+        }
+        this.$refs.inputVarian.updateInputValue('')
+      }
+     }
+    },
+    handleInputSubvarian(val) {
+      this.subvarianError = false
+     if(val.length){
+      let lastChar = val.substr(val.length - 1)
+      if(lastChar == ',') {
+        let newVal = val.slice(0, -1)
+        if(!this.form.tempSubvarian.value.includes(newVal)) {
+          this.form.tempSubvarian.value.push(newVal)
+        }
+        this.$refs.inputsubvarian.updateInputValue('')
+      }
+     }
+    },
     addVarianProduk() {
 
        if(!this.form.tempVarian.value.length) {
