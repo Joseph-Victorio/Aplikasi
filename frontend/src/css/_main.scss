@@ -762,7 +762,7 @@ table.table td, table.table td * {
 }
 .glide-product .glide__slides {
   display: grid !important;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(500, 1fr);
 }
 .glide__bullets {
   position: relative;
