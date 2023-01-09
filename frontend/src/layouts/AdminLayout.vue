@@ -28,9 +28,9 @@ export default {
     }
   },
   mounted() {
-   if(this.user) {
+    setTimeout(() => {
       this.$store.dispatch('getAdminConfig')
-   }
+    }, 2000)
   }
 }
 </script>

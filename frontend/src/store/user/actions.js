@@ -9,8 +9,8 @@ export function login ({commit, dispatch}, payload) {
   .then(response => {
     if (response.status == 200) {
       let user = response.data.results
+      Cookies.set('__token', response.data.token, { expires: 2 })
       commit('SET_USER', user)
-      Cookies.set('__token', response.data.token, { expires: 1 })
       if(user.role == 'admin') {
         this.$router.push({name: 'Settings'})
       } else {
