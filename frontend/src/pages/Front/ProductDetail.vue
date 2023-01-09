@@ -71,7 +71,7 @@
               <div>
             </div>
             </div>
-            <div class="row q-gutter-md text-h6 items-center">
+            <div class="row q-gutter-sm text-h6 items-center">
               <q-btn aria-label="decrement" flat round icon="eva-minus-circle-outline" size="24" @click="decrementQty" style="cursor:pointer;"></q-btn>
               <div>{{ quantity }}</div>
               <q-btn aria-label="increment" flat round icon="eva-plus-circle-outline" size="24" @click="incrementQty" style="cursor:pointer;"></q-btn>
