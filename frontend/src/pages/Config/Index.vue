@@ -52,11 +52,11 @@
 import ShippingConfig from './ShippingConfig.vue'
 import BasicConfig from './BasicConfig.vue'
 import CheckoutConfig from './CheckoutConfig.vue'
-import Notification from './Notification.vue'
+import Notification from './NotificationConfig.vue'
 import OrderConfig from './OrderConfig.vue'
 import SystemUpdate from './SystemUpdate.vue'
-import LocalShipping from './LocalShipping.vue'
-import ServiceFee from './ServiceFee.vue'
+import LocalShipping from './LocalShippingConfig.vue'
+import ServiceFee from './ServiceFeeConfig.vue'
  export default {
   name: 'AppConfigIndex',
   components: { ShippingConfig, BasicConfig, Notification, OrderConfig, SystemUpdate, CheckoutConfig, LocalShipping, ServiceFee },

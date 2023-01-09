@@ -22,7 +22,7 @@
           placeholder="eg: 1486912253"
           />
         </div>
-        <div class="flex justify-end q-mt-md q-gutter-x-sm">
+        <div class="flex justify-end q-mt-md q-gutter-sm">
           <q-btn :disable="!config.is_telegram_ready" :loading="isLoading" outline size="12px" type="button" label="Test Telegram" color="primary" @click="sendTelegram"></q-btn>
           <q-btn unelevated size="12px" type="submit" label="Simpan Pengaturan" color="primary"></q-btn>
         </div>
@@ -91,7 +91,7 @@
             </template>
             </q-input>
           </div>
-        <div class="flex justify-end q-mt-sm q-gutter-x-sm">
+        <div class="flex justify-end q-pt-lg q-gutter-sm">
           <q-btn :disable="mailConfig && !mailConfig.is_ready" :loading="isLoading" outline size="12px" type="button" label="Test Email" color="primary" @click="sendEmail"></q-btn>
           <q-btn unelevated size="12px" type="submit" label="Simpan Pengaturan" color="primary"></q-btn>
         </div>

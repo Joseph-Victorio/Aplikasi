@@ -29,7 +29,7 @@
         <q-separator></q-separator>
         <q-list separator>
           <q-item class="bg-grey-2">
-            <q-item-section side>
+            <q-item-section side class="gt-xs">
             #
             </q-item-section>
             <q-item-section>
@@ -40,7 +40,7 @@
             </q-item-section>
           </q-item>
           <q-item v-for="(order, index) in orders.data" :key="index">
-            <q-item-section side top>
+            <q-item-section side top class="gt-xs">
               {{ index+1 }}
             </q-item-section>
             <q-item-section top>

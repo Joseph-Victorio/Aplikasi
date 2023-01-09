@@ -25,20 +25,21 @@
       <div>
         <q-list separator>
           <q-item class="item-header">
-            <q-item-section side>#</q-item-section>
+            <q-item-section side class="gt-xs">#</q-item-section>
             <q-item-section>User</q-item-section>
-            <q-item-section>Email</q-item-section>
+            <q-item-section class="gt-xs">Email</q-item-section>
             <q-item-section class="gt-xs">Phone</q-item-section>
             <q-item-section side>Aksi</q-item-section>
           </q-item>
           <q-item v-for="(user, i) in users" :key="i">
-            <q-item-section side top>{{ i+1 }}</q-item-section>
+            <q-item-section side top class="gt-xs">{{ i+1 }}</q-item-section>
             <q-item-section top>
               <div>{{ user.name }}</div>
             </q-item-section>
-            <q-item-section top>
+            <q-item-section top class="gt-xs">
               <div>{{ user.email }}</div>
               <div class="xs">{{ user.phone }}</div>
+              <div class="xs">{{ user.email }}</div>
             </q-item-section>
             <q-item-section top class="gt-xs">
               <div>{{ user.phone }}</div>
