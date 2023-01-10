@@ -1,5 +1,5 @@
 <template>
-  <q-list class="q-gutter-y-sm">
+  <q-list class="relative" :class="page_width >= 668 ? 'col-6 q-pa-xs' : 'bg-white'">
     <q-item class="q-px-sm q-py-md bg-white">
       <q-item-section avatar top>
          <q-skeleton width="100px" height="100px" />
@@ -18,3 +18,13 @@
     </q-item>
   </q-list>
 </template>
+
+<script>
+export default {
+  computed: {
+    page_width() {
+      return this.$store.state.page_width
+    }
+  }
+}
+</script>

@@ -1,22 +1,26 @@
 <template>
-  <div ref="block" class="block-observe hidden">
+  <div ref="block" class="block-observe hidden" :class="classObserve">
     <slot></slot>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['BlockObserver'],
+  data() {
+    return {
+      classObserve: ''
+    }
+  },
   mounted() {
     this.$nextTick(() => {
-      setTimeout(() => {
-        this.intersecObserve()
-      }, 500)
+      this.intersecObserve()
     })
   },
   methods: {
     intersecObserve() {
       let el = this.$refs.block
+
+      console.log(el);
 
       el.classList.remove('hidden')
 
@@ -34,9 +38,7 @@ export default {
           return
           
         } else {
-
           this.$emit('onObserve', true)
-
           observer.unobserve(entry.target)
 
         }

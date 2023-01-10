@@ -1,6 +1,10 @@
 export default function () {
   return {
-    posts: [],
+    posts: {
+      is_done: false,
+      is_available: true,
+      data: []
+    },
     blocks: {
       banner: [],
       partner: [],

@@ -43,7 +43,7 @@
           <img :src="banner1.image_url" @click="goToPost(banner1)" alt="banner">
         </div>
         
-    
+        
         <ProductSectionObserver />
         
         <div v-if="banner2" class="banner auto-padding-side block-container">
@@ -69,20 +69,21 @@
 import { mapState } from 'vuex'
 import ShoppingCart from 'components/ShoppingCart.vue'
 import Slider from './block/Slider.vue'
-import ProductSectionObserver from './../shared-components/ProductSectionObserver.vue'
 import FeaturedCarousel from './../shared-components/FeaturedCarousel.vue'
 import CategoryCarousel from './block/CategoryCarousel.vue'
 import ProductPromo from './../shared-components/ProductPromo.vue'
+import ProductSectionObserver from './../shared-components/ProductSectionObserver.vue'
 
 export default {
   name: 'PageIndex',
   components: {
     ShoppingCart,
     Slider, 
-    ProductSectionObserver, 
     FeaturedCarousel,
     CategoryCarousel,
     ProductPromo,
+    ProductSectionObserver,
+    // ProductSectionObserver: () => import('./../shared-components/ProductSectionObserver.vue'),
     PostBlock: () => import('../shared-components/FrontPostBlock.vue'), 
     FooterBock: () => import('./../shared-components/FooterBlock.vue'),
     InstallApp: () => import('components/InstallApp.vue')

@@ -16,7 +16,7 @@ export function SET_PRODUCT_PROMO (state, payload)
 export function SET_CATEGORIES ( state, payload ) {
 
   if(payload.length != state.categories.length) {
-    state.categories = payload.map(cat => ({...cat, product_items: []}))
+    state.categories = payload.map(cat => ({...cat, product_items: [], is_done: false, is_available: true }))
   }
 
 }
@@ -25,6 +25,8 @@ export function SET_PRODUCT_CATEGORY ( state, payload ) {
 
   if(idx >= 0) {
     state.categories[idx].product_items = payload.product_items
+    state.categories[idx].is_done = true
+    state.categories[idx].is_available = payload.product_items.length > 0
   }
 
 }
@@ -36,5 +38,7 @@ export function SET_SLIDERS (state, payload) {
 }
 
 export function SET_POSTS (state, payload) {
-  state.posts = payload
+  state.posts.data = payload
+  state.posts.is_available = payload.length > 0
+  state.posts.is_done = true
 }

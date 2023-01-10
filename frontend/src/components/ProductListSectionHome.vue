@@ -2,10 +2,10 @@
   <section>
     <div :class="page_width >= 668 ? 'row q-px-sm' : 'column q-gutter-y-sm'">
       <template v-if="products.length">
-        <product-list v-for="(product, index) in products" :key="index" :product="product" />
+        <ProductList v-for="(product, index) in products" :key="index" :product="product" />
       </template>
       <template v-else>
-        <product-list-skeleton />
+        <ProductListSkeleton v-for="i in 6" :key="i"/>
       </template>
     </div>
   </section>
