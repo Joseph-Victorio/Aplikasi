@@ -11,6 +11,23 @@
         </vue-glide-slide>
       </vue-glide>
     </div>
+    <div class="row justify-evenly q-py-xl" v-else>
+      <div class="column justify-center items-center">
+        <q-skeleton type="circle" widyh="40px" />
+        <q-skeleton type="text" width="110px" />
+        <q-skeleton type="text" width="70px" />
+      </div>
+      <div class="column justify-center items-center">
+        <q-skeleton type="circle" widyh="40px" />
+        <q-skeleton type="text" width="110px" />
+        <q-skeleton type="text" width="70px" />
+      </div>
+      <div class="column justify-center items-center">
+        <q-skeleton type="circle" widyh="40px" />
+        <q-skeleton type="text" width="110px" />
+        <q-skeleton type="text" width="70px" />
+      </div>
+    </div>
   </div>
 </template>
 

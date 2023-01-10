@@ -140,12 +140,10 @@ export default {
   },
   mounted() {
      if(!this.orderItems.length) {
-       this.getRandomOrder()
+      setTimeout(() => {
+        this.getRandomOrder()
+      }, 10000)
      }
   }
 }
 </script>
-
-<style>
-
-</style>

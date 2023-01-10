@@ -78,6 +78,7 @@ export default {
     FeaturedCarousel,
     CategoryCarousel,
     ProductPromo,
+    ProductSectionObserver: () => import('./../shared-components/ProductSectionObserver.vue'),
     PostBlock: () => import('../shared-components/FrontPostBlock.vue'), 
     FooterBock: () => import('./../shared-components/FooterBlock.vue'),
     InstallApp: () => import('components/InstallApp.vue')

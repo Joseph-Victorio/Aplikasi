@@ -4,7 +4,7 @@
       <div class="block-title"><h2>Kategori</h2></div>
     </div>
     <div class="block-content q-pb-sm">
-        <div class="overflow-hidden">
+      <div class="overflow-hidden">
         <vue-glide :options="glideOptions">
           <vue-glide-slide v-for="cat in categories" :key="cat.id">
             <div class="column full-height relative bg-white">

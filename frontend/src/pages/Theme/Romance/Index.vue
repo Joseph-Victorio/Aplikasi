@@ -1,5 +1,5 @@
 <template>
-  <q-page class="romance bg-light" :class="{'flex flex-center' : loading }">
+  <q-page class="romance bg-light">
     <q-header reveal :reveal-offset="10" class="bg-white box-shadow" :class="{ 'auto-padding-side': $q.platform.is.desktop}">
         <q-toolbar class="q-py-sm">
           <img v-if="shop" class="logo" :src="shop.logo? shop.logo : '/icon/icon-192x192.png'" alt="Logo" />
@@ -23,11 +23,9 @@
         </q-toolbar>
       </q-header>
 
-       <q-inner-loading :showing="loading">
+       <!-- <q-inner-loading :showing="loading">
         <q-spinner-facebook size="50px" color="primary"/>
-      </q-inner-loading>
-
-      <template v-if="initial_data">
+      </q-inner-loading> -->
 
         <Slider />
 
@@ -59,8 +57,6 @@
         <InstallApp />
 
         <FooterBock />
-
-    </template>
      
   </q-page>
 </template>
@@ -72,7 +68,6 @@ import Slider from './block/Slider.vue'
 import FeaturedCarousel from './../shared-components/FeaturedCarousel.vue'
 import CategoryCarousel from './block/CategoryCarousel.vue'
 import ProductPromo from './../shared-components/ProductPromo.vue'
-import ProductSectionObserver from './../shared-components/ProductSectionObserver.vue'
 
 export default {
   name: 'PageIndex',
@@ -82,8 +77,7 @@ export default {
     FeaturedCarousel,
     CategoryCarousel,
     ProductPromo,
-    ProductSectionObserver,
-    // ProductSectionObserver: () => import('./../shared-components/ProductSectionObserver.vue'),
+    ProductSectionObserver: () => import('./../shared-components/ProductSectionObserver.vue'),
     PostBlock: () => import('../shared-components/FrontPostBlock.vue'), 
     FooterBock: () => import('./../shared-components/FooterBlock.vue'),
     InstallApp: () => import('components/InstallApp.vue')
@@ -92,7 +86,7 @@ export default {
     return {
       viewMode: 'grid',
       search: '',
-      slide: 0,
+      slide: 1,
     }
   },
   computed: {

@@ -345,7 +345,10 @@ ul {
     border-bottom: 1px solid #eee;
   }
 }
-
+.img-slider {
+  width:100%;
+  height:auto;
+}
 .header_banner {
     position: relative;
     overflow: hidden;
@@ -951,7 +954,6 @@ body.is_loading .block-observe {
     overflow-x: scroll;
     overflow-y: hidden;
     transition: all 0.2s;
-    transform: scale(0.99);
     will-change: transform;
     user-select: none;
     > *:not(:last-child) {
@@ -965,7 +967,6 @@ body.is_loading .block-observe {
      &.active {
       background: rgba(255,255,255,0.3);
       cursor: grabbing;
-      transform: scale(1);
     }
     .carousel-item {
       flex: none;

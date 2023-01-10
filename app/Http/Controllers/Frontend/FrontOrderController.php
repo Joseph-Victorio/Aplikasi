@@ -39,7 +39,6 @@ class FrontOrderController extends Controller
             'key' => ['required', 'string']
         ]);
         
-        
         try {
 
             $q = filter_var($request->key, FILTER_SANITIZE_SPECIAL_CHARS);

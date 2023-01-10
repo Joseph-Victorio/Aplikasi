@@ -1,13 +1,24 @@
 <template>
-<div class="overflow-hidden header-romance">
-  <template v-if="sliders.ready && sliders.available">
-   <vue-glide :options="glideOptions">
-      <vue-glide-slide v-for="(img, index) in sliders.data" :key="index">
-         <img :src="img.src" style="width:100%;height:auto;"/>
-      </vue-glide-slide>
-    </vue-glide> 
-  </template>
-  <q-skeleton v-else height="320px"></q-skeleton>
+  <div class="overflow-hidden header-romance">
+    <template v-if="sliders.ready">
+      <q-carousel v-if="sliders.available"
+        v-model="slide"
+        transition-prev="slide-right"
+        transition-next="slide-left"
+        swipeable
+        animated
+        infinite
+        keep-alive
+        :autoplay="5500"
+        height="auto"
+        class="bg-grey-2 text-white"
+        >
+        <q-carousel-slide v-for="(img, index) in sliders.data" :key="index" :name="index" class="q-pa-none">
+          <img :src="img.src" alt="Slider" class="img-slider">
+          </q-carousel-slide>
+      </q-carousel>
+    </template>
+    <q-skeleton v-else height="320px"></q-skeleton>
   </div>
 </template>
 
@@ -16,13 +27,7 @@ export default {
   name: 'FrontSlider',
   data () {
     return {
-      glideOptions: {
-        gap:10,
-        perView: 1,
-        animationDuration: 1000,
-        autoplay: 6000,
-        bullet: true
-      },
+      slide: 0,
     }
   },
   computed: {

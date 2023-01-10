@@ -40,7 +40,7 @@ export default function (/* { ssrContext } */) {
     state: {
       themes: ['default', 'elegant', 'romance'],
       errors: {},
-      loading: false,
+      loading: true,
       shop: null,
       config: null,
       deferredPrompt: null,

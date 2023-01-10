@@ -10,29 +10,19 @@ export default {
     session_id() {
       return this.$store.state.session_id
     },
-    loading() {
-      return this.$store.state.loading
-    },
-  },
-  watch: {
-    loading(val) {
-      if(val == true) {
-        document.body.classList.add('is_loading')
-      }else {
-        document.body.classList.remove('is_loading')
-      }
-    }
   },
   methods: {
     pageResize(){
       this.$store.commit('SET_PAGE_WIDTH', window.innerWidth)
+    },
+    async getData() {
+      this.$store.dispatch('getInitialData')
+      this.$store.dispatch('cart/getCarts')
+
     }
   },
-  mounted() {
-    this.$store.dispatch('cart/getCarts')
-  },
   created() {
-    this.$store.dispatch('getInitialData')
+    setTimeout(() =>  this.getData(), 200)
     this.$store.commit('REMOVE_INSTALL_APP')
     window.addEventListener('beforeinstallprompt', (e) => {
       this.$store.commit('SET_INSTALL_APP', e)
