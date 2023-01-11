@@ -1,6 +1,6 @@
 <template>
   <div class="header_elegant">
-    <div class="header_elegant--inner q-pt-sm q-pb-md q-mb-md" v-if="sliders.data.length">
+    <div class="header_elegant--inner q-pt-sm q-pb-md q-mb-md" v-if="sliders.ready && sliders.available">
       <div class="overflow-hidden">
         <vue-glide :options="glideOptions">
             <vue-glide-slide v-for="(img, index) in sliders.data" :key="index">
@@ -15,7 +15,10 @@
             </template>
           </vue-glide>  
         </div>
-    </div>
+      </div>
+      <div class="slider-padding" v-if="!sliders.ready">
+        <q-skeleton height="320px"></q-skeleton>
+      </div>
   </div>
 </template>
 

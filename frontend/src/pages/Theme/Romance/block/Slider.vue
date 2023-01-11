@@ -1,7 +1,7 @@
 <template>
   <div class="overflow-hidden header-romance">
-    <template v-if="sliders.ready">
-      <q-carousel v-if="sliders.available"
+    <template v-if="sliders.ready && sliders.available">
+      <q-carousel
         v-model="slide"
         transition-prev="slide-right"
         transition-next="slide-left"
@@ -18,7 +18,7 @@
           </q-carousel-slide>
       </q-carousel>
     </template>
-    <q-skeleton v-else height="320px"></q-skeleton>
+    <q-skeleton v-if="!sliders.ready" height="320px"></q-skeleton>
   </div>
 </template>
 

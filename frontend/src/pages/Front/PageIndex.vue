@@ -1,21 +1,24 @@
 <template>
-  <div>
+  <keep-alive>
     <component :is="isActiveComponent" />
-  </div>
+  </keep-alive>
 </template>
 
 <script>
 
-import defaultTheme from 'pages/Theme/Default/Index.vue';
-import romanceTheme from 'pages/Theme/Romance/Index.vue';
-import elegantTheme from 'pages/Theme/Elegant/Index.vue';
+// import defaultTheme from 'src/pages/Theme/Default/DefaultTheme.vue';
+// import romanceTheme from 'src/pages/Theme/Romance/RomanceTheme.vue';
+// import elegantTheme from 'src/pages/Theme/Elegant/ElegantTheme.vue';
 
 export default {
   name: 'PageIndex',
   components: {
-    elegant: elegantTheme, 
-    default: defaultTheme, 
-    romance: romanceTheme,
+    default: () =>  import('src/pages/Theme/Default/DefaultTheme.vue'),
+    romance: () =>  import('src/pages/Theme/Romance/RomanceTheme.vue'),
+    elegant: () =>  import('src/pages/Theme/Elegant/ElegantTheme.vue'),
+    // elegant: elegantTheme, 
+    // default: defaultTheme, 
+    // romance: romanceTheme,
   },
   computed: {
     isActiveComponent() { 

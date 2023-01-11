@@ -9,6 +9,9 @@
           </vue-glide-slide>
         </vue-glide>  
     </template>
+    <div class="slider-padding" v-if="!sliders.ready">
+      <q-skeleton height="320px"></q-skeleton>
+    </div>
   </div>
 </template>
 
