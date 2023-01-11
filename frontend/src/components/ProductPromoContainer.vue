@@ -13,19 +13,19 @@
           </div>
         </div>
     </div>
-    <carouselContainer :products="promo.products" ready/>
+    <CarouselContainer :products="promo.products" ready/>
   </div>
 </template>
 
 <script>
-import carouselContainer from 'components/CarouselContainer'
+import CarouselContainer from 'components/CarouselContainer.vue'
 import { Api } from 'boot/axios'
   export default {
     name: 'GlideProduct',
     props: {
       promo: Object
     },
-    components: { carouselContainer },
+    components: { CarouselContainer },
     data() {
       return {
         dayEl: 0,

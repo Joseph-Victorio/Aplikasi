@@ -48,9 +48,6 @@
         <InstallApp />
 
         <FooterBock />
-<!-- 
-        <q-inner-loading :showing="loading">
-        </q-inner-loading> -->
 
   </q-page>
 </template>
@@ -64,7 +61,7 @@ import ProductPromo from './../shared-components/ProductPromo.vue'
 import ShoppingCart from 'components/ShoppingCart.vue'
 
 export default {
-  name: 'ElegantIndex',
+  name: 'ElegantTheme',
   components: {
     ShoppingCart,
     Slider, 
@@ -78,77 +75,38 @@ export default {
   },
   data() {
     return {
-      viewMode: 'grid',
       search: '',
-      slide: 0,
     }
   },
   computed: {
     loading() { 
       return this.$store.state.loading
     },
-    initial_data() { 
-      return this.$store.state.initial_data
-    },
-    blocks() { 
-      return this.$store.state.front.blocks
+    banners() { 
+      return this.$store.state.front.blocks.banner
     },
     shop() { 
       return this.$store.state.shop
-    },
-    config() { 
-      return this.$store.state.config
     },
     productPromo() { 
       return this.$store.state.product.product_promo
     },
     banner1() {
-      if(this.blocks.banner.length) {
-        let banner = this.blocks.banner.find(b => b.weight == 1)
-        if(banner != undefined) {
-          return banner
-        }
-      }
-      return null
+      return this.banners.find(b => b.weight == 1)
     },
     banner2() {
-      if(this.blocks.banner.length) {
-        let banner = this.blocks.banner.find(b => b.weight == 2)
-        if(banner != undefined) {
-          return banner
-        }
-      }
-      return null
+      return this.banners.find(b => b.weight == 2)
     },
     banner3() {
-      if(this.blocks.banner.length) {
-        let banner = this.blocks.banner.find(b => b.weight == 3)
-        if(banner != undefined) {
-          return banner
-        }
-      }
-      return null
+      return this.banners.find(b => b.weight == 3)
     },
   },
   methods: {
-    showProductByCategory(id) {
-      this.$router.push({name: 'ProductCategory', params: { id:id }})
-    },
     searchNow() {
       if(!this.search || this.search == '') return
         this.$router.push({name: 'ProductSearch', query: {q: this.search }})
-    },
-    goToPost(block) {
-      if(block.post) {
-        this.$router.push({name: 'FrontPostShow', params: { slug: block.post.slug }})
-      }
     }
   },
-  mounted() {
-    if(this.config) {
-      this.viewMode = this.config.home_view_mode
-    }
-  }
 }
 
 </script>

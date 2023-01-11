@@ -23,10 +23,6 @@
         </q-toolbar>
       </q-header>
 
-       <!-- <q-inner-loading :showing="loading">
-       
-      </q-inner-loading> -->
-
         <Slider />
 
         <FeaturedCarousel />
@@ -40,7 +36,6 @@
         <div v-if="banner1" class="banner auto-padding-side block-container">
           <img :src="banner1.image_url" @click="goToPost(banner1)" alt="banner">
         </div>
-        
         
         <ProductSectionObserver />
         
@@ -70,7 +65,7 @@ import CategoryCarousel from './block/CategoryCarousel.vue'
 import ProductPromo from './../shared-components/ProductPromo.vue'
 
 export default {
-  name: 'PageIndex',
+  name: 'RomanceTheme',
   components: {
     ShoppingCart,
     Slider, 
@@ -84,68 +79,30 @@ export default {
   },
   data() {
     return {
-      viewMode: 'grid',
       search: '',
-      slide: 1,
     }
   },
   computed: {
     ...mapState({
       loading: state => state.loading,
-      initial_data: state => state.initial_data,
-      blocks: state => state.front.blocks,
+      banners: state => state.front.blocks.banner,
       shop: state => state.shop,
-      config: state => state.config,
       product_promo: state => state.front.product_promo,
     }),
     banner1() {
-      if(this.blocks.banner.length) {
-        let banner = this.blocks.banner.find(b => b.weight == 1)
-        if(banner != undefined) {
-          return banner
-        }
-      }
-      return null
+      return this.banners.find(b => b.weight == 1)
     },
     banner2() {
-      if(this.blocks.banner.length) {
-        let banner = this.blocks.banner.find(b => b.weight == 2)
-        if(banner != undefined) {
-          return banner
-        }
-      }
-      return null
+      return this.banners.find(b => b.weight == 2)
     },
     banner3() {
-      if(this.blocks.banner.length) {
-        let banner = this.blocks.banner.find(b => b.weight == 3)
-        if(banner != undefined) {
-          return banner
-        }
-      }
-      return null
+      return this.banners.find(b => b.weight == 3)
     },
   },
   methods: {
-    showProductByCategory(id) {
-      this.$router.push({name: 'ProductCategory', params: { id:id }})
-    },
     searchNow() {
       if(!this.search || this.search == '') return
         this.$router.push({name: 'ProductSearch', query: {q: this.search }})
-    },
-    goToPost(block) {
-      if(block.post) {
-        this.$router.push({name: 'FrontPostShow', params: { slug: block.post.slug }})
-      }
-    },
-    onObserve(val) {
-      console.log(val);
-    }
-  },
-  mounted() {
-    if(this.config) {
-      this.viewMode = this.config.home_view_mode
     }
   }
 }

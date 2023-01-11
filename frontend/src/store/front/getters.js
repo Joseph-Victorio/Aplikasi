@@ -11,3 +11,10 @@ export const getProductItemByCategoryId =  (state) => (id) => {
   return data
 }
 
+export function getBanner1 (state) {
+  if(state.blocks.banner.length) {
+    return 
+  }
+  return null
+}
+

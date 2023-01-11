@@ -45,6 +45,11 @@ Vue.mixin({
       }
       return result;
     },
+    goToPost(block) {
+      if(block.post) {
+        this.$router.push({name: 'FrontPostShow', params: { slug: block.post.slug }})
+      }
+    },
     makeSessionId() {
       let result = this.getRandomString(39)
       

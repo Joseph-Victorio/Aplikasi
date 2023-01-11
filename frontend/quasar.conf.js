@@ -199,7 +199,8 @@ module.exports = function (ctx ) {
       meta_head: ctx.dev ? '' : "@include('partial/meta_head')",
       meta_head: ctx.dev ? '' : "@include('partial/meta_head')",
       json_schema: ctx.dev ? '' : "@include('partial/json_schema')",
-      meta_body: ctx.dev ? '' :"@include('partial/meta_body')",
+      meta_body: ctx.dev ? '' :
+      "@include('partial/meta_body')",
     },
 
     // Full list of options: https://v1.quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
