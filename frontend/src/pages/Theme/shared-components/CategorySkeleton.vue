@@ -1,10 +1,10 @@
 <template>
-    <div>
-        <div class="flex justify-evenly q-py-md overflow-hidden no-wrap">
-            <div class="column justify-center items-center" v-for="a in skeletonLength" :key="a">
-                <q-skeleton type="circle" :width="theCircle" :height="theCircle" />
-                <q-skeleton type="text" width="70px" class="q-mt-sm"/>
+    <div class="flex justify-evenly overflow-hidden">
+        <div class="text-center column items-center" v-for="a in skeletonLength" :key="a">
+            <div class="full-width">
+                <q-skeleton :height="theWidth" :width="theWidth" />
             </div>
+            <q-skeleton type="text" width="70%" class="q-mt-sm"/>
         </div>
     </div>
 </template>
@@ -19,14 +19,15 @@ export default {
 
             if(this.page_width >= 768) return 5
             if(this.page_width >= 400) return 4
+            if(this.page_width >= 250) return 3
 
-            return 3
+            return 2
         },
-        theCircle() {
-            if(this.page_width >= 768) return '90px'
-            if(this.page_width >= 600) return '65px'
-
-            return '50px'
+        theWidth() {
+            if(this.page_width >= 768) return `${768 / 5.8}px`
+            if(this.page_width >= 400) return `${this.page_width / 5.2}px`
+            if(this.page_width >= 250) return `${this.page_width / 3.7}px`
+            return `${this.page_width / 4}px`
         }
     }
 }
