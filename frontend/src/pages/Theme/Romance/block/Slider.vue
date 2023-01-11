@@ -1,6 +1,6 @@
 <template>
   <div class="overflow-hidden header-romance">
-    <template v-if="sliders.ready && sliders.available">
+    <template v-if="!sliders.ready && sliders.available">
       <q-carousel
         v-model="slide"
         transition-prev="slide-right"
@@ -18,7 +18,7 @@
           </q-carousel-slide>
       </q-carousel>
     </template>
-    <q-skeleton v-if="!sliders.ready" height="320px"></q-skeleton>
+    <q-skeleton v-if="!sliders.ready" :height="sKeletonHeight"></q-skeleton>
   </div>
 </template>
 
@@ -33,6 +33,12 @@ export default {
   computed: {
     sliders() {
       return this.$store.state.front.sliders
+    },
+    page_width() {
+      return this.$store.state.page_width
+    },
+    sKeletonHeight() {
+      return `${this.page_width/2}px`
     }
   }
 

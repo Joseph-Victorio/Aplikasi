@@ -11,21 +11,11 @@
         </vue-glide-slide>
       </vue-glide>
     </div>
-    <div class="row justify-evenly q-py-xl" v-else>
-      <div class="column justify-center items-center">
-        <q-skeleton type="circle" widyh="40px" />
-        <q-skeleton type="text" width="110px" />
-        <q-skeleton type="text" width="70px" />
-      </div>
-      <div class="column justify-center items-center">
-        <q-skeleton type="circle" widyh="40px" />
-        <q-skeleton type="text" width="110px" />
-        <q-skeleton type="text" width="70px" />
-      </div>
-      <div class="column justify-center items-center">
-        <q-skeleton type="circle" widyh="40px" />
-        <q-skeleton type="text" width="110px" />
-        <q-skeleton type="text" width="70px" />
+    <div class="row justify-evenly q-py-xl" v-if="!blocks.ready">
+      <div class="column justify-center items-center" v-for="a in 3" :key="a">
+        <q-skeleton type="circle" :width="theCircle" :height="theCircle"/>
+        <q-skeleton type="text" width="100%" />
+        <q-skeleton type="text" width="50%" />
       </div>
     </div>
   </div>
@@ -47,6 +37,15 @@ export default {
   computed: {
     blocks() {
       return this.$store.state.front.blocks
+    },
+    page_width() {
+            return this.$store.state.page_width
+        },
+    theCircle() {
+        if(this.page_width >= 768) return '80px'
+        if(this.page_width >= 600) return '65px'
+
+        return '50px'
     }
   },
   methods: {

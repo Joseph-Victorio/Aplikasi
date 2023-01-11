@@ -51,16 +51,12 @@ export default {
     config() {
       return this.$store.state.config
     },
-    categories(){
-      return this.$store.state.front.categories
-    },
     products() {
       return this.$store.getters['front/getProductItemByCategoryId'](parseInt(this.category.id))
     }
   },
   methods: {
     handleonObserve() {
-      console.log(this.products);
        if(!this.products.length) {
         this.getProducts()
        }

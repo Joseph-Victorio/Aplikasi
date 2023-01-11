@@ -20,8 +20,6 @@ export default {
     intersecObserve() {
       let el = this.$refs.block
 
-      console.log(el);
-
       el.classList.remove('hidden')
 
       let opts = {

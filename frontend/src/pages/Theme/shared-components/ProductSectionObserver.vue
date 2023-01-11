@@ -1,6 +1,6 @@
 <template>
-  <div id="product-block" v-if="categories.length">
-    <template v-for="category in categories">
+  <div id="product-block" v-if="categories.available">
+    <template v-for="category in categories.data">
       <div :key="category.id" v-if="category.is_front && category.products_count > 0" 
         class="block-container bg-linear">
         <ProductBlockObserver :category="category" />

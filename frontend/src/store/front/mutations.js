@@ -16,17 +16,19 @@ export function SET_PRODUCT_PROMO (state, payload)
 export function SET_CATEGORIES ( state, payload ) {
 
   if(payload.length != state.categories.length) {
-    state.categories = payload.map(cat => ({...cat, product_items: [], is_done: false, is_available: true }))
+    state.categories.data = payload.map(cat => ({...cat, product_items: [], is_done: false, is_available: true }))
+    state.categories.ready = true
+    state.categories.available = state.categories.data.length > 0
   }
 
 }
 export function SET_PRODUCT_CATEGORY ( state, payload ) {
-  let idx = state.categories.findIndex(el => el.id == payload.category_id)
+  let idx = state.categories.data.findIndex(el => el.id == payload.category_id)
 
   if(idx >= 0) {
-    state.categories[idx].product_items = payload.product_items
-    state.categories[idx].is_done = true
-    state.categories[idx].is_available = payload.product_items.length > 0
+    state.categories.data[idx].product_items = payload.product_items
+    state.categories.data[idx].is_done = true
+    state.categories.data[idx].is_available = payload.product_items.length > 0
   }
 
 }

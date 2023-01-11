@@ -10,7 +10,7 @@
         </vue-glide>  
     </template>
     <div class="slider-padding" v-if="!sliders.ready">
-      <q-skeleton height="320px"></q-skeleton>
+      <q-skeleton :height="sKeletonHeight"></q-skeleton>
     </div>
   </div>
 </template>
@@ -32,6 +32,16 @@ export default {
   computed: {
     sliders() {
       return this.$store.state.front.sliders
+    },
+    page_width() {
+      return this.$store.state.page_width
+    },
+    sKeletonHeight() {
+      if(this.page_width < 768) {
+        return `${this.page_width/2.2}px`
+      }else {
+        return `${768/2.2}px`
+      }
     }
   }
 

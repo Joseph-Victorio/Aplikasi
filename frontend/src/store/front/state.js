@@ -13,7 +13,11 @@ export default function () {
       available: true
     },
     product_promo: [],
-    categories: [],
+    categories: {
+      ready: false,
+      available: true,
+      data: []
+    },
     sliders: {
       data: [],
       ready: false,
