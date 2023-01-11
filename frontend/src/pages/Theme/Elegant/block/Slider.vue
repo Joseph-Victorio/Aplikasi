@@ -5,7 +5,7 @@
         <vue-glide :options="glideOptions">
             <vue-glide-slide v-for="(img, index) in sliders.data" :key="index">
               <div class="auto-padding p-lg">
-                <img :src="img.src" style="width:100%;height:auto;border-radius:6px;"/>
+                <img :src="img.src" style="border-radius:6px;" class="img-slider"/>
               </div>
             </vue-glide-slide>
             <template slot="control" data-glide-el="controls[nav]" v-if="sliders.data.length > 1">
@@ -18,7 +18,7 @@
       </div>
       <div class="header_elegant--inner q-pt-sm q-pb-md q-mb-md" v-if="!sliders.ready">
         <div class="q-pa-lg q-pb-xl">
-          <q-skeleton :height="sKeletonHeight"></q-skeleton>
+          <q-skeleton :height="sliderHeight"></q-skeleton>
         </div>
       </div>
   </div>
@@ -45,7 +45,7 @@ export default {
     page_width() {
       return this.$store.state.page_width
     },
-    sKeletonHeight() {
+    sliderHeight() {
       if(this.page_width < 768) {
         return `${this.page_width/2.2}px`
       }else {

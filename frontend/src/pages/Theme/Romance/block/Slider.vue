@@ -1,24 +1,13 @@
 <template>
   <div class="overflow-hidden header-romance">
     <template v-if="sliders.ready && sliders.available">
-      <q-carousel
-        v-model="slide"
-        transition-prev="slide-right"
-        transition-next="slide-left"
-        swipeable
-        animated
-        infinite
-        keep-alive
-        :autoplay="5500"
-        height="auto"
-        class="bg-grey-2 text-white"
-        >
-        <q-carousel-slide v-for="(img, index) in sliders.data" :key="index" :name="index" class="q-pa-none">
-          <img :src="img.src" alt="Slider" class="img-slider">
-          </q-carousel-slide>
-      </q-carousel>
+      <vue-glide :options="glideOptions">
+          <vue-glide-slide v-for="(img, index) in sliders.data" :key="index">
+            <img alt="Slider" :src="img.src" class="img-slider"/>
+          </vue-glide-slide>
+        </vue-glide> 
     </template>
-    <q-skeleton v-if="!sliders.ready" :height="sKeletonHeight"></q-skeleton>
+    <q-skeleton v-if="!sliders.ready" :height="sliderHeight"></q-skeleton>
   </div>
 </template>
 
@@ -27,7 +16,13 @@ export default {
   name: 'FrontSlider',
   data () {
     return {
-      slide: 0,
+      glideOptions: {
+        gap:10,
+        perView: 1,
+        animationDuration: 1000,
+        autoplay: 6000,
+        bullet: true
+      },
     }
   },
   computed: {
@@ -37,8 +32,12 @@ export default {
     page_width() {
       return this.$store.state.page_width
     },
-    sKeletonHeight() {
-      return `${this.page_width/2}px`
+    sliderHeight() {
+      if(this.page_width < 768) {
+        return `${this.page_width/2.2}px`
+      }else {
+        return `${768/2.2}px`
+      }
     }
   }
 
