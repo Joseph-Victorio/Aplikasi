@@ -16,8 +16,10 @@
           </vue-glide>  
         </div>
       </div>
-      <div class="q-px-lg q-pt-xl q-pb-sm" v-if="!sliders.ready">
-        <q-skeleton :height="sKeletonHeight"></q-skeleton>
+      <div class="header_elegant--inner q-pt-sm q-pb-md q-mb-md" v-if="!sliders.ready">
+        <div class="q-pa-lg q-pb-xl">
+          <q-skeleton :height="sKeletonHeight"></q-skeleton>
+        </div>
       </div>
   </div>
 </template>

@@ -157,7 +157,7 @@
 
     </div>
     <q-inner-loading :showing="loading" class="no-print">
-        <q-spinner-facebook size="50px" color="primary"/>
+       
     </q-inner-loading>
      <div v-if="invoice" :class="{'no-print': isPrintPacking}">
       <div class="print-invoice">

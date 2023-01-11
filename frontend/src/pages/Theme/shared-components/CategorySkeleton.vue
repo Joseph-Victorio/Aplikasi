@@ -1,8 +1,10 @@
 <template>
-    <div class="flex justify-evenly q-py-xl overflow-hidden no-wrap">
-        <div class="column justify-center items-center" v-for="a in skeletonLength" :key="a">
-            <q-skeleton type="circle" :width="theCircle" :height="theCircle" />
-            <q-skeleton type="text" width="70px" class="q-mt-sm"/>
+    <div>
+        <div class="flex justify-evenly q-py-md overflow-hidden no-wrap">
+            <div class="column justify-center items-center" v-for="a in skeletonLength" :key="a">
+                <q-skeleton type="circle" :width="theCircle" :height="theCircle" />
+                <q-skeleton type="text" width="70px" class="q-mt-sm"/>
+            </div>
         </div>
     </div>
 </template>
@@ -21,7 +23,7 @@ export default {
             return 3
         },
         theCircle() {
-            if(this.page_width >= 768) return '80px'
+            if(this.page_width >= 768) return '90px'
             if(this.page_width >= 600) return '65px'
 
             return '50px'

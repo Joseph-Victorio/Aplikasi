@@ -47,7 +47,7 @@
       <div class="text-center q-pt-xl q-mt-xl">Tidak ada data</div>
     </template>
     <q-inner-loading :showing="loading">
-        <q-spinner-facebook size="50px" color="primary"/>
+       
     </q-inner-loading>
   </q-page>
 </template>

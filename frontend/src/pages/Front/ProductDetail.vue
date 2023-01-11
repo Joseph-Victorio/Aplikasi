@@ -190,7 +190,7 @@
             <div class="q-my-md row justify-center">
               <q-btn outline no-caps color="primary" :loading="loadMoreLoading" v-if="productReviews.length < product.reviews_count" label="loadmore..." @click="loadReview">
                 <template v-slot:loading>
-                  <q-spinner-facebook />
+                  <r-facebook />
                 </template>
               </q-btn>
             </div>
@@ -205,7 +205,7 @@
     </q-footer>
     </template>
     <q-inner-loading :showing="!ready">
-      <q-spinner-facebook size="50px" color="primary"/>
+     
     </q-inner-loading>
     <q-dialog v-model="reviewModal" persistent>
       <div class="q-card" style="width:100%;max-width:360px;">

@@ -19,10 +19,6 @@
         </q-toolbar>
       </q-header>
 
-      <!-- <q-inner-loading :showing="loading">
-        <q-spinner-facebook size="50px" color="primary"/>
-      </q-inner-loading> -->
-
         <Slider />  
 
         <FeaturedCarousel />
@@ -52,6 +48,9 @@
         <InstallApp />
 
         <FooterBock />
+<!-- 
+        <q-inner-loading :showing="loading">
+        </q-inner-loading> -->
 
   </q-page>
 </template>

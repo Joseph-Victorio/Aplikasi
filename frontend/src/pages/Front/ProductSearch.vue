@@ -36,7 +36,7 @@
       </div>
     </template>
     <q-inner-loading :showing="loading">
-        <q-spinner-facebook size="50px" color="primary"/>
+       
     </q-inner-loading>
     <div class="flex justify-center q-py-lg" v-if="products && products.links">
      <q-btn label="loadmore" color="primary" outline :loading="isLoadmore" v-if="products.links.next" @click="paginate(products.links.next)"></q-btn>

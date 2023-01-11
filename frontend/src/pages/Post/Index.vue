@@ -49,7 +49,7 @@
     </template>
 
     <q-inner-loading :showing="!posts.ready">
-        <q-spinner-facebook size="50px" color="primary"/>
+       
     </q-inner-loading>
     
     <q-page-sticky class="lt-sm" position="bottom-right" :offset="[12, 12]">

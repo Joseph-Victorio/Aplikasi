@@ -1,6 +1,6 @@
 <template>
   <div class="overflow-hidden header-romance">
-    <template v-if="!sliders.ready && sliders.available">
+    <template v-if="sliders.ready && sliders.available">
       <q-carousel
         v-model="slide"
         transition-prev="slide-right"

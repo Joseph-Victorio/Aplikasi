@@ -23,7 +23,7 @@
       </template>
     </template>
     <q-inner-loading :showing="!ready">
-        <q-spinner-facebook size="50px" color="primary"/>
+       
     </q-inner-loading>
   </q-page>
 </template>

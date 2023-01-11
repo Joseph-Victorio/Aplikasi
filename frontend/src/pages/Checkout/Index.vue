@@ -65,7 +65,7 @@
       </q-stepper>
     </div>
     <q-inner-loading :showing="loading">
-        <q-spinner-facebook size="50px" color="primary"/>
+       
     </q-inner-loading>
     <div class="bg-white q-py-md q-gutter-y-sm column" :class="{'sticky-bottom': isStickyBottom }">
       <q-btn v-if="step != 3 " @click="next" no-caps unelevated label="Langkah Selanjutnya" color="primary"></q-btn>

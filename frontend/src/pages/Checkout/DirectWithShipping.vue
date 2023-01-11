@@ -82,7 +82,6 @@
       </div>
     </div>
     <q-inner-loading :showing="loading">
-        <q-spinner-facebook size="50px" color="primary"/>
     </q-inner-loading>
     <q-footer class="bg-white q-pa-md">
        <q-btn @click="checkout" color="green-6" class="full-width q-mt-sm" no-caps>

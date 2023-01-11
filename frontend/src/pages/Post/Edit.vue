@@ -79,7 +79,7 @@
    
     <input type="file" class="hidden" ref="image" @change="updateImagePreview" />
     <q-inner-loading :showing="loading">
-        <q-spinner-facebook size="50px" color="primary"/>
+       
     </q-inner-loading>
   </q-page>
 </template>

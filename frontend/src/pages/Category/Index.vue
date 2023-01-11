@@ -63,7 +63,6 @@
       <div>Tidak ada data</div>
     </template>
     <q-inner-loading :showing="!categories.ready">
-        <q-spinner-facebook size="50px" color="primary"/>
     </q-inner-loading>
     <q-page-sticky class="lt-sm" position="bottom-right" :offset="[12, 12]">
       <q-btn glossy fab icon="add" color="primary" :to="{name: 'CategoryForm'}"/>

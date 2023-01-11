@@ -43,9 +43,7 @@ export default {
         },
     theCircle() {
         if(this.page_width >= 768) return '80px'
-        if(this.page_width >= 600) return '65px'
-
-        return '50px'
+        return '65px'
     }
   },
   methods: {

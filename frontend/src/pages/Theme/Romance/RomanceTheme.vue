@@ -24,7 +24,7 @@
       </q-header>
 
        <!-- <q-inner-loading :showing="loading">
-        <q-spinner-facebook size="50px" color="primary"/>
+       
       </q-inner-loading> -->
 
         <Slider />

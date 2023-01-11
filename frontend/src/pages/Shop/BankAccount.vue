@@ -39,7 +39,7 @@
       <div>Tidak ada data</div>
     </template>
      <q-inner-loading :showing="!banks.ready">
-        <q-spinner-facebook size="50px" color="primary"/>
+       
     </q-inner-loading>
     <q-page-sticky class="lt-sm" position="bottom-right" :offset="[12, 12]">
       <q-btn fab icon="add" color="primary" @click="handleAdd" glossy/>
