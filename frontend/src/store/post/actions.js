@@ -8,19 +8,19 @@ export function addPost({ commit, dispatch }, payload) {
     }
   }
   let self = this
-  commit('SET_LOADER_POST')
+  commit('SET_LOADING', true, { root: true })
   Api().post('posts', formData, {headers: {'content-Type': 'multipart/formData'}}).then(response => {
     if(response.status == 201) {
      dispatch('getAllPost')
       self.$router.push({name: 'AdminPostIndex'})
       commit('SET_LOADING', false, { root: true })
     }
-  }).catch(() => {
+  }).finally(() => {
     commit('SET_LOADING', false, { root: true })
   })
 }
-export function updatePost (context, payload) {
-  context.commit('SET_LOADER_POST')
+export function updatePost ({ commit, dispatch }, payload) {
+  commit('SET_LOADING', true, { root: true })
   let self = this
   let formData = new FormData();
   for(const x in payload) {
@@ -33,29 +33,33 @@ export function updatePost (context, payload) {
   Api().post('posts/'+payload.id, formData, {headers: {'content-Type': 'multipart/formData'}}).then(response => {
     if(response.status == 200) {
       self.$router.push({name: 'AdminPostIndex'})
-      context.dispatch('getAllPost')
+      dispatch('getAllPost')
     }
+  }).finally(() => {
+    commit('SET_LOADING', false, { root: true })
   })
 }
-export function deletePost (context, id) {
-  context.commit('SET_LOADER_POST')
+export function deletePost ({ commit, dispatch }, id) {
+  commit('SET_LOADING', false, { root: true })
   Api().delete('posts/'+id).then(response => {
     if(response.status == 200) {
-      context.dispatch('getAllPost')
+      dispatch('getAllPost')
     }
+  }).finally(() => {
+    commit('SET_LOADING', false, { root: true })
   })
 }
-export function getAllPost (context) {
+export function getAllPost ({ commit }) {
   Api().get('posts').then(response => {
     if(response.status == 200) {
-      context.commit('SET_ALL_POST', response.data.results)
+      commit('SET_ALL_POST', response.data.results)
     }
   })
 }
-export function getPosts (context) {
+export function getPosts ({ commit }) {
   Api().get('getPosts?q=listing').then(response => {
     if(response.status == 200) {
-      context.commit('SET_LISTING_POST', response.data.results)
+      commit('SET_LISTING_POST', response.data.results)
     }
   })
 }

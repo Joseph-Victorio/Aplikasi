@@ -1,5 +1,5 @@
 <template>
-  <q-page :class="{'flex flex-center' : !posts.available}">
+  <q-page>
      <q-header>
       <q-toolbar>
         <q-btn :to="{name: 'Settings'}"
@@ -11,9 +11,13 @@
         <q-btn color="white" text-color="primary" size="13px" class="gt-xs" no-caps icon="eva-plus-circle" :to="{name: 'PostCreate'}" label="Tambah Post"/>
       </q-toolbar>
     </q-header>
-    <template  v-if="posts.available">
-     <div class="q-pt-sm q-pb-xl">
+     <div class="q-pb-xl">
       <q-list separator>
+        <q-item class="item-header">
+          <q-item-section avatar>#</q-item-section>
+          <q-item-section>Title</q-item-section>
+          <q-item-section side>Action</q-item-section>
+        </q-item>
        <q-item v-for="post in posts.data" :key="post.id">
 
          <q-item-section avatar>
@@ -42,15 +46,10 @@
         </q-item-section>
       </q-item>
     </q-list>
+    <div class="text-center q-py-md" v-if="!posts.available">Tidak ada data</div>
     </div>
-    </template>
-    <template v-else>
-      <div>Tidak ada data</div>
-    </template>
 
-    <q-inner-loading :showing="!posts.ready">
-       
-    </q-inner-loading>
+    <q-inner-loading :showing="loading"></q-inner-loading>
     
     <q-page-sticky class="lt-sm" position="bottom-right" :offset="[12, 12]">
       <q-btn fab icon="add" color="primary" :to="{name: 'PostCreate'}" glossy/>
@@ -69,14 +68,12 @@ export default {
   },
   computed: {
     ...mapState({
-      posts: state => state.post.posts
+      posts: state => state.post.posts,
+      loading: state => state.loading
     }),
   },
   methods: {
     ...mapActions('post', ['getAllPost', 'deletePost']),
-    money(number) {
-      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number)
-    },
     handleSelectFilter(str) {
       this.isSelect = str
       this.$store.commit('post/FILTERBY', str)
