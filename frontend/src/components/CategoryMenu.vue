@@ -52,7 +52,7 @@ export default {
     }
   },
   mounted() {
-    if(!this.categories.length) {
+    if(!this.categories.data.length) {
       this.loading = true
       this.$store.dispatch('front/getCategories').then(res => {
         this.$store.commit('front/SET_CATEGORIES', res.data.results)
