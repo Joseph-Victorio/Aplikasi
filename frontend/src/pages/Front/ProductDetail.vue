@@ -32,12 +32,12 @@
             :offset="[18, 40]"
           >
             <q-btn 
-                aria-label="Fullscreen"
+              aria-label="Fullscreen"
                dense color="white" 
                text-color="grey-8" 
                icon="ion-expand"
                unelevated 
-               size="15px" 
+               size="12px" 
                padding="10px"
                round
               @click="fullscreen = !fullscreen"
@@ -348,7 +348,7 @@
     <q-dialog v-model="fullscreen" persistent maximized>
       <div class="max-width relative" v-if="product" style="background:rgb(187 187 187 / 96%);">
         <div class="text-center q-py-md absolute" style="top:5px;width:100%;z-index:99;">
-          <div class="flex justify-center">
+          <div class="flex justify-center" v-show="helpTextScreen">
             <div class="q-px-md" style="background:rgb(240 240 240 / 90%);">Scroll mouse atau cubit layar untuk zoom</div>
           </div>
         </div>
@@ -437,6 +437,7 @@ export default {
       quantity: 1,
       discount: 0,
       fullscreen: false,
+      helpTextScreen: true,
       shop: this.$store.state.shop,
       ready: false, 
       loadMoreLoading: false,
@@ -466,6 +467,14 @@ export default {
       && this.product.reviews_count > 0) {
          this.getReview()
       } 
+    },
+    fullscreen(val) {
+      if(val == true) {
+        this.helpTextScreen = true
+        setTimeout(() => {
+          this.helpTextScreen = false
+        }, 5000)
+      }
     }
   },
   computed: {

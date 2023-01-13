@@ -12,7 +12,7 @@
           <q-btn flat icon="eva-close" dense @click="closeCategory"></q-btn>
         </q-item-section>
       </q-item>
-      <q-item v-for="category in categories" :key="category.id" clickable @click="handleShowCategory(category.id)">
+      <q-item v-for="category in categories.data" :key="category.id" clickable @click="handleShowCategory(category.id)">
         <q-item-section avatar>
           <q-avatar>
             <q-img :src="category.src"></q-img>
