@@ -105,6 +105,7 @@
             </div>
           </div>
           <div class="q-mt-md">
+            <div class="q-mb-xs">{{ product_varian_item_render[0].label}}</div>
             <div class="q-gutter-sm">
               <q-btn aria-label="Product Varian" class="product-varian--btn" outline v-for="item in product_varian_item_render" :key="item.id" :label="item.value" :color="product_varian_selected && product_varian_selected.id == item.id? 'accent' : 'grey-9'" @click="selectVarianItem(item)">
               <badge-tick v-if="product_varian_selected && product_varian_selected.id == item.id " />
@@ -189,9 +190,6 @@
               </div>
             <div class="q-my-md row justify-center">
               <q-btn outline no-caps color="primary" :loading="loadMoreLoading" v-if="productReviews.length < product.reviews_count" label="loadmore..." @click="loadReview">
-                <template v-slot:loading>
-                  <r-facebook />
-                </template>
               </q-btn>
             </div>
             </div>

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Cache;
 class TripayController extends Controller
 {
     protected $privateKey;
+    protected $apiKey;
 
     public function __construct()
     {
