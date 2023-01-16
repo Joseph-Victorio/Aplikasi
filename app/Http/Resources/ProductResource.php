@@ -24,8 +24,6 @@ class ProductResource extends JsonResource
             'is_discount' => false,
         ];
 
-        $varianItems = $this->varianItems;
-
         if($this->productPromo) {
 
             $pricing['is_discount'] = true;
@@ -33,9 +31,9 @@ class ProductResource extends JsonResource
             $pricing['discount_amount'] = intval($this->productPromo->discount_amount);
         }
 
-        if($varianItems->count() > 0) {
-            $pricing['default_price'] = intval($varianItems[0]->price);
-            $pricing['max_price'] = intval($varianItems[$varianItems->count() - 1]->price);
+        if($this->varianItemSortByPrice->count() > 0) {
+            $pricing['default_price'] = intval($this->varianItemSortByPrice[0]->price);
+            $pricing['max_price'] = intval($this->varianItemSortByPrice[$this->varianItemSortByPrice->count() - 1]->price);
         }
 
         return [
