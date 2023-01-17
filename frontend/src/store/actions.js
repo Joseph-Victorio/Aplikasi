@@ -38,6 +38,7 @@ export default {
       commit('front/SET_CATEGORIES', response.data.results.categories, { root: true })
       commit('front/SET_SLIDERS', response.data.results.sliders, { root: true })
       commit('SET_SESSION_ID', response.data.results.sess_id)
+      commit('front/SET_LOADED', null, { root: true })
     }
 
     document.body.classList.remove('is_loading')

@@ -57,7 +57,10 @@ module.exports = function (ctx ) {
       env: {
         API: ctx.dev
           ? 'http://localhost:8000/api'
-          : '/api'
+          : '/api',
+        PUBLIC_API: ctx.dev
+          ? 'http://localhost:8000/api/public/'
+          : '/api/public/',
       },
       // transpile: false,
 

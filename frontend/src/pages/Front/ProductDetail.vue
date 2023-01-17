@@ -414,7 +414,7 @@
 import { mapActions } from 'vuex'
 import ShoppingCart from 'components/ShoppingCart.vue'
 import BadgeTick from 'components/BadgeTick.vue'
-import PinchScrollZoom, { PinchScrollZoomEmitData } from "@coddicat/vue-pinch-scroll-zoom";
+import PinchScrollZoom from "@coddicat/vue-pinch-scroll-zoom";
 export default {
   name: 'ProductShow',
   components: { ShoppingCart, BadgeTick, PinchScrollZoom },
@@ -525,9 +525,6 @@ export default {
     },
     session_id() {
       return this.$store.state.session_id
-    },
-    currentSlide() {
-      return this.slide-1
     },
     chalengeTesting() {
       return this.number1+this.number2 != this.jawaban
@@ -887,14 +884,14 @@ export default {
     getProduct() {
       this.getProductDetail(this.$route.params.slug).then(response => {
         if(response.status == 200) {
-          let data = response.data.data
-          this.product = data
+          let resultData = response.data.results
+          this.product = resultData
           this.ready = true
 
-          this.has_varian = data.varian_items.length > 0
+          this.has_varian = resultData.varian_items.length > 0
           
-          if(this.has_varian && data.varian_attributes.length) {
-            this.product_attribute_selected = data.varian_attributes[0];
+          if(this.has_varian && resultData.varian_attributes.length) {
+            this.product_attribute_selected = resultData.varian_attributes[0];
           }
         } else {
           // this.$router.push({name: 'ProductIndex'})

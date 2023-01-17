@@ -67,7 +67,7 @@ export default {
      if(response.status == 200) {
       let data = {
         category_id: this.category.id,
-        product_items: response.data.data
+        product_items: response.data.results
       }
       this.$store.commit('front/SET_PRODUCT_CATEGORY', data)
      }

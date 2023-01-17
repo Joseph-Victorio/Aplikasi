@@ -22,6 +22,7 @@ export default function () {
       data: [],
       ready: false,
       available: true
-    }
+    },
+    is_loaded: false
   }
 }

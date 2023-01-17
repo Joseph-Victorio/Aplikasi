@@ -19,7 +19,6 @@ class ApiResponse
         $response = [];
         $response['success'] = true;
         $response['message'] = $msg ?? 'Request Success';
-        $response['errors'] = null;
         if (! is_null($value)) {
             if (is_array($value)) {
                 $response['results'] = $value;

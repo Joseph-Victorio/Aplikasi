@@ -44,3 +44,7 @@ export function SET_POSTS (state, payload) {
   state.posts.is_available = payload.length > 0
   state.posts.is_done = true
 }
+
+export function SET_LOADED(state) {
+  state.is_loaded = true
+}

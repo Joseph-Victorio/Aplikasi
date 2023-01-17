@@ -19,6 +19,9 @@ export default {
     shop() {
       return this.$store.state.shop
     },
+    is_loaded() {
+      return this.$store.state.front.is_loaded
+    },
     title() {
       if(this.shop) {
         return `Beranda - ${this.shop.name}`
@@ -29,6 +32,11 @@ export default {
   meta() {
     return {
       title: this.title,
+    }
+  },
+  created() {
+    if(!this.is_loaded) {
+      this.$store.dispatch('getInitialData')
     }
   }
 }

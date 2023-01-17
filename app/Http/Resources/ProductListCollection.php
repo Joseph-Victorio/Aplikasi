@@ -13,6 +13,9 @@ class ProductListCollection extends ResourceCollection
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
 
+     public static $wrap = 'results';
+
+
     public function toArray($request)
     {
         return parent::toArray($request);

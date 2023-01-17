@@ -5,16 +5,16 @@ export function SET_PRODUCT (state, payload)
 
 export function SET_PRODUCTS (state, payload) 
 {
-  state.products.data = payload.data
+  state.products.data = payload.results
   state.products.links = payload.links
   state.products.meta = payload.meta
   state.products.ready = true
-  state.products.available = payload.data.length > 0 ? true : false
+  state.products.available = payload.results.length > 0 ? true : false
 
 }
 export function PAGINATE_PRODUCTS (state, payload) 
 {
-  state.products.data = [...state.products.data, ...payload.data]
+  state.products.data = [...state.products.data, ...payload.results]
   state.products.links = payload.links
   state.products.meta = payload.meta
 }
@@ -105,16 +105,16 @@ export function SET_FRONT_RODUCT_READY (state, status)
 }
 export function SET_PRODUCT_CATEGORY (state, payload) 
 {
-  state.productByCategory.data = payload.data
+  state.productByCategory.data = payload.results
   state.productByCategory.links = payload.links
   state.productByCategory.meta = payload.meta
   state.productByCategory.ready = true
-  state.productByCategory.available = payload.data.length > 0 ? true : false
+  state.productByCategory.available = payload.results.length > 0 ? true : false
 }
 
 export function PAGINATE_PRODUCT_CATEGORY (state, payload) 
 {
-  state.productByCategory.data = [...state.productByCategory.data, ...payload.data]
+  state.productByCategory.data = [...state.productByCategory.data, ...payload.results]
   state.productByCategory.links = payload.links
   state.productByCategory.meta = payload.meta
 
@@ -127,9 +127,9 @@ export function CLEAR_PRODUCT_CATEGORY (state)
 }
 export function SET_PRODUCT_FAVORITE (state, payload) 
 {
-  state.productFavorites.data = payload.data
+  state.productFavorites.data = payload.results
   state.productFavorites.ready = true
-  state.productFavorites.available = payload.data.length > 0 ? true : false
+  state.productFavorites.available = payload.results.length > 0 ? true : false
 }
 export function CLEAR_PRODUCT_FAVORITE (state) 
 {

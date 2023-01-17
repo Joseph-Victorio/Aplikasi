@@ -16,9 +16,7 @@ export default {
       this.$store.commit('SET_PAGE_WIDTH', window.innerWidth)
     },
     async getData() {
-      this.$store.dispatch('getInitialData')
       this.$store.dispatch('cart/getCarts')
-
     }
   },
   created() {

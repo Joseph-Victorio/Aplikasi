@@ -92,6 +92,7 @@ export default {
       shop: state =>  state.shop,
       config: state => state.config,
       user: state => state.user.user,
+      categories: state => state.front.categories
     }),
     logoWidth() {
       if(this.shop && this.shop.name) {
@@ -127,6 +128,7 @@ export default {
         this.$store.dispatch('user/getUser')
       }
     }
+    
   },
   created() {
     if(this.config) {
