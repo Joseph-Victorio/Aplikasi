@@ -15,3 +15,4 @@ Lihat di panduan development
 
 - [Laravel 8](https://laravel.com/)
 - [VueJs](https://vuejs.org/)
+- [Quasar Framework](https://quasar.dev/)
