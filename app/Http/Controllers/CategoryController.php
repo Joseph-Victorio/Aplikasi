@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -14,14 +16,11 @@ class CategoryController extends Controller
 
     public function index()
     {
-        return response([
-            'success' => true, 
-            'results' => Category::orderBy('weight', 'asc')->get()
-            
-        ],200);
+        $data = Category::orderBy('weight', 'asc')->get();
+
+        return ApiResponse::success($data);
+
     }
-
-
     public function store(Request $request)
     {
         $request->validate([
@@ -71,32 +70,21 @@ class CategoryController extends Controller
             Cache::forget('categories');
             Cache::forget('initial_products');
 
-            return response([
-                'success' => true, 
-                'message' => 'Berhasil menambah kategori',
-                
-            ],201);
+            return ApiResponse::success($category);
 
-        } catch (\Throwable $th) {
+        } catch (Exception $e) {
 
            DB::rollBack();
 
-           return response([
-            'success' => false, 
-            'message' => $th,
-            
-            ],400);
+           return ApiResponse::failed($e->getMessage());
         }
         
         
     }
     public function show($id)
     {
-        return response([
-            'success' => true, 
-            'results' => Category::find($id)
-            
-        ],200);
+        $data = Category::find($id);
+        return ApiResponse::success($data);
     }
 
     public function update(Request $request, $id)
@@ -158,19 +146,12 @@ class CategoryController extends Controller
             Cache::forget('categories');
             Cache::forget('initial_products');
     
-            return response([
-                'success' => true, 
-                'message' => 'Berhasil memperbarui Kategori',
-                
-            ],200);
-        } catch (\Throwable $th) {
+            return ApiResponse::success($category);
+
+        } catch (Exception $e) {
             DB::rollBack();
 
-            return response([
-                'success' => false, 
-                'message' => $th->getMessage(),
-                
-            ],400);
+            return ApiResponse::failed($e->getMessage());
 
         }
 
@@ -188,11 +169,7 @@ class CategoryController extends Controller
         Cache::forget('categories');
         Cache::forget('initial_products');
 
-        return response([
-            'success' => true, 
-            'results' => null
-            
-        ],200);
+        return ApiResponse::success();
         
     }
 

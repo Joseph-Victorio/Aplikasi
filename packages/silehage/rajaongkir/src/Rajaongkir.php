@@ -116,23 +116,24 @@ class Rajaongkir
           'success' => false,
           'message' => $error,
       ]);
-    }else{
-
-        $data = json_decode($response);
-        if($data->rajaongkir->status->code == 200){
-
-          return json_encode([
-            'success' => true,
-            'data' => $data->rajaongkir->results
-          ]);
-
-        } else {
-          return json_encode([
-            'success' => false,
-            'message' => $data->status->description,
-        ]);
-      }
     }
+
+    $data = json_decode($response);
+
+    if($data->rajaongkir->status->code == 200){
+
+        return json_encode([
+          'success' => true,
+          'data' => $data->rajaongkir->results
+        ]);
+
+      } else {
+        return json_encode([
+          'success' => false,
+          'message' => $data->status->description,
+      ]);
+    }
+    
   }
 
   protected function curlPost($endpoint,$data)
@@ -163,10 +164,12 @@ class Rajaongkir
       curl_close($curl);
 
       if($errno){
+
           return json_encode([
               'success' => false,
               'message' => $error,
           ]);
+          
       }else{
         
         $data = json_decode($response);

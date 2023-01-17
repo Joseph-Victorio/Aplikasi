@@ -7,9 +7,7 @@ use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
-
 use App\Models\ProductVarian;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 
 class TripayController extends Controller

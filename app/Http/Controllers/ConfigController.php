@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use App\Models\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -12,10 +13,8 @@ class ConfigController extends Controller
 
     public function show()
     {
-        return response([
-            'success' => true,
-            'results' => Config::first()
-        ], 200);
+        $data =  Config::first();
+        return ApiResponse::success($data);
     }
     public function adminConfig()
     {
@@ -28,10 +27,9 @@ class ConfigController extends Controller
             'telegram_user_id',
         ];
 
-        return response([
-            'success' => true,
-            'results' => Config::first()->makeVisible($hiddenFields)
-        ], 200);
+        $data = Config::first()->makeVisible($hiddenFields);
+
+        return ApiResponse::success($data);
     }
 
     public function update(Request $request)
@@ -47,10 +45,7 @@ class ConfigController extends Controller
             Artisan::all('generate:manifest');
         }
 
-        return response([
-            'success' => true,
-            'results' => $config
-        ], 200);
+        return ApiResponse::success($config);
     }
 
 }

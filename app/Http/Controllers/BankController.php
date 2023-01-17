@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BankAccountRequest;
 use App\Models\BankAccount;
 use Illuminate\Http\Request;
 
@@ -24,21 +25,11 @@ class BankController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BankAccountRequest $request)
     {
-        $request->validate([
-            'bank_name' => ['required'],
-            'bank_office' => ['required'],
-            'account_name' => ['required'],
-            'account_number' => ['required'],
-        ]);
+        $validated = $request->validate();
 
-        BankAccount::create([
-            'bank_name' => $request->bank_name,
-            'bank_office' => $request->bank_office,
-            'account_name' => $request->account_name,
-            'account_number' => $request->account_number,
-        ]);
+        BankAccount::create($validated);
 
         return response(['success' => true], 201);
     }
@@ -50,22 +41,13 @@ class BankController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BankAccountRequest $request, $id)
     {
-        $request->validate([
-            'bank_name' => ['required'],
-            'bank_office' => ['required'],
-            'account_name' => ['required'],
-            'account_number' => ['required'],
-        ]);
+        $validated = $request->validate();
+
         $bank = BankAccount::findOrFail($id);
 
-        $bank->update([
-            'bank_name' => $request->bank_name,
-            'bank_office' => $request->bank_office,
-            'account_name' => $request->account_name,
-            'account_number' => $request->account_number,
-        ]);
+        $bank->update($validated);
 
         return response(['success' => true], 200);
     }

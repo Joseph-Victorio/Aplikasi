@@ -86,15 +86,15 @@ class Tripay
     curl_close($curl);
 
     if($errno){
+      
       return json_encode([
           'success' => false,
           'message' => $error,
           'connected' => false,
       ]);
-    }else{
-
-        return $response;
     }
+
+    return $response;
   }
 
   protected function curlPost($endpoint,$data)
@@ -122,14 +122,15 @@ class Tripay
       curl_close($curl);
 
       if($errno){
+
           return json_encode([
               'success' => false,
               'message' => $error,
               'connected' => false,
           ]);
-      }else{
-          return $response;
-    }
+      }
+
+      return $response;
   }
 
   public function setSignature($orderRef, $orderTotal)
