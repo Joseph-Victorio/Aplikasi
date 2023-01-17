@@ -2,6 +2,10 @@
 
 ### Aplikasi toko online stack Laravel & vue
 
+## Demo
+
+[Nextshop Home](https://nextshop.my.id)
+
 ## Installasi
 
 Lihat di panduan installasi
