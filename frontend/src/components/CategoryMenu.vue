@@ -43,7 +43,7 @@ export default {
     handleShowCategory(id) {
       this.closeCategory()
       if(id != this.$route.params.id) {
-        this.$store.dispatch('product/getProductsByCategory', id)
+        this.$store.dispatch('product/productsByCategory', id)
         this.$router.push({ name: 'ProductCategory', params: { id: id }})
       }
     },

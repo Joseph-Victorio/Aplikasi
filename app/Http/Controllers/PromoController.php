@@ -60,7 +60,7 @@ class PromoController extends Controller
 
     }
 
-    public function getPromoDetail($id)
+    public function promoDetail($id)
     {
         $promo = Promo::findOrFail($id);
 

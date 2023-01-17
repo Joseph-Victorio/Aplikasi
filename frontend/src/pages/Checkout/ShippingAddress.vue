@@ -512,7 +512,7 @@ export default {
       this.searchReady = false
       if(this.searchSubdistrictKey.length < 3) return
       this.isSearching = true
-      Api().get('shipping/findSubdistrict/'+ this.searchSubdistrictKey)
+      Api().get('public/shipping/findSubdistrict/'+ this.searchSubdistrictKey)
       .then(response => {
         if(response.status == 200) {
           if(response.data.success) {
@@ -613,7 +613,7 @@ export default {
         this.jumpTo('shipping')
 
         this.$store.commit('SET_LOADING', true)
-        Api().post('shipping/getCost', this.formGetCost).then(response => {
+        Api().post('public/shipping/costs', this.formGetCost).then(response => {
           if(response.status == 200) {
 
             let data = response.data.results.data[0];

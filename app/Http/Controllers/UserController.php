@@ -9,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function show(Request $request)
     {
         return response([
             'success' => true,
@@ -117,7 +117,7 @@ class UserController extends Controller
         return response('logout', 200);
     }
 
-    public function userList(Request $request)
+    public function index(Request $request)
     {
 
         return response([
@@ -125,7 +125,7 @@ class UserController extends Controller
             'results' => User::skip($request->skip)->take($request->take)->latest()->get()
         ]);
     }
-    public function findUser($key)
+    public function search($key)
     {
         $key = htmlspecialchars($key);
 

@@ -621,7 +621,7 @@ export default {
 
   },
   methods: {
-    ...mapActions('product', ['getProductDetail', 'loadProductReview', 'addProductReview']),
+    ...mapActions('product', ['productDetail', 'loadProductReview', 'addProductReview']),
     resetZoom() {
       this.$refs.zoomer.setData({
         scale: 1,
@@ -824,6 +824,7 @@ export default {
       this.jawaban = ''
       this.getRandomNumber()
       this.form.product_id = this.product.id
+      this.form.product_slug = this.product.slug
       if(this.form.name && this.form.comment && this.form.rating) {
         this.loading = true
         this.reviewModal = false
@@ -882,7 +883,7 @@ export default {
       })
     },
     getProduct() {
-      this.getProductDetail(this.$route.params.slug).then(response => {
+      this.productDetail(this.$route.params.slug).then(response => {
         if(response.status == 200) {
           let resultData = response.data.results
           this.product = resultData

@@ -203,14 +203,14 @@ export default {
       }
     },
     getLocalBanks() {
-      Api().get('getBanks').then(response => {
+      Api().get('public/banks').then(response => {
         if(response.status == 200) {
           this.paymentChanels.localbanks = response.data.results
         }
       })
     },
     getPaymentChanel() {
-      Api().get('tripay/payment-chanel').then(response => {
+      Api().get('public/tripay/payment-chanel').then(response => {
         if(response.status == 200) {
           if(response.data.success) {
             this.paymentChanels.paymentGateway = response.data.data
@@ -242,7 +242,7 @@ export default {
     },
     sendMessageNotification(orderId) {
       setTimeout(() => {
-        Api().post('sendOrderNotify', { order_id: orderId})
+        Api().post('public/notify-order', { order_id: orderId})
       },12000)
     },
     formatAddressCod(addr) {

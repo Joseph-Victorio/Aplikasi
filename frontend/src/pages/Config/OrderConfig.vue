@@ -101,7 +101,6 @@ export default {
   },
   methods: {
     setConfig() {
-      console.log(this.config);
       if(this.config) {
         this.order_expired_time = this.config.order_expired_time
         this.form.tripay_mode = this.config.tripay_mode

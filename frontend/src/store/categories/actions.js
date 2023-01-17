@@ -61,9 +61,8 @@ export function categoryDelete ({commit, dispatch}, payload) {
     })
 
   }
-  // Front
 export function getCategories({commit}) {
-  Api().get('getCategories').then(response => {
+  Api().get('categories').then(response => {
     if(response.status == 200) {
       commit('SET_CATEGORIES', response.data.results);
     }

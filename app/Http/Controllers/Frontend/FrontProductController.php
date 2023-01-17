@@ -56,7 +56,7 @@ class FrontProductController extends Controller
 
     }
 
-    public function getProductsByCategory($id)
+    public function productsByCategory($id)
     {     
 
         try {
@@ -90,7 +90,7 @@ class FrontProductController extends Controller
          }
     }
 
-    public function getProductDetail($slug)
+    public function productDetail($slug)
     {
        
         try {

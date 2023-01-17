@@ -228,7 +228,7 @@ export default {
       this.varian_items = []
       this.is_loading_varian = true
       this.productSelected = product
-      Api().get('getProductVariansByProduct/' + product.id).then(res => {
+      Api().get('products/varians/' + product.id).then(res => {
         if(res.status == 200) {
           this.varian_items = res.data.results
         }

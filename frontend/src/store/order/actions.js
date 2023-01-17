@@ -43,7 +43,7 @@ export function filterOrder ({ commit }, payload) {
 }
 
 export function getCustomerOrders ({ commit }) {
-  Api().get('getCustomerOrders').then(response => {
+  Api().get('customer/orders').then(response => {
     if(response.status == 200) {
       commit('SET_CUSTOMER_ORDERS', response.data.results)
     }
@@ -51,7 +51,7 @@ export function getCustomerOrders ({ commit }) {
 }
 export function getPaginateCustomerOrder ({ commit }, payload) {
   commit('SET_LOAD_MORE_CUSTOMER', true)
-  Api().get('getCustomerOrders?skip=' + payload).then(response => {
+  Api().get('customer/orders?skip=' + payload).then(response => {
     if(response.status == 200) {
       commit('SET_PAGINATE_CUSTOMER_ORDERS', response.data.results)
     }
@@ -60,9 +60,7 @@ export function getPaginateCustomerOrder ({ commit }, payload) {
   })
 }
 
-export function storeOrder ({}, payload) {
-  return Api().post('storeOrder', payload)
-}
+
 export function updateOrder ({dispatch}, payload) {
   Api().post('orders/'+ payload.id, payload).then(response => {
     if(response.status == 200) {
@@ -74,19 +72,22 @@ export function destroyOrder ({}, id) {
   return Api().delete('orders/'+ id)
 }
 export function acceptPayment ({}, id) {
-  return Api().post('paymentAccepted/'+ id)
+  return Api().post('order/accept-payment/'+ id)
 }
 export function cancelOrder ({}, id) {
   return Api().post('cancelOrder/'+ id)
 }
 
 export function inputResi ({}, payload) {
-  return Api().post('inputResi', payload)
+  return Api().post('order/input-resi', payload)
 }
 export function updateStatusOrder ({}, payload) {
- return Api().post('updateStatusOrder', payload)
+ return Api().post('order/update-status', payload)
 }
 
 export function getInvoice ({}, order_ref) {
-  return Api().get('getInvoice/'+ order_ref)
+  return Api().get('public/invoice/'+ order_ref)
+}
+export function storeOrder ({}, payload) {
+  return Api().post('public/order', payload)
 }

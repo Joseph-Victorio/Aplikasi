@@ -105,25 +105,25 @@ export function SET_FRONT_RODUCT_READY (state, status)
 }
 export function SET_PRODUCT_CATEGORY (state, payload) 
 {
-  state.productByCategory.data = payload.results
-  state.productByCategory.links = payload.links
-  state.productByCategory.meta = payload.meta
-  state.productByCategory.ready = true
-  state.productByCategory.available = payload.results.length > 0 ? true : false
+  state.productsByCategory.data = payload.results
+  state.productsByCategory.links = payload.links
+  state.productsByCategory.meta = payload.meta
+  state.productsByCategory.ready = true
+  state.productsByCategory.available = payload.results.length > 0 ? true : false
 }
 
 export function PAGINATE_PRODUCT_CATEGORY (state, payload) 
 {
-  state.productByCategory.data = [...state.productByCategory.data, ...payload.results]
-  state.productByCategory.links = payload.links
-  state.productByCategory.meta = payload.meta
+  state.productsByCategory.data = [...state.productsByCategory.data, ...payload.results]
+  state.productsByCategory.links = payload.links
+  state.productsByCategory.meta = payload.meta
 
 }
 export function CLEAR_PRODUCT_CATEGORY (state) 
 {
-  state.productByCategory.data = []
-  state.productByCategory.ready = false
-  state.productByCategory.available = true
+  state.productsByCategory.data = []
+  state.productsByCategory.ready = false
+  state.productsByCategory.available = true
 }
 export function SET_PRODUCT_FAVORITE (state, payload) 
 {
@@ -152,5 +152,4 @@ export function SET_CATEGORY_PRODUCTS (state, payload)
     return {...cat, product_items: [] }
   })
 
-  console.log(state.category_products);
 }

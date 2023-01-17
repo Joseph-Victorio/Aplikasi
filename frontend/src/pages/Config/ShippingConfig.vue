@@ -204,7 +204,7 @@ export default {
       this.findSubdistrict()
     },
     getAdminConfig() {
-      Api().get('adminConfig').then((response) => {
+      Api().get('admin-config').then((response) => {
         if(response.status == 200){
           this.setConfig(response.data.results)
         }

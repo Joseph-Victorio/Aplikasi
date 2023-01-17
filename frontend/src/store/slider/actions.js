@@ -23,7 +23,7 @@ export function removeSlider( context, id ) {
 
 export function updateSliderWeight ( context, payload) {
   context.commit('SET_DATA_STATUS', false)
- Api().post('update-slider-weight', payload).then(() => {
+ Api().post('slider/update-weight', payload).then(() => {
     context.dispatch('getSliders')
   }).catch(() => {
     context.commit('SET_DATA_STATUS', true)

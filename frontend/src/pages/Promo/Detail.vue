@@ -176,7 +176,7 @@ export default {
   },
   methods: {
     getPromoDetail() {
-      Api().get('getPromoDetail/'+ this.$route.params.id).then(response => {
+      Api().get('promo/detail/'+ this.$route.params.id).then(response => {
        if(response.status == 200 && response.data.success) {
           this.products = response.data.results.products
           this.promo = response.data.results.promo
@@ -184,7 +184,7 @@ export default {
       })
     },
     getProductPromo() {
-      Api().get('getProductPromo/'+ this.$route.params.id).then(response => {
+      Api().get('products/promo/'+ this.$route.params.id).then(response => {
        if(response.status == 200 && response.data.success) {
           this.products = response.data.results
         }
@@ -195,7 +195,7 @@ export default {
       if(!this.search) return
       this.isLoading = true
       this.productSearch = []
-      Api().get('findProductWithoutPromo/' + this.search).then(response => {
+      Api().get('promo/find-product/' + this.search).then(response => {
         if(response.status == 200 && response.data.success) {
           this.productSearch = response.data.results
         }
@@ -238,7 +238,7 @@ export default {
           return
         }
       }
-      Api().post('submitProductPromo', this.form).then(() => {
+      Api().post('promo/submit-product', this.form).then(() => {
         this.getProductPromo()
       }).finally(() => this.productPromoModal = false)
     },
@@ -254,7 +254,7 @@ export default {
       })
     },
     removeProductPromo() {
-      Api().post('removeProductPromo', { promo_id: this.promo.id, product_id: this.removeId })
+      Api().post('promo/remove', { promo_id: this.promo.id, product_id: this.removeId })
       .then(() => this.getProductPromo())
     }
   },
@@ -263,7 +263,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

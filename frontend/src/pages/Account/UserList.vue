@@ -93,7 +93,7 @@ export default {
   methods: {
     getUsers() {
       this.$q.loading.show()
-      Api().get(`userList?take=${this.take}&skip=${this.users.length}`).then(response => {
+      Api().get(`users?take=${this.take}&skip=${this.users.length}`).then(response => {
         if(response.status == 200) {
           this.users = response.data.results
           this.canLoad = response.data.results.length == this.take ? true : false
@@ -119,7 +119,7 @@ export default {
     },
     findUser() {
       if(this.search) {
-        Api().get('findUser/' + this.search).then(response => {
+        Api().get('users/search/' + this.search).then(response => {
           if(response.status == 200) {
             this.users = response.data.results
             this.userNotAvailable = this.users.length ? false : true

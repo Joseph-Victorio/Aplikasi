@@ -6,9 +6,10 @@ use Exception;
 use App\Models\Config;
 use App\Models\Review;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Helpers\ApiResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cache;
 
 class ReviewController extends Controller
 {
@@ -109,6 +110,8 @@ class ReviewController extends Controller
 
             $data = $review;
             $msg = $approvCfg ? 'Berhasil mengulas produk' : 'Ulasan anda menunggu di publish';
+
+            Cache::forget($request->product_slug);
 
             return ApiResponse::success($data, $msg);
 

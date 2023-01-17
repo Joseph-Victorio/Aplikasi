@@ -40,7 +40,7 @@ export function getAdminProducts ({ commit }, query = null) {
    })
 }
 export function searchAdminProducts ({ commit }, key) {
-  return  Api().get('searchAdminProducts/' + key)
+  return  Api().get('products/search/' + key)
 }
 
 export function getProductById ({}, id) {
@@ -56,22 +56,22 @@ export function productDelete ( { dispatch },  id) {
 // FRONT
 export function getProducts ({ commit }) {
 
-  Api().get('getProducts').then(response => {
+  Api().get('public/products').then(response => {
      commit('SET_PRODUCTS', response.data)
    })
 }
 
-export function getProductDetail ({}, slug) {
-  return Api().get('getProductDetail/' + slug)
+export function productDetail ({}, slug) {
+  return Api().get('public/product/' + slug)
 }
 
 export function searchProducts ({ commit }, q) {
-  return Api().get('searchProduct/'+q)
+  return Api().get('public/product-search/'+q)
  }
 
-export function getProductsByCategory ({ commit }, id) {
+export function productsByCategory ({ commit }, id) {
 
-  Api().get('getProductsByCategory/'+id).then(response => {
+  Api().get('public/product-category/'+id).then(response => {
     if(response.status == 200) {
       commit('SET_PRODUCT_CATEGORY', response.data)
       if(response.data.results.length) {
@@ -84,20 +84,20 @@ export function getProductsByCategory ({ commit }, id) {
  }
 
 export function getProductsFavorites ({ commit }, payload) {
-  Api().post('getProductsFavorites', payload).then(response => {
+  Api().post('public/product-favorites', payload).then(response => {
     if(response.status == 200) {
       commit('SET_PRODUCT_FAVORITE', response.data)
     }
   })
  }
 export function addProductReview ({ commit }, payload) {
-  return Api().post('addProductReview', payload)
+  return Api().post('public/product-review', payload)
 }
 export function loadProductReview ({}, payload) {
   if(payload.skip) {
-    return Api().get('loadProductReview/'+ payload.product_id +'?skip=' + payload.skip)
+    return Api().get('public/product-review/'+ payload.product_id +'?skip=' + payload.skip)
   } else {
-    return Api().get('loadProductReview/'+ payload.product_id )
+    return Api().get('public/product-review/'+ payload.product_id )
   }
 }
 

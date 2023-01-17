@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { Api } from 'boot/axios'
 export default {
   data() {
     return {
@@ -38,9 +38,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('post', ['getPostDetail']),
     async getPost() {
-      let { data } = await this.getPostDetail(this.$route.params.slug)
+      let { data } = await Api().get('public/post/' + this.$route.params.slug)
       this.post = data.results
       this.ready = true
     }

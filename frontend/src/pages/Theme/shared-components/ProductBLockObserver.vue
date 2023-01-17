@@ -62,7 +62,7 @@ export default {
        }
     },
     async getProducts() {
-      let response = await Api().get('getProductsByCategory/' + this.category.id +'?limit=10')
+      let response = await Api().get('public/product-category/' + this.category.id +'?limit=10')
 
      if(response.status == 200) {
       let data = {

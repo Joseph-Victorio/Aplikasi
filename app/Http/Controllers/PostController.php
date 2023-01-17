@@ -72,6 +72,7 @@ class PostController extends Controller
         $post->slug = Str::slug($request->title);
         $post->tags = $request->tags;
         $post->body = $request->body;
+        $post->category = $request->category;
 
         $post->is_listing = $request->boolean('is_listing');
         $post->is_promote = $request->boolean('is_promote');
@@ -140,6 +141,7 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->tags = $request->tags;
         $post->body = $request->body;
+        $post->category = $request->category;
 
         $post->is_listing = $request->boolean('is_listing');
         $post->is_promote = $request->boolean('is_promote');

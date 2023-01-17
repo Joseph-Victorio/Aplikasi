@@ -103,9 +103,6 @@ export default {
        cancel: {label: 'Batal', flat: true, 'no-caps': true},
      }).onOk(() => {
        this.removeSlider(id)
-     }).onCancel(() => {
-       console.log('Cancel')
-     }).onDismiss(() => {
      })
    },
    handleBtnUpload() {

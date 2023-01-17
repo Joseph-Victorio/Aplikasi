@@ -101,7 +101,7 @@ class SliderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function updateSliderWeight(Request $request)
+    public function updateWeight(Request $request)
     {
         $slider = Slider::find($request->id);
         $slider->weight = (int)$request->value;

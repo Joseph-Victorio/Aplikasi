@@ -35,7 +35,7 @@ class ProductController extends Controller
             return ApiResponse::failed($e);
         }
     }
-    public function getProductVariansByProduct($productId)
+    public function productVarians($productId)
     {
         try {
 
@@ -50,7 +50,7 @@ class ProductController extends Controller
     }
     
 
-    public function searchAdminProducts($key)
+    public function searchProducts($key)
     {
         try {
 
@@ -137,7 +137,7 @@ class ProductController extends Controller
         }
 
     }
-    public function getProductPromo($promoId)
+    public function productPromo($promoId)
     {
         
         try {

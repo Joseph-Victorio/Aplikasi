@@ -89,12 +89,12 @@ export function updateUser ({commit}, payload) {
 }
 
 export function requestPasswordToken({commit}, payload) {
-  return Api().post('requestPasswordToken', payload)
+  return Api().post('user/password-token', payload)
 }
 
 export function resetPassword({}, payload) {
 
-  Api().post('resetPassword', payload).then(response => {
+  Api().post('user/password-reset', payload).then(response => {
     if(response.status == 200 && response.data.success) {
       localStorage.removeItem('is_reqpwd')
 

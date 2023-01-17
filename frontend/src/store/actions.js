@@ -3,7 +3,7 @@ import { Api } from 'boot/axios'
 export default {
   getAdminConfig({commit}) {
     commit('SET_LOADING', true)
-    Api().get('adminConfig').then((response) => {
+    Api().get('admin-config').then((response) => {
       if(response.status == 200){
         this.commit('SET_CONFIG', response.data.results)
       }
@@ -29,7 +29,7 @@ export default {
   },
   getInitialData: async ({commit}) => {
     document.body.classList.add('is_loading')
-    let response = await Api().get('homepage')
+    let response = await Api().get('public/homepage')
     if(response.status == 200) {
       commit('SET_SHOP', response.data.results.shop),
       commit('SET_CONFIG', response.data.results.config)

@@ -161,7 +161,7 @@ export default {
   methods: {
     sendTelegram() {
       this.isLoading = true
-      Api().get('testingTelegram')
+      Api().get('telegram-test')
       .then(res => {
         if(res.status == 200) {
           this.$q.notify({
@@ -173,7 +173,7 @@ export default {
     },
     sendEmail() {
       this.isLoading = true
-      Api().get('testingEmail')
+      Api().get('email-test')
       .then(res => {
         if(res.status == 200) {
           this.$q.notify({
@@ -204,7 +204,7 @@ export default {
       }
     },
     getMailConfig(){
-      Api().get('mailConfig').then(res => {
+      Api().get('config-email').then(res => {
         if(res.status == 200 && res.data.success) {
           this.setEmailConfig(res.data.results)
         }
@@ -228,7 +228,7 @@ export default {
           this.formEmail.is_active = false
         }
       }
-      Api().post('mailConfig', this.formEmail).then(res => {
+      Api().post('config-email', this.formEmail).then(res => {
         if(res.status == 200) {
           this.setEmailConfig(res.data.results)
           this.$store.dispatch('getAdminConfig')

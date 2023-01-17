@@ -88,31 +88,6 @@ class OrderController extends Controller
 
         return ApiResponse::success();
     }
-    public function filterOrder(Request $request)
-    {
-        $request->validate([
-            'filter' => ['required', 'string']
-        ]);
-
-        try {
-
-            $this->data['data'] = Order::with('transaction')
-             ->skip($this->data['skip'])
-             ->take($this->data['limit'])
-             ->where('order_status', $request->filter)
-             ->orderByDesc('updated_at')
-             ->get();
- 
-             $this->data['count'] = Order::count();
-
-             return ApiResponse::success($this->data);
-             
-         } catch (\Throwable $th) {
- 
-            return ApiResponse::failed($th);
-         }
- 
-    }
     
     public function searchAdminOrder(Request $request)
     {

@@ -11,7 +11,7 @@ use Illuminate\Routing\Controller;
 
 class CartController extends Controller
 {
-    public function get()
+    public function index()
     {
         $data = [];
 
@@ -62,11 +62,11 @@ class CartController extends Controller
         return ApiResponse::success($data);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
  
         try {
-            $cart = Cart::where('sku', $request->sku)->first();
+            $cart = Cart::where('sku', $id)->first();
 
             if(!$cart) {
                 throw new Exception('Data not found');
@@ -84,9 +84,9 @@ class CartController extends Controller
 
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        Cart::where('sku', $request->sku)->delete();
+        Cart::where('sku', $id)->delete();
 
         return ApiResponse::success();
     }

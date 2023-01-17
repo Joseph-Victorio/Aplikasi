@@ -28,7 +28,7 @@ export default function () {
       available: true
     },
     searchKey: '',
-    productByCategory: {
+    productsByCategory: {
       data: [],
       ready: false,
       available: true,

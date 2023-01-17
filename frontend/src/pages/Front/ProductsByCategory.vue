@@ -46,7 +46,7 @@ export default {
       return this.$store.state.product.favorites
     },
     products() {
-      return this.$store.state.product.productByCategory
+      return this.$store.state.product.productsByCategory
     },
     categories() {
       return this.$store.state.category.categories
@@ -57,7 +57,7 @@ export default {
       
   },
   methods: {
-    ...mapActions('product', ['getProductsByCategory']),
+    ...mapActions('product', ['productsByCategory']),
     backButton() {
       this.$router.push({name: 'ProductIndex'})
     },
@@ -87,14 +87,14 @@ export default {
       if(this.products.data[0].id != this.$route.params.id) {
 
         this.$store.commit('product/CLEAR_PRODUCT_CATEGORY')
-        this.getProductsByCategory(this.$route.params.id)
+        this.productsByCategory(this.$route.params.id)
 
       }
 
     } else {
 
       this.$store.commit('product/CLEAR_PRODUCT_CATEGORY')
-      this.getProductsByCategory(this.$route.params.id)
+      this.productsByCategory(this.$route.params.id)
     }
   },
   meta() {

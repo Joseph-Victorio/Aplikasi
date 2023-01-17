@@ -105,7 +105,6 @@ export default {
   },
   methods: {
     createValue(val, done) {
-      console.log(val);
       done(val)
     },
     handleInputVarian(val) {

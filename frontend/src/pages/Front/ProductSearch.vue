@@ -73,10 +73,10 @@ export default {
       this.$refs.input.blur()
       this.searchProducts(this.search).then(response => {
         if(response.status == 200) {
-          this.products.data = response.data.data
+          this.products.data = response.data.results
           this.products.links = response.data.links
           this.products.meta = response.data.meta
-          this.products.available = this.products.data.length? true : false
+          this.products.available = this.products.results.length? true : false
         }
       }).finally(() => {
         this.products.ready = true

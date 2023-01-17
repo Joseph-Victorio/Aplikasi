@@ -99,7 +99,8 @@ export default {
         image: '',
         del_image: false,
         is_listing: false,
-        is_promote: true
+        is_promote: true,
+        category: ''
       },
       imagePreview: ''
     }
@@ -134,14 +135,15 @@ export default {
       this.getSinglePost(this.$route.params.id).then(response => {
         this.loading = false
         if(response.status == 200) {
-          let data = response.data.results
-          this.form.id = data.id
-          this.form.title = data.title
-          this.form.tags = data.tags
-          this.form.is_promote = data.is_promote
-          this.form.is_listing = data.is_listing
-          this.form.body = data.body
-          this.imagePreview = data.image_url
+          let responseData = response.data.results
+          this.form.id = responseData.id
+          this.form.title = responseData.title
+          this.form.category = responseData.category ? responseData.category : ''
+          this.form.tags = responseData.tags
+          this.form.is_promote = responseData.is_promote
+          this.form.is_listing = responseData.is_listing
+          this.form.body = responseData.body
+          this.imagePreview = responseData.image_url
         }
       }).catch(() => {
         this.loading = false

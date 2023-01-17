@@ -30,7 +30,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.$store.dispatch('getAdminConfig')
-    }, 2000)
+    }, 500)
   }
 }
 </script>
