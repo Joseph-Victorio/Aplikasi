@@ -167,7 +167,7 @@ export default {
       }
       if(this.formType == 'register') {
         Api().post('user/register', this.form).then(response => {
-          if(response.status == 201) {
+          if(response.status == 200) {
             this.$store.commit('user/SET_USER', response.data.results)
             Cookies.set('__token', response.data.token, { expires: 1 })
             this.$emit('onResponse', true)

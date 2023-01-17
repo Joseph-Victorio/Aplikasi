@@ -10,7 +10,7 @@ export function addPost({ commit, dispatch }, payload) {
   let self = this
   commit('SET_LOADING', true, { root: true })
   Api().post('posts', formData, {headers: {'content-Type': 'multipart/formData'}}).then(response => {
-    if(response.status == 201) {
+    if(response.status == 200) {
      dispatch('getAllPost')
       self.$router.push({name: 'AdminPostIndex'})
       commit('SET_LOADING', false, { root: true })

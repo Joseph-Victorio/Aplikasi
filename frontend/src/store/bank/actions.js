@@ -9,7 +9,7 @@ export function getBanks ({commit}) {
 }
 export function storeBank ({dispatch}, payload) {
   Api().post('banks', payload).then(response => {
-    if(201 == response.status) {
+    if(200 == response.status) {
       dispatch('getBanks')
     }
   })

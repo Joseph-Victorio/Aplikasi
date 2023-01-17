@@ -44,7 +44,7 @@ class UserController extends Controller
             'success' => true,
             'token' => $token,
             'results' => $user
-        ], 201);
+        ]);
     }
     public function login(Request $request)
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use App\Http\Requests\BankAccountRequest;
 use App\Models\BankAccount;
 use Illuminate\Http\Request;
@@ -27,11 +28,11 @@ class BankController extends Controller
      */
     public function store(BankAccountRequest $request)
     {
-        $validated = $request->validate();
+        $validated = $request->validated();
 
-        BankAccount::create($validated);
+        $data = BankAccount::create($validated);
 
-        return response(['success' => true], 201);
+        return ApiResponse::success($data);
     }
 
     /**
@@ -43,7 +44,7 @@ class BankController extends Controller
      */
     public function update(BankAccountRequest $request, $id)
     {
-        $validated = $request->validate();
+        $validated = $request->validated();
 
         $bank = BankAccount::findOrFail($id);
 

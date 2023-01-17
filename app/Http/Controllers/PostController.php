@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use App\Models\Post;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -37,17 +38,12 @@ class PostController extends Controller
             });
         }
 
-        return response()->json([
-            'success' => true,
-            'results' => $posts
-        ]);
+        return ApiResponse::success($posts);
     }
     public function getListing()
     {
-        return response()->json([
-            'success' => true,
-            'results' => Post::listing()->latest()->get()
-        ]);
+        $data = Post::listing()->latest()->get();
+        return ApiResponse::success($data);
     }
 
     /**
@@ -92,9 +88,7 @@ class PostController extends Controller
 
         $post->save();
 
-        return response([
-            'success' => true
-        ], 201);
+        return ApiResponse::success($post);
     }
 
     /**
@@ -105,10 +99,8 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        return response()->json([
-            'success' => true,
-            'results' => Post::findOrFail($id)
-        ]);
+        $data = Post::findOrFail($id);
+        return ApiResponse::success($data);
     }
 
     /**
@@ -154,9 +146,7 @@ class PostController extends Controller
 
         $post->save();
 
-        return response([
-            'success' => true
-        ], 200);
+        return ApiResponse::success($post);
     }
 
     /**
@@ -175,8 +165,6 @@ class PostController extends Controller
 
         $post->delete();
 
-        return response([
-            'success' => true
-        ], 200);
+        return ApiResponse::success();
     }
 }

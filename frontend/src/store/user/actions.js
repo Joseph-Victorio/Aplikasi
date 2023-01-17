@@ -28,7 +28,7 @@ export function register ({commit, dispatch}, payload) {
 
   Api().post('user/register', payload)
   .then(response => {
-    if (response.status == 201) {
+    if (response.status == 200) {
       Cookies.set('__token', response.data.token, { expires: 1 })
       let user = response.data.results
       commit('SET_USER', user)

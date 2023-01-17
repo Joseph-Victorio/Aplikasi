@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use App\Models\Promo;
 use App\Models\ProductPromo;
 use Illuminate\Http\Request;
@@ -17,10 +18,8 @@ class PromoController extends Controller
      */
     public function index()
     {
-        return response()->json([
-            'success' => true,
-            'results' => Promo::withCount('products')->latest()->get()
-        ]);
+        $data = Promo::withCount('products')->latest()->get();
+        return ApiResponse::success($data);
     }
 
     /**
@@ -44,11 +43,7 @@ class PromoController extends Controller
         ]);
 
         Cache::flush();
-        return response()->json([
-            'success' => true,
-            'results' => $promo
-        ]);
-
+        return ApiResponse::success($promo);
     }
 
     /**
@@ -60,11 +55,8 @@ class PromoController extends Controller
 
     public function show($id)
     {
-
-        return response()->json([
-            'success' => true,
-            'results' => Promo::find($id)
-        ]);
+        $data=Promo::find($id);
+        return ApiResponse::success($data);
 
     }
 
@@ -72,13 +64,11 @@ class PromoController extends Controller
     {
         $promo = Promo::findOrFail($id);
 
-        return response()->json([
-            'success' => true,
-            'results' => [
+        return ApiResponse::success([
                 'promo' => $promo,
                 'products' => $promo->products
             ]
-        ]);
+        );
     }
     public function removeProductPromo(Request $request)  
     {
@@ -90,7 +80,7 @@ class PromoController extends Controller
         ProductPromo::where('promo_id', $request->promo_id)->where('product_id', $request->product_id)->delete();
         Cache::flush();
 
-        return response()->json(['success' => true ]);
+        return ApiResponse::success();
     }
 
     /**
@@ -118,11 +108,7 @@ class PromoController extends Controller
 
         Cache::flush();
 
-        return response()->json([
-            'success' => true,
-            'results' => $promo->fresh()
-        ]);
-
+        return ApiResponse::success($promo->fresh());
     }
 
     /**

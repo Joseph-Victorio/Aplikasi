@@ -16,7 +16,7 @@ export function categoryStore({dispatch, commit}, payload) {
     commit('SET_LOADING', true, { root: true })
     return Api().post('categories', payload, {headers: {'content-Type': 'multipart/formData'}})
     .then(response => {
-      if(response.status == 201) {
+      if(response.status == 200) {
         dispatch('getAdminCategories')
         Notify.create({
           type: 'positive',
