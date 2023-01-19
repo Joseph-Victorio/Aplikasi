@@ -27,28 +27,20 @@ use App\Http\Controllers\Frontend\FrontOrderController;
 use App\Http\Controllers\Frontend\FrontProductController;
 
 Route::middleware(['auth:sanctum', 'auth.admin'])->group(function() {
-
     Route::get('users', [UserController::class, 'index']);
     Route::get('users/search/{key}', [UserController::class, 'search']);
     Route::delete('users/{id}', [UserController::class, 'destroy']);
-
     Route::get('products/promo/{promoId}', [ProductController::class, 'productPromo']);
     Route::get('products/search/{key}', [ProductController::class, 'searchProducts']);
     Route::get('products/varians/{productId}', [ProductController::class, 'productVarians']);
-
     Route::apiResource('products', ProductController::class);
-
-
     Route::apiResource('sliders', SliderController::class);
     Route::post('slider/update-weight', [SliderController::class, 'updateWeight']);
-
-    Route::post('shop', [StoreController::class, 'update']);
-    
+    Route::post('shop', [StoreController::class, 'update']);    
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('posts', PostController::class);
     Route::apiResource('blocks', BlockController::class);
     Route::apiResource('banks', BankController::class);
-
     Route::delete('orders/{id}', [OrderController::class, 'destroy']);
     Route::get('orders', [OrderController::class, 'index']);
     Route::post('orders/search', [OrderController::class, 'searchAdminOrder']);
@@ -58,55 +50,42 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->group(function() {
     Route::post('order/input-resi', [OrderController::class, 'inputResi']);
     Route::post('cancelOrder/{id}', [OrderController::class, 'cancelOrder']);
     Route::get('orders/{orderRef}',[OrderController::class, 'show']);
-
     Route::get('update', [UpdateController::class, 'overview']);
     Route::post('update', [UpdateController::class, 'update']);  
     Route::post('clearCache', [UpdateController::class, 'clearCache']);  
-    
     Route::get('promo/detail/{id}', [PromoController::class, 'promoDetail']);
     Route::post('promo/remove', [PromoController::class, 'removeProductPromo']);
     Route::post('promo/submit-product', [ProductController::class, 'submitProductPromo']);
     Route::get('promo/products/{promoId}', [ProductController::class, 'getProductPromo']);
     Route::get('promo/find-product/{key}', [ProductController::class, 'findProductWithoutPromo']);
     Route::apiResource('promos', PromoController::class);
-
     Route::get('telegram-test', [NotifyController::class, 'testingTelegram']);
     Route::get('mail-test', [NotifyController::class, 'testingEmail']);
-
     Route::get('config-email', [MailConfigController::class, 'show']);
     Route::post('config-email', [MailConfigController::class, 'update']);
-
     Route::get('reviews/{type}', [ReviewController::class, 'index']);
     Route::put('reviews/{id}', [ReviewController::class, 'publish']);
     Route::delete('reviews/{id}', [ReviewController::class, 'destroy']);
-    
 });
 
 Route::middleware('auth:sanctum')->group(function() {
-
     Route::get('admin-config', [ConfigController::class, 'adminConfig']);
     Route::post('config', [ConfigController::class, 'update']);
-    
     Route::get('user', [UserController::class, 'index']);
     Route::post('user/logout', [UserController::class, 'logout']);
     Route::post('user/update', [UserController::class, 'update']);
-    
     Route::get('customer/orders', [CustomerController::class, 'getOrders']);
-    
 });
 
 Route::middleware(['throttle:auth'])->group(function() {
-    
     Route::post('user/login', [UserController::class, 'login']);
     Route::post('user/register', [UserController::class, 'register']);
     Route::post('user/password-token', [PasswordResetController::class, 'requestPasswordToken']);
     Route::get('user/validate-token/{token}', [PasswordResetController::class, 'validateToken']);
     Route::post('user/password-reset', [PasswordResetController::class, 'resetPassword']);
-    
 });
 
 Route::prefix('public')->group(function() {
-    
     Route::get('homepage', [FrontApiController::class, 'homepage']);
     Route::get('posts', [FrontApiController::class, 'getPosts']);
     Route::get('post/{slug}', [FrontApiController::class, 'getPostDetail']);
@@ -114,35 +93,27 @@ Route::prefix('public')->group(function() {
     Route::get('sliders', [FrontApiController::class, 'getSliders']);
     Route::get('categories', [FrontApiController::class, 'getCategories']);
     Route::get('promote-posts', [FrontApiController::class, 'getPromotePosts']);
-    
     Route::get('products', [FrontProductController::class, 'getProducts']);
     Route::get('product/{slug}', [FrontProductController::class, 'productDetail']);
     Route::post('product-favorites', [FrontProductController::class, 'getProductsFavorites']);
     Route::get('product-category/{id}', [FrontProductController::class, 'productsByCategory']);
     Route::get('product-search/{key}', [FrontProductController::class, 'searchProduct']);
-    
     Route::post('order', [FrontOrderController::class, 'storeOrder']);
     Route::get('invoice/{invoice}', [FrontOrderController::class, 'getInvoice']);
     Route::get('order-random', [FrontOrderController::class, 'getRandomOrder']);
     Route::post('order-search', [FrontOrderController::class, 'searchOrder']);
-    
     Route::post('product-review', [ReviewController::class, 'store']);
     Route::get('product-review/{id}', [ReviewController::class, 'show']);
-    
     Route::get('shipping/provinces', [ShippingController::class, 'getProvince']);
     Route::get('shipping/cities/province_id}', [ShippingController::class, 'getCity']);
     Route::get('shipping/subdistrics/{city_id}', [ShippingController::class, 'getSubdistrict']);
     Route::post('shipping/costs', [ShippingController::class, 'getCost']);
     Route::post('shipping/waybill', [ShippingController::class, 'waybill']);
     Route::get('shipping/findSubdistrict/{key}', [ShippingController::class, 'findSubdistrict']);
-    
     Route::get('tripay/payment-chanel',[TripayController::class, 'getPaymentChanels']);
-    
     Route::post('carts/clear', [CartController::class, 'clear']);
     Route::apiResource('carts', CartController::class);
-    
     Route::post('notify-order', [NotifyController::class, 'sendOrderNotify']);
-    
 });
 
 Route::get('shop', [FrontApiController::class, 'getShop']);
