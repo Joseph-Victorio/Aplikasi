@@ -145,10 +145,6 @@ export default {
       this.form.password_confirmation = ''
       this.form.password = ''
     },
-    messageButtonLabel(status) {
-      if(status == 'UNPAID' || status == 'OVERDUE') return 'Follow Up Order'
-      return 'Kirim Pesan'
-    },
     logout() {
       this.$store.dispatch('user/logout')
     },
@@ -156,7 +152,3 @@ export default {
 
 }
 </script>
-
-<style>
-
-</style>

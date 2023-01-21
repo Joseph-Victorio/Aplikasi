@@ -103,7 +103,7 @@
 
                   <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canComplete(order)" label="Order Selesai" color="green" @click="handleCompletionOrder(order)"></q-btn>
 
-                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canConfirm(order)" label="Konfirmasi" color="purple" @click="handleConfirmationOrder(order.id)"></q-btn>
+                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canConfirm(order)" label="Konfirmasi" color="purple" @click="handleConfirmationOrder(order)"></q-btn>
 
                   <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canCancelOrder(order)" label="Batalkan" color="red" @click="handleCancelOrder(order)"></q-btn>
 
@@ -272,9 +272,8 @@ export default {
       })
     },
     canShip(order) {
-      console.log(order);
       if(order.shipping_courier_name == 'COD') {
-        if(order.order_status == 'TOSHIP' || order.order_status == 'UNPAID') {
+        if(order.order_status == 'TOSHIP' || order.order_status == 'PENDING') {
           return true
         }
         return false
@@ -288,7 +287,7 @@ export default {
       return order.order_status == 'SHIPPING' ? true : false
     },
     canCancelOrder(order) {
-      return order.order_status == 'UNPAID'
+      return order.order_status == 'PENDING'
     },
     handleCompletionOrder(order) {
     
@@ -357,11 +356,20 @@ export default {
         }).onDismiss(() => {
       })
     },
-    handleConfirmationOrder(id) {
+    handleConfirmationOrder(order) {
+      let msg = 'Pastikan pembayaran telah anda terima dengan baik';
+      let title = 'Konfirmasi'
+      if(order.transaction.payment_type == 'PAYMENT_GATEWAY') {
+        msg = '<b>WARNING!</b>, Metode pembayaran menggunakan payment gateway, Seharusnya status pesanan dan status pembayaran akan <b>otomatis</b> berubah jika sudah terjadi pembayaran di pihak payment gateway. Sangat tidak disarankan untuk merubah status secara manual'
+
+        title = 'Konfirmasi Manual'
+      }
       this.$q.dialog({
         title: 'Konfirmasi pembayaran',
-        message: 'Pastikan pembayaran telah anda terima dengan baik',
+        message: msg,
         cancel: true,
+        ok: { label: title, flat: true},
+        html: true,
         }).onOk(() => {
           this.acceptPayment(id).then(() => {
             this.setFilter('TOSHIP')

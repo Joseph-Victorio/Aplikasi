@@ -130,6 +130,7 @@ class TripayController extends Controller
         $merchantRef = $data->merchant_ref;
         
         $order = Order::where('order_ref', $merchantRef)
+            ->where('order_status', 'PENDING')
             ->where('order_status', 'UNPAID')
             ->first();
         
@@ -148,7 +149,7 @@ class TripayController extends Controller
         switch ($status) {
             case 'PAID':
                 $order->update([
-                    'order_status'	=> 'PAID',
+                    'order_status'	=> 'TOSHIP',
                 ]);
                 
                 $transaction->update([

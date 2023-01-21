@@ -362,12 +362,6 @@ export default {
 
   methods: {
     ...mapActions('order', ['getOrderByRef']),
-    statusColor(status) {
-      if(status == 'UNPAID') return 'bg-grey-7'
-      if(status == 'CANCELED') return 'bg-red-6'
-      if(status == 'COMPLETE') return 'bg-green-6'
-      return 'bg-blue-7'
-    },
     generateQr() {
       let opts = {
           errorCorrectionLevel: 'H',
@@ -461,7 +455,7 @@ export default {
       })
     },
     checkOrderStatus() {
-      if(this.invoice.order_status == 'UNPAID' || this.invoice.order_status == 'PROCESS') {
+      if(this.invoice.transaction.payment_type == 'PAYMENT_GATEWAY' && this.invoice.order_status == 'PENDING') {
         this.timeout = setTimeout(() => {
           this.getCheckOrder()
         }, 15000)

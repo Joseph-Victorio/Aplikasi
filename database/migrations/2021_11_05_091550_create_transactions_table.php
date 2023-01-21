@@ -27,7 +27,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('total_fee')->default(0);
             $table->integer('expired_time')->nullable();
             $table->text('instructions')->nullable();
-            $table->string('status')->default('UNPAID');
+            $table->string('status')->default('PENDING');
             $table->timestamp('paid_at')->nullable();
             $table->mediumText('note')->nullable();
             $table->string('payment_proof')->nullable();

@@ -32,7 +32,7 @@ export default {
       return this.$store.state.bank.banks
     },
     messageButtonLabel() {
-      if(this.order.order_status == 'UNPAID' || this.order.order_status == 'OVERDUE') return 'Follow Up Order'
+      if(this.order.order_status == 'PENDING') return 'Follow Up Message'
       return 'Send Message'
     }
   },
@@ -74,7 +74,7 @@ export default {
     },
     setTextMessage() {
        if(this.order) {
-         if(this.order.order_status == 'UNPAID') {
+         if(this.order.order_status == 'PENDING') {
            let tmp = `Halo kak ${this.order.customer_name}\n`
 
            tmp += `kami dari *${this.shop.name? this.shop.name: '...'}*\n`

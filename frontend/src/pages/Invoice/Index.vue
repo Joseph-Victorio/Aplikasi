@@ -167,7 +167,7 @@
           </keep-alive>
         </q-card>
       </q-dialog>
-      <q-footer class="bg-white q-pa-md" v-if="invoice.order_status == 'UNPAID'">
+      <q-footer class="bg-white q-pa-md" v-if="invoice.order_status == 'PENDING'">
         <div class="text-center text-grey-7 column q-gutter-y-sm">
             <q-btn v-if="invoice && invoice.transaction.payment_method != 'COD'" label="Instruksi Pembayaran" no-caps icon="payments" @click.prevent="handlePaymentModal" color="green-7"></q-btn>
             <q-btn ref="chatAdmin" label="Chat admin" name="eva-message-circle" no-caps  @click="chatToAdmin" color="blue-7"></q-btn>
@@ -220,15 +220,7 @@ export default {
         return `Tagihan ${this.invoice.order_ref}`
       }
       return 'Tagihan'
-    },
-    statusColorClass() {
-      if(this.invoice) {
-        if(this.invoice.order_status == 'SHIPPING') return 'bg-teal'
-        if(this.invoice.order_status == 'COMPLETE') return 'bg-green'
-        if(this.invoice.order_status == 'CANCELED') return 'bg-red'
-      }
-      return 'bg-grey-8'
-    },
+    }
   },
   created() {
     if(!this.invoice){
@@ -252,12 +244,6 @@ export default {
   },
   methods: {
     ...mapActions('order', ['getInvoice']),
-    statusColor(status) {
-      if(status == 'UNPAID') return 'bg-grey-7'
-      if(status == 'CANCELED') return 'bg-red-6'
-      if(status == 'COMPLETE') return 'bg-green-6'
-      return 'bg-blue-7'
-    },
     generateQr() {
       let opts = {
           errorCorrectionLevel: 'H',
@@ -286,7 +272,7 @@ export default {
           if(response.status == 200) {
             this.$store.commit('order/SET_INVOICE', response.data.results)
           }
-          if(this.autoShowModal && this.invoice.order_status == 'UNPAID' && this.invoice.transaction.payment_method != 'COD') {
+          if(this.autoShowModal && this.invoice.order_status == 'PENDING' && this.invoice.transaction.payment_method != 'COD') {
             this.modalPayment = true
           }
           this.$store.commit('SET_LOADING', false)
@@ -375,7 +361,7 @@ export default {
     checkOrderStatus() {
 
       if(this.requestCount < 10) {
-        if(this.invoice.order_status == 'UNPAID' || this.invoice.order_status == 'PROCESS') {
+        if(this.invoice.order_status == 'PENDING') {
   
           this.requestCount++
           this.timeout = setTimeout(() => {

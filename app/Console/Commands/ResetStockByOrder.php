@@ -48,7 +48,9 @@ class ResetStockByOrder extends Command
     {
         $config = Config::select('order_expired_time')->first();
         
-        $orderExpireds = Order::where('created_at', '<', Carbon::now()->subHours($config->order_expired_time))->where('order_status', 'UNPAID')->get();
+        $orderExpireds = Order::where('created_at', '<', Carbon::now()->subHours($config->order_expired_time))->where('order_status', 'UNPAID')
+        ->where('order_status', 'PENDING')
+        ->get();
 
         if(count($orderExpireds) > 0) {
 
