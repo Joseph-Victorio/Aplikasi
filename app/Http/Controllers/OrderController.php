@@ -76,6 +76,7 @@ class OrderController extends Controller
         $transaction = $order->transaction;
 
         $order->order_status = 'TOSHIP';
+        $order->updated_at = now();
         $order->save();
 
         $transaction->status = 'PAID';
@@ -125,6 +126,7 @@ class OrderController extends Controller
     
             $order->shipping_courier_code = $request->resi;
             $order->shipping_delivered = now();
+            $order->updated_at = now();
             
             if($request->boolean('update_to_ship')) {
 
@@ -150,6 +152,7 @@ class OrderController extends Controller
 
         $order = Order::find($request->order_id);
         $order->order_status = $request->status;
+        $order->updated_at = now();
 
         $order->save();
 
