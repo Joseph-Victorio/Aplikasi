@@ -118,6 +118,10 @@ div,
     margin-right: auto;
   }
 }
+.btn-order-item {
+  min-width: 90px;
+}
+
 .product-review {
   &.review-unaproved {
     border: 1px solid #eee;

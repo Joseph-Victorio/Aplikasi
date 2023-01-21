@@ -11,11 +11,7 @@ class Order extends Model
     use HasFactory;
 
     protected $guarded = [];
-    public $appends = ['status_label', 'created', 'grand_total'];
-
-    public $casts = [
-        'created_at' => 'datetime:d/m/Y'
-    ];
+    public $appends = ['status_label', 'customer_status_label', 'created', 'grand_total'];
 
     public function getGrandTotalAttribute()
     {
@@ -30,9 +26,13 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+    public function getCreatedReadableAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
     public function getCreatedAttribute()
     {
-        return Carbon::parse($this->created_at)->diffForHumans();
+        return $this->created_at->format('d/m/Y');
     }
 
     public function transaction()
@@ -46,14 +46,8 @@ class Order extends Model
             case 'CANCELED':
                 return 'Batal';
                 break;
-            case 'ISSUED':
-                return 'Menunggu Konfirmasi';
-                break;
-            case 'PAID':
-                return 'Lunas';
-                break;
-            case 'PROCESS':
-                return 'Sedang Diproses';
+            case 'TOSHIP':
+                return 'Perlu Dikirim';
                 break;
             case 'SHIPPING':
                 return 'Dikirim';
@@ -63,7 +57,29 @@ class Order extends Model
                 break;
             
             default:
-            return 'Belum Bayar';
+            return 'Pending';
+                break;
+        }
+
+    }
+    public function getCustomerStatusLabelAttribute()
+    {
+        switch ($this->order_status) {
+            case 'CANCELED':
+                return 'Batal';
+                break;
+            case 'TOSHIP':
+                return 'Diproses';
+                break;
+            case 'SHIPPING':
+                return 'Dikirim';
+                break;
+            case 'COMPLETE':
+                return 'Selesai';
+                break;
+            
+            default:
+            return 'Pending';
                 break;
         }
 

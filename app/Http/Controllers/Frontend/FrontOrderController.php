@@ -133,7 +133,7 @@ class FrontOrderController extends Controller
                 'order_unique_code' => $request->unique_code,
                 'order_subtotal' => $request->subtotal,
                 'order_total' => $request->total,
-                'order_status' => 'UNPAID',
+                'order_status' =>  $request->payment_type == 'COD' ? 'TOSHIP' :'PENDING',
                 'shipping_courier_name' => $request->shipping_courier_name,
                 'shipping_courier_service' => $request->shipping_courier_service,
                 'shipping_cost' => $request->shipping_cost,

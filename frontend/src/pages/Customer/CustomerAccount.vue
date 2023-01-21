@@ -65,7 +65,7 @@
             <q-item-section class="mobile-hide">{{ moneyIDR(order.grand_total) }}</q-item-section>
             <q-item-section>
               <div class="row">
-                 <q-badge class="text-center justify-center" style="min-width:90px;padding:4px;" :color="changeBadgeColor(order.order_status)">{{ order.status_label }}</q-badge>  
+                 <q-badge class="text-center justify-center" style="min-width:90px;padding:4px;" :color="getOrderStatusColor(order.order_status)">{{ order.customer_status_label }}</q-badge>  
               </div>
             </q-item-section>
             <q-item-section side>
@@ -144,13 +144,6 @@ export default {
       this.changePassword = !this.changePassword
       this.form.password_confirmation = ''
       this.form.password = ''
-    },
-    changeBadgeColor(type) {
-      if(type == 'PAID' || type == 'SHIPPING') return 'teal'
-      if(type == 'PROCESS') return 'blue'
-      if(type == 'COMPLETE') return 'green'
-      if(type == 'CANCELED') return 'red'
-      return 'grey-7'
     },
     messageButtonLabel(status) {
       if(status == 'UNPAID' || status == 'OVERDUE') return 'Follow Up Order'

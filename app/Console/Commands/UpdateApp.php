@@ -64,6 +64,8 @@ class UpdateApp extends Command
             Artisan::call('asset:update-path');
 
             Artisan::call('config:change-field');
+            
+            Artisan::call('order:change-status');
 
         } catch (\Exception $e) {
             

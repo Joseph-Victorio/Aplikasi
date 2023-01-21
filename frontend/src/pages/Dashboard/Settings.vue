@@ -12,9 +12,9 @@
 
     <div class="overflow-x-hidden relative">
       <q-list separator>
-        <q-item clickable v-ripple v-for="item in menus" :key="item.label" :to="{name: item.path}">
+        <q-item clickable v-ripple v-for="(item, i) in menus" :key="i" :to="{name: item.path}">
           <q-item-section avatar>
-            <q-avatar :color="item.color" text-color="white" :icon="item.icon" size="md"/>
+            <q-avatar :color="colors[i]" text-color="white" :icon="item.icon" size="md"/>
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ item.label }}</q-item-label>
@@ -51,17 +51,18 @@ export default {
   data () {
     return {
       isShowen: false,
+      colors: ['green', 'purple', 'blue', 'deep-orange', 'teal', 'amber-7', 'green', 'purple', 'blue', 'deep-orange', 'teal', 'amber-7', 'green', 'purple', 'blue', 'deep-orange', 'teal', 'amber-7' ],
       menus: [
         { label: 'Akun', caption: 'Pengaturan Akun', path: 'Account', icon: 'person', color: 'green'},
         { label: 'Toko', caption: 'Pengaturan Tampilan toko', path: 'Shop', icon: 'store', color: 'blue'},
-        { label: 'Produk', caption: 'Tambah, edit dan hapus produk', path: 'AdminProductIndex', icon: 'inventory_2', color: 'deep-orange'},
-        { label: 'Kategori', caption: 'Kelola kategori produk', path: 'CategoryIndex', icon: 'category', color: 'amber-7'},
-        { label: 'Promo', caption: 'Kelola produk promo', path: 'PromoIndex', icon: 'local_offer', color: 'blue-7'},
         { label: 'Order', caption: 'Kelola pesanan', path: 'OrderIndex', icon: 'receipt', color: 'green'},
-        { label: 'Akun Bank', caption: 'Kelola Akun Bank', path: 'BankIndex', icon: 'account_balance', color: 'purple'},
+        { label: 'Produk', caption: 'Tambah, edit dan hapus produk', path: 'AdminProductIndex', icon: 'inventory_2', color: 'deep-orange'},
+        { label: 'Promo', caption: 'Kelola produk promo', path: 'PromoIndex', icon: 'local_offer', color: 'blue-7'},
+        { label: 'Kategori', caption: 'Kelola kategori produk', path: 'CategoryIndex', icon: 'category', color: 'amber-7'},
         { label: 'Slider', caption: 'Kelola slideshow', path: 'Slider', icon: 'view_carousel', color: 'teal'},
         { label: 'Block', caption: 'Kelola banner, partner dan featured', path: 'AdminBlockIndex', icon: 'space_dashboard', color: 'amber-7'},
         { label: 'Artikel', caption: 'Kelola Artikel / blog', path: 'AdminPostIndex', icon: 'article', color: 'deep-orange'},
+        { label: 'Akun Bank', caption: 'Kelola Akun Bank', path: 'BankIndex', icon: 'account_balance', color: 'purple'},
         { label: 'Manage User', caption: 'kelola user', path: 'UserList', icon: 'group', color: 'teal'},
         { label: 'Produk Reviews', caption: 'Manage Reviews Produk', path: 'ReviewsIndex', icon: 'comment', color: 'purple'},
         { label: 'Pengaturan', caption: 'Pengaturan Website dan pengiriman', path: 'Config', icon: 'settings', color: 'blue'},

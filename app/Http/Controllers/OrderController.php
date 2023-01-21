@@ -75,7 +75,7 @@ class OrderController extends Controller
         $order = Order::find($id);
         $transaction = $order->transaction;
 
-        $order->order_status = 'PROCESS';
+        $order->order_status = 'TOSHIP';
         $order->save();
 
         $transaction->status = 'PAID';
@@ -125,7 +125,11 @@ class OrderController extends Controller
     
             $order->shipping_courier_code = $request->resi;
             $order->shipping_delivered = now();
-            $order->order_status = 'SHIPPING';
+            
+            if($request->boolean('update_to_ship')) {
+
+                $order->order_status = 'SHIPPING';
+            }
     
             $order->save();
 
@@ -149,7 +153,7 @@ class OrderController extends Controller
 
         $order->save();
 
-        if($order->shipping_courier_name == 'COD' && $request->status == 'COMPLETE') {
+        if($request->status == 'COMPLETE') {
 
             $order->transaction()->update([
                 'status' => 'PAID'

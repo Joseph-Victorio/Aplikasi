@@ -27,15 +27,25 @@
             </q-item>
             <q-item>
               <q-item-section>Tanggal Pembelian</q-item-section>
-              <q-item-section>{{ invoice.created_at }}</q-item-section>
+              <q-item-section>{{ invoice.created }}</q-item-section>
             </q-item>
             <q-item>
               <q-item-section>Status Pesanan</q-item-section>
               <q-item-section>
                 <q-item-label>
                   <span class="q-px-md rounded-borders text-white q-py-xs"
-                   :class="statusColorClass"
-                  >{{ invoice.status_label }}</span>
+                   :class="`bg-${getOrderStatusColor(invoice.order_status)}`"
+                  >{{ invoice.customer_status_label }}</span>
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>Status Pembayaran</q-item-section>
+              <q-item-section>
+                <q-item-label>
+                  <span class="q-px-md rounded-borders text-white q-py-xs"
+                   :class="`bg-${getOrderStatusColor(invoice.transaction.status)}`"
+                  >{{ invoice.transaction.status_label }}</span>
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -49,15 +59,15 @@
               <q-item class="bg-green-1">
                 <q-item-section>Produk</q-item-section>
                 <q-item-section>Qty</q-item-section>
-                <q-item-section>Harga</q-item-section>
+                <q-item-section side>Harga</q-item-section>
               </q-item>
               <q-item v-for="(item, index) in invoice.items" :key="index">
                 <q-item-section>
-                  <div class="text-md">{{ item.name }}</div>
+                  <div>{{ item.name }}</div>
                   <div class="text-caption tet-grey-6">{{ item.note }}</div>
                 </q-item-section>
                 <q-item-section>{{ item.quantity }}</q-item-section>
-                <q-item-section>{{ moneyIDR(item.price) }}</q-item-section>
+                <q-item-section side>{{ moneyIDR(item.price) }}</q-item-section>
               </q-item>
             </q-list>
           </q-card-section>

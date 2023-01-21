@@ -12,6 +12,13 @@ Vue.mixin({
     $money(numb) {
       return numb.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }, 
+    getOrderStatusColor(status) {
+      if(status == 'SHIPPING') return 'teal'
+      if(status == 'COMPLETE' || status == 'PAID') return 'green'
+      if(status == 'CANCELED') return 'red'
+      if(status == 'TOSHIP') return 'amber-8'
+      return 'grey-7'
+    },
     generateSku(numb = 32) {
       let result = ''
       var randomChars = 'ABCDEFGHIJKL9MNOPQRST8UVWXYZ01T2343567890';
