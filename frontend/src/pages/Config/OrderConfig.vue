@@ -1,6 +1,6 @@
 <template>
   <div class="bg-grey-1">
-    <q-card flat>
+    <q-card flat class="q-pa-sm">
       <q-card-section>
         <div class="q-mb-xs">
           <div class="text-md text-weight-bold">Pengaturan Order Expired</div>
@@ -21,7 +21,7 @@
         </form>
       </q-card-section>
     </q-card>
-    <q-card class="q-mt-lg" flat>
+    <q-card class="q-mt-lg q-pa-sm" flat>
       <q-card-section>
         <div class="flex items-center justify-between q-mb-xs">
           <div class="text-md text-weight-bold">Tripay Payment Gateway</div>

@@ -37,13 +37,22 @@ export default {
   computed: {
     categories() {
       return this.$store.state.front.categories
+    },
+    config() {
+      return this.$store.state.config
     }
   },
   methods: {
     handleShowCategory(id) {
       this.closeCategory()
+
       if(id != this.$route.params.id) {
-        this.$store.dispatch('product/productsByCategory', id)
+        let param = {
+          category_id: this.$route.params.id,
+          per_page: this.config.catalog_product_limit,
+          order_by: this.config.catalog_product_sort,
+        }
+        this.$store.dispatch('product/productsByCategory', param)
         this.$router.push({ name: 'ProductCategory', params: { id: id }})
       }
     },

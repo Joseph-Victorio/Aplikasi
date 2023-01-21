@@ -16,30 +16,30 @@
       </div>
       </q-header>
         <q-tab-panels v-model="tab" animated class="bg-transparent">
-          <q-tab-panel name="BasicConfig" >
-              <BasicConfig />
+          <q-tab-panel class="q-pa-none" name="BasicConfig" >
+            <BasicConfig />
           </q-tab-panel>
 
-          <q-tab-panel name="ShippingConfig">
+          <q-tab-panel class="q-pa-none" name="ShippingConfig">
             <ShippingConfig />
           </q-tab-panel>
-          <q-tab-panel name="Local">
+          <q-tab-panel class="q-pa-none" name="Local">
             <LocalShipping />
           </q-tab-panel>
 
-          <q-tab-panel name="Notifikasi">
+          <q-tab-panel class="q-pa-none" name="Notifikasi">
             <notification />
           </q-tab-panel>
-          <q-tab-panel name="Order">
+          <q-tab-panel class="q-pa-none" name="Order">
             <OrderConfig />
           </q-tab-panel>
-          <q-tab-panel name="Checkout">
+          <q-tab-panel class="q-pa-none" name="Checkout">
               <checkout-config  />
           </q-tab-panel>
-          <q-tab-panel name="Fee">
+          <q-tab-panel class="q-pa-none" name="Fee">
              <service-fee />
           </q-tab-panel>
-          <q-tab-panel name="System">
+          <q-tab-panel class="q-pa-none" name="System">
             <system-update />
           </q-tab-panel>
         </q-tab-panels>

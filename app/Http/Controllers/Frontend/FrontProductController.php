@@ -24,12 +24,14 @@ class FrontProductController extends Controller
         }
     }
     
-    public function getProducts()
+    public function getProducts(Request $request)
     {
 
         try {
+            $per_page = $request->per_page ?? $this->limit;
+            $order_by = $request->order_by ?? 'DESC';
 
-            return new ProductListCollection($this->productRepository->getAll($this->limit));
+            return new ProductListCollection($this->productRepository->getAll($per_page, $order_by));
 
         } catch (Exception $e) {
 
@@ -56,12 +58,15 @@ class FrontProductController extends Controller
 
     }
 
-    public function productsByCategory($id)
+    public function productsByCategory(Request $request)
     {     
 
         try {
-            $ids = array($id);
-            return new ProductListCollection($this->productRepository->getManyInCategory($ids, $this->limit));
+            $ids = array($request->category_id);
+            $per_page = $request->per_page ?? $this->limit;
+            $order_by = $request->order_by ?? 'DESC';
+
+            return new ProductListCollection($this->productRepository->getManyInCategory($ids, $per_page, $order_by));
 
 
         } catch (Exception $e) {

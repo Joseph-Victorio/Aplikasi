@@ -32,9 +32,6 @@
           <q-item-section>
             <q-item-label>Detail</q-item-label>
           </q-item-section>
-          <q-item-section class="xs-hide">
-            <q-item-label>Status</q-item-label>
-          </q-item-section>
           <q-item-section side>
             Actions
           </q-item-section>
@@ -55,7 +52,7 @@
                   <td>{{ order.customer_name }}</td>
                 </tr>
                 <tr>
-                  <td>WA</td>
+                  <td>Whatsapp</td>
                   <td>{{ order.customer_whatsapp }}</td>
                 </tr>
                 <tr>
@@ -63,18 +60,11 @@
                   <td>{{ moneyIDR(order.order_total) }}</td>
                 </tr>
                 <tr>
-                  <td>Dibuat</td>
-                  <td>{{ order.created_at }}</td>
-                </tr>
-                <tr class="sm-hide md-hide lg-hide">
                   <td>Status</td>
-                  <td><div><q-badge :color="changeBadgeColor(order.order_status)">{{ order.status_label }}</q-badge></div></td>
+                  <td><div><q-badge :color="getOrderStatusColor(order.order_status)">{{ order.customer_status_label }}</q-badge></div></td>
                 </tr>
               </table>
             </div>
-          </q-item-section>
-           <q-item-section class="xs-hide">
-            <q-item-label> <q-badge :color="changeBadgeColor(order.order_status)">{{ order.status_label }}</q-badge></q-item-label>
           </q-item-section>
           <q-item-section side>
             <div class="column q-gutter-y-sm">

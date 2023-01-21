@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <q-card flat class="q-pa-sm">
     <form @submit.prevent="updateData">
       <q-card flat>
         <q-card-section>
@@ -98,7 +98,7 @@
         </q-card-actions>
       </q-card>
     </form>
-  </div>
+  </q-card>
 </template>
 
 <script>

@@ -103,6 +103,7 @@ export function SET_FRONT_RODUCT_READY (state, status)
   state.terbaru.ready = status
   state.terbaru.terlaris = status
 }
+
 export function SET_PRODUCT_CATEGORY (state, payload) 
 {
   state.productsByCategory.data = payload.results

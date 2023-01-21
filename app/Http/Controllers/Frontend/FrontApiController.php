@@ -26,6 +26,8 @@ class FrontApiController extends Controller
     }
     public function homepage()
     {
+        Cache::flush();
+        
         $data['sliders'] = Cache::rememberForever('sliders', function () {
             return Slider::OrderBy('weight', 'asc')->get();
         });

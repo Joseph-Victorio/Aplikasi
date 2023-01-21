@@ -40,7 +40,11 @@ class Config extends Model
         'is_service_fee',
         'is_shipping_active',
         'review_auto_approved',
-        'order_expired_time'
+        'order_expired_time',
+        'catalog_product_limit',
+        'catalog_product_sort',
+        'home_product_limit',
+        'home_product_sort',
     ];
     public $appends = [
         'is_shippable', 

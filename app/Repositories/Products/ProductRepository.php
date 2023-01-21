@@ -30,14 +30,24 @@ class ProductRepository
         return $product;
     }
 
-    public function getAll($limit)
+    public function getAll($per_page, $order_by)
     {
-            return Product::with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
-                $query->whereHas('promoActive');
-            }])
-            ->withAvg('reviews', 'rating')
-            ->simplePaginate($limit);
-        
+        $instance  = Product::query();
+
+        if($order_by == 'RANDOM') {
+            $instance->inRandomOrder();
+        }else {
+            $instance->orderBy('id', $order_by);
+        }
+
+       $data = $instance->with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
+            $query->whereHas('promoActive');
+        }])
+        ->withAvg('reviews', 'rating')
+        ->simplePaginate($per_page);
+
+        return $data;
+    
     }
 
     public function getManyInId($pids)
@@ -63,15 +73,24 @@ class ProductRepository
 
     }
 
-    public function getManyInCategory(Array $ids, $limit)
+    public function getManyInCategory(Array $ids, $per_page = 10, $order_by = 'DESC')
     {
+        $instance  = Product::query();
+
+        if($order_by == 'RANDOM') {
+            $instance->inRandomOrder();
+        }else {
+            $instance->orderBy('id', $order_by);
+        }
     
-        return Product::with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
-            $query->whereHas('promoActive');
-        }])
+        $data = $instance->with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
+                $query->whereHas('promoActive');
+            }])
             ->whereIn('category_id', $ids)
             ->withAvg('reviews', 'rating')
-            ->simplePaginate($limit);
+            ->simplePaginate($per_page);
+
+        return $data;
 
     }
 

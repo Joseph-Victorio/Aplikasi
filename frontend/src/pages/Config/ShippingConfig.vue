@@ -1,7 +1,7 @@
 <template>
   <div>
     <form @submit.prevent="updateData">
-      <q-card flat>
+      <q-card flat class="q-pa-sm">
         <q-card-section>
           <div class="flex items-center justify-between">
             <div class="text-md text-weight-bold">Ekspedisi</div>
@@ -24,12 +24,17 @@
             <div class="text-grey-8 text-weight-medium q-py-sm">Pengaturan Gudang Pengiriman</div>
               <div @click="changeWarehouse" class="cursor-pointer q-pa-md full-width border q-filled">{{ warehouseTitle() }}</div>
               <div class="q-mt-md" v-if="theCouriers.length">
-                <div class="text-grey-8 text-weight-medium q-py-md">Pengaturan Kurir Aktif</div>
+                <div class="text-grey-8 text-weight-medium q-pt-md text-md">Pengaturan Kurir</div>
+                <div class="text-grey-7 text-caption q-pb-md">Aktifkan kurir yang yang akan digunakan</div>
                   <div class="q-gutter-sm">
                     <q-btn no-caps unelevated
+                      padding="3px 8px"
                       :outline="!isCourierActive(name)"
-                     rounded size="10px" v-for="(name, index) in theCouriers" :key="index" 
-                    :color="isCourierActive(name)? 'green' : 'grey-7'" @click="handleSelectCourier(name)" :label="name.label"></q-btn>
+                      size="13px" v-for="(name, index) in theCouriers" :key="index" 
+                    :color="isCourierActive(name)? 'green' : 'grey-7'" @click="handleSelectCourier(name)">
+                      <q-icon :name="isCourierActive(name) ? 'eva-checkmark-square' : 'eva-square'"></q-icon>
+                      <span class="q-ml-xs">{{ name.label }}</span>
+                  </q-btn>
                   </div>
               </div>
           </div>

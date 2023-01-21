@@ -22,6 +22,7 @@
             icon="keyboard_backspace" label="Kehalaman Produk" no-caps/>
       </div>
     </template>
+    <q-inner-loading :showing="loading"></q-inner-loading>
   </q-page>
 </template>
 
@@ -53,6 +54,12 @@ export default {
     },
     title() {
       return this.$store.state.meta.title
+    },
+    config() {
+      return this.$store.state.config
+    },
+    loading() {
+      return this.$store.state.loading
     }
       
   },
@@ -71,6 +78,13 @@ export default {
     },
     paginate(url) {
       this.isLoadmore = true
+      let param = {
+          category_id: this.$route.params.id,
+          per_page: this.config.catalog_product_limit,
+          order_by: this.config.catalog_product_sort,
+        }
+        url += `&${new URLSearchParams(param).toString()}`
+
       Api().get(url).then(response => {
         if(response.status == 200) {
           this.$store.commit('product/PAGINATE_PRODUCT_CATEGORY', response.data)
@@ -87,14 +101,22 @@ export default {
       if(this.products.data[0].id != this.$route.params.id) {
 
         this.$store.commit('product/CLEAR_PRODUCT_CATEGORY')
-        this.productsByCategory(this.$route.params.id)
+        this.productsByCategory({
+          category_id: this.$route.params.id,
+          per_page: this.config.catalog_product_limit,
+          order_by: this.config.catalog_product_sort,
+        })
 
       }
 
     } else {
 
       this.$store.commit('product/CLEAR_PRODUCT_CATEGORY')
-      this.productsByCategory(this.$route.params.id)
+      this.productsByCategory({
+        category_id: this.$route.params.id,
+        per_page: this.config.catalog_product_limit,
+        order_by: this.config.catalog_product_sort,
+      })
     }
   },
   meta() {

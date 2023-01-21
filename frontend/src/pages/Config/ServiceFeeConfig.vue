@@ -1,5 +1,5 @@
 <template>
-  <q-card flat>
+  <q-card flat class="q-pa-sm">
     <q-card-section>
       <div class="flex items-center justify-between">
           <div class="text-subtitle1 text-weight-bold">Pengaturan Biaya Layanan</div>

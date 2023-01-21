@@ -7,35 +7,35 @@ return
   'api_url_pro' => env('RAJAONGKIR_API_PRO_URL', 'https://pro.rajaongkir.com/api/'),
   'courier_starter' => 
       [
-        ['label' => 'Jalur Eka Nugraha (JNE)', 'value' => 'jne'],
-        ['label' => 'Citra Van Titipan Kilat (TIKI)', 'value' => 'tiki'],
-        ['label' => 'Pos Indonesia (POS)', 'value' => 'pos']
+        ['label' => 'JNE', 'value' => 'jne'],
+        ['label' => 'TIKI', 'value' => 'tiki'],
+        ['label' => 'POS', 'value' => 'pos']
       ],
       'courier_basic' => 
       [
-        ['label' => 'PCP Express (PCP)', 'value' => 'pcp'],
-        ['label' => 'RPX Holding (RPX)', 'value' => 'rpx']
+        ['label' => 'PCP Express', 'value' => 'pcp'],
+        ['label' => 'RPX Holding', 'value' => 'rpx']
       ],
       'courier_pro' =>
       [
-        ['label' => 'J&T Express (J&T)', 'value' =>  'jnt'],
-        ['label' => 'JET Logistics (JET)', 'value' =>  'jet'],
-        ['label' => 'WAHANA Prestasi Logistik (WAHANA)', 'value' =>  'wahana'],
-        ['label' => 'ID Express (IDE)', 'value' =>  'ide'], 
-        ['label' => 'Ninja Xpress (NINJA)', 'value' =>  'ninja'], 
-        ['label' => 'SiCepat Express (SICEPAT)', 'value' =>  'sicepat'], 
-        ['label' => 'Anteraja (ANTERAJA)', 'value' =>  'anteraja'], 
-        ['label' => 'Satria Antaran Prima (SAP)', 'value' =>  'sap'], 
-        ['label' => 'PAHALA Kencana Express (PAHALA)', 'value' =>  'pahala'], 
-        ['label' => 'Royal Express Indonesia (REX)', 'value' =>  'rex'], 
-        ['label' => 'PANDU Logistics (PANDU)', 'value' =>  'pandu'], 
-        ['label' => 'FIRST Logistics (FIRST)', 'value' =>  'first'], 
-        ['label' => 'SENTRAL Cargo (SENTRAL)', 'value' =>  'sentral'], 
-        ['label' => 'LION Express (LION)', 'value' =>  'lion'], 
-        ['label' => 'Solusi Express (SLIS)', 'value' =>  'slis'], 
-        ['label' => 'Nusantara Card Semesta (NCS)', 'value' =>  'ncs'], 
-        ['label' => '21 Express (DSE)', 'value' =>  'dse'], 
-        ['label' => 'IDL Cargo (IDL)', 'value' =>  'idl'], 
-        ['label' => 'JTL Express (JTL)', 'value' =>  'jtl'], 
+        ['label' => 'J&T Express', 'value' =>  'jnt'],
+        ['label' => 'JET Logistics', 'value' =>  'jet'],
+        ['label' => 'WAHANA (Wahana Prestasi Logistik)', 'value' =>  'wahana'],
+        ['label' => 'IDE (ID Express)', 'value' =>  'ide'], 
+        ['label' => 'Ninja Xpress', 'value' =>  'ninja'], 
+        ['label' => 'SICEPAT Express', 'value' =>  'sicepat'], 
+        ['label' => 'ANTERAJA', 'value' =>  'anteraja'], 
+        ['label' => 'SAP (Satria Antaran Prima)', 'value' =>  'sap'], 
+        ['label' => 'PAHALA (Pahala Kencana Express)', 'value' =>  'pahala'], 
+        ['label' => 'REX (Royal Express Indonesia)', 'value' =>  'rex'], 
+        ['label' => 'PANDU Logistics', 'value' =>  'pandu'], 
+        ['label' => 'FIRST Logistics', 'value' =>  'first'], 
+        ['label' => 'SENTRAL Cargo', 'value' =>  'sentral'], 
+        ['label' => 'LION Express', 'value' =>  'lion'], 
+        ['label' => 'SLIS (Solusi Express)', 'value' =>  'slis'], 
+        ['label' => 'NCS (Nusantara Card Semesta)', 'value' =>  'ncs'], 
+        ['label' => 'DSE (21 Express)', 'value' =>  'dse'], 
+        ['label' => 'IDL Cargo', 'value' =>  'idl'], 
+        ['label' => 'JTL Express', 'value' =>  'jtl'], 
       ]
 ];

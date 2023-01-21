@@ -80,7 +80,7 @@
                   </tr>
                   <tr>
                     <td>Pengiriman</td>
-                    <td>{{ order.shipping_courier_name == 'COD' ? 'Antar Kurir Pribadi' : order.shipping_courier_name }}</td>
+                    <td>{{ order.shipping_courier_name == 'COD' ? 'Diantar Kurir Toko' : order.shipping_courier_name }}</td>
                   </tr>
                   
                   <tr v-if="order.shipping_courier_code ">

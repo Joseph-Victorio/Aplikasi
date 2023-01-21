@@ -36,10 +36,20 @@ export default {
     products() {
       return this.$store.state.product.products
     },
+    config() {
+      return this.$store.state.config
+    }
   },
   methods: {
     paginate(url) {
       this.isLoadmore = true
+
+      let param = {
+          per_page: this.config.catalog_product_limit,
+          order_by: this.config.catalog_product_sort,
+        }
+        url += `&${new URLSearchParams(param).toString()}`
+
       Api().get(url).then(response => {
         if(response.status == 200) {
           this.$store.commit('product/PAGINATE_PRODUCTS', response.data)
@@ -52,7 +62,10 @@ export default {
       this.title = 'Produk ' + this.$route.query.q
     }
     if(!this.products.data.length) {
-      this.$store.dispatch('product/getProducts')
+      this.$store.dispatch('product/getProducts', {
+        per_page: this.config.catalog_product_limit,
+        order_by: this.config.catalog_product_sort,
+      })
     }
   },
   meta() {

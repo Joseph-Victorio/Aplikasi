@@ -1,5 +1,5 @@
 <template>
-  <q-card flat>
+  <q-card flat class="q-pa-sm">
     <q-card-section>
       <div class="text-md text-weight-bold">System Update / Clear Cache</div>
       <div class="text-caption text-grey-7">Pengaturan sistem update dan cache situs, Pastikan anda mengerti apa yang anda lakukan</div>
@@ -10,7 +10,7 @@
             <q-item-label>Clear Cache</q-item-label>
           </q-item-section>
           <q-item-section side>
-            <q-btn :loading="loadingClearChace" @click="clearCache" label="Clear Cache" unelevated color="primary" size="12px"></q-btn>
+            <q-btn style="min-width:150px;" :loading="loadingClearChace" @click="clearCache" label="Clear Cache" unelevated color="primary" size="12px"></q-btn>
           </q-item-section>
         </q-item>
   
@@ -19,10 +19,10 @@
             <q-item-label v-if="needUpdate">
               <q-badge color="green-7">{{ siteData }}</q-badge> Pending Update
             </q-item-label>
-            <q-item-label v-else>Updated</q-item-label>
+            <q-item-label v-else>Update</q-item-label>
           </q-item-section>
           <q-item-section side>
-            <q-btn :loading="loading" :disable="!needUpdate" @click="updateSystem" :label="needUpdate? 'Update Now' : 'No updated found'" unelevated :color="needUpdate? 'primary' : 'grey-7'" size="12px"></q-btn>
+            <q-btn style="min-width:150px;" :loading="loading" :disable="!needUpdate" @click="updateSystem" :label="needUpdate? 'Update Now' : 'No updated found'" unelevated :color="needUpdate? 'primary' : 'grey-7'" size="12px"></q-btn>
           </q-item-section>
         </q-item>
         

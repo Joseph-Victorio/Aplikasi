@@ -96,7 +96,7 @@ Route::prefix('public')->group(function() {
     Route::get('products', [FrontProductController::class, 'getProducts']);
     Route::get('product/{slug}', [FrontProductController::class, 'productDetail']);
     Route::post('product-favorites', [FrontProductController::class, 'getProductsFavorites']);
-    Route::get('product-category/{id}', [FrontProductController::class, 'productsByCategory']);
+    Route::get('product-category', [FrontProductController::class, 'productsByCategory']);
     Route::get('product-search/{key}', [FrontProductController::class, 'searchProduct']);
     Route::post('order', [FrontOrderController::class, 'storeOrder']);
     Route::get('invoice/{invoice}', [FrontOrderController::class, 'getInvoice']);

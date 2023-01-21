@@ -54,9 +54,12 @@ export function productDelete ( { dispatch },  id) {
 }
 
 // FRONT
-export function getProducts ({ commit }) {
-
-  Api().get('public/products').then(response => {
+export function getProducts ({ commit }, query = null) {
+  let url = 'public/products'
+  if(query) {
+    url += `?${new URLSearchParams(query).toString()}`
+  }
+  Api().get(url).then(response => {
      commit('SET_PRODUCTS', response.data)
    })
 }
@@ -69,9 +72,16 @@ export function searchProducts ({ commit }, q) {
   return Api().get('public/product-search/'+q)
  }
 
-export function productsByCategory ({ commit }, id) {
+export function productsByCategory ({ commit }, query) {
+  commit('CLEAR_PRODUCT_CATEGORY')
+  console.log(query);
+  let url = `public/product-category`
 
-  Api().get('public/product-category/'+id).then(response => {
+  if(query.per_page || query.order_by) {
+    url += `?${new URLSearchParams(query).toString()}`
+  }
+
+  Api().get(url).then(response => {
     if(response.status == 200) {
       commit('SET_PRODUCT_CATEGORY', response.data)
       if(response.data.results.length) {

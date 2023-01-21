@@ -1,5 +1,5 @@
 <template>
-  <q-card flat>
+  <q-card flat class="q-pa-sm">
      <q-card-section>
       <div class="text-md text-weight-bold">Penaturan Tema</div>
       <div class="text-caption text-grey-7">Pengaturan tema dan warna dasar situs</div>
