@@ -9,12 +9,12 @@
          List Pesanan
         </q-toolbar-title>
       </q-toolbar>
+      <div class="box-shadow">
+        <q-tabs v-model="filter" active-color="primary" outside-arrows>
+          <q-tab v-for="option in options" :key="option.value" :name="option.value" :label="option.label" no-caps></q-tab>
+        </q-tabs>
+      </div>
     </q-header>
-    <div class="box-shadow">
-      <q-tabs v-model="filter" active-color="primary" outside-arrows>
-        <q-tab v-for="option in options" :key="option.value" :name="option.value" :label="option.label" no-caps></q-tab>
-      </q-tabs>
-    </div>
     <div class="q-py-md auto-padding-side">
       <div class="q-gutter-x-sm q-mt-sm">
           <q-input v-model="search" placeholder="Ketik no invoice atau ponsel" dense borderless clearable class="bg-grey-3 q-px-sm" @keypress.enter="handleSearchOrder" @clear="clearSearch">

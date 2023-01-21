@@ -111,7 +111,7 @@ class ReviewController extends Controller
             $data = $review;
             $msg = $approvCfg ? 'Berhasil mengulas produk' : 'Ulasan anda menunggu di publish';
 
-            Cache::forget($request->product_slug);
+            Cache::forget($product->slug);
 
             return ApiResponse::success($data, $msg);
 

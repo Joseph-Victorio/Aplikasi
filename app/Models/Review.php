@@ -41,6 +41,7 @@ class Review extends Model
     }
 
     public function scopeApproved($query)
+    
     {
         return $query->where('is_approved', 1);
     }
