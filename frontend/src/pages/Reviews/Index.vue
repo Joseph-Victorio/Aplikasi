@@ -56,7 +56,7 @@
             <q-btn unelevated size="sm" round icon="delete" color="red-7" @click="handleDeleteReview(item.id)">
               <q-tooltip>Hapus</q-tooltip>
             </q-btn>
-            <q-btn v-if="!item.is_approved" unelevated size="sm" round icon="check" color="blue-6" @click="handleApproveReview(item.id)">
+            <q-btn v-if="!item.is_approved" unelevated size="sm" round icon="check" color="blue-6" @click="handleApproveReview(item)">
               <q-tooltip>Approved</q-tooltip>
             </q-btn>
           </q-item-section>
@@ -111,13 +111,13 @@ export default {
         this.deleteReview(id)
       })
     },
-    handleApproveReview(id) {
+    handleApproveReview(item) {
       this.$q.dialog({
         title: 'Konfirmasi',
         message: 'Ingin menyetujui ulasan ini?',
         cancel: true,
       }).onOk(() => {
-        this.approveReview(id)
+        this.approveReview(item)
       })
     },
     deleteReview(id) {
@@ -127,9 +127,12 @@ export default {
         this.getReviews()
       })
     },
-    approveReview(id) {
+    approveReview(item) {
       this.$q.loading.show()
-      Api().put('reviews/'+ id).finally(() => {
+      Api().post('reviews', {
+        id: item.id,
+        product_id: item.product_id
+      }).finally(() => {
         this.reviews = []
         this.getReviews()
       })

@@ -46,14 +46,23 @@ class ReviewController extends Controller
         }
 
     }
-    public function publish($id)
+    public function publish(Request $request)
     {
+
+        $request->validate([
+            'id' => 'required',
+            'product_id' => 'required',
+        ]);
         
         try {
             
-            Review::where('id', $id)->update([
+            Review::where('id', $request->id)->update([
                 'is_approved' => 1
             ]);
+
+            $product = Product::where('id', $request->product_id)->select('id', 'slug')->first();
+
+            Cache::forget($product->slug);
 
             return ApiResponse::success();
 

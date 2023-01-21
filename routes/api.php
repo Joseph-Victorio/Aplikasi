@@ -64,7 +64,7 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->group(function() {
     Route::get('config-email', [MailConfigController::class, 'show']);
     Route::post('config-email', [MailConfigController::class, 'update']);
     Route::get('reviews/{type}', [ReviewController::class, 'index']);
-    Route::put('reviews/{id}', [ReviewController::class, 'publish']);
+    Route::post('reviews', [ReviewController::class, 'publish']);
     Route::delete('reviews/{id}', [ReviewController::class, 'destroy']);
 });
 
