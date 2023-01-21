@@ -103,7 +103,7 @@
 
                   <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canComplete(order)" label="Order Selesai" color="green" @click="handleCompletionOrder(order)"></q-btn>
 
-                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canConfirm(order)" label="Konfirmasi" color="purple" @click="handleConfirmationOrder(order)"></q-btn>
+                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canConfirm(order)" label="Konfirmasi" color="blue" @click="handleConfirmationOrder(order)"></q-btn>
 
                   <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canCancelOrder(order)" label="Batalkan" color="red" @click="handleCancelOrder(order)"></q-btn>
 
