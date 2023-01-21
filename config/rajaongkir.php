@@ -9,15 +9,23 @@ return
       [
         ['label' => 'JNE', 'value' => 'jne'],
         ['label' => 'TIKI', 'value' => 'tiki'],
-        ['label' => 'POS', 'value' => 'pos']
+        ['label' => 'POS', 'value' => 'pos'],
       ],
       'courier_basic' => 
       [
+        ['label' => 'JNE', 'value' => 'jne'],
+        ['label' => 'TIKI', 'value' => 'tiki'],
+        ['label' => 'POS', 'value' => 'pos'],
         ['label' => 'PCP Express', 'value' => 'pcp'],
-        ['label' => 'RPX Holding', 'value' => 'rpx']
+        ['label' => 'RPX Holding', 'value' => 'rpx'],
       ],
       'courier_pro' =>
       [
+        ['label' => 'JNE', 'value' => 'jne'],
+        ['label' => 'TIKI', 'value' => 'tiki'],
+        ['label' => 'POS', 'value' => 'pos'],
+        ['label' => 'PCP Express', 'value' => 'pcp'],
+        ['label' => 'RPX Holding', 'value' => 'rpx'],
         ['label' => 'J&T Express', 'value' =>  'jnt'],
         ['label' => 'JET Logistics', 'value' =>  'jet'],
         ['label' => 'WAHANA (Wahana Prestasi Logistik)', 'value' =>  'wahana'],

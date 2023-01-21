@@ -278,8 +278,10 @@ export default {
         }
         return false
       } else{
-        if(order.order_status == 'TOSHIP') {
+        if(order.order_status == 'TOSHIP' && order.shipping_courier_code) {
           return true
+        }else {
+          return false
         }
       }
     },
