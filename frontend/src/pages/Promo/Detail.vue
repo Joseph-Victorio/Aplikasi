@@ -5,10 +5,10 @@
         <q-btn :to="{name: 'PromoIndex', query: { q: 'promo'}}"
           flat round dense
           icon="eva-arrow-back" />
-        <q-toolbar-title v-if="promo">
-         {{ promo.label }}
+        <q-toolbar-title >
+         <span v-if="promo">{{ promo.label }}</span>
         </q-toolbar-title>
-        <q-btn color="white" text-color="primary" size="13px" @click="handleAddProductPromo" unelevated icon="add_circle" label="Produk">
+        <q-btn color="white" text-color="brand" size="13px" @click="handleAddProductPromo" unelevated icon="add_circle" label="Produk">
           </q-btn> 
       </q-toolbar>
     </q-header>

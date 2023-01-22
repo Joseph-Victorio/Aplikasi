@@ -211,6 +211,8 @@ export default {
       this.$refs.color.click()
     },
     saveTampilan() {
+      localStorage.removeItem('__nextshop_theme')
+      
       Api().post('config', this.form).then(response => {
         if(response.status == 200) {
           this.$store.dispatch('getAdminConfig')

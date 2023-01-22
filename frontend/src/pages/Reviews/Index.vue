@@ -12,7 +12,7 @@
       <q-tabs 
       v-model="tab"
       class="bg-grey-1 text-grey-8"
-      indicator-color="primary"
+      active-color="primary"
       >
         <q-tab no-caps name="Unapproved" label="Belum Di Setujui"></q-tab>
         <q-tab no-caps name="Approved" label="Sudah Di Setujui"></q-tab>

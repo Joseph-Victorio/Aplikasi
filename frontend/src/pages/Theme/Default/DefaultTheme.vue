@@ -3,7 +3,7 @@
     <q-header class="bg-white text-dark box-shadow" :class="{ 'auto-padding-side': $q.platform.is.desktop}">
       <q-toolbar class="items-center sans">
         <img v-if="shop" class="logo" :src="shop.logo? shop.logo : '/icon/icon-192x192.png'" alt="Logo"/>
-        <q-toolbar-title v-if="shop && shop.name" class="text-weight-bold text-primary">{{ shop.name }}</q-toolbar-title>
+        <q-toolbar-title v-if="shop && shop.name" class="text-weight-bold text-brand">{{ shop.name }}</q-toolbar-title>
         <shopping-cart  />
       </q-toolbar>
     </q-header>

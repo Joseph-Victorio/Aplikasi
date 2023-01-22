@@ -29,15 +29,14 @@ export default {
 
     state.config = payload
 
-    if(!localStorage.getItem('__theme_cnfg')) {
-      let data = JSON.parse(localStorage.getItem('__theme_cnfg'))
+    if(localStorage.getItem('__nextshop_theme')) {
+      let data = JSON.parse(localStorage.getItem('__nextshop_theme'))
 
       state.config.theme = data.theme
       state.config.theme_color = data.theme_color
       state.config.primary_color = data.primary_color
       state.config.secondary_color = data.secondary_color
       state.config.accent_color = data.accent_color
-
     }else {
         let themeCfg = {
           theme: state.config.theme,
@@ -47,7 +46,7 @@ export default {
           accent_color: state.config.accent_color,
         }
 
-        localStorage.setItem('__theme_cnfg', JSON.stringify(themeCfg))
+        localStorage.setItem('__nextshop_theme', JSON.stringify(themeCfg))
     }
 
     colors.setBrand('brand', state.config.theme_color);
