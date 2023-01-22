@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="id" prefix="og: https://ogp.me/ns#">
   <head>
-    <title><%= productName %></title>
-    <meta name="description" content="<%= productDescription %>" data-qmeta="description">
-
     <meta charset="utf-8">
     <meta name=format-detection content="telephone=no">
     <meta name=msapplication-tap-highlight content=no>
@@ -11,8 +8,11 @@
     <link rel=icon type=image/png href=/icon/favicon.png>
     <link rel=icon type=image/png sizes=96x96 href=/icon/icon-96x96.png>
     <link rel=icon type=image/png sizes=192x192 href=/icon/icon-192x192.png>
+    <%= meta_head %>
+    <%= json_schema %>
   </head>
   <body class="bg-blue-grey-1">
+    <%= meta_body %>
     <!-- DO NOT touch the following DIV -->
     <div id="q-app"></div>
   </body>
