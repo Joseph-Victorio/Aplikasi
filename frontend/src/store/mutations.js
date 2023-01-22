@@ -29,8 +29,8 @@ export default {
 
     state.config = payload
 
-    if(!localStorage.getItem('__theme')) {
-      let data = JSON.parse(localStorage.getItem('__theme'))
+    if(!localStorage.getItem('__theme_cnfg')) {
+      let data = JSON.parse(localStorage.getItem('__theme_cnfg'))
 
       state.config.theme = data.theme
       state.config.theme_color = data.theme_color
@@ -40,14 +40,14 @@ export default {
 
     }else {
         let themeCfg = {
-          theme: state.theme,
-          theme_color: state.theme_color,
-          primary_color: state.primary_color,
-          secondary_color: state.secondary_color,
-          accent_color: state.accent_color,
+          theme: state.config.theme,
+          theme_color: state.config.theme_color,
+          primary_color: state.config.primary_color,
+          secondary_color: state.config.secondary_color,
+          accent_color: state.config.accent_color,
         }
 
-        localStorage.setItem('__theme', JSON.stringify(themeCfg))
+        localStorage.setItem('__theme_cnfg', JSON.stringify(themeCfg))
     }
 
     colors.setBrand('brand', state.config.theme_color);
