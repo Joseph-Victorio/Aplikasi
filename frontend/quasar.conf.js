@@ -195,7 +195,7 @@ module.exports = function (ctx ) {
       
     },
     sourceFiles: {
-      indexHtmlTemplate: 'src/app.template.html',
+      indexHtmlTemplate: ctx.prod ? 'src/prod.template.html' : 'src/app.template.html',
     },
 
     htmlVariables: {
