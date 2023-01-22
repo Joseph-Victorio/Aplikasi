@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pb-lg bg-grey-1">
-    <q-header class="no-print box-shadow">
+    <q-header class="no-print box-shadow bg-brand">
       <q-toolbar>
         <q-btn v-go-back.single
           flat round dense

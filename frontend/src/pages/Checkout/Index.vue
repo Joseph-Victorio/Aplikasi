@@ -1,6 +1,6 @@
 <template>
   <q-page class="bg-white" padding>
-    <q-header class="text-primary bg-white box-shadow">
+    <q-header class="text-brand bg-white box-shadow">
         <q-toolbar>
           <q-btn @click="handleBackButton"
             flat round dense

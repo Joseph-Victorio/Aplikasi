@@ -39,7 +39,7 @@
           </div>
       </div>
     </div>
-       <div v-if="getDiscountPercent" class="absolute top-0 z-50 bg-red-6 text-white" style="padding:2px;font-size:13px;">{{ getDiscountPercent }}%</div>
+       <div v-if="getDiscountPercent" class="absolute top-0 z-50 bg-secondary text-white" style="padding:2px;font-size:13px;">{{ getDiscountPercent }}%</div>
   </div>
 </template>
 <script>

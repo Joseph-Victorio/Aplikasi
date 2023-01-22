@@ -1,6 +1,6 @@
 <template>
   <q-page padding class="bg-grey-1">
-    <q-header>
+    <q-header class="bg-brand">
       <q-toolbar>
         <q-btn :to="{name: 'PromoIndex', query: { q: 'promo'}}"
           flat round dense

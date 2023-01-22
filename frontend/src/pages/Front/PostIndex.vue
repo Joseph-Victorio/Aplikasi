@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pt-md q-pb-xl" :class="{'flex flex-center' : !posts.available}">
-    <q-header class="text-primary bg-white">
+    <q-header class="text-brand bg-white">
        <q-toolbar>
          <q-btn :to="{name: 'Home'}"
             flat round dense

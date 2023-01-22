@@ -1,7 +1,7 @@
 <template>
   <q-card flat class="q-pa-sm">
     <q-card-section>
-      <div class="text-subtitle1 text-weight-bold">Pengaturan Basic</div>
+      <div class="text-subtitle1 text-weight-bold">Pengaturan Tema dan Tampilan</div>
       <q-list>
         <q-item class="q-px-xs">
           <q-item-section>
@@ -14,10 +14,38 @@
         
         <q-item class="q-px-xs">
           <q-item-section>
-            <q-item-label class="text-weight-medium">Base Color</q-item-label>
+            <q-item-label class="text-weight-medium">Brand Color</q-item-label>
+            <q-item-label caption>Konfigurasi warna Address bar, pwa theme dan heading</q-item-label>
           </q-item-section>
           <q-item-section side>
-              <input ref="color" type="color" v-model="form.theme_color" style="width:110px;height:30px;"/>
+            <input ref="color" type="color" v-model="form.theme_color" style="width:110px;height:30px;"/>
+          </q-item-section>
+        </q-item>
+        <q-item class="q-px-xs">
+          <q-item-section>
+            <q-item-label class="text-weight-medium">Primary Color</q-item-label>
+            <q-item-label caption>Terdapat pada title, button</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <input ref="color" type="color" v-model="form.primary_color" style="width:110px;height:30px;"/>
+          </q-item-section>
+        </q-item>
+        <q-item class="q-px-xs">
+          <q-item-section>
+            <q-item-label class="text-weight-medium">Secondary Color</q-item-label>
+            <q-item-label caption>Terdapat pada harga produk, badge, diskon</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+              <input ref="color" type="color" v-model="form.secondary_color" style="width:110px;height:30px;"/>
+          </q-item-section>
+        </q-item>
+        <q-item class="q-px-xs">
+          <q-item-section>
+            <q-item-label class="text-weight-medium">Accent Color</q-item-label>
+            <q-item-label caption>Terdapat pada rating, varian, produk review</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+              <input ref="color" type="color" v-model="form.accent_color" style="width:110px;height:30px;"/>
           </q-item-section>
         </q-item>
         <q-item class="q-mt-md q-px-xs">
@@ -116,6 +144,9 @@ export default {
       form: {
         theme: '',
         theme_color: '',
+        primary_color: '',
+        secondary_color: '',
+        accent_color: '',
         home_view_mode:'',
         product_view_mode: '',
         is_notifypro: false,
@@ -140,8 +171,17 @@ export default {
   },
    watch: {
     'form.theme_color': function(val) {
-      this.setColor(val)
-    }
+      this.$store.commit('SET_THEME_COLOR', val)
+    },
+    'form.primary_color': function(val) {
+      this.$store.commit('SET_PRIMARY_COLOR', val)
+    },
+    'form.secondary_color': function(val) {
+      this.$store.commit('SET_SECONDARY_COLOR', val)
+    },
+    'form.accent_color': function(val) {
+      this.$store.commit('SET_ACCENT_COLOR', val)
+    },
   },
   mounted() {
     this.form.product_view_mode = this.config.product_view_mode
@@ -151,6 +191,9 @@ export default {
     this.form.notifypro_timeout = this.config.notifypro_timeout
     this.form.theme = this.config.theme
     this.form.theme_color = this.config.theme_color
+    this.form.primary_color = this.config.primary_color
+    this.form.secondary_color = this.config.secondary_color
+    this.form.accent_color = this.config.accent_color
     this.form.review_auto_approved = this.config.review_auto_approved
     this.form.catalog_product_limit = this.config.catalog_product_limit
     this.form.catalog_product_sort = this.config.catalog_product_sort
@@ -166,9 +209,6 @@ export default {
     },
     handleChangeColor() {
       this.$refs.color.click()
-    },
-    setColor(clr) {
-      this.$store.commit('SET_THEME_COLOR', clr)
     },
     saveTampilan() {
       Api().post('config', this.form).then(response => {

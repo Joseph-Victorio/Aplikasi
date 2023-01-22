@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pb-xl" :class="{'flex flex-center' : !blocks.available}">
-     <q-header>
+     <q-header class="bg-brand">
       <q-toolbar>
         <q-btn :to="{name: 'Settings'}"
           flat round dense
@@ -8,7 +8,7 @@
         <q-toolbar-title>
          List Block
         </q-toolbar-title>
-        <q-btn color="white" text-color="primary" size="13px" @click="handleAddBlock" no-caps icon="eva-plus-circle" label="Tambah Block" class="gt-xs"/>
+        <q-btn color="white" text-color="brand" size="13px" @click="handleAddBlock" no-caps icon="eva-plus-circle" label="Tambah Block" class="gt-xs"/>
       </q-toolbar>
     </q-header>
     <q-list separator>

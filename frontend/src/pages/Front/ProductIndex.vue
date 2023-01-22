@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pb-xl bg-grey-1">
-    <q-header class="text-primary bg-white box-shadow">
+    <q-header class="text-brand bg-white box-shadow">
        <q-toolbar>
          <q-btn :to="{name: 'Home'}"
             flat round dense
@@ -9,10 +9,13 @@
           <shopping-cart  />
        </q-toolbar>
     </q-header>
-   <product-section :title="title" :products="products"></product-section>
+    <product-section :title="title" :products="products"></product-section>
     <div class="flex justify-center q-py-lg" v-if="products && products.links">
      <q-btn label="loadmore" color="primary" outline :loading="isLoadmore" v-if="products.links.next" @click="paginate(products.links.next)"></q-btn>
    </div>
+   <q-page-sticky :offset="[20,20]">
+     <q-btn v-show="showTotop" icon="eva-chevron-up" round color="grey-7" glossy @click="jumpTo('q-app')"></q-btn>
+   </q-page-sticky>
   </q-page>
 </template>
 
@@ -29,7 +32,8 @@ export default {
       title: 'Katalog Produk',
       description: this.$store.state.meta.description,
       isLoadmore: false,
-      isFilter: true
+      isFilter: true,
+      showTotop: false
     }
   },
   computed: {
@@ -55,6 +59,14 @@ export default {
           this.$store.commit('product/PAGINATE_PRODUCTS', response.data)
         }
       }).finally(() =>  this.isLoadmore = false)
+    },
+    setTotop() {
+      console.log(window.scrollY);
+      if(window.scrollY > 1000) {
+        this.showTotop = true
+      }else {
+        this.showTotop = false
+      }
     }
   },
   created() {
@@ -67,6 +79,10 @@ export default {
         order_by: this.config.catalog_product_sort,
       })
     }
+    window.addEventListener('scroll', this.setTotop)
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.setTotop)
   },
   meta() {
     return {

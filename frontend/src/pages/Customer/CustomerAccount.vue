@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pb-xl">
-    <q-header class="bg-primary" dark>
+    <q-header class="bg-brand" dark>
       <q-toolbar>
         <q-toolbar-title>
            Akun
@@ -13,11 +13,11 @@
     </q-header>
     <div class="header_banner">
       <div class="header_banner--inner large">
-        <q-card class="bg-primary" flat dark square>
+        <q-card class="bg-brand" flat dark square>
           <q-list>
             <q-item>
               <q-item-section avatar>
-                <q-avatar color="white" text-color="primary" size="70px">{{ initialName }}</q-avatar>
+                <q-avatar color="white" text-color="brand" size="70px">{{ initialName }}</q-avatar>
               </q-item-section>
               <q-item-section>
                 <q-item-label class="text-h5 text-weight-bold">{{ user.name }}</q-item-label>

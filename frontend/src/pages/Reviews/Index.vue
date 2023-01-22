@@ -1,6 +1,6 @@
 <template>
   <q-page :class="{'flex flex-center' : !reviews.length}">
-   <q-header>
+   <q-header class="bg-brand">
       <q-toolbar>
         <q-btn v-go-back.single
           flat round dense

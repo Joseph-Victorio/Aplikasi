@@ -1,10 +1,10 @@
 <template>
   <div class="row items-center" :class="isDesktop ? 'q-gutter-x-sm' : 'q-gutter-x-xs'">
     <q-btn aria-label="Shopping Cart" :to="{name: 'Cart'}" unelevated round :size="isDesktop ? '16px' : '15px'" :padding="isDesktop? '6px' : '5px'" dense color="white" text-color="grey-9" icon="eva-shopping-cart-outline">
-      <q-badge v-if="cartCount > 0" color="pink" floating>{{ cartCount }}</q-badge>
+      <q-badge v-if="cartCount > 0" color="secondary" floating>{{ cartCount }}</q-badge>
     </q-btn>
     <q-btn aria-label="Produk Favorite" v-if="showFavorite" :to="{name: 'ProductFavorite'}" color="white" :padding="isDesktop? '6px' : '5px'" unelevated round :size="isDesktop ? '16px' : '15px'" dense icon="eva-heart-outline" text-color="grey-9" >
-      <q-badge v-if="favoriteCount > 0" color="pink" floating>{{ favoriteCount }}</q-badge>
+      <q-badge v-if="favoriteCount > 0" color="secondary" floating>{{ favoriteCount }}</q-badge>
     </q-btn>
     <q-btn aria-label="Share Page" v-if="webShareApiSupported" :padding="isDesktop? '6px' : '5px'" @click="shareTheWeb" color="white" unelevated dense round :size="isDesktop ? '16px' : '15px'" icon="eva-share" text-color="grey-9" >
     </q-btn>

@@ -221,7 +221,7 @@
             <q-rating 
               data-nosnippet="true"
               v-model="form.rating"
-              color="amber"
+              color="accent"
               icon="ion-star-outline"
               icon-selected="ion-star"
               icon-half="ion-star-half"

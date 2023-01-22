@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <q-header>
+    <q-header class="bg-brand">
       <q-toolbar>
         <q-btn :to="{name: 'Settings'}"
           flat round dense
@@ -8,7 +8,7 @@
         <q-toolbar-title>
          Produk Promo
         </q-toolbar-title>
-        <q-btn  color="white" text-color="primary" size="13px" class="gt-xs" @click="handleAdd"  icon="eva-plus-circle" label="Promo"></q-btn>
+        <q-btn  color="white" text-color="brand" size="13px" class="gt-xs" @click="handleAdd"  icon="eva-plus-circle" label="Promo"></q-btn>
       </q-toolbar>
       <q-page-sticky class="lt-sm" position="bottom-right" :offset="[12, 12]">
         <q-btn fab icon="add" color="primary" @click="handleAdd" glossy/>

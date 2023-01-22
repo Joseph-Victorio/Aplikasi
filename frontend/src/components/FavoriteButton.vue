@@ -25,7 +25,7 @@ export default {
   methods: {
     getFavoriteStyle() {
        let m = this.favorites.find(e => e == this.product_id)
-       if(m) return 'pink'
+       if(m) return 'secondary'
        return 'grey'
     },
     btnFavorite() {

@@ -359,7 +359,7 @@ ul {
       position: relative;
       overflow: hidden;
       z-index: 5;
-      height: 170px;
+      height: 180px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -374,7 +374,7 @@ ul {
 
     &:after {
       content: "";
-      background-color: var(--q-color-primary);
+      background-color: var(--q-color-brand);
       height: 25%;
       overflow: hidden;
       z-index: -1;
@@ -393,7 +393,7 @@ ul {
     }
     &:before {
       content: '';
-      background-color: var(--q-color-primary);
+      background-color: var(--q-color-brand);
       height: 80%;
       width: 100%;
       left: 0;
@@ -420,7 +420,7 @@ ul {
 
     &:after {
       content: "";
-      background-color: var(--q-color-primary);
+      background-color: var(--q-color-brand);
       height: 25%;
       overflow: hidden;
       z-index: -1;
@@ -435,7 +435,7 @@ ul {
     
     &:before {
       content: '';
-      background-color: var(--q-color-primary);
+      background-color: var(--q-color-brand);
       height: 80%;
       width: 100%;
       left: 0;
@@ -946,6 +946,9 @@ body.is_loading .block-observe {
 }
 .top-0 {
   top: 0;
+}
+.top-5 {
+  top: 5px;
 }
 .carousel-container {
   .carousel-items {

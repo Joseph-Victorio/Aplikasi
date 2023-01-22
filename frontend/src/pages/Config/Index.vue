@@ -1,6 +1,6 @@
 <template>
   <q-page class="bg-grey-1 q-pb-lg">
-    <q-header>
+    <q-header class="bg-brand">
       <q-toolbar>
         <q-btn v-go-back.single
           flat round dense
@@ -10,7 +10,7 @@
         </q-toolbar-title>
       </q-toolbar>
       <div class="bg-white box-shadow text-dark">
-        <q-tabs v-model="tab" outside-arrows mobile-arrows>
+        <q-tabs v-model="tab" outside-arrows mobile-arrows active-color="primary">
           <q-tab v-for="item in tabs" :key="item.value" :name="item.value" :label="item.label" no-caps></q-tab>
         </q-tabs>
       </div>

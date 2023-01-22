@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pb-xl">
-    <q-header>
+    <q-header class="bg-brand">
       <q-toolbar>
         <q-btn :to="{name: 'Settings'}"
           flat round dense

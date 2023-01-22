@@ -1,6 +1,6 @@
 <template>
   <q-page :class="{'flex flex-center' : !categories.available}">
-   <q-header>
+   <q-header class="bg-brand">
       <q-toolbar>
         <q-btn :to="{name: 'Settings'}"
           flat round dense
@@ -8,7 +8,7 @@
         <q-toolbar-title>
          List Kategori
         </q-toolbar-title>
-      <q-btn color="white" text-color="primary" size="13px" class="gt-xs" label="Tambah Kategori" no-caps icon="eva-plus-circle" :to="{name: 'CategoryForm'}"/>
+      <q-btn color="white" text-color="brand" size="13px" class="gt-xs" label="Tambah Kategori" no-caps icon="eva-plus-circle" :to="{name: 'CategoryForm'}"/>
       </q-toolbar>
     </q-header>
     <template v-if="categories.available">

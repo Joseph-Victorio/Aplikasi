@@ -1,4 +1,4 @@
-import { AddressbarColor } from 'quasar'
+import { AddressbarColor, colors } from 'quasar'
 
 export default {
   SET_ERRORS: (state,payload) => {
@@ -29,16 +29,34 @@ export default {
 
     state.config = payload
 
-    if(!localStorage.getItem('__clr')) {
-      state.config.theme_color = payload.theme_color
-      localStorage.setItem('__clr', state.config.theme_color)
-      
+    if(!localStorage.getItem('__theme')) {
+      let data = JSON.parse(localStorage.getItem('__theme'))
+
+      state.config.theme = data.theme
+      state.config.theme_color = data.theme_color
+      state.config.primary_color = data.primary_color
+      state.config.secondary_color = data.secondary_color
+      state.config.accent_color = data.accent_color
+
     }else {
-      state.config.theme_color = localStorage.getItem('__clr')
+        let themeCfg = {
+          theme: state.theme,
+          theme_color: state.theme_color,
+          primary_color: state.primary_color,
+          secondary_color: state.secondary_color,
+          accent_color: state.accent_color,
+        }
+
+        localStorage.setItem('__theme', JSON.stringify(themeCfg))
     }
-    
-    document.body.style.setProperty('--q-color-primary', state.config.theme_color)
+
+    colors.setBrand('brand', state.config.theme_color);
+    colors.setBrand('primary', state.config.primary_color);
+    colors.setBrand('secondary', state.config.secondary_color);
+    colors.setBrand('accent', state.config.accent_color);
+
     AddressbarColor.set(state.config.theme_color)
+
   },
   SET_HOME_VIEW_MODE: (state, payload) => {
     state.config.home_view_mode = payload
@@ -50,12 +68,21 @@ export default {
     state.config.theme = payload
   },
   SET_THEME_COLOR: (state, clr) => {
-
     state.config.theme_color = clr 
-    document.body.style.setProperty('--q-color-primary', clr)
-    AddressbarColor.set(clr)
-    localStorage.setItem('__clr', clr)
-
+    colors.setBrand('brand', state.config.theme_color)
+    AddressbarColor.set(state.config.theme_color)
+  },
+  SET_PRIMARY_COLOR: (state, clr) => {
+    state.config.primary_color = clr 
+    colors.setBrand('primary', state.config.primary_color)
+  },
+  SET_SECONDARY_COLOR: (state, clr) => {
+    state.config.secondary_color = clr 
+    colors.setBrand('secondary', state.config.secondary_color)
+  },
+  SET_ACCENT_COLOR: (state, clr) => {
+    state.config.accent_color = clr 
+    colors.setBrand('accent', state.config.accent_color)
   },
   SET_INSTALL_APP: (state, payload) => {
     state.deferredPrompt = payload

@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pb-xl">
-    <q-header>
+    <q-header class="bg-brand">
       <q-toolbar>
         <q-btn :to="{name: 'Settings'}"
           flat round dense
@@ -15,7 +15,7 @@
         </q-tabs>
       </div>
     </q-header>
-  <div class="q-py-md auto-padding-side">
+   <div class="q-py-md auto-padding-side">
       <div class="q-gutter-x-sm q-mt-sm">
           <q-input v-model="search" placeholder="Ketik no invoice atau ponsel" dense borderless clearable class="bg-grey-3 q-px-sm" @keypress.enter="handleSearchOrder" @clear="clearSearch">
             <template v-slot:append>

@@ -1,6 +1,6 @@
 <template>
   <q-page class="bg-white" :class="{'flex flex-center' : !ready}">
-    <q-header class="text-primary bg-white box-shadow">
+    <q-header class="text-brand bg-white box-shadow">
        <q-toolbar>
          <q-btn v-go-back.single
             flat round dense
@@ -12,7 +12,7 @@
       <template v-if="post">
         <q-img :src="post.image_url" class="bg-grey-2 box-shadow"></q-img>
       <div class="auto-padding">
-        <div v-if="post.tags" class="text-weight-bold text-orange-7">{{ post.tags }}</div>
+        <div v-if="post.tags" class="text-weight-medium text-accent">{{ post.tags }}</div>
         <h1 class="text-lg text-weight-medium q-mb-sm">{{ post.title }}</h1>
         <div class="text-grey-6 text-caption">{{ post.created_locale }}</div>
         <p class="q-mb-lg" v-html="post.body"></p>

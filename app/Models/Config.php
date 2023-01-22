@@ -45,6 +45,9 @@ class Config extends Model
         'catalog_product_sort',
         'home_product_limit',
         'home_product_sort',
+        'accent_color',
+        'secondary_color',
+        'primary_color',
     ];
     public $appends = [
         'is_shippable', 
