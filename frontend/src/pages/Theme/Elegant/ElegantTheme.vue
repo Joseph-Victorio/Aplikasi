@@ -25,8 +25,8 @@
 
         <CategoryCarousel />
 
-        <div id="product-promo" v-if="productPromo.length" >
-          <ProductPromo :product_promo="productPromo" />
+        <div id="product-promo" v-if="product_promo.length" >
+          <ProductPromo :product_promo="product_promo" />
         </div>
 
         <div v-if="banner1" class="banner auto-padding-side block-container">
@@ -88,8 +88,8 @@ export default {
     shop() { 
       return this.$store.state.shop
     },
-    productPromo() { 
-      return this.$store.state.product.product_promo
+    product_promo() { 
+      return this.$store.state.front.product_promo
     },
     banner1() {
       return this.banners.find(b => b.weight == 1)
