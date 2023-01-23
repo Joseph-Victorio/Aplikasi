@@ -56,10 +56,10 @@ module.exports = function (ctx ) {
       // ssrPwaHtmlFilename: 'offline.html',
       env: {
         API: ctx.dev
-          ? 'https://nextshop.my.id/api'
+          ? 'http://localhost:8000/api'
           : '/api',
         PUBLIC_API: ctx.dev
-          ? 'https://nextshop.my.id/api/public/'
+          ? 'http://localhost:8000/api/public/'
           : '/api/public/',
       },
       // transpile: false,

@@ -34,7 +34,7 @@
             :toolbar="[
               ['left','center','right','justify'],
               ['bold','italic','underline','strike'],
-              ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link',
+              ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link', 'removeFormat', 'subscript', 'superscript',
               {
                   icon: $q.iconSet.editor.formatting,
                   list: 'no-icons',
@@ -48,7 +48,7 @@
                     'p',
                     'code'
                   ]
-                },
+                }, 'fullscreen', 'viewsource',
               ],
             ]"
           />

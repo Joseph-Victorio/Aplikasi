@@ -29,12 +29,12 @@
         />
         <div class="q-mt-md q-mb-sm">
           <label for="description" class="text-grey-7 q-pb-sm block">Deskripsi</label>
-          <q-editor v-model="form.description"
+          <q-editor v-model="form.description" ref="editor"
             min-height="15rem"
             :toolbar="[
               ['left','center','right','justify'],
               ['bold','italic','underline','strike'],
-              ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link',
+              ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link', 'removeFormat', 'subscript', 'superscript',
               {
                   icon: $q.iconSet.editor.formatting,
                   list: 'no-icons',
@@ -48,7 +48,7 @@
                     'p',
                     'code'
                   ]
-                },
+                }, 'fullscreen', 'viewsource',
               ],
             ]"
           />
@@ -279,6 +279,8 @@ export default {
   components: { FormVarianModal },
   data () {
     return {
+      embedModal: false,
+      embed_video: '',
       editLabelIndex: 0,
       editLabelModal: false,
       varianModal: false,

@@ -351,6 +351,11 @@ ul {
   width:100%;
   height:auto;
 }
+#description {
+  iframe {
+    max-width:100%;
+  }
+}
 .header_banner {
     position: relative;
     overflow: hidden;

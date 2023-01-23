@@ -128,19 +128,7 @@
         <q-tab-panels v-model="tab">
           <q-tab-panel name="Description">
             <div id="description" class="q-mt-md" style="min-height:180px;">
-              <div>
-                <div class="" v-html="product.description"></div>
-              </div>
-              <div id="product-images" class="q-mt-lg">
-                <div class="product-image--container">
-                  <div v-for="img in product.images" :key="img.id" class="product-image" >
-                    <div class="product-image--content">
-                      <img class="product-image--img" :src="img.src" :alt="img.caption"/>
-                      <div class="product-image--caption">{{ img.caption }}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div class="" v-html="product.description"></div>
             </div>
           </q-tab-panel>
           <q-tab-panel name="Review">
