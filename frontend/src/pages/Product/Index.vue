@@ -61,16 +61,16 @@
             </q-fab>
           </div>
           <div class="row q-gutter-xs" v-if="isDesktop">
-            <q-btn size="11px" v-if="product.varian_items_count > 0" unelevated @click="getDetailVarian(product)" round icon="eva-pantone" glossy color="accent">
+            <q-btn size="sm" v-if="product.varian_items_count > 0" @click="getDetailVarian(product)" round icon="eva-pantone" color="accent">
               <q-tooltip content-class="bg-dark">Detil Varian</q-tooltip>
             </q-btn>
-            <q-btn size="11px" unelevated @click="remove(product.id)" round icon="eva-trash-2" glossy color="red">
+            <q-btn size="sm" @click="remove(product.id)" round icon="eva-trash-2" color="red">
               <q-tooltip content-class="bg-dark">Hapus</q-tooltip>
             </q-btn>
-            <q-btn size="11px" unelevated :to="{ name: 'ProductEdit', params: {id: product.id }}" round glossy color="blue" icon="eva-edit-2">
+            <q-btn size="sm" :to="{ name: 'ProductEdit', params: {id: product.id }}" round color="blue" icon="eva-edit-2">
               <q-tooltip content-class="bg-dark">Edit</q-tooltip>
             </q-btn>
-            <q-btn size="11px" unelevated :to="{ name: 'ProductShow', params: {slug: product.slug }}" round glossy color="teal" icon="eva-external-link-outline">
+            <q-btn size="sm" :to="{ name: 'ProductShow', params: {slug: product.slug }}" round color="teal" icon="eva-external-link-outline">
               <q-tooltip content-class="bg-dark">Lihat</q-tooltip>
             </q-btn>
 

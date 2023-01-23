@@ -42,6 +42,7 @@
           <div class="text-grey-8 q-gutter-x-sm">
             <q-btn @click="remove(post.id)" size="sm" round icon="eva-trash-2" color="red"/>
             <q-btn :to="{ name: 'PostEdit', params: {id: post.id }}" size="sm" round color="blue" icon="eva-edit-2" />
+            <q-btn :to="{ name: 'FrontPostShow', params: { slug: post.slug }, query: { _rdr: $route.path }}" size="sm" round color="teal" icon="eva-external-link-outline" />
           </div>
         </q-item-section>
       </q-item>

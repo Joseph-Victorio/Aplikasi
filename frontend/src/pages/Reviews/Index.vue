@@ -12,10 +12,10 @@
       <q-tabs 
       v-model="tab"
       class="bg-grey-1 text-grey-8"
-      active-color="primary"
+      active-color="brand"
       >
-        <q-tab no-caps name="Unapproved" label="Belum Di Setujui"></q-tab>
-        <q-tab no-caps name="Approved" label="Sudah Di Setujui"></q-tab>
+        <q-tab name="Unapproved" label="Unapproved"></q-tab>
+        <q-tab name="Approved" label="Approved"></q-tab>
       </q-tabs>
     </q-header>
     <div class="q-py-md">

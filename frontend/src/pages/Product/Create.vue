@@ -29,29 +29,7 @@
         />
         <div class="q-mt-md q-mb-sm">
           <label for="description" class="text-grey-7 q-pb-sm block">Deskripsi</label>
-          <q-editor v-model="form.description"
-            min-height="15rem"
-            :toolbar="[
-              ['left','center','right','justify'],
-              ['bold','italic','underline','strike'],
-              ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link', 'removeFormat', 'subscript', 'superscript',
-              {
-                  icon: $q.iconSet.editor.formatting,
-                  list: 'no-icons',
-                  options: [
-                    'h1',
-                    'h2',
-                    'h3',
-                    'h4',
-                    'h5',
-                    'h6',
-                    'p',
-                    'code'
-                  ]
-                }, 'fullscreen', 'viewsource',
-              ],
-            ]"
-          />
+          <ContentEditor @update="(val) => form.description = val" :content="form.description"/>
           <div class="text-xs text-red" v-if="errors.description"> {{ errors.description[0]}}</div>
         </div>
       </div>
@@ -267,35 +245,47 @@
         </form>
       </q-card>
     </q-dialog>
-      
   </q-page>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import VarianModal from './VarianFormModal.vue'
+import ContentEditor from 'components/ContentEditor.vue'
 export default {
-  components: { VarianModal },
+  components: { VarianModal, ContentEditor },
   name: 'ProductFormCreate',
   data () {
     return {
       varianModal: false,
       editLabelModal: false,
       editLabelIndex: 0,
-     form: {
-      title: '',
-      price: 0,
-      weight: 0,
-      stock: 0,
-      description: '',
-      category_id:'',
-      varians: [],
-      images: [],
-      has_subvarian: false,
-      featured_index: 0,
-      simple_product: true
-    },
-    imagePreview: [],
+      form: {
+        title: '',
+        price: 0,
+        weight: 0,
+        stock: 0,
+        description: '',
+        category_id:'',
+        varians: [],
+        images: [],
+        has_subvarian: false,
+        featured_index: 0,
+        simple_product: true
+      },
+      imagePreview: [],
+      // embed_video: {
+      //   ratio: 'item-16by9',
+      //   source: '',
+      //   modal: false,
+      //   max_width: '600px',
+      //   options: [
+      //     { label: 'Ratio 21:9', value: 'item-21by9'},
+      //     { label: 'Ratio 16:9', value: 'item-16by9'},
+      //     { label: 'Ratio 4:3', value: 'item-4by3'},
+      //     { label: 'Ratio 1:1', value: 'item-1by1'},
+      //   ],
+      // }
     }
   },
   computed: {
@@ -344,6 +334,28 @@ export default {
       this.editLabelIndex = index
       this.editLabelModal = true
     },
+    // handleEmbedModal() {
+    //   this.embed_video.source = ''
+    //   this.embed_video.modal = true
+    // },
+    // saveEmbed() {
+    //   if(!this.embed_video.source) return
+
+    //   this.embed_video.modal = false
+
+    //   let editor = this.$refs.editor
+    //   const html = `<br><div contenteditable="false" class="embed-responsive ${this.embed_video.ratio}" style="max-width:${this.embed_video.max_width};">${this.embed_video.source}</div><br><br>`
+      
+    //   this.$nextTick(function () {
+
+    //     editor.caret.restore()
+
+    //     editor.runCmd('insertHTML', html)
+
+    //     editor.focus()
+    //   })
+
+    // },
     submitEditLabel() {
       this.editLabelModal = false
     },

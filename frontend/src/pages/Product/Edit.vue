@@ -29,29 +29,7 @@
         />
         <div class="q-mt-md q-mb-sm">
           <label for="description" class="text-grey-7 q-pb-sm block">Deskripsi</label>
-          <q-editor v-model="form.description" ref="editor"
-            min-height="15rem"
-            :toolbar="[
-              ['left','center','right','justify'],
-              ['bold','italic','underline','strike'],
-              ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link', 'removeFormat', 'subscript', 'superscript',
-              {
-                  icon: $q.iconSet.editor.formatting,
-                  list: 'no-icons',
-                  options: [
-                    'h1',
-                    'h2',
-                    'h3',
-                    'h4',
-                    'h5',
-                    'h6',
-                    'p',
-                    'code'
-                  ]
-                }, 'fullscreen', 'viewsource',
-              ],
-            ]"
-          />
+          <ContentEditor @update="(val) => form.description = val" :content="form.description"/>
           <div class="text-xs text-red" v-if="errors.description"> {{ errors.description[0]}}</div>
         </div>
       </div>
@@ -274,13 +252,12 @@
 <script>
 import { mapActions } from 'vuex'
 import FormVarianModal from './VarianFormModal.vue'
+import ContentEditor from 'components/ContentEditor.vue'
 export default {
   name: 'ProductFormEdit',
-  components: { FormVarianModal },
+  components: { FormVarianModal, ContentEditor },
   data () {
     return {
-      embedModal: false,
-      embed_video: '',
       editLabelIndex: 0,
       editLabelModal: false,
       varianModal: false,

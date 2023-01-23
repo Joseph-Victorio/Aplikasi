@@ -33,28 +33,7 @@
         <div class="label-text">
           Konten
         </div>
-        <q-editor v-model="form.body"
-        :toolbar="[
-          ['left','center','right','justify'],
-          ['bold','italic','underline','strike'],
-          ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link', 'removeFormat', 'subscript', 'superscript',
-          {
-              icon: $q.iconSet.editor.formatting,
-              list: 'no-icons',
-              options: [
-                'h1',
-                'h2',
-                'h3',
-                'h4',
-                'h5',
-                'h6',
-                'p',
-                'code'
-              ]
-            }, 'fullscreen', 'viewsource',
-          ],
-        ]"
-        ></q-editor>
+        <ContentEditor @update="(val) => form.body = val" :content="form.body"/>
       </div>
 
     <div style="min-height: 100px;">
@@ -81,8 +60,10 @@
 
 <script>
 import { mapActions } from 'vuex'
+import ContentEditor from 'components/ContentEditor.vue'
 export default {
   name: 'PostCreate',
+  components: { ContentEditor },
   data() {
     return {
       form: {

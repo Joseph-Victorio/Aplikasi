@@ -8,7 +8,7 @@
         <div class="ellipsis-2-lines text-weight-medium q-mb-xs" style="font-size:16px;">{{ title }}</div>
         <div class="text-grey-7 text-sm ellipsis-2-lines" v-html="getTeaser(body)"></div>
         <div class="q-pt-sm flex justify-between" style="margin-top:auto;">
-          <div class="text-accent text-sm1">{{ created_locale }}</div>
+          <div class="text-accent text-sm1" v-if="tags">{{ tags }}</div>
         </div>
       </q-item-section>
      

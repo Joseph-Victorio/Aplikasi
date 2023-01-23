@@ -10,7 +10,7 @@
         </q-toolbar-title>
       </q-toolbar>
       <div class="box-shadow bg-white text-dark">
-        <q-tabs v-model="filter" active-color="primary" outside-arrows>
+        <q-tabs v-model="filter" active-color="brand" outside-arrows>
           <q-tab v-for="option in options" :key="option.value" :name="option.value" :label="option.label" no-caps></q-tab>
         </q-tabs>
       </div>

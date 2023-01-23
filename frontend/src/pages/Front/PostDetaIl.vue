@@ -2,7 +2,7 @@
   <q-page class="bg-white" :class="{'flex flex-center' : !ready}">
     <q-header class="text-brand bg-white box-shadow">
        <q-toolbar>
-         <q-btn v-go-back.single
+         <q-btn @click="goBack"
             flat round dense
             icon="eva-arrow-back" />
           <q-toolbar-title class="text-weight-bold brand">Post</q-toolbar-title>
@@ -42,6 +42,17 @@ export default {
       let { data } = await Api().get('public/post/' + this.$route.params.slug)
       this.post = data.results
       this.ready = true
+    },
+    goBack() {
+      if(this.$route.query._rdr) {
+        this.$router.push(this.$route.query._rdr)
+      }else {
+        if(window.history.length > 2) {
+          this.$router.back()
+        }else {
+          this.$router.push({ name: 'FrontPostIndex'})
+        }
+      }
     }
   },
   created() {
