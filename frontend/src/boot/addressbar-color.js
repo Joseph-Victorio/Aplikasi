@@ -1,8 +1,4 @@
-import { AddressbarColor, Loading, QSpinnerGears } from 'quasar'
-
-export default () => {
-  AddressbarColor.set('#1bb90d')
-}
+import { Loading, QSpinnerGears } from 'quasar'
 
 Loading.setDefaults({
   spinner: QSpinnerGears,

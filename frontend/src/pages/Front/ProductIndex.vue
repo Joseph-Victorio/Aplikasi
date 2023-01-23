@@ -61,7 +61,6 @@ export default {
       }).finally(() =>  this.isLoadmore = false)
     },
     setTotop() {
-      console.log(window.scrollY);
       if(window.scrollY > 1000) {
         this.showTotop = true
       }else {

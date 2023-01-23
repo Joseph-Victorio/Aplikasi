@@ -15,12 +15,12 @@
         >
           <q-route-tab
             icon="eva-home-outline"
-            label="Beranda"
+            label="Home"
             :to="{ name: 'Home'}"
             exact
           />
 
-            <q-route-tab 
+          <q-route-tab 
             icon="eva-search"
             :to="{name: 'ProductSearch'}"
             label="Cari"
@@ -51,14 +51,21 @@
            round
           ></q-btn>
 
-         
           <q-route-tab 
+            icon="eva-book-open-outline"
+            :to="{name: 'FrontPostIndex'}"
+            label="Artikel"
+            exact
+          />
+
+         
+          <!-- <q-route-tab 
             :to="{name: 'Cart'}" 
             icon="eva-shopping-cart-outline" 
             exact
             label="Keranjang" >
             <q-badge v-if="cartCount > 0" color="secondary" floating>{{ cartCount }}</q-badge>
-          </q-route-tab>
+          </q-route-tab> -->
 
            <q-tab 
            icon="eva-person-outline" 

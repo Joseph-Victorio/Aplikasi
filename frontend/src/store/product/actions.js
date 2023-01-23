@@ -74,7 +74,6 @@ export function searchProducts ({ commit }, q) {
 
 export function productsByCategory ({ commit }, query) {
   commit('CLEAR_PRODUCT_CATEGORY')
-  console.log(query);
   let url = `public/product-category`
 
   if(query.per_page || query.order_by) {

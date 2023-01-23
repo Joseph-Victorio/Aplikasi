@@ -35,26 +35,25 @@
         </div>
         <q-editor v-model="form.body"
         :toolbar="[
-            ['left','center','right','justify'],
-            ['bold','italic','underline','strike'],
-            ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link',
-            {
-                icon: $q.iconSet.editor.formatting,
-                label: $q.iconSet.editor.label,
-                list: 'no-icons',
-                options: [
-                  'h1',
-                  'h2',
-                  'h3',
-                  'h4',
-                  'h5',
-                  'h6',
-                  'p',
-                  'code'
-                ]
-              },
-            ],
-          ]"
+          ['left','center','right','justify'],
+          ['bold','italic','underline','strike'],
+          ['quote', 'unordered', 'ordered', 'outdent', 'indent', 'link', 'removeFormat', 'subscript', 'superscript',
+          {
+              icon: $q.iconSet.editor.formatting,
+              list: 'no-icons',
+              options: [
+                'h1',
+                'h2',
+                'h3',
+                'h4',
+                'h5',
+                'h6',
+                'p',
+                'code'
+              ]
+            }, 'fullscreen', 'viewsource',
+          ],
+        ]"
         ></q-editor>
       </div>
 
