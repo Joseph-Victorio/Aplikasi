@@ -15,7 +15,7 @@
         >
           <q-route-tab
             icon="eva-home-outline"
-            label="Home"
+            label="Beranda"
             :to="{ name: 'Home'}"
             exact
           />
