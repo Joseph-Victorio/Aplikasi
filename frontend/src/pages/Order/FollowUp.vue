@@ -80,7 +80,7 @@ export default {
            tmp += `kami dari *${this.shop.name? this.shop.name: '...'}*\n`
            tmp += `berikut adalah pesanan kakak pada toko kami:\n\n`
            tmp += `Invoice : *${this.order.order_ref}*\n`
-           tmp += `Di pesan pada : ${this.order.created_at}\n`
+           tmp += `Di pesan pada : ${this.order.created}\n`
            tmp += `Subtotal : ${this.moneyIDR(this.order.order_subtotal)}\n`
            tmp += `Ongkos Kirim : ${this.moneyIDR(this.order.shipping_cost)}\n`
 

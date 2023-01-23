@@ -43,7 +43,7 @@
             </q-item>
             <q-item>
               <q-item-section>Tanggal Pembelian</q-item-section>
-              <q-item-section>{{ invoice.created_at }}</q-item-section>
+              <q-item-section>{{ invoice.created }}</q-item-section>
             </q-item>
             <q-item>
               <q-item-section>Status Pesanan</q-item-section>

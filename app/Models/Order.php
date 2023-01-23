@@ -32,7 +32,7 @@ class Order extends Model
     }
     public function getCreatedAttribute()
     {
-        return $this->created_at->format('d/m/Y');
+        return $this->created_at->format('d/m/Y ~ H:i');
     }
 
     public function transaction()
