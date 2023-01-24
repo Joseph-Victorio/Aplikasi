@@ -46,7 +46,10 @@
 import FavoriteButton from 'components/FavoriteButton.vue'
 export default {
   name: 'ProductCard',
-  props: { product: Object},
+  props: { 
+    product: Object,
+    grabbing: Boolean
+  },
   components: { FavoriteButton },
   data() {
     return {
@@ -83,6 +86,7 @@ export default {
   },
   methods: {
     show(slug) {
+      if(this.grabbing) return
       this.$router.push({name: 'ProductShow', params: { slug: slug }})
     },
   }

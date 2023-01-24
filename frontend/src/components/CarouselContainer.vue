@@ -9,7 +9,7 @@
       <div v-for="product in products" :key="product.id" class="carousel-item" 
       :style="`width: ${cardWidth}px`"
       >
-        <swiper-product-card :product="product" />
+        <swiper-product-card :product="product" :grabbing="is_grab"/>
       </div>
       <div class="carousel-item" v-if="loadmore"
       :style="`width: ${cardWidth}px`"
@@ -45,15 +45,21 @@ import ProductCardSkeleton from 'components/ProductCardSkeleton'
     },
     data () {
       return {
+        isGrab: false,
         carousel: null,
-        idDown: false,
+        isDown: false,
         startX: 0,
         scrollLeft: 0,
+        movementX: 0,
+        pageX: 0
       }
     },
     computed: {
       page_width() {
         return this.$store.state.page_width
+      },
+      is_grab() {
+        return  this.movementX != 0
       },
       cardWidth() {
          if(this.page_width > 1024) {
@@ -83,6 +89,7 @@ import ProductCardSkeleton from 'components/ProductCardSkeleton'
 
         this.carousel.classList.add('active');
 
+        this.startPageX = e.pageX
         this.startX = e.pageX - this.carousel.offsetLeft;
 
         this.scrollLeft = this.carousel.scrollLeft;
@@ -90,18 +97,23 @@ import ProductCardSkeleton from 'components/ProductCardSkeleton'
       handleMouseLeave(e) {
         this.isDown = false;
         this.carousel.classList.remove('active');
+        this.movementX = 0
       },
       handleMouseUp(e) {
         this.isDown = false;
         this.carousel.classList.remove('active');
+        setTimeout(() => {
+          this.movementX = 0
+        }, 100);
       },
       handleMouseMove(e) {
         if(!this.isDown) return;
 
-        e.preventDefault();
+        this.movementX = e.movementX
 
-        const x = e.pageX - this.carousel.offsetLeft;
-        const walk = (x - this.startX) * 1.2; //scroll-fast
+        e.preventDefault();
+        this.pageX = e.pageX - this.carousel.offsetLeft;
+        const walk = (this.pageX - this.startX) * 1.2; //scroll-fast
         this.carousel.scrollLeft = this.scrollLeft - walk;
       },
     }
