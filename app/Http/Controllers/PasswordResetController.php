@@ -65,7 +65,7 @@ class PasswordResetController extends Controller
 
             return response([
                 'success' => true,
-                'email' => $this->hideEmail($user->email),
+                'email' => $theEmail,
                 'message' => "Permintaan reset password berhasil, Silahkan buka email $theEmail"
             ], 200);
 
@@ -90,11 +90,11 @@ class PasswordResetController extends Controller
     public function validateToken($token)
     {
 
-        $tkn =  trim(htmlspecialchars(strip_tags($token)));
+        $token =  trim(htmlspecialchars(strip_tags($token)));
 
-        if($tkn) {
+        if($token) {
 
-            if( $data = PasswordReset::where('token', $tkn)->first()) {
+            if( $data = PasswordReset::where('token', $token)->first()) {
                 return response([
                     'success' => true,
                     'data' => $data
@@ -115,11 +115,11 @@ class PasswordResetController extends Controller
             'token' => ['required', 'string'],
             'email' => ['required'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
-    ]);
+        ]);
 
-        $tkn = filter_var($request->token, FILTER_SANITIZE_SPECIAL_CHARS);
+        $token = filter_var($request->token, FILTER_SANITIZE_SPECIAL_CHARS);
         
-        $data = PasswordReset::where('token', $tkn)->first();
+        $data = PasswordReset::where('token', $token)->first();
         $user = User::where('email', $data->email)->first();
 
         if(!$data || !$user) {

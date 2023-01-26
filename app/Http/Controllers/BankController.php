@@ -17,7 +17,9 @@ class BankController extends Controller
      */
     public function index()
     {
-        return response(['success' => true, 'results' => BankAccount::all()], 200);
+        $data = BankAccount::all();
+
+        return ApiResponse::success($data);
     }
 
     /**
@@ -50,7 +52,7 @@ class BankController extends Controller
 
         $bank->update($validated);
 
-        return response(['success' => true], 200);
+        return ApiResponse::success();
     }
 
     /**
@@ -65,6 +67,6 @@ class BankController extends Controller
 
         $bank->delete();
 
-        return response(['success' => true], 200);
+        return ApiResponse::success();
     }
 }

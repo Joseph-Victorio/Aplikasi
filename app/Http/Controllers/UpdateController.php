@@ -20,7 +20,6 @@ class UpdateController extends Controller
     public function clearCache()
     {
 
-        
         try {
             
             Cache::flush();

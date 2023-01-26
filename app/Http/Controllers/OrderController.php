@@ -14,12 +14,8 @@ class OrderController extends Controller
 
     public function __construct()
     {
-        if(request()->limit) {
-            $this->data['limit'] = request()->limit;
-        }
-        if(request()->skip) {
-            $this->data['skip'] = request()->skip;
-        }
+        $this->data['limit'] = request()->limit ?? 6;
+        $this->data['skip'] = request()->skip ?? 0;
     }
     public function index(Request $request)
     {
@@ -56,7 +52,9 @@ class OrderController extends Controller
 
     public function show($orderRef)
     {
-        $data =  Order::with(['items', 'transaction'])->where('order_ref', $orderRef)->first();
+        $data =  Order::with(['items', 'transaction'])
+                        ->where('order_ref', $orderRef)
+                        ->first();
         return ApiResponse::success($data);
     }
 

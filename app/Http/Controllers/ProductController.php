@@ -16,10 +16,7 @@ class ProductController extends Controller
     public function __construct(AdminProductRepository $productRepository)
     {
         $this->productRepository = $productRepository;
-
-        if(request('limit')) {
-            $this->limit = request('limit');
-        }
+        $this->limit = request('limit') ?? 10;
     }
 
     public function index()

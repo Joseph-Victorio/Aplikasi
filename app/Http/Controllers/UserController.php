@@ -147,5 +147,4 @@ class UserController extends Controller
         return response([ 'success' => true ]);
 
     }
-    
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Helpers\ApiResponse;
 use App\Models\Config;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -24,13 +24,11 @@ class StoreController extends Controller
         $config = Cache::rememberForever('shop_config', function () {
             return Config::first();
         });
-        return response([
-            'success' => true,
-            'results' => [
-                'shop' => $shop,
-                'config' => $config
-            ]
-        ], 200);
+
+        $data['shop'] = $shop;
+        $data['config'] = $config;
+
+        return ApiResponse::success($data);
     }
 
     public function update(Request $request)
@@ -112,7 +110,6 @@ class StoreController extends Controller
                 $file->move($path, $filename);
 
                 $shop->logo_path = 'upload/images/' .$filename;
-
                 
             }
 
@@ -123,22 +120,14 @@ class StoreController extends Controller
 
             Artisan::call('generate:manifest');
 
-            return response([
-                'success' => true,
-                'results' => $shop
-            ], 200);
+            return ApiResponse::success($shop);
             
         } catch (\Throwable $th) {
 
             DB::rollBack();
 
-            return response([
-                'success' => false,
-                'message' => $th->getMessage(),
-                'results' => null
-            ], 500);
+           return ApiResponse::failed($th);
         }
 
-        
     }
 }
