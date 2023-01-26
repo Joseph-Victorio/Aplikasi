@@ -20,10 +20,10 @@ class UpdateController extends Controller
     public function clearCache()
     {
 
-        Cache::flush();
-
+        
         try {
-
+            
+            Cache::flush();
             Artisan::call('cache:clear');
             Artisan::call('config:clear');
 
