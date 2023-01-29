@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use Illuminate\Support\Str;
 use App\Helpers\ApiResponse;
 use App\Models\Config;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use App\Models\ProductVarian;
 use Illuminate\Support\Carbon;
@@ -61,8 +62,10 @@ class FrontOrderController extends Controller
 
     public function getRandomOrder()
     {
-
-       $data = Cache::remember('order_items_random',  now()->addMinutes(5), function() {
+        // FIXED Performance Issue
+        $max = OrderItem::max('id');
+        $latest = $max <= 60 ? 0 : $max - 60;
+        $data = Cache::remember('order_items_random',  now()->addMinutes(5), function() use ($latest) {
 
             return DB::table('order_items')
             ->select('order_items.id', 'order_items.name', 'order_items.created_at', 'orders.customer_name', 'assets.filename')
@@ -72,6 +75,7 @@ class FrontOrderController extends Controller
                 $join->on('products.id', '=', 'assets.assetable_id')
                         ->where('assets.assetable_type', '=', 'Product');
             })
+            ->where('id', '>=', $latest)
             ->inRandomOrder()
             ->get()->map(function($item) {
                 return [
