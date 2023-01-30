@@ -86,8 +86,8 @@ export function updateStatusOrder ({}, payload) {
 }
 
 export function getInvoice ({}, order_ref) {
-  return Api().get('public/invoice/'+ order_ref)
+  return Api().get('invoice/'+ order_ref)
 }
 export function storeOrder ({}, payload) {
-  return Api().post('public/order', payload)
+  return Api().post('storeorder', payload)
 }

@@ -75,7 +75,7 @@ class FrontOrderController extends Controller
                 $join->on('products.id', '=', 'assets.assetable_id')
                         ->where('assets.assetable_type', '=', 'Product');
             })
-            ->where('id', '>=', $latest)
+            ->where('order_items.id', '>=', $latest)
             ->inRandomOrder()
             ->get()->map(function($item) {
                 return [

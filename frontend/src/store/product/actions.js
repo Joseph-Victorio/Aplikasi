@@ -55,7 +55,7 @@ export function productDelete ( { dispatch },  id) {
 
 // FRONT
 export function getProducts ({ commit }, query = null) {
-  let url = 'public/products'
+  let url = 'getProducts'
   if(query) {
     url += `?${new URLSearchParams(query).toString()}`
   }
@@ -65,16 +65,16 @@ export function getProducts ({ commit }, query = null) {
 }
 
 export function productDetail ({}, slug) {
-  return Api().get('public/product/' + slug)
+  return Api().get('product-detail/' + slug)
 }
 
 export function searchProducts ({ commit }, q) {
-  return Api().get('public/product-search/'+q)
+  return Api().get('product-search/'+q)
  }
 
 export function productsByCategory ({ commit }, query) {
   commit('CLEAR_PRODUCT_CATEGORY')
-  let url = `public/product-category`
+  let url = `product-category`
 
   if(query.per_page || query.order_by) {
     url += `?${new URLSearchParams(query).toString()}`
@@ -93,20 +93,20 @@ export function productsByCategory ({ commit }, query) {
  }
 
 export function getProductsFavorites ({ commit }, payload) {
-  Api().post('public/product-favorites', payload).then(response => {
+  Api().post('product-favorites', payload).then(response => {
     if(response.status == 200) {
       commit('SET_PRODUCT_FAVORITE', response.data)
     }
   })
  }
 export function addProductReview ({ commit }, payload) {
-  return Api().post('public/product-review', payload)
+  return Api().post('product-review', payload)
 }
 export function loadProductReview ({}, payload) {
   if(payload.skip) {
-    return Api().get('public/product-review/'+ payload.product_id +'?skip=' + payload.skip)
+    return Api().get('product-review/'+ payload.product_id +'?skip=' + payload.skip)
   } else {
-    return Api().get('public/product-review/'+ payload.product_id )
+    return Api().get('product-review/'+ payload.product_id )
   }
 }
 

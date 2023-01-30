@@ -24,7 +24,7 @@ class FrontApiController extends Controller
     {
         $this->productRepository = $productRepository;
     }
-    public function homepage()
+    public function getInitialData()
     {
         $data['sliders'] = Cache::rememberForever('sliders', function () {
             return Slider::OrderBy('weight', 'asc')->get();

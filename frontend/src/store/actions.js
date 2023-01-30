@@ -29,7 +29,7 @@ export default {
   },
   getInitialData: async ({commit}) => {
     document.body.classList.add('is_loading')
-    let response = await Api().get('public/homepage')
+    let response = await Api().get('getInitialData')
     if(response.status == 200) {
       commit('SET_SHOP', response.data.results.shop),
       commit('SET_CONFIG', response.data.results.config)

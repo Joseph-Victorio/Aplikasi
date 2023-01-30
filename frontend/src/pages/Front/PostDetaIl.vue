@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     async getPost() {
-      let { data } = await Api().get('public/post/' + this.$route.params.slug)
+      let { data } = await Api().get('getPost/' + this.$route.params.slug)
       this.post = data.results
       this.ready = true
     },

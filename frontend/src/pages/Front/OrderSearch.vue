@@ -103,7 +103,7 @@ export default {
       this.notAvailable = false
       this.loading = true
       if(this.search || this.search != '') {
-       Api().post('public/order-search', {key: this.search}).then(response => {
+       Api().post('order-search', {key: this.search}).then(response => {
          this.search = ''
          if(response.status == 200) {
            this.orders = response.data.results

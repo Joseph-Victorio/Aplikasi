@@ -122,7 +122,7 @@ export default {
 
     },
     getRandomOrder() {
-       Api().get('public/order-random').then(res => {
+       Api().get('order-random').then(res => {
         if(res.status == 200) {
           this.$store.commit('order/SET_NOTIFY_ORDER_ITEMS', res.data.results)
           setTimeout(() => {

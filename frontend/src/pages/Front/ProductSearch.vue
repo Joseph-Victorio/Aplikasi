@@ -69,6 +69,7 @@ export default {
   methods: {
     ...mapActions('product', ['searchProducts']),
     searchProduct() {
+      if(this.search.length < 3) return
       this.loading = true
       this.$refs.input.blur()
       this.searchProducts(this.search).then(response => {
@@ -76,7 +77,7 @@ export default {
           this.products.data = response.data.results
           this.products.links = response.data.links
           this.products.meta = response.data.meta
-          this.products.available = this.products.results.length? true : false
+          this.products.available = this.products.data.length? true : false
         }
       }).finally(() => {
         this.products.ready = true

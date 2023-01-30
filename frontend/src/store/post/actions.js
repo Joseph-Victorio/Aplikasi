@@ -57,7 +57,7 @@ export function getAllPost ({ commit }) {
   })
 }
 export function getPosts ({ commit }) {
-  Api().get('public/posts?q=listing').then(response => {
+  Api().get('getPosts?q=listing').then(response => {
     if(response.status == 200) {
       commit('SET_LISTING_POST', response.data.results)
     }

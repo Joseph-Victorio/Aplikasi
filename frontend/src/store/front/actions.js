@@ -1,9 +1,9 @@
 import { Api } from 'boot/axios'
 
 export function getPromotePost ({ commit }) {
-  return Api().get('public/promote-posts')
+  return Api().get('promote-posts')
 }
 export function getCategories ({ commit }) {
-  return Api().get('public/categories')
+  return Api().get('getCategories')
 }
 
