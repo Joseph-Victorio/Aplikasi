@@ -103,11 +103,6 @@ import { Api } from 'boot/axios'
         this.minuteEl = minutes < 10 ? '0' + minutes : minutes;
         this.secondEl = seconds < 10 ? '0' + seconds : seconds;
       },
-      reInitialProduct() {
-        Api().get('clear-initial-cache').then(() => {
-         this.$store.dispatch('getInitialData')
-        })
-      },
       moveTimer() {
         var now = new Date().getTime();
         var distance = this.countDownDate - now;
@@ -115,13 +110,14 @@ import { Api } from 'boot/axios'
         var hours = Math.floor((distance % 86400000) / 3600000);
         var minutes = Math.floor((distance % 3600000) / 60000);
         var seconds = Math.floor((distance % 60000) / 1000);
- 
-         if (distance < 1) {
-           clearInterval(this.interval);
-           this.setTimer(0, 0, 0, 0);
-           setTimeout(() => {
-            this.reInitialProduct()
-           }, 15000)
+
+        console.log(distance);
+        
+        if (distance < 1) {
+          clearInterval(this.interval);
+          this.setTimer(0, 0, 0, 0);
+          console.log(distance);
+           this.$store.dispatch('getInitialData', true)
           } else {
             
            this.setTimer(days, hours, minutes, seconds);

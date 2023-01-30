@@ -27,6 +27,9 @@ export default {
       }
     })
   },
+  flushData() {
+    Api().get('clear-cache')
+  },
   getInitialData: async ({commit}) => {
     document.body.classList.add('is_loading')
     let response = await Api().get('getInitialData')

@@ -86,6 +86,7 @@ Route::middleware(['throttle:auth'])->group(function() {
 });
 
 Route::get('getInitialData', [FrontApiController::class, 'getInitialData']);
+Route::get('clear-cache', [FrontApiController::class, 'clearCache']);
 Route::get('getPost/{slug}', [FrontApiController::class, 'getPostDetail']);
 Route::get('promote-posts', [FrontApiController::class, 'getPromotePosts']);
 Route::get('getCategories', [FrontApiController::class, 'getCategories']);

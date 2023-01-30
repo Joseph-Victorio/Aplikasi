@@ -35,7 +35,7 @@ export default {
     }
   },
   created() {
-    if(!this.is_loaded) {
+    if(!this.is_loaded || this.$route.query.load) {
       this.$store.dispatch('getInitialData')
     }
   }

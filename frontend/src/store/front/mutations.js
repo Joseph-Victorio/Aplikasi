@@ -48,3 +48,6 @@ export function SET_POSTS (state, payload) {
 export function SET_LOADED(state) {
   state.is_loaded = true
 }
+export function REMOVE_PROMO(state, id) {
+  state.product_promo = state.product_promo.filter(el => el.id != id)
+}

@@ -24,8 +24,15 @@ class FrontApiController extends Controller
     {
         $this->productRepository = $productRepository;
     }
+    public function clearCache()
+    {
+        Cache::flush();
+
+        return ApiResponse::success();
+    }
     public function getInitialData()
     {
+
         $data['sliders'] = Cache::rememberForever('sliders', function () {
             return Slider::OrderBy('weight', 'asc')->get();
         });
