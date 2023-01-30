@@ -71,16 +71,13 @@ import { Api } from 'boot/axios'
         var minutes = Math.floor((distance % 3600000) / 60000);
         var seconds = Math.floor((distance % 60000) / 1000);
 
-        console.log(distance);
- 
          if (distance < 30000) {
-           clearInterval(this.interval);
-           this.setTimer(0, 0, 0, 0);
+            clearInterval(this.interval);
+            this.setTimer(0, 0, 0, 0);
             this.$store.dispatch('flushData')
-           this.$store.commit('front/REMOVE_PROMO', this.promo.id)
+            this.$store.commit('front/REMOVE_PROMO', this.promo.id)
           } else {
-            
-           this.setTimer(days, hours, minutes, seconds);
+            this.setTimer(days, hours, minutes, seconds);
          }
 
       }
