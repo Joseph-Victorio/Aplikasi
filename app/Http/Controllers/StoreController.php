@@ -102,7 +102,7 @@ class StoreController extends Controller
                 $rawFile->resize(144,144)->encode('png')->save('icon/icon-144x144.png');
                 $rawFile->resize(128,128)->encode('png')->save('icon/icon-128x128.png');
                 $rawFile->resize(120,120)->encode('png')->save('icon/icon-120x120.png');
-                $rawFile->resize(120,120)->encode('png')->save('icon/icon-96x96.png');
+                $rawFile->resize(96,96)->encode('png')->save('icon/icon-96x96.png');
                 $rawFile->resize(64,64)->encode('png')->save('icon/favicon.png'); 
 
                 $filename = Str::random(20) . '.' . $file->extension();
