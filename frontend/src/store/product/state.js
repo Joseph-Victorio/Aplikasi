@@ -32,8 +32,7 @@ export default function () {
       data: [],
       ready: false,
       available: true,
-      links: null,
-      meta: null
+      total: 0,
     },
     productFavorites: {
       data: [],

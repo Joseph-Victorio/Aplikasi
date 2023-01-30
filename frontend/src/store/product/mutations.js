@@ -106,11 +106,10 @@ export function SET_FRONT_RODUCT_READY (state, status)
 
 export function SET_PRODUCT_CATEGORY (state, payload) 
 {
-  state.productsByCategory.data = payload.results
-  state.productsByCategory.links = payload.links
-  state.productsByCategory.meta = payload.meta
+  state.productsByCategory.data = payload.results.data
+  state.productsByCategory.total = payload.results.totla
   state.productsByCategory.ready = true
-  state.productsByCategory.available = payload.results.length > 0 ? true : false
+  state.productsByCategory.available = payload.results.total > 0 ? true : false
 }
 
 export function PAGINATE_PRODUCT_CATEGORY (state, payload) 

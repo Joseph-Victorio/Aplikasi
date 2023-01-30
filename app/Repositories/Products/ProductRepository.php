@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Resources\ProductListCollection;
 
 class ProductRepository
 {
@@ -73,24 +74,44 @@ class ProductRepository
 
     }
 
-    public function getManyInCategory(Array $ids, $per_page = 10, $order_by = 'DESC')
+    public function getProductByCategory($id, $per_page = 10, $offset = 0, $order_by = 'DESC')
     {
-        $instance  = Product::query();
 
-        if($order_by == 'RANDOM') {
-            $instance->inRandomOrder();
-        }else {
-            $instance->orderBy('id', $order_by);
-        }
+
+        try {
+
+            $category = Cache::remember('category-'. $id, now()->addHours(3) , function() use ($id) {
+                return Category::select('id','title', 'slug')->where('id', $id)->firstOrFail();
+            });
     
-        $data = $instance->with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
-                $query->whereHas('promoActive');
-            }])
-            ->whereIn('category_id', $ids)
-            ->withAvg('reviews', 'rating')
-            ->simplePaginate($per_page);
+            $instance  = Product::query();
+    
+            if($order_by == 'RANDOM') {
+                $instance->inRandomOrder();
+            }else {
+                $instance->orderBy('id', $order_by);
+            }
+        
+            $data = $instance->with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
+                    $query->whereHas('promoActive');
+                }])
+                ->where('category_id', $id)
+                ->withAvg('reviews', 'rating')
+                ->take($per_page)
+                ->offset($offset)
+                ->get();
+    
+            return [
+                'category' => $category,
+                'data' => new ProductListCollection($data),
+                'limit' => $per_page,
+                'offset' => $offset,
+                'total' => $instance->count(),
+            ];
 
-        return $data;
+        } catch (\Exception $e) {
+            throw $e;
+        }
 
     }
 

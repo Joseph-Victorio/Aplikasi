@@ -48,7 +48,7 @@ export default {
 
       if(id != this.$route.params.id) {
         let param = {
-          category_id: this.$route.params.id,
+          category_id: id,
           per_page: this.config.catalog_product_limit,
           order_by: this.config.catalog_product_sort,
         }

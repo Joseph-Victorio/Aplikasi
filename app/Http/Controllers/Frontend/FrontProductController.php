@@ -62,13 +62,15 @@ class FrontProductController extends Controller
     {     
 
         try {
-            $ids = array($request->category_id);
+            $id = $request->category_id;
+            $offset = $request->offset ?? 0;
             $per_page = $request->per_page ?? $this->limit;
             $order_by = $request->order_by ?? 'DESC';
 
-            return new ProductListCollection($this->productRepository->getManyInCategory($ids, $per_page, $order_by));
+            $data = $this->productRepository->getProductByCategory($id, $per_page, $offset, $order_by);
 
-
+            return ApiResponse::success($data);
+            
         } catch (Exception $e) {
 
             return ApiResponse::failed($e);

@@ -11,8 +11,8 @@
     </q-header>
     <template>
       <product-section title="Produk Katalog" :products="products"></product-section>
-      <div class="flex justify-center q-py-lg" v-if="products.links">
-        <q-btn label="loadmore" color="primary" outline :loading="isLoadmore" v-if="products.links.next" @click="paginate(products.links.next)"></q-btn>
+      <div class="flex justify-center q-py-lg" v-if="products.total > products.data.length">
+        <q-btn label="loadmore" color="primary" outline :loading="isLoadmore" @click="paginate"></q-btn>
       </div>
     </template>
     <template v-if="!products.available">
@@ -68,22 +68,16 @@ export default {
     backButton() {
       this.$router.push({name: 'ProductIndex'})
     },
-    getCategoryTitle() {
-      if(this.categories.data.length) {
-        let c = this.categories.data.find(el => el.id == this.$route.params.id)
-        if(c != undefined) {
-          this.$store.commit('SET_META_TITLE', c.title)
-        }
-      }
-    },
-    paginate(url) {
+    paginate() {
       this.isLoadmore = true
+      let url ='product-category'
       let param = {
           category_id: this.$route.params.id,
           per_page: this.config.catalog_product_limit,
           order_by: this.config.catalog_product_sort,
+          offset: this.products.data.length
         }
-        url += `&${new URLSearchParams(param).toString()}`
+        url += `?${new URLSearchParams(param).toString()}`
 
       Api().get(url).then(response => {
         if(response.status == 200) {
@@ -91,9 +85,6 @@ export default {
         }
       }).finally(() =>  this.isLoadmore = false)
     }
-  },
-  mounted() {
-    this.getCategoryTitle()
   },
   created() {
     if(this.products.data.length) {
