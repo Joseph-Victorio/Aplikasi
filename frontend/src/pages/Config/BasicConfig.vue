@@ -21,7 +21,7 @@
           <q-item-section side>
             <div class="cursor-pointer img-thumbnail" :style="`width:110px;height:30px;background-color:${form.theme_color}`">
               <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-color v-model="form.theme_color" />
+                <q-color no-header v-model="form.theme_color" />
               </q-popup-proxy>
             </div>
           </q-item-section>
