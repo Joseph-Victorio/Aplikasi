@@ -6,9 +6,10 @@
         <q-item class="q-px-xs">
           <q-item-section>
             <q-item-label class="text-weight-medium">Tema</q-item-label>
+            <q-item-label caption>Konfigurasi default tema</q-item-label>
           </q-item-section>
           <q-item-section side>
-              <q-select outlined dense v-model="form.theme" :options="themes"></q-select>
+              <q-select style="min-width:110px;" outlined dense v-model="form.theme" :options="themes"></q-select>
           </q-item-section>
         </q-item>
         
@@ -18,7 +19,11 @@
             <q-item-label caption>Konfigurasi warna Address bar, pwa theme dan heading</q-item-label>
           </q-item-section>
           <q-item-section side>
-            <input ref="color" type="color" v-model="form.theme_color" style="width:110px;height:30px;"/>
+            <div class="cursor-pointer img-thumbnail" :style="`width:110px;height:30px;background-color:${form.theme_color}`">
+              <q-popup-proxy transition-show="scale" transition-hide="scale">
+                <q-color v-model="form.theme_color" />
+              </q-popup-proxy>
+            </div>
           </q-item-section>
         </q-item>
         <q-item class="q-px-xs">
@@ -27,7 +32,11 @@
             <q-item-label caption>Terdapat pada title, button</q-item-label>
           </q-item-section>
           <q-item-section side>
-            <input ref="color" type="color" v-model="form.primary_color" style="width:110px;height:30px;"/>
+            <div class="cursor-pointer img-thumbnail" :style="`width:110px;height:30px;background-color:${form.primary_color}`">
+              <q-popup-proxy transition-show="scale" transition-hide="scale">
+                <q-color v-model="form.primary_color" />
+              </q-popup-proxy>
+            </div>
           </q-item-section>
         </q-item>
         <q-item class="q-px-xs">
@@ -36,7 +45,11 @@
             <q-item-label caption>Terdapat pada harga produk, badge, diskon</q-item-label>
           </q-item-section>
           <q-item-section side>
-              <input ref="color" type="color" v-model="form.secondary_color" style="width:110px;height:30px;"/>
+            <div class="cursor-pointer img-thumbnail" :style="`width:110px;height:30px;background-color:${form.secondary_color}`">
+              <q-popup-proxy transition-show="scale" transition-hide="scale">
+                <q-color v-model="form.secondary_color" />
+              </q-popup-proxy>
+            </div>
           </q-item-section>
         </q-item>
         <q-item class="q-px-xs">
@@ -45,7 +58,11 @@
             <q-item-label caption>Terdapat pada rating, varian, produk review</q-item-label>
           </q-item-section>
           <q-item-section side>
-              <input ref="color" type="color" v-model="form.accent_color" style="width:110px;height:30px;"/>
+            <div class="cursor-pointer img-thumbnail" :style="`width:110px;height:30px;background-color:${form.accent_color}`">
+              <q-popup-proxy transition-show="scale" transition-hide="scale">
+                <q-color v-model="form.accent_color" />
+              </q-popup-proxy>
+            </div>
           </q-item-section>
         </q-item>
         <q-item class="q-mt-md q-px-xs">
