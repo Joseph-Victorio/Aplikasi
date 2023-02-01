@@ -1,6 +1,6 @@
 <template>
  <q-page :class="{'flex flex-center':!products.available}" class="q-pb-xl bg-grey-1">
-   <q-header class="text-brand bg-white box-shadow">
+   <q-header class="text-grey-9 bg-white box-shadow">
        <q-toolbar>
          <q-btn @click="backButton"
             flat round dense

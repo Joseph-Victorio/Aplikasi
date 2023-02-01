@@ -12,7 +12,7 @@
       <q-tabs 
       v-model="tab"
       class="bg-grey-1 text-grey-8"
-      active-color="brand"
+      active-color="primary"
       >
         <q-tab name="Unapproved" label="Unapproved"></q-tab>
         <q-tab name="Approved" label="Approved"></q-tab>

@@ -8,7 +8,7 @@
         <q-toolbar-title>
          List Produk
         </q-toolbar-title>
-        <q-btn  color="white" text-color="brand" size="13px" class="gt-xs" no-caps icon="eva-plus-circle" :to="{name: 'ProductCreate'}" label="Tambah Produk"/>
+        <q-btn color="white" text-color="brand" size="13px" class="gt-xs" no-caps icon="eva-plus-circle" :to="{name: 'ProductCreate'}" label="Tambah Produk"/>
       </q-toolbar>
     </q-header>
     <div class="border q-pa-md row item-center q-gutter-x-sm">

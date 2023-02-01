@@ -2,7 +2,7 @@
   <q-page class="bg-grey-1"
   :class="{'flex flex-center' : !carts.items.length}"
   >
-    <q-header class="text-brand bg-white box-shadow">
+    <q-header class="text-grey-9 bg-white box-shadow">
         <q-toolbar>
           <q-btn :to="{ name: 'ProductIndex'}"
             flat round dense
