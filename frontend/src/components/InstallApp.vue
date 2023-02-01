@@ -10,7 +10,7 @@
             <img v-else src="/icon/icon-384x384.png" width="50" height="50"/>
           </q-item-section>
           <q-item-section top>
-            <div class="text-weight-bold text-md text-primary">{{ shop.name }} App</div>
+            <div class="text-weight-bold text-md text-primary">{{ shop.name }}</div>
             <q-item-label caption>Berbelanja akan lebih mudah dan cepat dengan menggunakan aplikasi.</q-item-label>
           </q-item-section>
           <q-item-section side v-if="!isMini">
