@@ -71,7 +71,7 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->group(function() {
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('admin-config', [ConfigController::class, 'adminConfig']);
     Route::post('config', [ConfigController::class, 'update']);
-    Route::get('user', [UserController::class, 'index']);
+    Route::get('user', [UserController::class, 'show']);
     Route::post('user/logout', [UserController::class, 'logout']);
     Route::post('user/update', [UserController::class, 'update']);
     Route::get('customer/orders', [CustomerController::class, 'getOrders']);
