@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pb-md">
-    <q-header class="bg-brand">
+    <q-header :class="getHeaderColorBrand">
       <q-toolbar>
         <q-btn v-go-back.single
           flat round dense

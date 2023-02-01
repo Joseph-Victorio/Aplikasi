@@ -19,7 +19,7 @@ import promo from './promo'
 import front from './front';
 
 import mutations from './mutations'
-import getters from './getters'
+import * as getters from './getters'
 import actions from './actions'
 
 const stateData = createPersistedState({

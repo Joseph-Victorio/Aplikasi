@@ -1,6 +1,6 @@
 <template>
   <q-page padding class="bg-grey-1">
-    <q-header class="bg-brand">
+    <q-header :class="getHeaderColorBrand">
       <q-toolbar>
         <q-btn :to="{name: 'PromoIndex', query: { q: 'promo'}}"
           flat round dense
@@ -8,7 +8,7 @@
         <q-toolbar-title >
          <span v-if="promo">{{ promo.label }}</span>
         </q-toolbar-title>
-        <q-btn color="white" text-color="brand" size="13px" @click="handleAddProductPromo" unelevated icon="add_circle" label="Produk">
+        <q-btn color="white" text-color="grey-8" size="13px" @click="handleAddProductPromo" unelevated icon="add_circle" label="Produk">
           </q-btn> 
       </q-toolbar>
     </q-header>

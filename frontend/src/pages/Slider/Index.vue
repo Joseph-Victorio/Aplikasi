@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pb-xl">
-    <q-header class="bg-brand">
+    <q-header :class="getHeaderColorBrand">
       <q-toolbar>
         <q-btn :to="{name: 'Settings'}"
           flat round dense
@@ -8,7 +8,7 @@
         <q-toolbar-title>
           Slider Banner
         </q-toolbar-title>
-        <q-btn color="white" text-color="brand" size="13px" class="gt-xs" icon="add_circle" label="Tambah Slider" no-caps @click="handleBtnUpload"/>
+        <q-btn color="white" text-color="grey-8" size="13px" class="gt-xs" icon="add_circle" label="Tambah Slider" no-caps @click="handleBtnUpload"/>
       </q-toolbar>
     </q-header>
    <div class="q-pa-sm text-xs text-grey-8 bg-yellow-2">

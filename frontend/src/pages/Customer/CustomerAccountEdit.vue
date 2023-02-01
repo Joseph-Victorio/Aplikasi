@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <q-header class="bg-brand">
+    <q-header :class="getHeaderColorBrand">
       <q-toolbar>
         <q-toolbar-title>
           <q-btn :to="{ name: 'CustomerAccount' }"

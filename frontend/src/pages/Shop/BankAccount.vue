@@ -1,6 +1,6 @@
 <template>
   <q-page :class="{'flex flex-center' : !banks.available}">
-     <q-header class="bg-brand">
+     <q-header :class="getHeaderColorBrand">
       <q-toolbar>
         <q-btn :to="{name: 'Settings'}"
           flat round dense
@@ -8,7 +8,7 @@
         <q-toolbar-title>
          Bank Account
         </q-toolbar-title>
-        <q-btn color="white" text-color="brand" size="13px" class="gt-xs" no-caps icon="eva-plus-circle" @click="handleAdd" label="Tambah Akun"/>
+        <q-btn color="white" text-color="grey-8" size="13px" class="gt-xs" no-caps icon="eva-plus-circle" @click="handleAdd" label="Tambah Akun"/>
       </q-toolbar>
     </q-header>
     <template v-if="banks.available">

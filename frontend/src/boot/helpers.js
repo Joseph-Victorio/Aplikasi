@@ -5,6 +5,11 @@ window.app_ready = false
 
 Vue.mixin({
   components: { MoneyFormatter },
+  computed: {
+    getHeaderColorBrand() {
+      return this.$store.getters['getHeaderColorBrand']
+    }
+  },
   methods: {
     moneyIDR(numb) {
       return 'Rp '+ numb.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
