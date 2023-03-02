@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ApiResponse;
-use App\Http\Requests\BankAccountRequest;
 use App\Models\BankAccount;
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use App\Http\Requests\BankAccountRequest;
 
 class BankController extends Controller
 {
@@ -66,6 +67,8 @@ class BankController extends Controller
         $bank = BankAccount::findOrFail($id);
 
         $bank->delete();
+
+        Cache::forget('bank_account_count');
 
         return ApiResponse::success();
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -83,5 +84,14 @@ class Order extends Model
                 break;
         }
 
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($model) {
+            $model->order_ref = 'INV'. Carbon::now()->format('ym') . str_pad($model->id, 7, '0', STR_PAD_LEFT) . Str::upper(Str::random(3));
+            $model->save();
+        });
     }
 }

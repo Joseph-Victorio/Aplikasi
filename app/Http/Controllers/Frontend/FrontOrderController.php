@@ -119,15 +119,12 @@ class FrontOrderController extends Controller
         $name = filter_var($request->customer_name, FILTER_SANITIZE_SPECIAL_CHARS);
         $whatsapp = filter_var($request->customer_phone, FILTER_SANITIZE_SPECIAL_CHARS);
 
-        $orderRef = 'INV' .Carbon::now()->format('ymdHs') .  rand(1,99) . Str::upper(Str::random(2));
-
         DB::beginTransaction();
 
         try {
 
             $order = Order::create([
                 'user_id' => $user? $user->id : null,
-                'order_ref' => $orderRef,
                 'customer_name' => $name,
                 'customer_whatsapp' => $whatsapp,
                 'customer_email' => $request->customer_email,

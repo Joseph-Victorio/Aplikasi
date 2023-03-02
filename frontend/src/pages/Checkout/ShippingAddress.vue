@@ -1,7 +1,7 @@
 <template>
   <div class="">
      <div id="courier" ref="courier" class="q-mb-lg">
-      <div  v-if="config.can_shipping">
+      <div  v-if="config.can_cod">
         <div class="text-md text-weight-medium ">Pilih Metode Pengiriman</div>
 
         <div class="q-py-sm q-gutter-x-sm">
@@ -107,7 +107,7 @@
           </q-list>
           </div>
         </div>
-        <div v-if="shipping_method == 'COD' || !config.can_shipping">
+        <div v-if="shipping_method == 'COD' && config.can_cod">
           
         <div class="q-mb-lg">
             <div class="text-md q-pb-xs text-weight-medium q-mb-xs">Pilih Tujuan Pengiriman</div>
