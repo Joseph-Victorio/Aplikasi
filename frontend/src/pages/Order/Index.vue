@@ -330,7 +330,7 @@ export default {
       if(order.shipping_courier_name == 'COD') {
         return false
       } else {
-        if(order.order_status == 'TOSHIP') { 
+        if(order.order_status == 'TOSHIP' && !order.shipping_courier_code) { 
           return true
         } else {
           return false
@@ -373,7 +373,7 @@ export default {
         ok: { label: title, flat: true},
         html: true,
         }).onOk(() => {
-          this.acceptPayment(id).then(() => {
+          this.acceptPayment(order.id).then(() => {
             this.setFilter('TOSHIP')
             this.filterOrder(this.filter)
           })
