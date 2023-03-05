@@ -10,7 +10,7 @@ use App\Models\ProductVarian;
 
 class OrderController extends Controller
 {
-    protected $data = ['skip' => 0,'limit' => 6,'data' => null];
+    protected $data = ['skip' => 0,'limit' => 6,'data' => []];
 
     public function __construct()
     {
@@ -27,19 +27,25 @@ class OrderController extends Controller
             $instance = Order::with('transaction');
 
             if($search) {
-                $instance->where('customer_whatsapp', $search)->orWhere('order_ref', $search);
+                $instance->where('customer_whatsapp', 'LIKE', '%'.$search . '%')
+                ->orWhere('order_ref', $search)
+                ->orWhere('customer_name', 'LIKE', '%'.$search . '%')
+                ->orWhere('customer_email', 'LIKE', '%'.$search . '%');
             }
             if($filter && $filter != 'ALL') {
                 $instance->where('order_status', $filter);
             }
 
-            $this->data['data'] = $instance
-                ->orderByDesc('updated_at')
-                ->skip($this->data['skip'])
-                ->take($this->data['limit'])
-                ->get();
-
             $this->data['count'] = $instance->count();
+
+            if($this->data['count'] > 0) {
+
+                if(!$search) {
+                    $instance->skip($this->data['skip'])->take($this->data['limit']);
+                }
+
+                $this->data['data'] = $instance->orderByDesc('updated_at')->get();
+            }
 
             return ApiResponse::success($this->data);
             
@@ -52,7 +58,7 @@ class OrderController extends Controller
 
     public function show($orderRef)
     {
-        $data =  Order::with(['items', 'transaction'])
+        $data = Order::with(['items', 'transaction'])
                         ->where('order_ref', $orderRef)
                         ->first();
         return ApiResponse::success($data);

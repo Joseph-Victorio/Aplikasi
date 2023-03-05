@@ -90,7 +90,7 @@ class Order extends Model
         parent::boot();
 
         static::created(function ($model) {
-            $model->order_ref = 'INV'. Carbon::now()->format('ym') . str_pad($model->id, 7, '0', STR_PAD_LEFT) . Str::upper(Str::random(3));
+            $model->order_ref = 'INV'. Carbon::now()->format('ym') . str_pad($model->id, 6, '0', STR_PAD_LEFT) . Str::upper(Str::random(3));
             $model->save();
         });
     }

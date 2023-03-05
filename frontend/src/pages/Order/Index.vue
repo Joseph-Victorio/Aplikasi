@@ -17,7 +17,9 @@
     </q-header>
    <div class="q-py-md auto-padding-side">
       <div class="q-gutter-x-sm q-mt-sm">
-          <q-input v-model="search" placeholder="Ketik no invoice atau ponsel" dense borderless clearable class="bg-grey-3 q-px-sm" @keypress.enter="handleSearchOrder" @clear="clearSearch">
+          <q-input v-model="search" 
+          placeholder="No invoice, nama, email atau ponsel customer" 
+          dense borderless clearable class="bg-grey-3 q-px-sm" @keypress.enter="handleSearchOrder" @clear="clearSearch">
             <template v-slot:append>
               <q-icon name="eva-search" class="cursor-pointer" @click="handleSearchOrder"></q-icon>
             </template>
@@ -47,7 +49,7 @@
               <div>
                 <table class="dense">
                   <tr>
-                    <td>Pelanggan</td>
+                    <td>Customer</td>
                     <td>{{ order.customer_name }}</td>
                   </tr>
                   <tr>
