@@ -1,3 +1,4 @@
+import { getSliders } from "./actions"
 
 export const getProductItemByCategoryId =  (state) => (id) => {
 
@@ -16,5 +17,9 @@ export function getBanner1 (state) {
     return 
   }
   return null
+}
+
+export function getSliderCount (state) {
+  return state.sliders.count
 }
 

@@ -36,10 +36,10 @@ export default {
     if(response.status == 200) {
       commit('SET_SHOP', response.data.results.shop),
       commit('SET_CONFIG', response.data.results.config)
+      commit('front/SET_SLIDERS_COUNT', response.data.results.slider_count, { root: true })
       commit('front/SET_BLOCKS', response.data.results.blocks, { root: true }),
       commit('front/SET_PRODUCT_PROMO', response.data.results.product_promo, { root: true })
       commit('front/SET_CATEGORIES', response.data.results.categories, { root: true })
-      commit('front/SET_SLIDERS', response.data.results.sliders, { root: true })
       commit('SET_SESSION_ID', response.data.results.sess_id)
       commit('front/SET_LOADED', null, { root: true })
     }

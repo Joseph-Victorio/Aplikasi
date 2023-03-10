@@ -1,3 +1,54 @@
+
+$default   : #0598c0;
+:root {
+  --page-width: 768px;
+  --blue-light: #c0eec6;
+  --default-theme: $default;
+  --box-shadow: 0px 14px 16px -10px rgba(48, 48, 48, 0.04);
+  --color-grey: rgb(214, 214, 214);
+  --q-color-brand: #0082ad;
+}
+
+.text-brand {
+  color: #0082ad;
+  color: var(--q-color-brand);
+}
+
+.bg-brand {
+  background-color: #0082ad;
+  background-color: var(--q-color-brand);
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  color: inherit;
+}
+.h1, h1 {
+  font-size: 2.5rem;
+}
+.h2, h2 {
+  font-size: 2rem;
+}
+.h3, h3 {
+  font-size: 1.75rem;
+}
+.h4, h4 {
+  font-size: 1.5rem;
+}
+.h5, h5 {
+  font-size: 1.25rem;
+}
+.h6, h6 {
+  font-size: 1rem;
+}
+.absolute-top-right {
+  top:4px;
+  right:4px;
+}
 .q-dialog__inner--maximized > .max-width,
 .q-dialog__inner--minimized.q-dialog__inner--bottom > .max-width,
 .max-width {

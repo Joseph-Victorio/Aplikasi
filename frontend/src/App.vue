@@ -21,7 +21,9 @@ export default {
   },
   created() {
     setTimeout(() =>  this.getData(), 200)
+
     this.$store.commit('REMOVE_INSTALL_APP')
+    
     window.addEventListener('beforeinstallprompt', (e) => {
       this.$store.commit('SET_INSTALL_APP', e)
     })

@@ -33,10 +33,13 @@ export function SET_PRODUCT_CATEGORY ( state, payload ) {
 
 }
 export function SET_SLIDERS (state, payload) {
-
   state.sliders.data = payload
   state.sliders.ready = true
   state.sliders.available = payload.length > 0 ? true : false
+}
+
+export function SET_SLIDERS_COUNT (state, total) {
+  state.sliders.count = total
 }
 
 export function SET_POSTS (state, payload) {

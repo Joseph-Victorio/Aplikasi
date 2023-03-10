@@ -33,8 +33,8 @@ class FrontApiController extends Controller
     public function getInitialData()
     {
 
-        $data['sliders'] = Cache::rememberForever('sliders', function () {
-            return Slider::OrderBy('weight', 'asc')->get();
+        $data['slider_count'] = Cache::rememberForever('slider_count', function () {
+            return Slider::count();
         });
         
         $data['blocks'] = Cache::rememberForever('blocks', function () {
@@ -51,9 +51,9 @@ class FrontApiController extends Controller
             return Category::orderBy('weight', 'asc')->withCount('products')->get();
         });
 
-        $data['posts'] = Cache::rememberForever('promote_post', function () {
-            return Post::promote()->latest()->take(4)->get();
-        });
+        // $data['posts'] = Cache::rememberForever('promote_post', function () {
+        //     return Post::promote()->latest()->take(4)->get();
+        // });
 
         $data['config'] = Cache::rememberForever('shop_config', function () {
             return Config::first();
@@ -72,7 +72,10 @@ class FrontApiController extends Controller
 
     public function getSliders()
     {
-        $data = Slider::OrderBy('weight', 'asc')->get();
+        $data = Cache::rememberForever('sliders', function() {
+            return Slider::OrderBy('weight', 'asc')->get();
+        });
+
         return ApiResponse::success($data);
     }
 

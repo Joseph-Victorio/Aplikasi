@@ -16,6 +16,7 @@ class SliderObserver
     public function created(Slider $slider)
     {
         Cache::forget('sliders');
+        Cache::forget('slider_count');
     }
 
     /**
@@ -38,6 +39,7 @@ class SliderObserver
     public function deleted(Slider $slider)
     {
         Cache::forget('sliders');
+        Cache::forget('slider_count');
     }
 
     /**

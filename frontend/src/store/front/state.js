@@ -19,6 +19,7 @@ export default function () {
       data: []
     },
     sliders: {
+      count: 0,
       data: [],
       ready: false,
       available: true

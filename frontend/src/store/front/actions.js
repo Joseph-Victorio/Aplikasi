@@ -6,4 +6,11 @@ export function getPromotePost ({ commit }) {
 export function getCategories ({ commit }) {
   return Api().get('getCategories')
 }
+export function getSliders ({commit }) {
+   Api().get('getSliders').then(res => {
+    if(res.status == 200) {
+      commit('SET_SLIDERS', res.data.results)
+    }
+   })
+}
 

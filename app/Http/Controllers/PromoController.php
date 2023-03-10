@@ -128,6 +128,5 @@ class PromoController extends Controller
         return response([ 'success' => true ], 200);
 
     }
-
     
 }
