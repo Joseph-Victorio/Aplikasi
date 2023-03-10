@@ -9,7 +9,7 @@ export function getAdminCategories({commit}) {
   })
 }
 export function getCategory ({}, payload) {
-    return Api().get('category/' + payload)
+    return Api().get('categories/' + payload)
    }
 export function categoryStore({dispatch, commit}, payload) {
     let self = this

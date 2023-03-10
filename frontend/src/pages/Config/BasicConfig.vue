@@ -104,7 +104,7 @@
            <q-item-section>
              <q-item-label>
                <q-select filled v-model="form.home_product_sort" label="Urutan Produk" 
-               :options="sorts" 
+               :options="[...sorts, { value: 'RANDOM', label: 'Random'}]" 
                emit-value map-options
                ></q-select>
              </q-item-label>
@@ -156,7 +156,6 @@ export default {
       sorts: [
         { value: 'DESC', label: 'Terbaru'},
         { value: 'ASC', label: 'Terlama'},
-        { value: 'RANDOM', label: 'Acak'},
       ],
       form: {
         theme: '',
