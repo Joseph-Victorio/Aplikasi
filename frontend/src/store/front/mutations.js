@@ -22,6 +22,13 @@ export function SET_CATEGORIES ( state, payload ) {
   }
 
 }
+export function CLEAR_FRONT_CATEGORIES ( state, payload ) {
+
+  state.categories.data = []
+  state.categories.ready = false
+  state.categories.available = true
+
+}
 export function SET_PRODUCT_CATEGORY ( state, payload ) {
   let idx = state.categories.data.findIndex(el => el.id == payload.category_id)
 

@@ -12,6 +12,7 @@ export function getCategoriesWithChilds({commit}) {
   Api().get('categories?with=childs').then(response => {
     if(response.status == 200) {
       commit('SET_CATEGORIES', response.data.results);
+      commit('front/CLEAR_FRONT_CATEGORIES',null, { root: true });
     }
   })
 }
