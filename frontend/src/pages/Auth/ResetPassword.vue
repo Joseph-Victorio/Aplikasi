@@ -134,7 +134,7 @@ export default {
         this.resetPassword(this.form)
       } else {
         this.$store.commit('SET_LOADING', true)
-        Api().get('user/validate-oken/' +this.form.token)
+        Api().get('user/validate-token/' +this.form.token)
         .then(response => {
           if(response.status == 200) {
             if(response.data.success) {

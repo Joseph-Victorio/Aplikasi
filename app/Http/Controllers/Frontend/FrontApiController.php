@@ -48,7 +48,7 @@ class FrontApiController extends Controller
         });
 
         $data['categories'] = Cache::remember('categories',  now()->addSeconds(20), function () {
-            return Category::onlyParents()->withCount('childProducts')->get();
+            return Category::withChilds()->withCount('childProducts')->get();
         });
 
         // $data['posts'] = Cache::rememberForever('promote_post', function () {
