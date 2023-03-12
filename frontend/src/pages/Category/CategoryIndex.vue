@@ -15,7 +15,7 @@
     <div class="">
       <q-list separator>
         <q-item class="item-header">
-          <q-item-section avatar>
+          <q-item-section style="width:60px" side>
            Ikon
           </q-item-section>
           <q-item-section>
@@ -31,31 +31,52 @@
             Aksi
           </q-item-section>
         </q-item>
-        <q-item v-for="cat in categories.data" :key="cat.id">
+        <q-expansion-item v-for="cat in categories.data" :key="cat.id" expand-separator group="menu-category">
+        <template v-slot:header>
           <q-item-section avatar>
             <q-img :src="cat.src" ratio="1" class="img-thumbnail img-avatar"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>{{ cat.title }}</q-item-label>
+            {{ cat.title }}
           </q-item-section>
+
           <q-item-section >
-            <div class="q-pa-md">{{ cat.weight }}</div>
-          </q-item-section>
-          <q-item-section>
-            <div>
-             <q-chip size="sm" :color="cat.is_front? 'positive' : 'grey'" text-color="white" icon="eva-checkmark-circle-2">
-              {{ cat.is_front? 'Yes' : 'No'}}
-            </q-chip>
-            </div>
-          </q-item-section>
-         
+              <div class="q-pa-md">{{ cat.weight }}</div>
+            </q-item-section>
+
+            <q-item-section>
+              <div>
+               <q-chip size="sm" :color="cat.is_front? 'positive' : 'grey'" text-color="white" icon="eva-checkmark-circle-2">
+                {{ cat.is_front? 'Yes' : 'No'}}
+              </q-chip>
+              </div>
+            </q-item-section>
+
           <q-item-section side>
-            <div class="text-grey-8 q-gutter-x-sm">
-              <q-btn @click="remove(cat.id)" size="sm" round icon="eva-trash-2" color="red"/>
-              <q-btn :to="{ name: 'CategoryForm', query: {edit: cat.id }}" size="sm" round icon="eva-edit-2" color="blue"/>
+            <div class="row items-center q-gutter-x-sm">
+              <q-btn dense size="md" @click="remove(cat.id)" flat icon="eva-trash-2" />
+              <q-btn dense size="md" :to="{ name: 'CategoryFormEdit', params: { category_id: cat.id }}" flat icon="eva-edit-2" />
             </div>
           </q-item-section>
-        </q-item>
+        </template>
+          <q-list separator class="bg-grey-1">
+            <q-item v-for="item in cat.childs" :key="item.id" class="q-px-lg">
+              <q-item-section side>
+                <q-icon name="radio_button_off" size="17px"/>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ item.title }}</q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <div class="text-grey-8 q-gutter-x-sm">
+                  <q-btn dense size="md" flat @click="remove(item.id)" icon="eva-trash-2" color="red"/>
+                  <q-btn dense size="md" flat :to="{ name: 'CategoryFormEdit', params: {category_id: item.id }}" icon="eva-edit-2" color="blue"/>
+                </div>
+              </q-item-section>
+            </q-item>
+            <div v-if="!cat.childs.length" class="q-py-lg text-center">Tidak ada subkategori</div>
+          </q-list>
+        </q-expansion-item>
       </q-list>
     </div>
     </template>
@@ -73,7 +94,6 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 export default {
-  name: 'Categories',
   data () {
     return {
       modal: false,
@@ -86,7 +106,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions('category',['getAdminCategories', 'categoryDelete']),
+    ...mapActions('category',['getCategoriesWithChilds', 'categoryDelete']),
     remove (id) {
       this.removeId = id
       this.$q.dialog({
@@ -100,7 +120,7 @@ export default {
     }
   },
   created () {
-    if(!this.categories.data.length) this.getAdminCategories()
+    if(!this.categories.data.length) this.getCategoriesWithChilds()
   }
 }
 </script>

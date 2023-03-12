@@ -19,14 +19,9 @@
           label="Title Produk"
           required
         />
-        <q-select
-          v-model="form.category_id"
-          :options="categories"
-          label="Kategori"
-          emit-value
-          map-options
-          class="q-pb-md"
-        />
+
+        <CategoryBlock :category_id="form.category_id" @onUpdate="(val) => form.category_id = val" />
+        
         <div class="q-mt-md q-mb-sm">
           <label for="description" class="text-grey-7 q-pb-sm block">Deskripsi</label>
           <ContentEditor @update="(val) => form.description = val" :content="form.description"/>
@@ -245,6 +240,7 @@
         </form>
       </q-card>
     </q-dialog>
+    
   </q-page>
 </template>
 
@@ -252,8 +248,9 @@
 import { mapActions } from 'vuex'
 import VarianModal from './VarianFormModal.vue'
 import ContentEditor from 'components/ContentEditor.vue'
+import CategoryBlock from './CategoryBlock.vue'
 export default {
-  components: { VarianModal, ContentEditor },
+  components: { VarianModal, ContentEditor, CategoryBlock },
   name: 'ProductFormCreate',
   data () {
     return {
@@ -325,37 +322,18 @@ export default {
       }
       return true
     },
+    
   },
   methods: {
     ...mapActions('product', ['productStore']),
-    ...mapActions('category', ['getCategories']),
     ...mapActions('customerService', ['getCustomerServices']),
     handleEditLabel(index) {
       this.editLabelIndex = index
       this.editLabelModal = true
     },
-    // handleEmbedModal() {
-    //   this.embed_video.source = ''
-    //   this.embed_video.modal = true
-    // },
-    // saveEmbed() {
-    //   if(!this.embed_video.source) return
-
-    //   this.embed_video.modal = false
-
-    //   let editor = this.$refs.editor
-    //   const html = `<br><div contenteditable="false" class="embed-responsive ${this.embed_video.ratio}" style="max-width:${this.embed_video.max_width};">${this.embed_video.source}</div><br><br>`
-      
-    //   this.$nextTick(function () {
-
-    //     editor.caret.restore()
-
-    //     editor.runCmd('insertHTML', html)
-
-    //     editor.focus()
-    //   })
-
-    // },
+    onUpdateCategory(catId) {
+      this.form.category_id = catId
+    },
     submitEditLabel() {
       this.editLabelModal = false
     },
@@ -588,9 +566,6 @@ export default {
 
     },
  
-  },
-  mounted() {
-    this.getCategories()
   }
 }
 </script>

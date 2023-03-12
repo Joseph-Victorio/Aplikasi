@@ -16,7 +16,21 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $data = Category::orderBy('weight', 'asc')->get();
+        $with = request()->query('with');
+
+       if($with == 'parent') {
+
+            $data = Category::withParent()->get();
+
+        }elseif($with == 'childs') {
+
+            $data = Category::withChilds()->get();
+
+        }else {
+
+            $data = Category::all();
+
+        }
 
         return ApiResponse::success($data);
 
@@ -25,7 +39,7 @@ class CategoryController extends Controller
     {
         $request->validate([
             'title' => 'required|unique:categories',
-            'images' => 'required'
+            'images' => $request->category_id ? 'nullable' : 'required'
         ]);
 
         DB::beginTransaction();
@@ -39,6 +53,7 @@ class CategoryController extends Controller
 
             $category = new Category();
             $category->title = $request->title;
+            $category->category_id = $request->category_id ?? NULL;
             $category->slug = Str::slug($request->title);
             $category->is_front = $request->boolean('is_front');
             $category->weight = $request->weight;
@@ -100,6 +115,7 @@ class CategoryController extends Controller
         try {
             $category = Category::find($id);
             $category->title = $request->title;
+            $category->category_id = $request->category_id ?? NULL;
             $category->is_front = $request->boolean('is_front');
             $category->weight = $request->weight;
             $category->description = $request->description;
@@ -141,6 +157,10 @@ class CategoryController extends Controller
     
             $category->save();
 
+            if($request->category_id) {
+                $category->childs()->delete();
+            }
+
             DB::commit();
             
             Cache::forget('categories');
@@ -159,12 +179,14 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
-        $cat = Category::find($id);
+        $category = Category::find($id);
+
+        $category->childs()->delete();
         
-        File::delete('upload/images/'. $cat->filename);
-        File::delete('upload/images/'. $cat->banner);
+        File::delete('upload/images/'. $category->filename);
+        File::delete('upload/images/'. $category->banner);
         
-        $cat->delete();
+        $category->delete();
         
         Cache::forget('categories');
         Cache::forget('initial_products');

@@ -62,12 +62,15 @@ class FrontProductController extends Controller
     {     
 
         try {
+
+            $is_subcategory = $request->boolean('subcategory');
+
             $id = $request->category_id;
             $offset = $request->offset ?? 0;
             $per_page = $request->per_page ?? $this->limit;
             $order_by = $request->order_by ?? 'DESC';
 
-            $data = $this->productRepository->getProductByCategory($id, $per_page, $offset, $order_by);
+            $data = $this->productRepository->getProductByCategory($id, $per_page, $offset, $order_by, $is_subcategory);
 
             return ApiResponse::success($data);
             

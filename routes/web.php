@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\Frontend\FrontController;
 
-
 // MOHON UNTUK TIDAK MENGEDIT ROUTE DIBAWAH
 
 Route::get('/', [FrontController::class, 'homepage']);

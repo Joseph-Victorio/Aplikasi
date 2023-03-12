@@ -4,6 +4,11 @@ export default function () {
       data: [],
       ready: false,
       available: true
-    }
+    },
+    all_categories: {
+      data: [],
+      ready: false,
+      available: true
+    },
   }
 }

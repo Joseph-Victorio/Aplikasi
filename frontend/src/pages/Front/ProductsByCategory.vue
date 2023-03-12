@@ -87,27 +87,28 @@ export default {
     }
   },
   created() {
+
+    let params = {
+      category_id: this.$route.params.id,
+      per_page: this.config.catalog_product_limit,
+      order_by: this.config.catalog_product_sort,
+      subcategory: this.$route.query.sub ? this.$route.query.sub : false
+    }
     if(this.products.data.length) {
+
+      console.log(this.$route.query);
 
       if(this.products.data[0].id != this.$route.params.id) {
 
         this.$store.commit('product/CLEAR_PRODUCT_CATEGORY')
-        this.productsByCategory({
-          category_id: this.$route.params.id,
-          per_page: this.config.catalog_product_limit,
-          order_by: this.config.catalog_product_sort,
-        })
+        this.productsByCategory(params)
 
       }
 
     } else {
 
       this.$store.commit('product/CLEAR_PRODUCT_CATEGORY')
-      this.productsByCategory({
-        category_id: this.$route.params.id,
-        per_page: this.config.catalog_product_limit,
-        order_by: this.config.catalog_product_sort,
-      })
+      this.productsByCategory(params)
     }
   },
   meta() {

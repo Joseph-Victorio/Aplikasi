@@ -1,8 +1,15 @@
 import { Api } from 'boot/axios'
 import { Notify } from 'quasar'
 
-export function getAdminCategories({commit}) {
+export function getAllCategories({commit}) {
   Api().get('categories').then(response => {
+    if(response.status == 200) {
+      commit('SET_ALL_CATEGORIES', response.data.results);
+    }
+  })
+}
+export function getCategoriesWithChilds({commit}) {
+  Api().get('categories?with=childs').then(response => {
     if(response.status == 200) {
       commit('SET_CATEGORIES', response.data.results);
     }
@@ -17,7 +24,7 @@ export function categoryStore({dispatch, commit}, payload) {
     return Api().post('categories', payload, {headers: {'content-Type': 'multipart/formData'}})
     .then(response => {
       if(response.status == 200) {
-        dispatch('getAdminCategories')
+        dispatch('getCategoriesWithChilds')
         Notify.create({
           type: 'positive',
           message: 'Berhasil menambah data'
@@ -36,7 +43,7 @@ export function categoryUpdate({dispatch, commit}, payload) {
     Api().post('categories/' + payload.id , payload.data, {headers: {'content-Type': 'multipart/formData'}})
     .then(response => {
       if(response.status == 200) {
-        dispatch('getAdminCategories');
+        dispatch('getCategoriesWithChilds');
         Notify.create({
           type: 'positive',
           message: 'Berhasil memperbarui data'
@@ -53,7 +60,7 @@ export function categoryDelete ({commit, dispatch}, payload) {
     Api().delete('categories/' + payload)
     .then(response => {
       commit('SET_LOADING', false, { root: true })
-      dispatch('getAdminCategories')
+      dispatch('getCategoriesWithChilds')
       Notify.create({
         type: 'positive',
         message: 'Berhasil menghapus data'

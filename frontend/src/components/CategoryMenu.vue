@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white max-width q-pb-lg" style="min-height:280px">
-    <q-list separator>
+    <q-list separator v-if="categories.data.length">
       <q-item>
         <q-item-section side>
           <q-icon name="eva-keypad"></q-icon>
@@ -12,16 +12,43 @@
           <q-btn flat icon="eva-close" dense @click="closeCategory"></q-btn>
         </q-item-section>
       </q-item>
-      <q-item v-for="category in categories.data" :key="category.id" clickable @click="handleShowCategory(category.id)">
-        <q-item-section avatar>
-          <q-avatar>
-            <q-img :src="category.src"></q-img>
-          </q-avatar>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>{{ category.title }}</q-item-label>
-        </q-item-section>
-      </q-item>
+      <q-expansion-item v-for="category in categories.data" :key="category.id"
+          group="cat"
+          >
+          <template v-slot:header>
+            <q-item-section avatar>
+              <q-avatar>
+                <q-img :src="category.src"></q-img>
+              </q-avatar>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ category.title }}</q-item-label>
+            </q-item-section>
+          </template>
+
+          <q-list class="bg-grey-1 q-px-sm">
+            <q-item clickable @click="handleShowCategory(category.id)">
+              <q-item-section avatar>
+                <q-avatar>
+                  <q-icon name="radio_button_off"></q-icon>
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>All Products</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item v-for="subcategory in category.childs" :key="subcategory.id" clickable @click="handleShowCategory(subcategory.id, true)">
+              <q-item-section avatar>
+                <q-avatar>
+                  <q-icon name="radio_button_off"></q-icon>
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ subcategory.title }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-expansion-item>
     </q-list>
     <q-inner-loading :showing="loading"></q-inner-loading>
     </div>
@@ -43,17 +70,18 @@ export default {
     }
   },
   methods: {
-    handleShowCategory(id) {
+    handleShowCategory(id, sub = false) {
       this.closeCategory()
 
       if(id != this.$route.params.id) {
         let param = {
           category_id: id,
+          subcategory: sub,
           per_page: this.config.catalog_product_limit,
           order_by: this.config.catalog_product_sort,
         }
         this.$store.dispatch('product/productsByCategory', param)
-        this.$router.push({ name: 'ProductCategory', params: { id: id }})
+        this.$router.push({ name: 'ProductCategory', params: { id: id }, query: { sub: sub }})
       }
     },
     closeCategory() {

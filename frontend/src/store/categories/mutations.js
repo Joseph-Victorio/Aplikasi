@@ -6,6 +6,12 @@ export function SET_CATEGORIES ( state, payload ) {
   state.categories.ready = true
   state.categories.available = payload.length > 0 ? true : false
 }
+
+export function SET_ALL_CATEGORIES ( state, payload ) {
+  state.all_categories.data = payload
+  state.all_categories.ready = true
+  state.all_categories.available = payload.length > 0 ? true : false
+}
 export function UPDATE_CATEGORIES ( state, payload ) {
   state.categories = state.categories.filter(el => el.id != payload)
 }

@@ -76,7 +76,7 @@ export function productsByCategory ({ commit }, query) {
   commit('CLEAR_PRODUCT_CATEGORY')
   let url = `product-category`
 
-  if(query.per_page || query.order_by) {
+  if(Object.entries(query).length) {
     url += `?${new URLSearchParams(query).toString()}`
   }
 

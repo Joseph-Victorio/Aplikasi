@@ -74,15 +74,21 @@ class ProductRepository
 
     }
 
-    public function getProductByCategory($id, $per_page = 10, $offset = 0, $order_by = 'DESC')
+    public function getProductByCategory($id, $per_page = 10, $offset = 0, $order_by = 'DESC', $is_subcategory = false)
     {
 
 
         try {
 
+            $ids = [$id];
+
             $category = Cache::remember('category-'. $id, now()->addHours(3) , function() use ($id) {
-                return Category::select('id','title', 'slug')->where('id', $id)->firstOrFail();
+                return Category::select('id','title', 'slug', 'weight')->where('id', $id)->firstOrFail();
             });
+
+            if(!$is_subcategory) {
+                $ids = Category::where('category_id', $id)->select('id')->pluck('id');
+            }
     
             $instance  = Product::query();
     
@@ -95,7 +101,7 @@ class ProductRepository
             $data = $instance->with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
                     $query->whereHas('promoActive');
                 }])
-                ->where('category_id', $id)
+                ->whereIn('category_id', $ids)
                 ->withAvg('reviews', 'rating')
                 ->take($per_page)
                 ->offset($offset)

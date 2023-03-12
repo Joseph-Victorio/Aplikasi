@@ -9,7 +9,7 @@
           <vue-glide :options="glideOptions">
             <vue-glide-slide v-for="cat in categories.data" :key="cat.id">
               <div class="column full-height text-center">
-                <q-img v-if="cat.filename" :src="cat.src" ratio="1"  @click="openCategory(cat.id)" class="cursor-pointer rounded-borders bg-white">
+                <q-img v-if="cat.src" :src="cat.src" ratio="1"  @click="openCategory(cat.id)" class="cursor-pointer rounded-borders bg-white">
                 </q-img>
                 <div class="text-category-auto text-center q-mt-xs">{{ cat.title }}</div>
               </div>
