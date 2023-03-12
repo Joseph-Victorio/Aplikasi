@@ -19,14 +19,9 @@
           label="Title Produk"
           required
         />
-        <q-select
-          v-model="form.category_id"
-          :options="categories"
-          label="Kategori"
-          emit-value
-          map-options
-          class="q-pb-md"
-        />
+
+        <CategoryBlock :category_id="form.category_id" @onUpdate="(val) => form.category_id = val" />
+
         <div class="q-mt-md q-mb-sm">
           <label for="description" class="text-grey-7 q-pb-sm block">Deskripsi</label>
           <ContentEditor @update="(val) => form.description = val" :content="form.description"/>
@@ -253,9 +248,10 @@
 import { mapActions } from 'vuex'
 import FormVarianModal from './VarianFormModal.vue'
 import ContentEditor from 'components/ContentEditor.vue'
+import CategoryBlock from './CategoryBlock.vue'
 export default {
   name: 'ProductFormEdit',
-  components: { FormVarianModal, ContentEditor },
+  components: { FormVarianModal, ContentEditor, CategoryBlock },
   data () {
     return {
       editLabelIndex: 0,
@@ -325,7 +321,6 @@ export default {
   },
   methods: {
     ...mapActions('product', ['productUpdate', 'getProductById']),
-    ...mapActions('category', ['getCategories']),
     handleEditLabel(index) {
       this.editLabelIndex = index
       this.editLabelModal = true
@@ -583,7 +578,6 @@ export default {
       this.product = response.data.results
       this.setData() 
     }).finally(() => this.$q.loading.hide())
-    this.getCategories()
   },
 }
 </script>

@@ -4,7 +4,7 @@
       <swiper-slide v-for="cat in datas" :key="cat.id">
         <div @click="openCategory(cat.id)" class="cursor-pointer category-rounded column items-center">
           <div class="category-img">
-            <img v-if="cat.filename" :src="cat.src" />
+            <img v-if="cat.src" :src="cat.src" />
           </div>
           <div class="text-auto q-mt-sm text-weight-medium text-grey-9">
             {{ cat.title }}
