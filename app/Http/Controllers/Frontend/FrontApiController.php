@@ -47,19 +47,15 @@ class FrontApiController extends Controller
             return Store::first();
         });
 
-        $data['categories'] = Cache::remember('categories',  now()->addSeconds(20), function () {
+        $data['categories'] = Cache::remember('categories',  now()->addMinutes(30), function () {
             return Category::withChilds()->withCount('childProducts')->get();
         });
-
-        // $data['posts'] = Cache::rememberForever('promote_post', function () {
-        //     return Post::promote()->latest()->take(4)->get();
-        // });
 
         $data['config'] = Cache::rememberForever('shop_config', function () {
             return Config::first();
         });
 
-        $data['product_promo'] = Cache::remember('product_promo', now()->addMinutes(2),  function() {
+        $data['product_promo'] = Cache::remember('product_promo', now()->addMinutes(3),  function() {
 
             return $this->productRepository->getProductPromo();
 
