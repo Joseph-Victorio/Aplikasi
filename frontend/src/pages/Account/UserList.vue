@@ -106,7 +106,7 @@ export default {
     },
     loadUser() {
       this.load = true
-      Api().get(`userList?take=${this.take}&skip=${this.users.length}`).then(response => {
+      Api().get(`users?take=${this.take}&skip=${this.users.length}`).then(response => {
         if(response.status == 200) {
           this.users = [...this.users, ...response.data.results]
           this.canLoad = response.data.results.length == this.take ? true : false
