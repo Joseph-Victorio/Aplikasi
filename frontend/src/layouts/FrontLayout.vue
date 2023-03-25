@@ -137,11 +137,6 @@ export default {
     }
     
   },
-  created() {
-    if(this.config) {
-      this.$store.commit('SET_THEME_COLOR', this.config.theme_color)
-    }
-  },
   meta() {
     return {
       meta: {

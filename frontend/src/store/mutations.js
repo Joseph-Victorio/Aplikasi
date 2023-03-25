@@ -29,25 +29,25 @@ export default {
 
     state.config = payload
 
-    if(localStorage.getItem('__nextshop_theme')) {
-      let data = JSON.parse(localStorage.getItem('__nextshop_theme'))
+    // if(localStorage.getItem('__nextshop_theme')) {
+    //   let data = JSON.parse(localStorage.getItem('__nextshop_theme'))
 
-      state.config.theme = data.theme
-      state.config.theme_color = data.theme_color
-      state.config.primary_color = data.primary_color
-      state.config.secondary_color = data.secondary_color
-      state.config.accent_color = data.accent_color
-    }else {
-        let themeCfg = {
-          theme: state.config.theme,
-          theme_color: state.config.theme_color,
-          primary_color: state.config.primary_color,
-          secondary_color: state.config.secondary_color,
-          accent_color: state.config.accent_color,
-        }
+    //   state.config.theme = data.theme
+    //   state.config.theme_color = data.theme_color
+    //   state.config.primary_color = data.primary_color
+    //   state.config.secondary_color = data.secondary_color
+    //   state.config.accent_color = data.accent_color
+    // }else {
+    //     let themeCfg = {
+    //       theme: state.config.theme,
+    //       theme_color: state.config.theme_color,
+    //       primary_color: state.config.primary_color,
+    //       secondary_color: state.config.secondary_color,
+    //       accent_color: state.config.accent_color,
+    //     }
 
-        localStorage.setItem('__nextshop_theme', JSON.stringify(themeCfg))
-    }
+    //     localStorage.setItem('__nextshop_theme', JSON.stringify(themeCfg))
+    // }
 
     colors.setBrand('brand', state.config.theme_color);
     colors.setBrand('primary', state.config.primary_color);
@@ -56,6 +56,15 @@ export default {
 
     AddressbarColor.set(state.config.theme_color)
 
+  },
+  SET_CURRENT_THEME: (state) => {
+    console.log('set current theme');
+    colors.setBrand('brand', state.config.theme_color);
+    colors.setBrand('primary', state.config.primary_color);
+    colors.setBrand('secondary', state.config.secondary_color);
+    colors.setBrand('accent', state.config.accent_color);
+
+    AddressbarColor.set(state.config.theme_color)
   },
   SET_HOME_VIEW_MODE: (state, payload) => {
     state.config.home_view_mode = payload

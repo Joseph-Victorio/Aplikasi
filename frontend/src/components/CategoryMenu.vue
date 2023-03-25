@@ -70,18 +70,18 @@ export default {
     }
   },
   methods: {
-    handleShowCategory(id, sub = false) {
+    handleShowCategory(id, subcategory = false) {
       this.closeCategory()
 
       if(id != this.$route.params.id) {
         let param = {
           category_id: id,
-          subcategory: sub,
+          subcategory: subcategory,
           per_page: this.config.catalog_product_limit,
           order_by: this.config.catalog_product_sort,
         }
         this.$store.dispatch('product/productsByCategory', param)
-        this.$router.push({ name: 'ProductCategory', params: { id: id }, query: { sub: sub }})
+        this.$router.push({ name: 'ProductCategory', params: { id: id }, query: { subcategory: subcategory }})
       }
     },
     closeCategory() {

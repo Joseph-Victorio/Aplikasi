@@ -92,7 +92,7 @@ export default {
       category_id: this.$route.params.id,
       per_page: this.config.catalog_product_limit,
       order_by: this.config.catalog_product_sort,
-      subcategory: this.$route.query.sub ? this.$route.query.sub : false
+      subcategory: this.$route.query.subcategory ? this.$route.query.subcategory : false
     }
     if(this.products.data.length) {
 

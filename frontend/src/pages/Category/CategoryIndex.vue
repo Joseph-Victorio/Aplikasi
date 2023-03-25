@@ -31,7 +31,7 @@
             Aksi
           </q-item-section>
         </q-item>
-        <q-expansion-item v-for="cat in categories.data" :key="cat.id" expand-separator group="menu-category">
+        <q-expansion-item v-for="cat in categories.data" :key="cat.id" expand-separator group="menu-category" switch-toggle-side>
         <template v-slot:header>
           <q-item-section avatar>
             <q-img :src="cat.src" ratio="1" class="img-thumbnail img-avatar"/>
@@ -54,23 +54,23 @@
 
           <q-item-section side>
             <div class="row items-center q-gutter-x-sm">
-              <q-btn dense size="md" @click="remove(cat.id)" flat icon="eva-trash-2" />
-              <q-btn dense size="md" :to="{ name: 'CategoryFormEdit', params: { category_id: cat.id }}" flat icon="eva-edit-2" />
+              <q-btn round color="red" dense size="11px" @click="remove(cat.id)" unelevated icon="eva-trash-2" />
+              <q-btn round color="blue" dense size="11px" :to="{ name: 'CategoryFormEdit', params: { category_id: cat.id }}" unelevated icon="eva-edit-2" />
             </div>
           </q-item-section>
         </template>
           <q-list separator class="bg-grey-1">
-            <q-item v-for="item in cat.childs" :key="item.id" class="q-px-lg">
-              <q-item-section side>
-                <q-icon name="radio_button_off" size="17px"/>
+            <q-item v-for="item in cat.childs" :key="item.id" >
+              <q-item-section avatar>
+                <q-icon name="subdirectory_arrow_right" size="19px"/>
               </q-item-section>
               <q-item-section>
                 <q-item-label>{{ item.title }}</q-item-label>
               </q-item-section>
               <q-item-section side>
                 <div class="text-grey-8 q-gutter-x-sm">
-                  <q-btn dense size="md" flat @click="remove(item.id)" icon="eva-trash-2" color="red"/>
-                  <q-btn dense size="md" flat :to="{ name: 'CategoryFormEdit', params: {category_id: item.id }}" icon="eva-edit-2" color="blue"/>
+                  <q-btn unelevated round color="red" dense size="11px" @click="remove(item.id)" icon="eva-trash-2" />
+                  <q-btn unelevated round color="blue" dense size="11px" :to="{ name: 'CategoryFormEdit', params: {category_id: item.id }}" icon="eva-edit-2"/>
                 </div>
               </q-item-section>
             </q-item>

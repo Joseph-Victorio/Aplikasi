@@ -10,6 +10,9 @@ export default {
     session_id() {
       return this.$store.state.session_id
     },
+    config() {
+      return this.$store.state.config
+    }
   },
   methods: {
     pageResize(){
@@ -20,7 +23,11 @@ export default {
     }
   },
   created() {
-    setTimeout(() =>  this.getData(), 200)
+    setTimeout(() =>  this.getData(), 600)
+
+    if(this.config) {
+      this.$store.commit('SET_CURRENT_THEME');
+    }
 
     this.$store.commit('REMOVE_INSTALL_APP')
     
