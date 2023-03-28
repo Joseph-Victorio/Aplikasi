@@ -1,6 +1,6 @@
 <template>
-  <div class="header_elegant" v-if="sliderCount > 0">
-    <div class="header_elegant--inner q-pt-sm q-pb-md q-mb-md" v-if="sliders.ready">
+  <div class="header_elegant" v-if="sliders.ready && sliders.available">
+    <div class="header_elegant--inner q-pt-sm q-pb-md q-mb-md">
       <div class="overflow-hidden">
         <vue-glide :options="glideOptions">
             <vue-glide-slide v-for="(img, index) in sliders.data" :key="index">
@@ -14,11 +14,6 @@
               </div>
             </template>
           </vue-glide>  
-        </div>
-      </div>
-      <div class="header_elegant--inner q-pt-sm q-pb-md q-mb-md" v-else>
-        <div class="q-pa-lg q-pb-xl">
-          <q-skeleton :height="sliderHeight"></q-skeleton>
         </div>
       </div>
   </div>
@@ -41,9 +36,6 @@ export default {
   computed: {
     sliders() {
       return this.$store.state.front.sliders
-    },
-    sliderCount() {
-      return this.$store.getters['front/getSliderCount']
     },
     page_width() {
       return this.$store.state.page_width

@@ -19,15 +19,14 @@
         </div>
       </div>
     </div>
-    <CategorySkeleton v-if="!categories.ready"/>
+    <!-- <CategorySkeleton v-if="!categories.ready"/> -->
   </div>
 </template>
 
 <script>
-import CategorySkeleton from '../../shared-components/CategorySkeleton.vue'
+// import CategorySkeleton from '../../shared-components/CategorySkeleton.vue'
 export default {
   name: 'CategoryCarousel',
-  components: { CategorySkeleton },
   data () {
     return {
       glideOptions: {

@@ -87,7 +87,8 @@ class ProductRepository
             });
 
             if(!$is_subcategory) {
-                $ids = Category::where('category_id', $id)->select('id')->pluck('id');
+                $cids = Category::where('category_id', $id)->select('id')->pluck('id')->toArray();
+                $ids = array_merge($ids, $cids);
             }
     
             $instance  = Product::query();

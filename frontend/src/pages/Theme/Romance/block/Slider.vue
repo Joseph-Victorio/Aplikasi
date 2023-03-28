@@ -1,13 +1,10 @@
 <template>
-  <div class="overflow-hidden header-romance" v-if="sliderCount > 0">
-    <template v-if="sliders.ready">
-      <vue-glide :options="glideOptions">
-          <vue-glide-slide v-for="(img, index) in sliders.data" :key="index">
-            <img alt="Slider" :src="img.src" class="img-slider"/>
-          </vue-glide-slide>
-        </vue-glide> 
-    </template>
-    <q-skeleton v-else :height="sliderHeight"></q-skeleton>
+  <div class="overflow-hidden header-romance" v-if="sliders.ready && sliders.available">
+    <vue-glide :options="glideOptions">
+        <vue-glide-slide v-for="(img, index) in sliders.data" :key="index">
+          <img alt="Slider" :src="img.src" class="img-slider"/>
+        </vue-glide-slide>
+      </vue-glide> 
   </div>
 </template>
 

@@ -12,6 +12,21 @@
             group="cat"
             expand-separator
             >
+              <q-item class="q-px-lg bg-grey-2" 
+              clickable 
+              @click="selectCategory(cat.id)"
+              @input="selectCategory(cat.id)"
+              > 
+                <q-item-section side>
+                  <q-icon 
+                  :name="category_id == cat.id ? 'radio_button_checked' : 'radio_button_unchecked'"
+                  :color="category_id == cat.id ? 'green' : 'grey-8'"
+                  ></q-icon>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ cat.title }} ( Parent )</q-item-label>
+                </q-item-section>
+              </q-item>
               <q-item v-for="child in cat.childs" :key="child.id" class="q-px-lg bg-grey-2" 
               clickable 
               @click="selectCategory(child.id)"

@@ -19,35 +19,41 @@
         </q-toolbar>
       </q-header>
 
-        <Slider />  
+      <template v-if="!loading">
+          <Slider />
 
-        <FeaturedCarousel />
+          <FeaturedCarousel />
 
-        <CategoryCarousel />
+          <CategoryCarousel />
 
-        <div id="product-promo" v-if="product_promo.length" >
-          <ProductPromo :product_promo="product_promo" />
-        </div>
+          <div id="product-promo" v-if="product_promo.length" >
+            <ProductPromo :product_promo="product_promo" />
+          </div>
 
-        <div v-if="banner1" class="banner auto-padding-side block-container">
-          <img :src="banner1.image_url" @click="goToPost(banner1)" alt="banner">
-        </div>
-        
-        <ProductSectionObserver />
+          <div v-if="banner1" class="banner auto-padding-side block-container">
+            <img :src="banner1.image_url" @click="goToPost(banner1)" alt="banner">
+          </div>
+          
+          <ProductSectionObserver />
+          
+          <div v-if="banner2" class="banner auto-padding-side block-container">
+            <img :src="banner2.image_url" @click="goToPost(banner2)" alt="banner">
+          </div>
 
-        <div v-if="banner2" class="banner auto-padding-side block-container">
-          <img :src="banner2.image_url" @click="goToPost(banner2)" alt="banner">
-        </div>
+          <PostBlock />
 
-        <PostBlock />
+          <div v-if="banner3" class="banner auto-padding block-container">
+            <img :src="banner3.image_url" @click="goToPost(banner3)" alt="banner">
+          </div>
 
-        <div v-if="banner3" class="banner auto-padding block-container">
-          <img :src="banner3.image_url" @click="goToPost(banner3)" alt="banner">
-        </div>
+          <InstallApp />
+          
+          <FooterBock />
+        </template>
 
-        <InstallApp />
-
-        <FooterBock />
+        <q-inner-loading :showing="loading" label="Please wait...">
+          <q-spinner-facebook size="50px" color="brand" />
+        </q-inner-loading>
 
   </q-page>
 </template>

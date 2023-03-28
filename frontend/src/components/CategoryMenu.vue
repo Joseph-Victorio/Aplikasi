@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white max-width q-pb-lg" style="min-height:280px">
+  <div class="bg-white max-width q-pb-xl" style="min-height:280px">
     <q-list separator v-if="categories.data.length">
       <q-item>
         <q-item-section side>
@@ -26,7 +26,7 @@
             </q-item-section>
           </template>
 
-          <q-list class="bg-grey-1 q-px-sm">
+          <q-list class="bg-grey-1" separator>
             <q-item clickable @click="handleShowCategory(category.id)">
               <q-item-section avatar>
                 <q-avatar>
@@ -34,7 +34,7 @@
                 </q-avatar>
               </q-item-section>
               <q-item-section>
-                <q-item-label>All Products</q-item-label>
+                <q-item-label>All Categories</q-item-label>
               </q-item-section>
             </q-item>
             <q-item v-for="subcategory in category.childs" :key="subcategory.id" clickable @click="handleShowCategory(subcategory.id, true)">

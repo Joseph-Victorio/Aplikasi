@@ -1,17 +1,12 @@
 <template>
-  <div class="overflow-hidden" v-if="sliderCount > 0">
-    <template v-if="sliders.ready">
-      <vue-glide :options="glideOptions">
-          <vue-glide-slide v-for="(img, index) in sliders.data" :key="index">
-            <div class="slider-padding">
-              <img alt="Slider" :src="img.src" style="border-radius:6px;" class="img-slider"/>
-            </div>
-          </vue-glide-slide>
-        </vue-glide>  
-    </template>
-    <div class="slider-padding" v-else>
-      <q-skeleton :height="sliderHeight"></q-skeleton>
-    </div>
+  <div class="overflow-hidden" v-if="sliders.ready && sliders.available">
+    <vue-glide :options="glideOptions">
+        <vue-glide-slide v-for="(img, index) in sliders.data" :key="index">
+          <div class="slider-padding">
+            <img alt="Slider" :src="img.src" style="border-radius:6px;" class="img-slider"/>
+          </div>
+        </vue-glide-slide>
+      </vue-glide>  
   </div>
 </template>
 <script>
@@ -31,9 +26,6 @@ export default {
   computed: {
     sliders() {
       return this.$store.state.front.sliders
-    },
-    sliderCount() {
-      return this.$store.getters['front/getSliderCount']
     },
     page_width() {
       return this.$store.state.page_width
