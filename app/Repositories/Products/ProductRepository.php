@@ -80,7 +80,7 @@ class ProductRepository
 
         try {
 
-            $ids = [$id];
+            $ids = [intval($id)];
 
             $category = Cache::remember('category-'. $id, now()->addHours(3) , function() use ($id) {
                 return Category::select('id','title', 'slug', 'weight')->where('id', $id)->firstOrFail();

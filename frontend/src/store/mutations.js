@@ -58,7 +58,6 @@ export default {
 
   },
   SET_CURRENT_THEME: (state) => {
-    console.log('set current theme');
     colors.setBrand('brand', state.config.theme_color);
     colors.setBrand('primary', state.config.primary_color);
     colors.setBrand('secondary', state.config.secondary_color);
