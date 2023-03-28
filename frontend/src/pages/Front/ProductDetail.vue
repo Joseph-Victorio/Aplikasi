@@ -153,35 +153,7 @@
                 <q-btn outline color="accent" @click="handleReviewModal" label="Berikan ulasan" class="q-my-xs"></q-btn>
               </div>
               <div class="q-pt-xl">
-                <q-card v-for="(review, index) in AllProductReviews" :key="index" class="q-mb-md box-shadow" bordered>
-                  <q-item class="q-py-md">
-                    <q-item-section avatar top>
-                      <q-avatar icon="eva-person-outline" color="grey-2" text-color="grey-5"></q-avatar>
-                    </q-item-section>
-                    <q-item-section>
-                      <q-item-label class="text-md">{{ review.name }} 
-                        <span v-if="!review.is_approved" class="text-xs text-orange">( Menunggu Moderasi )</span>
-                      </q-item-label>
-                      <div class="text-xs text-grey-6 q-my-xs">{{ review.created }}</div>
-                      <q-item-label>
-                        <q-rating 
-                        data-nosnippet="true"
-                        readonly
-                        v-model="review.rating"
-                        color="accent"
-                        icon="ion-star-outline"
-                        icon-selected="ion-star"
-                        icon-half="ion-star-half"
-                        size="1.1rem"
-                      />
-
-                      </q-item-label>
-                      <q-item-label>
-                        <div class="q-pa-xs text-sm text-grey-8"> {{ review.comment }} </div>
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-card>
+                <review-block :reviews="AllProductReviews" />
               </div>
             <div class="q-my-md row justify-center">
               <q-btn outline no-caps color="primary" :loading="loadMoreLoading" v-if="productReviews.length < product.reviews_count" label="loadmore..." @click="loadReview">
@@ -412,7 +384,12 @@ import BadgeTick from 'components/BadgeTick.vue'
 import PinchScrollZoom from "@coddicat/vue-pinch-scroll-zoom";
 export default {
   name: 'ProductShow',
-  components: { ShoppingCart, BadgeTick, PinchScrollZoom },
+  components: { 
+    ShoppingCart, 
+    BadgeTick, 
+    PinchScrollZoom,
+    'review-block': () => import('./ReviewBlock.vue')
+   },
   data () {
     return {
       scale: 1,
