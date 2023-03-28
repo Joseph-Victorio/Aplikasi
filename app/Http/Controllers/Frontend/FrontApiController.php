@@ -32,11 +32,6 @@ class FrontApiController extends Controller
     }
     public function getInitialData()
     {
-        sleep(2);
-        // $data['slider_count'] = Cache::rememberForever('slider_count', function () {
-        //     return Slider::count();
-        // });
-
         $data['sliders'] = Cache::rememberForever('sliders', function() {
             return Slider::OrderBy('weight', 'asc')->get();
         });
