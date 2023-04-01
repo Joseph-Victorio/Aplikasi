@@ -36,6 +36,7 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
+
     public function childProducts()
     {
         return $this->hasManyThrough(Product::class, Category::class);
@@ -86,6 +87,7 @@ class Category extends Model
     {
         return $this->hasManyThrough(Review::class, Product::class)->avg('rating');
     }
+    
     protected static function booted()
     {
         static::addGlobalScope(new SortWeightOrderedScope);

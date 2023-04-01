@@ -34,7 +34,7 @@
                 </q-avatar>
               </q-item-section>
               <q-item-section>
-                <q-item-label>All Categories</q-item-label>
+                <q-item-label>All ( {{ category.title }} )</q-item-label>
               </q-item-section>
             </q-item>
             <q-item v-for="subcategory in category.childs" :key="subcategory.id" clickable @click="handleShowCategory(subcategory.id, true)">

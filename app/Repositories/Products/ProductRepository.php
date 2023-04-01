@@ -12,7 +12,6 @@ use App\Http\Resources\ProductListCollection;
 
 class ProductRepository
 {
-    
     public function getSingleProduct($slug)
     {
         $product = Cache::remember($slug, now()->addHours(3), function() use ($slug) {
@@ -221,27 +220,27 @@ class ProductRepository
     {
         $defaultPrice = $product->price;
 
-            $pricing = [
-                'default_price' => $defaultPrice,
-                'discount_type' => 'PERCENT',
-                'discount_amount' => 0,
-                'is_discount' => false,
-            ];
+        $pricing = [
+            'default_price' => $defaultPrice,
+            'discount_type' => 'PERCENT',
+            'discount_amount' => 0,
+            'is_discount' => false,
+        ];
+
+        if($product->productPromo) {
+
+            $disc = $product->productPromo;
+
+            $pricing['is_discount'] = true;
+            $pricing['discount_type'] = $disc->discount_type;
+            $pricing['discount_amount'] = $disc->discount_amount;
+        }
+
+        if($product->minPrice) {
+            $pricing['default_price'] = $product->minPrice->price;
+        }
     
-            if($product->productPromo) {
-
-                $disc = $product->productPromo;
-
-                $pricing['is_discount'] = true;
-                $pricing['discount_type'] = $disc->discount_type;
-                $pricing['discount_amount'] = $disc->discount_amount;
-            }
-
-            if($product->minPrice) {
-                $pricing['default_price'] = $product->minPrice->price;
-            }
-        
-            return $pricing;
+        return $pricing;
     }
     
     protected function clearCache()

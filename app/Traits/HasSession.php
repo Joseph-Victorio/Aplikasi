@@ -17,7 +17,6 @@ trait HasSession {
       
     }
 
-    
   }
 
 }

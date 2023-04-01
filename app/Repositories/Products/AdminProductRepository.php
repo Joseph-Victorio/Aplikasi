@@ -347,7 +347,8 @@ class AdminProductRepository
     {
 		return ProductVarian::leftJoin('product_varians as parent', 'product_varians.varian_id', 'parent.id')
 		->select('parent.label as attribute_label', 'parent.value as attribute_value', 'product_varians.label','product_varians.value', 'product_varians.price','product_varians.stock')
-		->where('product_varians.product_id', $productId)->where('product_varians.has_subvarian', 0)
+		->where('product_varians.product_id', $productId)
+        ->where('product_varians.has_subvarian', 0)
 		->orderBy('attribute_value')
 		->orderBy('product_varians.price')
 		->get();

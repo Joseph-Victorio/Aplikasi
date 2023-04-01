@@ -42,7 +42,7 @@
                   <q-item-label>{{ child.title }}</q-item-label>
                 </q-item-section>
               </q-item>
-              <div v-if="!cat.childs.length" class="text-center q-pa-md bg-grey-2">Tidak ada subkategori</div>
+              <!-- <div v-if="!cat.childs.length" class="text-center q-pa-md bg-grey-2">Tidak ada subkategori</div> -->
             </q-expansion-item>
           </q-list>
           <div class="flex justify-end q-pa-md">
