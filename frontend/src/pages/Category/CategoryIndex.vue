@@ -15,7 +15,10 @@
     <div class="">
       <q-list separator>
         <q-item class="item-header">
-          <q-item-section style="width:60px" side>
+          <q-item-section avatar>
+            #
+          </q-item-section>
+          <q-item-section style="width:65px" side>
            Ikon
           </q-item-section>
           <q-item-section>
@@ -61,7 +64,7 @@
         </template>
           <q-list separator class="bg-grey-1">
             <q-item v-for="item in cat.childs" :key="item.id" >
-              <q-item-section avatar>
+              <q-item-section>
                 <q-icon name="subdirectory_arrow_right" size="19px"/>
               </q-item-section>
               <q-item-section>
