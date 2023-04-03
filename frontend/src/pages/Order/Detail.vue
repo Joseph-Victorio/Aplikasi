@@ -8,7 +8,8 @@
         <q-toolbar-title class="text-weight-bold brand">
           <span v-if="invoice" >Invoice {{ invoice.order_ref }}</span>
         </q-toolbar-title>
-        <q-btn-dropdown flat icon="eva-printer-outline">
+        <q-btn icon="print" dense @click="printInvoice" flat></q-btn>
+        <!-- <q-btn-dropdown flat icon="eva-printer-outline">
           <q-list flat class="no-print">
             <q-item clickable @click="printPacking">
               <q-item-section side>
@@ -23,7 +24,7 @@
               <q-item-section>Print Tagihan</q-item-section>
             </q-item>
           </q-list>
-      </q-btn-dropdown>
+      </q-btn-dropdown> -->
       </q-toolbar>
     </q-header>
     <div v-if="invoice" class="no-print">
@@ -177,8 +178,14 @@
       <div class="print-invoice">
         <div class="">
           <div class="bg-white">
-            <div class="q-mb-md flex justify-between item-start">
-                <table class="dense">
+            <div class="text-center">
+              <div class="text-weight-bold q-mb-xs" style="font-size:1.8rem">{{ shop.name }}</div>
+              <div style="font-size:1.1rem">{{ shop.phone }}</div>
+              <div style="font-size:1.1rem">{{ shop.app_url }}</div>
+            </div>
+            <hr />
+            <div class="q-mb-md flex justify-between item-start" style="font-size:1.1rem">
+                <table>
                     <tr>
                       <td align="left">Invocie No</td>
                       <td>:</td>
@@ -194,28 +201,33 @@
                       <td>:</td>
                       <td>{{ invoice.transaction.payment_method.split('_').join(' ')}}</td>
                     </tr>
+                    <tr>
+                      <td align="left">Status</td>
+                      <td>:</td>
+                      <td>{{ invoice.transaction.status }}</td>
+                    </tr>
                 </table>
                 <div v-if="qrData" class="">
                   <img :src="qrData" width="80" height="80"/>
                 </div>
             </div>
             <hr />
-            <div class="flex justify-between items-start">
-              <div class="" style="max-width:45%;">
-                <div class="text-weight-medium q-mb-xs">Ditagihkan Kepada:</div>
-                <div class="text-weight-bold text-md">{{ invoice.customer_name }}</div>
+            <div class="flex justify-between items-start" style="font-size:1.1rem">
+              <div class="">
+                <div class="text-weight-medium q-mb-xs">Pelanggan:</div>
+                <div class="text-weight-bold">{{ invoice.customer_name }}</div>
                 <div>{{ invoice.customer_whatsapp }}</div>
-                <div v-html="invoice.shipping_address"></div> 
+                <div v-html="invoice.shipping_address" style="font-size:1.2rem"></div> 
               </div>
-              <div class="text-right" style="max-width:45%;">
+              <!-- <div class="text-right" style="max-width:45%;">
                 <div class="text-weight-medium q-mb-xs">Dibayarkan Kepada:</div>
-                <div class="text-weight-bold q-mb-xs text-md">{{ shop.name }}</div>
+                <div class="text-weight-bold q-mb-xs">{{ shop.name }}</div>
                 <div class="">{{ shop.phone }}</div>
-                <div class="" v-html="shop.address"></div>
-              </div>
+                <div v-html="shop.address"></div>
+              </div> -->
             </div>
             <hr />
-            <div class="relative q-pt-xs">
+            <div class="relative q-pt-xs" style="font-size:1.1rem">
               <div class="text-weight-bold q-my-xs">Detil Pesanan:</div>
               <table class="table-order-item" v-if="invoice.items">
                 <tr>
@@ -283,23 +295,21 @@
         </div>
       </div>
     </div>
+    
     <div v-if="invoice" :class="{'no-print': isPrintInvoice}">
       <div class="print-packing">
         <div class="bg-white">
+          <div class="text-center">
+              <div class="text-weight-bold q-mb-xs" style="font-size:1rem">{{ shop.name }}</div>
+              <div class="">{{ shop.phone }}</div>
+              <div class="text-xs" v-html="shop.address"></div>
+            </div>
           <div class="flex justify-between q-mb-sm">
-            <div class="" style="width:45%">
+            <div class="">
               <div class="text-weight-medium q-mb-xs text-weight-bold">Tujuan:</div>
-              <div class="text-md">{{ invoice.customer_name }}</div>
+              <div>{{ invoice.customer_name }}</div>
               <div>{{ invoice.customer_whatsapp }}</div>
                <div v-html="invoice.shipping_address"></div> 
-            </div>
-            <div class="text-right" style="width:45%">
-              <div class="text-weight-medium q-mb-xs text-weight-bold">Pengirim:</div>
-              <div class="text-md">{{ shop.name  }}</div>
-              <div>{{ shop.phone  }}</div>
-              <div v-if="shop.address">
-                <div v-html="shop.address"></div>
-              </div>
             </div>
           </div>
           <div >
@@ -520,6 +530,7 @@ export default {
   border: 1px solid;
   padding: 10px;
   margin-left: 0!important;
+  font-size: 1rem;
 }
 
 @media print {

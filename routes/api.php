@@ -74,6 +74,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('user', [UserController::class, 'show']);
     Route::post('user/logout', [UserController::class, 'logout']);
     Route::post('user/update', [UserController::class, 'update']);
+    Route::post('user/addNewAddress', [UserController::class, 'addNewAddress']);
     Route::get('customer/orders', [CustomerController::class, 'getOrders']);
 });
 

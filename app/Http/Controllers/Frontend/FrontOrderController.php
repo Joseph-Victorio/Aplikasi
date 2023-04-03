@@ -157,6 +157,17 @@ class FrontOrderController extends Controller
 
             }
 
+            if($user && $request->is_save_address) {
+                $is_parimary = false;
+                if(!$user->address->count()) {
+                    $is_parimary = true;
+                }
+                $user->address()->create([
+                    'is_primary' => $is_parimary,
+                    'address' => strip_tags($request->customer_address, '<b> <div> <p> <br> <span>')
+                ]);
+            }
+
             $config = Config::select('order_expired_time')->first();
 
             if($request->payment_type == 'BANK_TRANSFER' || $request->payment_type == 'COD') {

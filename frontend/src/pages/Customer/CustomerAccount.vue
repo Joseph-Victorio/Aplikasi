@@ -119,7 +119,11 @@ export default {
     if(!this.orders.data.length) {
       this.$store.dispatch('order/getCustomerOrders')
     }
-    if(!this.user) {
+    this.getCurrentUSer()
+  },
+  methods: {
+    ...mapActions('user', ['getUser', 'updateUser']),
+    getCurrentUSer() {
       Api().get('user').then(response => {
         if(response.status == 200) {
           this.form.name = response.data.results.name
@@ -128,14 +132,7 @@ export default {
           this.$store.commit('user/SET_USER', response.data.results)
         }
       })
-    } else {
-      this.form.name = this.user.name
-      this.form.email = this.user.email
-      this.form.phone = this.user.phone
-    }
-  },
-  methods: {
-    ...mapActions('user', ['getUser', 'updateUser']),
+    },
     submit() {
       this.$store.commit('SET_LOADING', true)
       this.updateUser(this.form)

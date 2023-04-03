@@ -94,12 +94,12 @@
             </q-item-section>
             <q-item-section side top>
               <div class="q-gutter-xs column order-btn-group">
-                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" label="Detail" color="teal" :to="{name: 'AdminOrderShow', params: {order_ref: order.order_ref}}"></q-btn>
+                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" label="Detail" color="purple" :to="{name: 'AdminOrderShow', params: {order_ref: order.order_ref}}"></q-btn>
 
-                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" @click="handleFollowUp(order)" :label="messageButtonLabel(order.order_status)" color="pink"></q-btn>
+                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" @click="handleFollowUp(order)" :label="messageButtonLabel(order.order_status)" color="amber-9"></q-btn>
 
 
-                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canInputResi(order)" label="Input Resi" color="amber-8" @click="handleInputResi(order)"></q-btn>
+                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canInputResi(order)" label="Input Resi" color="teal" @click="handleInputResi(order)"></q-btn>
 
                   <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canShip(order)" :label="order.shipping_courier_name == 'COD' ? 'Antar COD' : 'Kirim'" color="blue" @click="handleKirim(order)"></q-btn>
 
@@ -274,18 +274,21 @@ export default {
       })
     },
     canShip(order) {
-      if(order.shipping_courier_name == 'COD') {
-        if(order.order_status == 'TOSHIP' || order.order_status == 'PENDING') {
-          return true
-        }
-        return false
-      } else{
-        if(order.order_status == 'TOSHIP' && order.shipping_courier_code) {
-          return true
-        }else {
-          return false
-        }
+
+      if(order.transaction.payment_type == 'COD' && order.order_status == 'PENDING') {
+        return true
       }
+
+      if(order.shipping_courier_name == 'COD' && order.order_status == 'TOSHIP') {
+        return true
+      } 
+
+      if(order.order_status == 'TOSHIP' && order.shipping_courier_code) {
+        return true
+      } 
+      
+      return false
+
     },
     canComplete(order) {
       return order.order_status == 'SHIPPING' ? true : false
@@ -319,14 +322,10 @@ export default {
       this.setFilter('ALL')
     },
     canConfirm(order) {
-      if(order.shipping_courier_name != 'COD') {
-        if(order.order_status == 'PENDING') return true
-
-        return false
-      } else {
-        return false
-
+      if(order.order_status == 'PENDING' && order.transaction.payment_type != 'COD' && order.transaction.status == 'UNPAID') {
+        return true
       }
+      return false
     },
     canInputResi(order) {
       if(order.shipping_courier_name == 'COD') {

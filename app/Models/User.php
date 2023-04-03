@@ -45,6 +45,12 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_primary' => 'boolean'
     ];
+
+    public function address()
+    {
+        return $this->hasMany(UserAddress::class);
+    }
 
 }

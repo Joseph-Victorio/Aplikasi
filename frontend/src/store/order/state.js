@@ -38,7 +38,9 @@ export default function () {
       payment_code: '',
       payment_fee: 0,
       service_fee: 0,
-      unique_code: 0
+      unique_code: 0,
+      is_save_address: false,
+      customer_address_selected: null
     },
     orderItems: [],
   }

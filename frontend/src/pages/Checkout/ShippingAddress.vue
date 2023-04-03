@@ -136,7 +136,7 @@
 
     </div>
 
-    <div id="customer" class="">
+    <div id="customer" class="q-pb-lg">
       <div class="text-md q-pb-xs text-weight-medium">Detail Penerima</div>
         <div class="q-gutter-y-md">
         <q-input
@@ -175,16 +175,29 @@
         </q-input>
         <div>
           <q-input
-            class="preline"
-            label="Alamat Lengkap"
-            type="textarea"
-            filled
-            square
-            stack-label
-            :error="errors.customer_address"
-            v-model="customer_address"
+          class="preline"
+          label="Alamat Lengkap"
+          type="textarea"
+          filled
+          rows="4"
+          square
+          stack-label
+          :error="errors.customer_address"
+          v-model="customer_address"
+          v-if="!customer_address_selected"
           >
-          </q-input>
+        </q-input>
+        <div class="bg-grey-2 q-pa-sm relative" v-else>
+          <div class="text-xs text-grey-7">Alamat Lengkap</div>
+          <p class="preline">{{ customer_address }}</p>
+          <q-btn icon="edit" class="absolute-top-right" color="primary" dense size="12px" unelevated @click="removeSelectedAddress"></q-btn>
+        </div>
+        <div class="flex justify-between items-center q-mt-sm">
+          <div>
+            <q-btn v-if="user && user.address.length" no-caps label="Pilih Alamat" size="sm" color="primary" unelevated @click="addressModal = true"></q-btn>
+          </div>
+          <q-checkbox v-if="user && !customer_address_selected" v-model="is_save_address" label="Simpan Alamat" size="sm"></q-checkbox>
+        </div>
         </div>
         </div>
     </div>
@@ -199,6 +212,57 @@
             <q-btn size="12px" outline color="primary" label="Tidak" @click="closeModalAddress"></q-btn>
             <q-btn size="12px" unelevated color="primary" label="Ya Gunakan" @click="setDataUser"></q-btn>
           </q-card-actions>
+        </q-card>
+      </q-dialog>
+      <q-dialog v-model="addressModal">
+        <q-card>
+          <q-card-section v-if="user && user.address.length">
+            <div class="card-title flex justify-between">
+              <div>Pilih Alamat</div>
+              <div class="q-gutter-x-sm">
+                <q-btn label="Tambah" flat dense @click="handleAddAddress"></q-btn>
+                <q-btn label="Close" flat dense v-close-popup></q-btn>
+              </div>
+            </div>
+            <q-list>
+              <q-item v-for="item in user.address" :key="item.id" clickable @click="selectAddress(item)">
+                <q-item-section avatar>
+                  <q-icon 
+                  :name="customer_address_selected  == item.id ? 'eva-checkmark-square-2-outline' : 'eva-square-outline'"
+                  :color="customer_address_selected  == item.id ? 'green' : 'grey-8'"
+                  size="md"
+                  ></q-icon>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="row items-center q-gutter-x-sm">
+                    <div>{{ item.label }} </div>
+                    <q-badge color="green" v-if="item.is_primary" label="Utama"></q-badge>
+                  </q-item-label>
+                  <q-item-label caption class="q-pt-xs">{{ item.address }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+      <q-dialog v-model="formAddressModal" persistent>
+        <q-card class="card-lg">
+          <q-card-section v-if="user && user.address.length">
+            <div class="card-title flex justify-between">
+              <div>Tambah Alamat</div>
+              <div class="q-gutter-x-sm">
+                <q-btn icon="close" flat dense v-close-popup></q-btn>
+              </div>
+            </div>
+            <form @submit.prevent="submitNewAddress" class="q-gutter-y-md">
+              <q-input required label="Label" v-model="formAddress.label" placeholder="eg: Kantor"></q-input>
+              <q-input required type="textarea" v-model="formAddress.address" label="Alamat Lengkap"></q-input>
+              <q-checkbox label="Gunakan sebagai alamat utama" v-model="formAddress.is_primary"></q-checkbox>
+              <div class="card-action">
+                <q-btn label="Simpan Alamat" class="full-width" color="primary" type="submit"></q-btn>
+              </div>
+            </form>
+          </q-card-section>
         </q-card>
       </q-dialog>
   </div>
@@ -216,6 +280,8 @@ export default {
   },
   data() {
     return {
+      formAddressModal: false,
+      addressModal: false,
       costNotFound: false,
       readyAddressBlock: false,
       useDataUserPrompt: false,
@@ -244,7 +310,12 @@ export default {
       searchReady:false,
       subdistrictOptionsData: [],
       codSelected: '',
-      currentSelelectedCourier: null
+      currentSelelectedCourier: null,
+      formAddress: {
+        label: '',
+        is_primary: false,
+        address: ''
+      }
     }
   },
   watch: {
@@ -267,12 +338,28 @@ export default {
     }
   },
   computed: {
+    is_save_address: {
+      set: function(val) {
+        this.commitFormOrder('is_save_address', val)
+      },
+      get: function() {
+        return this.$store.state.order.formOrder.is_save_address
+      }
+    },
     customer_address: {
       set: function(val) {
         this.commitFormOrder('customer_address', val)
       },
       get: function() {
         return this.$store.state.order.formOrder.customer_address
+      }
+    },
+    customer_address_selected: {
+      set: function(val) {
+        this.commitFormOrder('customer_address_selected', val)
+      },
+      get: function() {
+        return this.$store.state.order.formOrder.customer_address_selected
       }
     },
     customer_phone: {
@@ -406,7 +493,14 @@ export default {
       this.customer_name = this.user.name
       this.customer_email = this.user.email
       this.customer_phone = this.user.phone ? this.user.phone : ''
+
+      if(this.user.address.length) {
+        this.selectPrimaryAddress()
+      }else {
+        this.commitFormOrder('is_save_address', true)
+      }
     }
+
     if(localStorage.getItem('_nex_user_data')) {
       if(!this.customer_name || !this.customer_phone) {
         this.useDataUserPrompt = true
@@ -416,8 +510,44 @@ export default {
     if(this.config && !this.config.can_shipping) {
       this.shipping_method = 'COD'
     }
+
   },
   methods: {
+    submitNewAddress() {
+      Api().post('user/addNewAddress', this.formAddress).then(() => {
+        this.$store.dispatch('user/getUser')
+
+        setTimeout(() => {
+          this.addressModal = true
+        }, 500)
+      })
+      this.formAddressModal = false
+    },
+    handleAddAddress() {
+      this.formAddress.label = ''
+      this.formAddress.is_primary = false
+      this.formAddress.address = ''
+
+      this.addressModal = false
+      this.formAddressModal = true
+    },
+    removeSelectedAddress() {
+      this.customer_address_selected = null
+      this.customer_address = ''
+    },
+    selectPrimaryAddress() {
+      let prim = this.user.address.find(e => e.is_primary == true)
+
+      if(prim == undefined) {
+        prim = this.user.address[0]
+      }
+      this.selectAddress(prim)
+    },  
+    selectAddress(item) {
+      this.customer_address_selected = item.id
+      this.customer_address = item.address
+      this.is_save_address = false
+    },
     clearShipping() {
       this.commitFormOrder('shipping_courier_name', '')
       this.commitFormOrder('shipping_courier_service', '')

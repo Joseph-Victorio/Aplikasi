@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -13,7 +14,7 @@ class UserController extends Controller
     {
         return response([
             'success' => true,
-            'results' => $request->user()
+            'results' => $request->user()->load('address')
         ], 200);
     }
     public function register(Request $request)
@@ -70,7 +71,7 @@ class UserController extends Controller
         return response([
             'success' => true,
             'token' => $token,
-            'results' => $user
+            'results' => $user->load('address')
         ], 200);
     }
 
@@ -104,7 +105,7 @@ class UserController extends Controller
 
         return response([
             'success' => true,
-            'results' => $user
+            'results' => $user->load('address')
         ], 200);
 
 
@@ -145,6 +146,26 @@ class UserController extends Controller
         $user->delete();
 
         return response([ 'success' => true ]);
+
+    }
+    public function addNewAddress(Request $request)
+    {
+        $request->validate([
+            'label' => 'required',
+            'address' => 'required',
+        ]);
+
+        $user = $request->user();
+
+       if($request->boolean('is_primary')) {
+            UserAddress::where('user_id', $user->id)->update(['is_primary' => false]);
+       }
+
+       $user->address()->create([
+        'label' => $request->label,
+        'address' => $request->address,
+        'is_primary' => $request->boolean('is_primary')
+       ]);
 
     }
 }
