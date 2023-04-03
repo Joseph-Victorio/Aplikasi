@@ -16,5 +16,7 @@ class UserAddress extends Model
         'address',
     ];
 
+    protected $casts = ['is_primary' => 'boolean'];
+
     public $timestamps = false;
 }

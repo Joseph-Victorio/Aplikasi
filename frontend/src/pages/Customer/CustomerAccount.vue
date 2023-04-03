@@ -1,45 +1,107 @@
 <template>
   <q-page class="q-pb-xl">
-    <q-header :class="getHeaderColorBrand">
+    <q-header :class="getHeaderColorBrand" class="q-pa-sm">
       <q-toolbar>
         <q-toolbar-title>
-           Akun
+         <q-input outlined placeholder="Cari produk" dense bg-color="white" v-model="search" @keyup.enter="searchNow" debouce="1000">
+          <template v-slot:prepend>
+              <q-icon
+                name="eva-search"
+                class="cursor-pointer"
+                @click="searchNow"
+              />
+            </template>
+        </q-input>
         </q-toolbar-title> 
-        <q-btn to="/"
-        flat dense padding="xs"
-        label="Beranda" no-caps
-        icon-right="eva-arrow-forward" />
       </q-toolbar>
     </q-header>
     <div class="header_banner">
       <div class="header_banner--inner large">
-        <q-card class="bg-brand" flat dark square>
-          <q-list>
-            <q-item>
-              <q-item-section avatar>
-                <q-avatar color="white" text-color="brand" size="70px">{{ initialName }}</q-avatar>
-              </q-item-section>
-              <q-item-section>
-                <q-item-label class="text-h5 text-weight-bold">{{ user.name }}</q-item-label>
-                <q-item-label class="text-grey-1">{{ user.phone }}</q-item-label>
-                <q-item-label class="text-grey-4">{{ user.email }}</q-item-label>
-              </q-item-section>
-              <q-item-section side top >
-                <div class="column q-gutter-y-sm">
-                  <q-btn icon="eva-edit-2" round size="11px" color="grey-4" text-color="dark" :to="{ name: 'CustomerAccountEdit' }">
-                    <q-tooltip content-class="bg-indigo" :offset="[10, 10]">Edit Akun</q-tooltip>
+        <div class="bg-brand flex justify-center text-white">
+          <div class="row q-gutter-sm q-mt-md q-mb-md" style="max-width:530px;">
+             <div class="text-center">
+               <q-btn size="19px" color="white" icon="eva-home-outline" outline padding="sm" to="/">
+               </q-btn>
+               <q-item-label class="color-grey-4 text-xs q-mt-xs">Beranda</q-item-label>
+             </div>
+             
+             <div class="text-center">
+               <q-btn size="19px" color="white" icon="receipt" outline padding="sm" :to="{ name: 'CustomerOrder' }">
+               </q-btn>
+               <q-item-label class="color-grey-4 text-xs q-mt-xs">Order</q-item-label>
+             </div>
+             <div class="text-center">
+               <q-btn size="19px" color="white" icon="eva-shopping-bag" outline padding="sm" :to="{ name: 'CustomerAddress'}">
+               </q-btn>
+               <q-item-label class="color-grey-4 text-xs q-mt-xs">Alamat</q-item-label>
+             </div>
+             <div class="text-center">
+               <q-btn size="19px" color="white" icon="manage_accounts" outline padding="sm" :to="{ name: 'CustomerAccountEdit' }">
+               </q-btn>
+               <q-item-label class="color-grey-4 text-xs q-mt-xs">Akun</q-item-label>
+             </div>
+             
+             <q-space />
+             <div class="text-center">
+               <q-btn size="19px" color="white" icon="logout" outline padding="sm" @click="logout">
+               </q-btn>
+               <q-item-label class="color-grey-4 text-xs q-mt-xs">Logout</q-item-label>
+             </div>
+           </div>
+        </div>
+      </div>
+      <div class="relative flex justify-center">
+        <div class="user-point">
+          <q-card class="section">
+            <q-card-section>
+              
+              <div class="flex justify-between items-center q-py-sm">
+                <q-item>
+                  <q-item-section avatar>
+                    <q-avatar color="brand" text-color="white" size="70px">{{ initialName }}</q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-h5 text-weight-bold">{{ user.name }}</q-item-label>
+                    <q-item-label class="text-grey-7">{{ user.email }}</q-item-label>
+                    <q-item-label class="text-grey-7">{{ user.phone }}</q-item-label>
+                    <q-item-label class="text-grey-6 text-xs">Active from {{ dateParse(user.created_at, true) }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </div>
+              <!-- <div class="row q-gutter-sm q-mt-sm">
+                <div class="text-center">
+                  <q-btn size="18px" color="primary" icon="receipt" outline padding="sm" :to="{ name: 'CustomerOrder' }">
                   </q-btn>
-                  <q-btn icon="eva-log-out" round size="11px" color="grey-4" text-color="dark" @click="logout">
-                    <q-tooltip content-class="bg-amber text-black" :offset="[10, 10]">Keluar</q-tooltip>
-                  </q-btn>
+                  <q-item-label caption class="q-mt-xs">Order</q-item-label>
                 </div>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-card>
+                <div class="text-center">
+                  <q-btn size="18px" color="primary" icon="assignment_ind" outline padding="sm" :to="{ name: 'CustomerOrder'}">
+                  </q-btn>
+                  <q-item-label caption class="q-mt-xs">Referal</q-item-label>
+                </div>
+                <div class="text-center">
+                  <q-btn size="18px" color="primary" icon="account_balance_wallet" outline padding="sm" :to="{ name: 'CustomerOrder' }">
+                  </q-btn>
+                  <q-item-label caption class="q-mt-xs">Point</q-item-label>
+                </div>
+                <div class="text-center">
+                  <q-btn size="18px" color="primary" icon="manage_accounts" outline padding="sm" :to="{ name: 'CustomerAccountEdit' }">
+                  </q-btn>
+                  <q-item-label caption class="q-mt-xs">Akun</q-item-label>
+                </div>
+                <q-space />
+                <div class="text-center">
+                  <q-btn size="18px" color="primary" icon="logout" outline padding="sm" @click="logout">
+                  </q-btn>
+                  <q-item-label caption class="q-mt-xs">Logout</q-item-label>
+                </div>
+              </div> -->
+            </q-card-section>
+          </q-card>
+        </div>
       </div>
       </div>
-      <div class="q-mt-lg q-pa-sm">
+      <div class="q-mt-sm q-pa-sm">
         <div class="flex justify-between q-pa-sm items-center">
           <div class="text-weight-bold text-md">Transaksi Terbaru</div>
           <q-btn color="primary" label="Selengkapnya" flat dense no-caps icon-right="eva-chevron-right" :to="{ name: 'CustomerOrder' }"></q-btn>
@@ -83,6 +145,7 @@ import { Api } from 'boot/axios'
 export default {
   data () {
     return {
+      search: '',
       isPwd: true,
       isPwd1: true,
       changePassword: false,
@@ -132,6 +195,10 @@ export default {
           this.$store.commit('user/SET_USER', response.data.results)
         }
       })
+    },
+    searchNow() {
+      if(!this.search || this.search == '') return
+        this.$router.push({name: 'ProductSearch', query: {q: this.search }})
     },
     submit() {
       this.$store.commit('SET_LOADING', true)

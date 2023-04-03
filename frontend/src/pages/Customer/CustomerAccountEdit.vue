@@ -60,7 +60,7 @@
           </template>
         </q-input>
         </template>
-        <q-btn @click="btnChangePassword" class="q-mt-md" dense color="primary" no-caps flat :label="changePassword? 'Batal Ganti Password' : 'Ganti Password'"></q-btn>
+        <q-btn v-if="!changePassword" @click="btnChangePassword" class="q-mt-md" dense color="primary" no-caps flat label="Ganti Password"></q-btn>
       </div>
       <q-footer class="bg-white q-pa-md">
         <q-btn :loading="loading" class="full-width" @click="submit" color="primary" label="Simpan Data">

@@ -25,6 +25,7 @@ use App\Http\Controllers\Frontend\FrontApiController;
 use App\Http\Controllers\Frontend\ShippingController;
 use App\Http\Controllers\Frontend\FrontOrderController;
 use App\Http\Controllers\Frontend\FrontProductController;
+use App\Http\Controllers\UserAddressController;
 
 Route::middleware(['auth:sanctum', 'auth.admin'])->group(function() {
     Route::get('users', [UserController::class, 'index']);
@@ -74,8 +75,9 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('user', [UserController::class, 'show']);
     Route::post('user/logout', [UserController::class, 'logout']);
     Route::post('user/update', [UserController::class, 'update']);
-    Route::post('user/addNewAddress', [UserController::class, 'addNewAddress']);
     Route::get('customer/orders', [CustomerController::class, 'getOrders']);
+
+    Route::apiResource('user-address', UserAddressController::class)->except('show');
 });
 
 Route::middleware(['throttle:auth'])->group(function() {

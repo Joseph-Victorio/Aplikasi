@@ -514,7 +514,7 @@ export default {
   },
   methods: {
     submitNewAddress() {
-      Api().post('user/addNewAddress', this.formAddress).then(() => {
+      Api().post('user-address', this.formAddress).then(() => {
         this.$store.dispatch('user/getUser')
 
         setTimeout(() => {

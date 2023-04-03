@@ -68,6 +68,7 @@ const routes = [
       { path: '', name: 'CustomerAccount', component: () => import('src/pages/Customer/CustomerAccount.vue') },
       { path: 'edit', name: 'CustomerAccountEdit', component: () => import('src/pages/Customer/CustomerAccountEdit.vue') },
       { path: 'order', name: 'CustomerOrder', component: () => import('src/pages/Customer/CustomerOrder.vue') },
+      { path: 'address', name: 'CustomerAddress', component: () => import('src/pages/Customer/CustomerAddress.vue') },
     ]
   },
   {

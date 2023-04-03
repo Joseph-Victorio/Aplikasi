@@ -67,5 +67,26 @@ Vue.mixin({
       
       this.$store.commit('SET_SESSION_ID', result);
     },
+    dateParse(date, simple = false) {
+      if(!date) return ''
+      const d = new Date(date);
+
+      let options = {
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric',
+        // second: 'numeric',
+        // timeZoneName: 'short',
+      };
+
+      if(!simple) {
+        options.hour = 'numeric';
+        options.minute = 'numeric';
+      }
+
+      return new Intl.DateTimeFormat('id', options).format(d);
+
+      return d.toLocaleString()
+    },
   },
 })
