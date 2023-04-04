@@ -87,9 +87,9 @@ class OrderController extends Controller
         $transaction->paid_at = now();
         $transaction->save();
 
-        foreach($order->items as $item) {
-           $this->setStock($item->sku, $item->quantity, true);
-        }
+        // foreach($order->items as $item) {
+        //    $this->setStock($item->sku, $item->quantity, true);
+        // }
 
         return ApiResponse::success();
     }

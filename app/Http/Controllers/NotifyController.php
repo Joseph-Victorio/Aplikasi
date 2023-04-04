@@ -33,11 +33,13 @@ class NotifyController extends Controller
             'mailed_user' => 'Not Defined',
         ];
 
-        if(config('app.env') != 'production') {
-            return response()->json(['success' => false, 'message' => 'Development mode']);
-        };
-
+        
         try {
+
+            if(config('app.env') != 'production') {
+                
+                throw new Exception('Development mode');
+            };
 
             $order = Order::with('transaction')->find($request->order_id);
             
