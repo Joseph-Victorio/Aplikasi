@@ -91,9 +91,34 @@ class FrontApiController extends Controller
         return ApiResponse::success($data);
     }
 
-    public function getCategories()
+    public function getCategories(Request $request)
     {
-        $data = Category::withChilds()->get();
+        $data = [];
+
+        if($request->with) {
+            if($request->with == 'parent') {
+                $data = Category::withParent()->get();
+            }
+            if($request->with == 'child') {
+                $data = Category::withChilds()->get();
+            }
+        }else if($request->only){
+            if($request->only == 'parent') {
+                $data = Category::onlyParents()->get();
+            }
+            if($request->only == 'child') {
+                $data = Category::onlyChilds()->get();
+            }
+        }else {
+            
+            $data = Category::all();
+        }
+            
+        return ApiResponse::success($data);
+    }
+    public function getAllCategories()
+    {
+        $data = Category::all();
             
         return ApiResponse::success($data);
     }

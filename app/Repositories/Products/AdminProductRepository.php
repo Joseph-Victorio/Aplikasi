@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Asset;
 use App\Models\Promo;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Support\Str;
 use App\Models\ProductPromo;
 use App\Models\ProductVarian;
@@ -362,10 +363,18 @@ class AdminProductRepository
 			->paginate($limit);
     }
 
-	public function findProductWithoutPromo($key)
+	public function findProductWithoutPromo($request)
     {
+        
 		return Product::doesntHave('promoRelations')
-			->where('title', 'like', '%'. $key . '%')
+            ->when($request->category_id, function($q) use ($request) {
+                $ids = Category::where('category_id', $request->category_id)->select('id')->pluck('id')->toArray();
+                array_push($ids, $request->category_id);
+                $q->whereIn('category_id', $ids);
+            })
+            ->when($request->search, function($q) use ($request) {
+                $q->where('title', 'like', '%'. $request->search . '%');
+            })
 			->get();
     }
 

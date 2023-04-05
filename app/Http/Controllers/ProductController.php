@@ -120,11 +120,11 @@ class ProductController extends Controller
         }
 
     }
-    public function findProductWithoutPromo($key)
+    public function findProductWithoutPromo(Request $request)
     {
         try {
             
-            $data = $this->productRepository->findProductWithoutPromo($key);
+            $data = $this->productRepository->findProductWithoutPromo($request);
 
             return ApiResponse::success($data);
 

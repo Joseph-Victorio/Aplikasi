@@ -89,31 +89,42 @@
       <q-card class="max-width">
         <div class="sticky-top bg-white">
           <div class="flex justify-between items-center card-heading">
-            <div class=""> Produk Promo</div>
+            <div class="">Pilih Produk</div>
             <q-btn icon="close" v-close-popup round padding="0px" flat></q-btn>
           </div>
-          <div class="q-px-md q-py-sm box-shadow">
-            <q-input outlined placeholder="Cari" dense v-model="search" :debounce="700" @input="findProduct" @keyup.enter="findProduct" type="search" clearable></q-input>
+          <div class="q-px-md q-py-sm box-shadow q-gutter-x-sm row items-center">
+            <q-input 
+            class="col"
+            outlined 
+            placeholder="Find by name" 
+            dense 
+            v-model="formFilter.search" 
+            type="search"
+            clearable
+            @clear="() => formFilter.search = ''"
+            ></q-input>
+            <q-select outlined dense class="col" :options="[{ label: 'All', value: '' }, ...categories]" map-options emit-value label="Filter Bby Category" v-model="formFilter.category_id"></q-select>
+            <q-btn color="primary" unelevated @click="findProduct">Filter</q-btn>
           </div>
         </div>
           <q-card-section class="q-gutter-y-sm" style="min-height:250px;overflow-y:auto;">
             <div v-if="productSearch.length">
               <q-list separator>
                 <q-item v-for="product in productSearch" :key="product.id" clickable @click="syncProduct(product)">
-                  <q-item-section side>
+                  <!-- <q-item-section side>
                     <q-btn 
-                    icon="check_box" 
+                    icon="check_box_outline_blank" 
                     padding="0px"
                     unelevated 
                     size="12px"
                     ></q-btn>
-                  </q-item-section>
+                  </q-item-section> -->
                   <q-item-section>{{ product.title }}</q-item-section>
                 </q-item>
               </q-list>
             </div>
             <q-inner-loading :showing="isLoading"></q-inner-loading>
-            <div v-if="!isLoading && !productSearch.length" class="text-center q-pt-lg">Tidak ada data ditemukan</div>
+            <div v-if="notFound" class="text-center q-pt-lg">Tidak ada data ditemukan</div>
           </q-card-section>
       </q-card>
     </q-dialog>
@@ -158,8 +169,12 @@ export default {
       isLoading: false,
       syncLoading: false,
       searchModal: false,
-      search: '',
+      formFilter: {
+        search: '',
+        category_id: ''
+      },
       productSearch: [],
+      categories: [],
       products: [],
       form: {
         promo_id: null,
@@ -171,7 +186,8 @@ export default {
         { value: 'PERCENT', label: 'Persen'},
         { value: 'AMOUNT', label: 'Nominal'},
       ],
-      removeId: null
+      removeId: null,
+      notFound: false
     }
   },
   methods: {
@@ -192,12 +208,16 @@ export default {
       
     },
     findProduct() {
-      if(!this.search) return
       this.isLoading = true
+      this.notFound = false
       this.productSearch = []
-      Api().get('promo/find-product/' + this.search).then(response => {
+      Api().get('promo/find-product?' + new URLSearchParams(this.formFilter).toString()).then(response => {
         if(response.status == 200 && response.data.success) {
           this.productSearch = response.data.results
+
+          if(!this.productSearch.length) {
+            this.notFound = true
+          }
         }
       })
       .finally(() => {
@@ -214,10 +234,10 @@ export default {
       this.productPromoModal = true
     },
     handleAddProductPromo() {
-      this.search = ''
+      this.formFilter.search = ''
+      this.formFilter.category_id = ''
       this.searchModal = true
       this.productSearch = []
-      // this.findProduct()
     },
     syncProduct(item) {
       this.productSelected = item
@@ -256,10 +276,16 @@ export default {
     removeProductPromo() {
       Api().post('promo/remove', { promo_id: this.promo.id, product_id: this.removeId })
       .then(() => this.getProductPromo())
+    },
+    getAllCategories() {
+      this.$store.dispatch('front/getCategories', { only: 'parent' }).then(res => {
+        this.categories = res.data.results.map(el => ({ label: el.title, value: el.id }))
+      })
     }
   },
   mounted() {
     this.getPromoDetail()
+    this.getAllCategories()
   }
 }
 </script>

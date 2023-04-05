@@ -58,7 +58,7 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->group(function() {
     Route::post('promo/remove', [PromoController::class, 'removeProductPromo']);
     Route::post('promo/submit-product', [ProductController::class, 'submitProductPromo']);
     Route::get('promo/products/{promoId}', [ProductController::class, 'getProductPromo']);
-    Route::get('promo/find-product/{key}', [ProductController::class, 'findProductWithoutPromo']);
+    Route::get('promo/find-product', [ProductController::class, 'findProductWithoutPromo']);
     Route::apiResource('promos', PromoController::class);
     Route::get('telegram-test', [NotifyController::class, 'testingTelegram']);
     Route::get('mail-test', [NotifyController::class, 'testingEmail']);

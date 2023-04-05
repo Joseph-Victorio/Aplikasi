@@ -91,7 +91,7 @@ export default {
   mounted() {
     if(!this.categories.data.length) {
       this.loading = true
-      this.$store.dispatch('front/getCategories').then(res => {
+      this.$store.dispatch('front/getCategories', { with: 'child' }).then(res => {
         this.$store.commit('front/SET_CATEGORIES', res.data.results)
       }).finally(() => this.loading = false)
     }
