@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="overflow-hidden auto-padding-side block-container q-py-md" v-if="blocks.ready && blocks.featured.length">
+    <div class="overflow-hidden auto-padding-side block-container q-py-md" v-if="blocks.featured.length">
       <vue-glide :options="carouselOptions">
         <vue-glide-slide v-for="feature in blocks.featured" :key="feature.id">
           <div class="column col items-center text-center q-gutter-y-xs featured cursor-pointer" @click="showPost(feature)">
@@ -10,13 +10,6 @@
           </div>
         </vue-glide-slide>
       </vue-glide>
-    </div>
-    <div class="row justify-evenly q-py-xl" v-if="!blocks.ready">
-      <div class="column justify-center items-center" v-for="a in 3" :key="a">
-        <q-skeleton type="circle" :width="theCircle" :height="theCircle"/>
-        <q-skeleton type="text" width="100%" />
-        <q-skeleton type="text" width="50%" />
-      </div>
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-grey-1 elegant">
+  <q-page class="bg-grey-1 elegant main-page">
      <q-header reveal class="bg-brand text-white" :class="{ 'auto-padding-side': $q.platform.is.desktop}">
         <q-toolbar class="q-py-md">
           <img v-if="shop" class="logo" :src="shop.logo? shop.logo : '/icon/icon-192x192.png'" alt="Logo"/>

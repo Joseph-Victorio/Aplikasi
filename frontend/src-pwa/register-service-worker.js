@@ -1,5 +1,5 @@
 import { register } from 'register-service-worker'
-import { Dialog } from 'quasar'
+import { Dialog, Notify } from 'quasar'
 
 // The ready(), registered(), cached(), updatefound() and updated()
 // events passes a ServiceWorkerRegistration instance in their arguments.
@@ -43,6 +43,10 @@ register(process.env.SERVICE_WORKER_FILE, {
 
   offline () {
     console.log('No internet connection found. App is running in offline mode.')
+
+    Notify.create({
+      message: 'No internet connection found. App is running in offline mode.'
+    })
   },
 
   error (/* err */) {

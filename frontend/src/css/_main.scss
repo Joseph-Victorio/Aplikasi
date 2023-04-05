@@ -8,12 +8,17 @@ $default   : #0598c0;
   --color-grey: rgb(214, 214, 214);
   --q-color-brand: #0082ad;
 }
-
+.main-page {
+  display: flex;
+  flex-direction: column;
+}
 .text-brand {
   color: #0082ad;
   color: var(--q-color-brand);
 }
-
+.footer {
+  margin-top: auto;
+}
 .bg-brand {
   background-color: #0082ad;
   background-color: var(--q-color-brand);

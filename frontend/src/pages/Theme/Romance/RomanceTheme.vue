@@ -1,5 +1,5 @@
 <template>
-  <q-page class="romance bg-light">
+  <q-page class="romance bg-light main-page">
     <q-header reveal :reveal-offset="10" class="bg-white box-shadow" :class="{ 'auto-padding-side': $q.platform.is.desktop}">
         <q-toolbar class="q-py-sm">
           <img v-if="shop" class="logo" :src="shop.logo? shop.logo : '/icon/icon-192x192.png'" alt="Logo" />
