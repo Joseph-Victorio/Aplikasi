@@ -111,12 +111,9 @@ import { Api } from 'boot/axios'
         var minutes = Math.floor((distance % 3600000) / 60000);
         var seconds = Math.floor((distance % 60000) / 1000);
 
-        console.log(distance);
-        
         if (distance < 1) {
           clearInterval(this.interval);
           this.setTimer(0, 0, 0, 0);
-          console.log(distance);
            this.$store.dispatch('getInitialData', true)
           } else {
             

@@ -125,7 +125,6 @@ export default {
       })
     },
     handleEditData(item) {
-      console.log(item);
       this.clearForm()
       this.formAddress._method = 'PUT'
       this.formAddress.id = item.id

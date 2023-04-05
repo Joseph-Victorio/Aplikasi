@@ -40,7 +40,6 @@ export default {
   },
   watch: {
     sliderCount(val) {
-      console.log(val);
       if(val > 0 && !this.sliders.ready) {
         this.$store.dispatch('front/getSliders')
       }
