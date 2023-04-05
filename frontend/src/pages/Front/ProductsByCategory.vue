@@ -50,7 +50,7 @@ export default {
       return this.$store.state.product.productsByCategory
     },
     categories() {
-      return this.$store.state.category.categories
+      return this.$store.state.front.categories
     },
     title() {
       return this.$store.state.meta.title
@@ -84,32 +84,38 @@ export default {
           this.$store.commit('product/PAGINATE_PRODUCT_CATEGORY', response.data)
         }
       }).finally(() =>  this.isLoadmore = false)
-    }
-  },
-  created() {
+    },
+    isCurrentProducts() {
 
-    let params = {
-      category_id: this.$route.params.id,
-      per_page: this.config.catalog_product_limit,
-      order_by: this.config.catalog_product_sort,
-      subcategory: this.$route.query.subcategory ? this.$route.query.subcategory : false
-    }
-    if(this.products.data.length) {
+      if(this.products.data.length) {
+        
+        let cat = this.products.data[0].category;
 
-      console.log(this.$route.query);
-
-      if(this.products.data[0].id != this.$route.params.id) {
-
-        this.$store.commit('product/CLEAR_PRODUCT_CATEGORY')
-        this.productsByCategory(params)
+        if(cat.id == this.$route.params.id) {
+          return true
+        }
 
       }
 
-    } else {
+      return false
+
+    },
+    getProducts(){
+      if(this.isCurrentProducts()) return
+
+      let params = {
+        category_id: this.$route.params.id,
+        per_page: this.config.catalog_product_limit,
+        order_by: this.config.catalog_product_sort,
+        subcategory: this.$route.query.subcategory ? this.$route.query.subcategory : false
+      }
 
       this.$store.commit('product/CLEAR_PRODUCT_CATEGORY')
       this.productsByCategory(params)
     }
+  },
+  created() {
+    this.getProducts()
   },
   meta() {
   return {

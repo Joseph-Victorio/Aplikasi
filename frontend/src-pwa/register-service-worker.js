@@ -32,7 +32,7 @@ register(process.env.SERVICE_WORKER_FILE, {
     console.log('New content is available; please refresh.')
 
     Dialog.create({
-      message: 'New content is available; please refresh.',
+      title: 'New content is available, please refresh.',
       position: 'top',
       persistent: true,
       ok: { flat: true, label: 'Refresh'}

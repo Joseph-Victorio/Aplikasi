@@ -82,11 +82,13 @@ class ProductRepository
             $ids = [intval($id)];
 
             $category = Cache::remember('category-'. $id, now()->addHours(3) , function() use ($id) {
-                return Category::select('id','title', 'slug', 'weight')->where('id', $id)->firstOrFail();
+                return Category::select('id','title', 'slug', 'weight', 'category_id')->where('id', $id)->firstOrFail();
             });
 
             if(!$is_subcategory) {
-                $cids = Category::where('category_id', $id)->select('id')->pluck('id')->toArray();
+                $cids = Cache::remember('categories-'. $id, now()->addHours(3), function() use ($id) {
+                    return Category::where('category_id', $id)->select('id')->pluck('id')->toArray();
+                });
                 $ids = array_merge($ids, $cids);
             }
     
@@ -98,7 +100,7 @@ class ProductRepository
                 $instance->orderBy('id', $order_by);
             }
         
-            $data = $instance->with(['minPrice','featuredImage', 'category:id,title,slug', 'productPromo' => function($query) {
+            $data = $instance->with(['minPrice','featuredImage', 'category:id,title,slug,category_id', 'productPromo' => function($query) {
                     $query->whereHas('promoActive');
                 }])
                 ->whereIn('category_id', $ids)

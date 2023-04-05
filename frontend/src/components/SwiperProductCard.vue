@@ -1,12 +1,6 @@
 <template>
   <div class="column full-height relative bg-white box-shadow">
-    <q-img v-if="product.asset" :src="product.asset.src" ratio="1" @click="show(product.slug)" class="cursor-pointer">
-      <template v-slot:error>
-        <div class="absolute-full flex flex-center bg-grey-6 text-white">
-          Cannot load image
-        </div>
-      </template>
-    </q-img>
+    <q-img v-if="product.asset" :src="product.asset.src" ratio="1" @click="show(product.slug)" class="cursor-pointer" />
     <q-img v-else src="/static/no_image.png" ratio="1" @click="show(product.slug)" class="cursor-pointer">
     </q-img>
     <div class="relative col column q-gutter-y-xs justify-between q-pb-md q-px-sm q-pt-sm overflow-hidden full-width">
