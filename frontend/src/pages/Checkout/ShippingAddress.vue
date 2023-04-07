@@ -18,10 +18,10 @@
             <div class="text-md text-weight-medium ">Pilih Kecamatan Tujuan</div>
             <div class="q-mt-sm">
               <q-list v-if="formOrder.shipping_destination">
-                <q-item class="bg-grey-2">
+                <q-item class="bg-grey-2 q-px-sm">
                   <q-item-section>{{ destinationAddressFormat(formOrder.shipping_destination) }}</q-item-section>
                   <q-item-section side>
-                    <q-btn icon="cancel" round dense flat no-caps color="red" @click="clearAddress">
+                    <q-btn icon="edit" dense unelevated no-caps color="primary" size="12px" @click="clearAddress">
                     </q-btn>
                   </q-item-section>
                 </q-item>
@@ -79,7 +79,7 @@
               <q-item-section>
                 <q-item-label>Layanan : {{ item.service }}</q-item-label>
                 <q-item-label>Ongkos kirim : {{ moneyIDR(item.cost[0].value)}}</q-item-label>
-                <q-item-label caption>{{ item.description }} Estimasi {{ item.cost[0].etd }} day</q-item-label>
+                <q-item-label caption>{{ item.description }} <span v-if="item.cost[0].etd">Estimasi {{ item.cost[0].etd }} day</span></q-item-label>
               </q-item-section>
             </q-item>
             </template>
@@ -184,14 +184,14 @@
           stack-label
           :error="errors.customer_address"
           v-model="customer_address"
-          v-if="!customer_address_selected"
+          
           >
         </q-input>
-        <div class="bg-grey-2 q-pa-sm relative" v-else>
+        <!-- <div class="bg-grey-2 q-pa-sm relative" >
           <div class="text-xs text-grey-7">Alamat Lengkap</div>
-          <p class="preline">{{ customer_address }}</p>
-          <q-btn icon="edit" class="absolute-top-right" color="primary" dense size="12px" unelevated @click="removeSelectedAddress"></q-btn>
-        </div>
+          <p class="preline" style="min-height:40px">{{ customer_address }}</p>
+          <q-btn icon="edit" class="absolute-top-right q-ma-xs" color="primary" dense size="12px" unelevated @click="removeSelectedAddress"></q-btn>
+        </div> -->
         <div class="flex justify-between items-center q-mt-sm">
           <div>
             <q-btn v-if="user && user.address.length" no-caps label="Pilih Alamat" size="sm" color="primary" unelevated @click="addressModal = true"></q-btn>

@@ -2,7 +2,7 @@
   <q-page class="bg-grey-1"
   :class="{'flex flex-center' : !carts.items.length}"
   >
-    <q-header class="text-grey-9 bg-white box-shadow">
+    <q-header class="text-grey-9 bg-white">
         <q-toolbar>
           <q-btn :to="{ name: 'ProductIndex'}"
             flat round dense
@@ -10,29 +10,45 @@
           <q-toolbar-title class="text-weight-bold brand">Keranjang Belanja</q-toolbar-title>
         </q-toolbar>
     </q-header>
-    <div v-if="carts.items.length" class="q-py-sm">
-      <q-list class="bg-white" separator padding>
-        <q-item v-for="cart in carts.items" :key="cart.sku" :class="{'q-pa-sm' : $q.platform.is.mobile }">
-          <q-item-section side class="q-pr-sm">
-           <q-img :src="cart.image_url" style="width:90px;height:90px;" class="img-thumbnail"></q-img>
-          </q-item-section>
-          <q-item-section>
-            <div class="col overflow-hidden full-width">
-              <div class="text-weight-medium text-md ellipsis">{{ cart.name }}</div>
-              <div class="text-grey-7 q-mb-xs text-caption" v-if="cart.note">{{ cart.note }}</div>
-              <div class="text-grey-7">Harga {{  moneyIDR(cart.price) }}</div>
-              <div class="flex items-center justify-between q-mt-sm">
-                <div class="q-gutter-x-sm items-center">
-                  <q-btn flat padding="3px" round icon="eva-minus-circle-outline" size="13px" @click="decrementQty(cart)" style="cursor:pointer;"></q-btn>
-                  <span class="text-weight-medium text-md">{{ cart.quantity }}</span>
-                  <q-btn flat padding="3px" round icon="eva-plus-circle-outline" size="13px" @click="incrementQty(cart)" style="cursor:pointer;"></q-btn>
+    <div v-if="carts.items.length" class="q-pa-sm">
+      <table class="table bordered table-sm">
+        <tr class="item-header">
+          <th class="text-left">PRODUK</th>
+          <th class="gt-xs" align="middle">QTY</th>
+          <th side class="text-grey-10" align="right">SUBTOTAL</th>
+        </tr>
+        <tr v-for="cart in carts.items" :key="cart.sku" :class="{'q-pa-sm' : $q.platform.is.mobile }">
+          <td>
+            <div class="row">
+              <q-img :src="cart.image_url" style="width:70px;height:70px;" class="img-thumbnail q-mr-sm"></q-img>
+              <div class="col overflow-hidden full-width" style="max-width:370px">
+                <q-item-label class="text-weight-medium text-md ellipsis-2-lines">{{ cart.name }}</q-item-label>
+                <div class="text-grey-7 text-caption" v-if="cart.note">{{ cart.note }}</div>
+                <div class="text-grey-9 text-no-wrap q-mt-xs">{{ cart.quantity}}X {{  moneyIDR(cart.price) }}</div>
+                <div class="flex items-center q-mt-sm lt-sm">
+                  <div class="q-gutter-x-sm items-center items-center row">
+                    <q-btn unelevated color="grey-3" text-color="dark" padding="3px" icon="eva-minus-outline" size="11px" @click="decrementQty(cart)"></q-btn>
+                    <q-btn flat dense>{{ cart.quantity }}</q-btn>
+                    <q-btn unelevated color="grey-3" text-color="dark" padding="3px" icon="eva-plus-outline" size="11px" @click="incrementQty(cart)"></q-btn>
+                  </div>
                 </div>
-                <q-btn @click="removeCart(cart)" outline size="10px" color="red" no-caps padding="2px 6px">hapus</q-btn>
               </div>
+
             </div>
-          </q-item-section>
-        </q-item>
-      </q-list>
+          </td>
+          <td class="gt-xs middle" align="middle">
+            <div class="q-gutter-x-sm text-no-wrap row items-center justify-center no-wrap">
+              <q-btn unelevated color="grey-3" text-color="dark" padding="4px" icon="eva-minus-outline" size="11px" @click="decrementQty(cart)"></q-btn>
+              <q-btn unelevated padding="4px">{{ cart.quantity }}</q-btn>
+              <q-btn unelevated color="grey-3" text-color="dark" padding="4px" icon="eva-plus-outline" size="11px" @click="incrementQty(cart)"></q-btn>
+            </div>
+          </td>
+          <td class="text-grey-10" align="right">
+            <div class="text-weight-bold q-mb-sm text-no-wrap">{{ moneyIDR(cart.quantity * cart.price) }}</div>
+            <q-btn @click="removeCart(cart)" outline size="10px" color="red" no-caps padding="2px 6px">remove</q-btn>
+          </td>
+        </tr>
+      </table>
     <!-- <q-card flat square class="">
       <q-card-section>
         <div class="flex justify-end q-py-md q-px-sm bg-grey-1">
@@ -73,7 +89,7 @@
     </q-dialog>
     <q-footer v-if="carts.items.length" class="bg-white q-pa-md">
       <div class="q-pb-sm flex justify-between">
-        <div class="text-md text-dark">Total Order</div>
+        <div class="text-md text-grey-10">Total Order</div>
         <div class="text-md2 text-weight-bold text-secondary">{{ moneyIDR(carts.subtotal) }}</div>
       </div>
 

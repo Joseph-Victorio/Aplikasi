@@ -684,6 +684,20 @@ table {
   border-spacing: 0px;
   &.table {
     width: 100%;
+    &.table-sm {
+      > tr > th,
+      > tr > td {
+        padding: .5rem;
+      }
+    }
+    &.bordered {
+      >tr > th {
+        background-color: #eee;
+      }
+      > tr:not(:last-child) > td {
+        border-bottom: 1px solid #eee;
+      }
+    }
   }
 }
 table.dense {
@@ -695,7 +709,12 @@ table.dense {
 }
 table.table th,
 table.table td, table.table td * {
-  vertical-align: top;
+  > td * {
+    vertical-align: top;
+  }
+  > td.middle * {
+    vertical-align: middle;
+  }
 }
 .sticky-bottom {
   position: sticky;
