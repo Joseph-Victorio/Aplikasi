@@ -54,7 +54,6 @@ class ResetStockByOrder extends Command
 
         if(count($orderExpireds) > 0) {
 
-            
             foreach($orderExpireds as $order) {
 
                 $orderItems = OrderItem::where('order_id', $order->id)->get();
@@ -72,7 +71,6 @@ class ResetStockByOrder extends Command
     
                     }
                 }
-
 
                 $order->update(['order_status' => 'CANCELED']);
             }

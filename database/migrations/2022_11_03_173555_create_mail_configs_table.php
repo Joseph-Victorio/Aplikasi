@@ -25,6 +25,8 @@ class CreateMailConfigsTable extends Migration
             $table->string('mail_admin')->nullable();
             $table->boolean('is_active')->default(0);
         });
+
+        \App\Models\MailConfig::create(); 
     }
 
     /**

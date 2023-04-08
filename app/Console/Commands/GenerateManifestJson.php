@@ -44,7 +44,7 @@ class GenerateManifestJson extends Command
         $config = Config::first();
 
         $data = [
-            'name' => $shop->name .' App',
+            'name' => $shop->name,
             'short_name' => $shop->name,
             'description' => $shop->slogan ?? '',
             "display" => "standalone",

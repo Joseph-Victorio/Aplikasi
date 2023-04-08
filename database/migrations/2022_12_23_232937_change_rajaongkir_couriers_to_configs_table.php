@@ -16,6 +16,10 @@ class ChangeRajaongkirCouriersToConfigsTable extends Migration
         Schema::table('configs', function (Blueprint $table) {
             $table->text('rajaongkir_couriers')->change();
         });
+
+        App\Models\Config::query()->update([
+            'rajaongkir_couriers' => NULL
+        ]);
     }
 
     /**

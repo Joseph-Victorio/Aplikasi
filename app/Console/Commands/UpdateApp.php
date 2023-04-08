@@ -46,25 +46,12 @@ class UpdateApp extends Command
 
             // Call Migration
             Artisan::call('migrate', ['--force' => true]);
-
-             // Update Version 2.3.3
-
-            Artisan::call('site:update-v-233');
-            $this->info('run 233');
-            
-            // Update Version > 2.3.4
-            
-            Artisan::call('site:update-v-234');
-            $this->info('run 234');
             
             // Update Version 2.4.0
             Artisan::call('site:update-v-240');
-            $this->info('run 240');
             
             Artisan::call('asset:update-path');
 
-            Artisan::call('config:change-field');
-            
             Artisan::call('order:change-status');
 
         } catch (\Exception $e) {

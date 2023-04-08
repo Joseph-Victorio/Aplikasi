@@ -48,7 +48,7 @@ class UpdateOrderStatus extends Command
             ->update(['order_status' => 'TOSHIP']);
 
         Order::where('order_status', 'UNPAID')
-        ->update(['order_status' => 'PENDING']);
+            ->update(['order_status' => 'PENDING']);
 
     }
 }
