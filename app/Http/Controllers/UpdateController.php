@@ -91,8 +91,7 @@ class UpdateController extends Controller
 
     public function forceUpdate(Request $request)
     {
-
-        if(! $request->key || $request->key != config('app.key')) {
+        if(! $request->key || urldecode($request->key) != config('app.key')) {
             return 'Not Authenticated';
         }
 
