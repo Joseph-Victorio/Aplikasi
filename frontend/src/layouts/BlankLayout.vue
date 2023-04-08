@@ -8,7 +8,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import Cookies from 'js-cookie';
+import { Cookies } from 'quasar';
 export default {
   name: 'BlankLayout',
   computed: {

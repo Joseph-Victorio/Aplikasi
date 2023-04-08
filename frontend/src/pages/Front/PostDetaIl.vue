@@ -23,7 +23,6 @@
       </template>
     </template>
     <q-inner-loading :showing="!ready">
-       
     </q-inner-loading>
   </q-page>
 </template>

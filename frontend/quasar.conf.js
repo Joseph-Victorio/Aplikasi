@@ -119,7 +119,7 @@ module.exports = function (ctx ) {
 
       // Quasar plugins
       plugins: [
-        'Dialog', 'Notify', 'Meta', 'AddressbarColor' ,'Loading'
+        'Dialog', 'Notify', 'Meta', 'AddressbarColor' ,'Loading', 'Cookies'
       ]
     },
 

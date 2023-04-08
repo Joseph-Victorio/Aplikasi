@@ -39,6 +39,7 @@ export default {
       this.$store.commit('REMOVE_INSTALL_APP')
     })
     window.addEventListener('resize', this.pageResize)
+
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.pageResize)

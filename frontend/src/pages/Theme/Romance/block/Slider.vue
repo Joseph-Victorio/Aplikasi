@@ -14,11 +14,13 @@ export default {
   data () {
     return {
       glideOptions: {
+        type: 'carousel',
         gap:10,
         perView: 1,
         animationDuration: 1000,
         autoplay: 6000,
-        bullet: true
+        bullet: true,
+        // rewind: true
       },
     }
   },

@@ -124,7 +124,7 @@
 
 <script>
 import { Api } from 'boot/axios'
-import Cookies from 'js-cookie';
+import {Cookies} from 'quasar';
 export default {
   data() {
     return {

@@ -1,5 +1,5 @@
 import { Api } from 'boot/axios'
-import Cookies from 'js-cookie';
+import {Cookies} from 'quasar';
 import { Notify } from 'quasar'
 
 export function login ({commit, dispatch}, payload) {

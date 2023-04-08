@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import { Notify } from 'quasar'
-import Cookies from 'js-cookie';
+import {Cookies} from 'quasar';
 
 Vue.prototype.$axios = axios
 

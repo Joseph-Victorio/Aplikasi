@@ -55,6 +55,7 @@ import Slider from './block/Slider.vue'
 import FeaturedCarousel from './../shared-components/FeaturedCarousel.vue'
 import CategoryCarousel from './block/CategoryCarousel.vue'
 import ProductPromo from './../shared-components/ProductPromo.vue'
+import ProductSectionObserver from './../shared-components/ProductSectionObserver.vue'
 
 export default {
   name: 'DefaultTheme',
@@ -64,7 +65,7 @@ export default {
     FeaturedCarousel,
     CategoryCarousel,
     ProductPromo,
-    ProductSectionObserver: () => import('./../shared-components/ProductSectionObserver.vue'),
+    ProductSectionObserver,
     PostBlock: () => import('../shared-components/FrontPostBlock.vue'), 
     FooterBock: () => import('./../shared-components/FooterBlock.vue'),
     InstallApp: () => import('components/InstallApp.vue')

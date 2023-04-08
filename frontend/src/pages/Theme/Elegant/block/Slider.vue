@@ -25,6 +25,7 @@ export default {
   data () {
     return {
       glideOptions: {
+        type: 'carousel',
         gap:10,
         perView: 1,
         animationDuration: 1000,

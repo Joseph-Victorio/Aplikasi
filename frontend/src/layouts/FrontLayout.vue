@@ -58,15 +58,6 @@
             exact
           />
 
-         
-          <!-- <q-route-tab 
-            :to="{name: 'Cart'}" 
-            icon="eva-shopping-cart-outline" 
-            exact
-            label="Keranjang" >
-            <q-badge v-if="cartCount > 0" color="secondary" floating>{{ cartCount }}</q-badge>
-          </q-route-tab> -->
-
            <q-tab 
            icon="eva-person-outline" 
            @click="toDashboard"
@@ -74,15 +65,17 @@
            label="Akun" />
         </q-tabs>
       </q-footer>
+      <BackToTop />
   </q-layout>
 </template>
 
 <script>
 import Notify from 'components/Notify.vue'
 import { mapGetters, mapState } from 'vuex'
-import Cookies from 'js-cookie';
+import BackToTop from 'components/BackToTop.vue'
+import { Cookies } from 'quasar';
 export default {
-	components: { Notify },
+	components: { Notify, BackToTop },
   name: 'FrontLayout',
   data () {
     return {
@@ -130,7 +123,7 @@ export default {
     if(! this.config) {
       this.$store.dispatch('getConfig')
     } 
-    if(Cookies.get('__token')) {
+    if(Cookies.has('__token')) {
       if(!this.user) {
         this.$store.dispatch('user/getUser')
       }

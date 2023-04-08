@@ -440,10 +440,16 @@ export default {
     },
     fullscreen(val) {
       if(val == true) {
-        this.helpTextScreen = true
-        setTimeout(() => {
+        if(localStorage.getItem('helpTextScreen')) {
           this.helpTextScreen = false
-        }, 5000)
+        }else {
+          this.helpTextScreen = true
+          setTimeout(() => {
+            this.helpTextScreen = false
+            localStorage.setItem('helpTextScreen', 1)
+          }, 5000)
+        }
+        
       }
     }
   },

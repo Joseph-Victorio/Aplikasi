@@ -13,16 +13,12 @@
     <div class="flex justify-center q-py-lg" v-if="products && products.links">
      <q-btn label="loadmore" color="primary" outline :loading="isLoadmore" v-if="products.links.next" @click="paginate(products.links.next)"></q-btn>
    </div>
-   <q-page-sticky :offset="[20,20]">
-     <q-btn v-show="showTotop" icon="eva-chevron-up" round color="grey-7" glossy @click="jumpTo('q-app')"></q-btn>
-   </q-page-sticky>
   </q-page>
 </template>
 
 <script>
 import ProductSection from 'components/ProductSection.vue'
 import ShoppingCart from 'components/ShoppingCart.vue'
-
 import { Api } from 'boot/axios'
 export default {
   name: 'ProductIndex',
@@ -60,13 +56,6 @@ export default {
         }
       }).finally(() =>  this.isLoadmore = false)
     },
-    setTotop() {
-      if(window.scrollY > 1000) {
-        this.showTotop = true
-      }else {
-        this.showTotop = false
-      }
-    }
   },
   created() {
     if(this.$route.query.q){
@@ -78,10 +67,6 @@ export default {
         order_by: this.config.catalog_product_sort,
       })
     }
-    window.addEventListener('scroll', this.setTotop)
-  },
-  destroyed() {
-    window.removeEventListener('scroll', this.setTotop)
   },
   meta() {
     return {
