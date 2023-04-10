@@ -4,8 +4,8 @@
     <div class="q-pa-md header-top">
       <div class="flex justify-between">
         <q-btn aria-label="Kembali"
-        padding="9px 12px"
         @click="backButton"
+        round
         flat icon="eva-arrow-back" icon-size="27px" style="cursor:pointer;opacity:.9;">
         </q-btn>
         <shopping-cart />
@@ -19,7 +19,6 @@
         animated
         swipeable
         v-model="slide"
-        navigation
         infinite
         :height="height"
         style="max-height:574px;"
@@ -28,17 +27,20 @@
 
         <template v-slot:control>
           <q-carousel-control
-            position="bottom-right"
+            position="bottom"
             :offset="[18, 40]"
+            class="row items-center justify-between"
           >
+            <div v-if="product" class="asset-badge q-mr-sm">{{ slide }}/{{ product.assets.length }}</div>
             <q-btn 
               aria-label="Fullscreen"
                dense color="white" 
+               class="bordered"
                text-color="grey-8" 
                icon="ion-expand"
                unelevated 
-               size="12px" 
-               padding="10px"
+               size="13px" 
+               padding="8px"
                round
               @click="fullscreen = !fullscreen"
             />
@@ -48,55 +50,67 @@
       <q-card class="product-detail relative box-shadow">
         <q-card-section class="q-pt-xs q-pb-lg">
           
-          <h1 class="text-h6 text-weight-semibold q-mb-md" v-if="product">{{ product.title }}</h1>
-          <div class="row items-center justify-between">
-            <div class="flex items-center">
-              <div class="flex items-center text-secondary">
+          <h1 class="text-h6 text-weight-semibold" v-if="product">{{ product.title }}</h1>
+          
+          <div 
+          class="items-center justify-between"
+          :class="{ 'row' : $q.screen.width > 800}"
+          >
+            <div>
+              <div class="flex items-center">
+                <div class="flex items-center text-secondary">
+                    <span class="text-md">Rp</span>
+                  <span class="text-lg text-weight-medium">
+                  {{ $money(parseInt(getCurrentPrice * this.quantity)) }} 
+                  </span>
+                </div>
+                <div class="flex items-center text-strike text-xs q-ml-xs" v-if="renderDiscount">
+                  <span class="text-sm">Rp</span>
+                  <span class="text-md">{{ $money(getDefaultPrice * this.quantity) }} </span>
+                </div>
+                
+                <template v-if="renderMaxPrice">
+                <div class="q-px-sm text-md text-weight-bold">-</div>
+                <div class="flex items-center text-secondary">
                   <span class="text-md">Rp</span>
-                <span class="text-lg text-weight-medium">
-                {{ $money(parseInt(getCurrentPrice * this.quantity)) }} 
-                </span>
+                  <span class="text-lg text-weight-medium">{{ $money(getMaxPrice) }} </span>
+                </div>
+                </template>
+                <!-- <div class="q-ml-sm text-lowercase">
+                  / {{ product.unit }}
+                </div> -->
               </div>
-              <div class="flex items-center text-strike text-xs q-ml-xs" v-if="renderDiscount">
-                <span class="text-sm">Rp</span>
-                <span class="text-md">{{ $money(getDefaultPrice * this.quantity) }} </span>
-              </div>
-              <template v-if="renderMaxPrice">
-              <div class="q-px-sm text-md text-weight-bold">-</div>
-              <div class="flex items-center text-secondary">
-                <span class="text-md">Rp</span>
-                <span class="text-lg text-weight-medium">{{ $money(getMaxPrice) }} </span>
-              </div>
-              </template>
-              <div>
+              <div class="row items-center q-gutter-x-sm">
+              <q-rating 
+                data-nosnippet="true"
+                v-model="productRating"
+                readonly
+                color="accent"
+                icon="ion-star-outline"
+                icon-selected="ion-star"
+                icon-half="ion-star-half"
+                size="1.3rem" 
+              />
+              <div class="text-weight-medium text-sm"> {{ product.reviews_count > 0 ? product.reviews_count +' ulasan' : ''}}</div>
             </div>
             </div>
-            <div class="row q-gutter-sm text-h6 items-center">
+            <div class="row gutter-x text-h6 items-center">
               <q-btn aria-label="decrement" flat round icon="eva-minus-circle-outline" size="24" @click="decrementQty" style="cursor:pointer;"></q-btn>
               <div>{{ quantity }}</div>
               <q-btn aria-label="increment" flat round icon="eva-plus-circle-outline" size="24" @click="incrementQty" style="cursor:pointer;"></q-btn>
             </div>
           </div>
 
-          <div class="row items-center q-gutter-x-sm">
-            <q-rating 
-              data-nosnippet="true"
-              v-model="productRating"
-              readonly
-              color="accent"
-              icon="ion-star-outline"
-              icon-selected="ion-star"
-              icon-half="ion-star-half"
-              size="1.3rem" 
-            />
-            <div class="text-weight-medium text-sm"> {{ product.reviews_count > 0 ? product.reviews_count +' ulasan' : ''}}</div>
-          </div>
+          <!-- <div class="text-weight-bold q-mt-xs text-md text-grey-9" v-if="currentStock > 0">Stok : {{  currentStock }} {{ product.unit }}</div> -->
+          
         </q-card-section>
       </q-card>
      <div class="box-shadow bg-white q-px-md q-mt-md q-py-lg" v-if="product && product_varian_item_render.length">
         <div class="q-pb-sm">
-          <div class="text-md">Pilih Varian</div>
-          <div class="q-mt-m" v-if="product.varian_attributes.length">
+          <div class="flex justify-between items-center text-md text-weight-semibold">
+            <div class="">Pilih Varian</div>
+          </div>
+          <div class="q-mt-sm" v-if="product.varian_attributes.length">
             <div class="q-mb-xs">{{ product.varian_attributes[0].label}}</div>
             <div class="q-gutter-sm">
               <q-btn aria-label="Product Attribute" class="product-varian--btn" outline v-for="attr in product.varian_attributes" :key="attr.id" :label="attr.value" :color="product_attribute_selected && product_attribute_selected.id == attr.id? 'accent' : 'grey-9'" @click="selectVarianAttribute(attr)">
@@ -104,16 +118,21 @@
               </q-btn>
             </div>
           </div>
-          <div class="q-mt-md">
+          <div class="q-mt-sm">
             <div class="q-mb-xs">{{ product_varian_item_render[0].label}}</div>
             <div class="q-gutter-sm">
-              <q-btn aria-label="Product Varian" class="product-varian--btn" outline v-for="item in product_varian_item_render" :key="item.id" :label="item.value" :color="product_varian_selected && product_varian_selected.id == item.id? 'accent' : 'grey-9'" @click="selectVarianItem(item)">
+              <q-btn aria-label="Product Varian" class="product-varian--btn" outline v-for="item in product_varian_item_render" :key="item.id" :label="`${item.value} ${item.stock > 0 ? '' : 'Habis'}`" 
+                :color="product_varian_selected && product_varian_selected.id == item.id? 'accent' : 'grey-9'" 
+                @click="selectVarianItem(item)"
+              :disable="item.stock < 1"
+              >
               <badge-tick v-if="product_varian_selected && product_varian_selected.id == item.id " />
               </q-btn>
             </div>
             </div>
         </div>
       </div>
+
      
       <q-card class="box-shadow q-mt-md bg-white q-pb-xl">
         <q-tabs 
@@ -286,8 +305,8 @@
       <q-card class="max-width" flat v-if="product && product_varian_item_render.length">
         <q-card-section>
           <div class="q-pb-sm" style="min-height:200px;">
-            <div class="text-md">Pilih Varian</div>
-            <div class="q-mt-m" v-if="product.varian_attributes.length">
+            <div class="text-lg">Pilih Varian</div>
+            <div class="q-mtsm" v-if="product.varian_attributes.length">
               <div class="q-mb-xs">{{ product.varian_attributes[0].label}}</div>
               <div class="q-gutter-sm">
                 <q-btn aria-label="Product Attribute" class="product-varian--btn" outline v-for="attr in product.varian_attributes" :key="attr.id" :label="attr.value" :color="product_attribute_selected && product_attribute_selected.id == attr.id? 'accent' : 'grey-9'" @click="selectVarianAttribute(attr)">
@@ -295,10 +314,17 @@
                 </q-btn>
               </div>
             </div>
-            <div class="q-mt-md">
+            <div class="q-mt-sm">
               <div class="q-mb-xs">{{ product_varian_item_render[0].label}}</div>
               <div class="q-gutter-sm">
-                <q-btn aria-label="Product Varian" class="product-varian--btn" outline v-for="item in product_varian_item_render" :key="item.id" :label="item.value" :color="product_varian_selected && product_varian_selected.id == item.id? 'accent' : 'grey-9'" @click="selectVarianItem(item)">
+                
+                <q-btn aria-label="Product Varian" class="product-varian--btn" outline v-for="item in product_varian_item_render" 
+                :key="item.id" 
+                :color="product_varian_selected && product_varian_selected.id == item.id? 'accent' : 'grey-9'" 
+                @click="selectVarianItem(item)"
+                :label="`${item.value} ${item.stock > 0 ? '' : 'Habis'}`" 
+                :disable="item.stock < 1"
+                >{{ item }}
                 <badge-tick v-if="product_varian_selected && product_varian_selected.id == item.id " />
                 </q-btn>
               </div>
@@ -311,7 +337,7 @@
       </q-card>
     </q-dialog>
     <q-dialog v-model="fullscreen" persistent maximized>
-      <div class="max-width relative" v-if="product" style="background:rgb(187 187 187 / 96%);">
+      <div class="max-width relative" v-if="product" style="background:rgb(120 120 120 / 96%);">
         <div class="text-center q-py-md absolute" style="top:5px;width:100%;z-index:99;">
           <div class="flex justify-center" v-show="helpTextScreen">
             <div class="q-px-md" style="background:rgb(240 240 240 / 90%);">Scroll mouse atau cubit layar untuk zoom</div>
@@ -327,30 +353,35 @@
           <img ref="zoomerimage" :src="currentImage" :style="zoomImageStyle"/>
           </PinchScrollZoom>
         </Transition>
-        <div class="absolute row items-center" style="bottom: 4%; right:4%;">
-          <div class="q-mr-lg" v-if="product.assets.length > 1">
-            <q-btn
-              :disable="slide == 1"
-              dense
-              size="16px"
-              color="white"
-              text-color="dark" 
-              round unelevated
-              icon="eva-arrow-ios-back"
-              @click="slide--"
-              class="q-mr-sm"
-            />
-            <q-btn
-              :disable="product.assets.length == slide"
-              dense
-              size="16px"
-              color="white"
-              text-color="dark" 
-              round unelevated
-              icon="eva-arrow-ios-forward"
-              @click="slide++"
-            />
-          </div>
+        <div class="absolute row items-center q-py-md q-px-lg justify-between fuul-width" style="bottom:0;left:0;right:0">
+          <div class="asset-badge">{{ slide }}/{{ product.assets.length }}</div>
+          <div class="row items-center">
+
+            <template v-if="product.assets.length > 1">
+              <q-btn
+                :disable="slide == 1"
+                dense
+                size="16px"
+                color="white"
+                text-color="dark" 
+                round unelevated
+                icon="eva-arrow-ios-back"
+                @click="slide--"
+                class="q-mr-sm bordered"
+              />
+              <q-btn
+                :disable="product.assets.length == slide"
+                dense
+                size="16px"
+                color="white"
+                text-color="dark" 
+                round unelevated
+                icon="eva-arrow-ios-forward"
+                class="q-mr-sm bordered"
+                @click="slide++"
+              />
+            </template>
+
             <q-btn
               dense
               size="16px"
@@ -359,18 +390,20 @@
               round unelevated
               icon="ion-refresh"
               @click="resetZoom"
-              class="q-mr-sm"
+              class="q-mr-sm bordered"
             />
             <q-btn
               dense
               size="16px"
               color="white"
               text-color="dark" 
+              class="bordered"
               round unelevated
               icon="eva-close"
              
               @click="fullscreen = !fullscreen"
             />
+          </div>
           </div>
       </div>
     </q-dialog>
@@ -990,7 +1023,5 @@ position: absolute;
   position:relative;
   overflow: hidden;
 }
-// .preview-image img {
-//   transition: all ease-in-out 300ms;
-// }
+
 </style>

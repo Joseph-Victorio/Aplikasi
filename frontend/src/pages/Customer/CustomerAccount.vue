@@ -28,7 +28,7 @@
              <div class="text-center">
                <q-btn size="19px" color="white" icon="receipt" outline padding="sm" :to="{ name: 'CustomerOrder' }">
                </q-btn>
-               <q-item-label class="color-grey-4 text-xs q-mt-xs">Order</q-item-label>
+               <q-item-label class="color-grey-4 text-xs q-mt-xs">Transaksi</q-item-label>
              </div>
              <div class="text-center">
                <q-btn size="19px" color="white" icon="eva-shopping-bag" outline padding="sm" :to="{ name: 'CustomerAddress'}">
@@ -68,34 +68,6 @@
                   </q-item-section>
                 </q-item>
               </div>
-              <!-- <div class="row q-gutter-sm q-mt-sm">
-                <div class="text-center">
-                  <q-btn size="18px" color="primary" icon="receipt" outline padding="sm" :to="{ name: 'CustomerOrder' }">
-                  </q-btn>
-                  <q-item-label caption class="q-mt-xs">Order</q-item-label>
-                </div>
-                <div class="text-center">
-                  <q-btn size="18px" color="primary" icon="assignment_ind" outline padding="sm" :to="{ name: 'CustomerOrder'}">
-                  </q-btn>
-                  <q-item-label caption class="q-mt-xs">Referal</q-item-label>
-                </div>
-                <div class="text-center">
-                  <q-btn size="18px" color="primary" icon="account_balance_wallet" outline padding="sm" :to="{ name: 'CustomerOrder' }">
-                  </q-btn>
-                  <q-item-label caption class="q-mt-xs">Point</q-item-label>
-                </div>
-                <div class="text-center">
-                  <q-btn size="18px" color="primary" icon="manage_accounts" outline padding="sm" :to="{ name: 'CustomerAccountEdit' }">
-                  </q-btn>
-                  <q-item-label caption class="q-mt-xs">Akun</q-item-label>
-                </div>
-                <q-space />
-                <div class="text-center">
-                  <q-btn size="18px" color="primary" icon="logout" outline padding="sm" @click="logout">
-                  </q-btn>
-                  <q-item-label caption class="q-mt-xs">Logout</q-item-label>
-                </div>
-              </div> -->
             </q-card-section>
           </q-card>
         </div>

@@ -11,7 +11,7 @@
         <q-btn color="white" text-color="grey-8" size="13px" class="gt-xs" no-caps icon="eva-plus-circle" :to="{name: 'ProductCreate'}" label="Tambah Produk"/>
       </q-toolbar>
     </q-header>
-    <div class="border q-pa-md row item-center q-gutter-x-sm">
+    <div class="q-pa-md row item-center q-gutter-x-sm">
       <div class="col">
         <q-input :loading="loading" ref="input" outlined dense color="grey-2" v-model="search" @keyup.enter="searchProduct" placeholder="ketik nama produk"
         >

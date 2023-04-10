@@ -48,7 +48,7 @@ class ProductListResource extends JsonResource
             'category' => $this->category,
             'asset'  =>  $this->featuredImage,
             'category_id' => $this->category_id,
-            'category_type' => $this->category_type,
+            'unit' => $this->unit,
           ];
     }
 

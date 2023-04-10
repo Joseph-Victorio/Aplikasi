@@ -42,16 +42,27 @@ export function filterOrder ({ commit }, payload) {
   })
 }
 
-export function getCustomerOrders ({ commit }) {
-  Api().get('customer/orders').then(response => {
+export function getCustomerOrders ({ commit }, filter = {}) {
+  let url = 'customer/orders'
+  if(Object.entries(filter).length) {
+    url += `?${new URLSearchParams(filter).toString()}`
+  }
+  Api().get(url).then(response => {
     if(response.status == 200) {
       commit('SET_CUSTOMER_ORDERS', response.data.results)
     }
   })
 }
-export function getPaginateCustomerOrder ({ commit }, payload) {
+export function getPaginateCustomerOrder ({ commit }, filter = {}) {
   commit('SET_LOAD_MORE_CUSTOMER', true)
-  Api().get('customer/orders?skip=' + payload).then(response => {
+
+  let url = 'customer/orders'
+  
+  if(Object.entries(filter).length) {
+    url += `?${new URLSearchParams(filter).toString()}`
+  }
+
+  Api().get(url).then(response => {
     if(response.status == 200) {
       commit('SET_PAGINATE_CUSTOMER_ORDERS', response.data.results)
     }

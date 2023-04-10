@@ -14,16 +14,28 @@ class CustomerController extends Controller
        
         try {
 
-           $data['data'] = Order::with('transaction')
-            ->where('user_id', $request->user()->id)
-            ->skip($request->skip ?? 0)
-            ->latest()
-            ->take($request->limit ?? 6)
-            ->get();
+           $instance = Order::when($request->status, function($q) use($request) {
+                if($request->status != 'ALL') {
+                    $q->where('order_status', $request->status);
+                }
+           })->where('user_id', $request->user()->id);
 
-            $data['count'] = Order::where('user_id', $request->user()->id)->count();
+            $count = $instance->count();
+            $data = [];
 
-            return ApiResponse::success($data);
+            if($count > 0) {
+
+                $data = $instance->with('transaction')
+                ->skip($request->skip ?? 0)
+                ->latest()
+                ->take($request->limit ?? 6)
+                ->get();
+            }
+
+            $results['count'] = $count;
+            $results['data'] = $data;
+
+            return ApiResponse::success($results);
             
         } catch (\Throwable $th) {
 

@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pb-lg">
-    <q-header class="text-grey-9 bg-white no-print box-shadow">
+    <q-header class="no-print box-shadow" :class="getHeaderColorBrand">
       <q-toolbar>
         <q-btn @click="goBack"
           flat round dense

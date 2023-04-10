@@ -54,6 +54,7 @@ class ProductResource extends JsonResource
             'reviews_count' => $this->reviews_count,
             'varian_items' => $this->varianItemSortByPrice,
             'varian_attributes' => $this->varianAttributes,
+            'unit' => $this->unit,
         ];
     }
 }

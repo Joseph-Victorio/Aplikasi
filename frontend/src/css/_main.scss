@@ -716,6 +716,9 @@ table.table td, table.table td * {
     vertical-align: middle;
   }
 }
+.q-dialog-plugin q-card {
+  max-width:9vw;
+}
 .sticky-bottom {
   position: sticky;
   bottom:0;
@@ -1112,4 +1115,20 @@ body.is_loading .block-observe {
 .card-title {
   font-size: 1.2rem;
   font-weight: 500;
+}
+.asset-badge {
+  display: inline-block;
+  color: #555;
+  padding: 3px 12px;
+  font-size: 1rem;
+  background-color: #fff;
+  border: 1px solid rgb(179, 179, 179);
+  border-radius: 20px;
+}
+button.bordered {
+  border: 1px solid rgb(179, 179, 179);
+
+}
+.gutter-x >*:not(:first-child){
+  margin-left: .6rem;
 }
