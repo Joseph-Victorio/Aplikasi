@@ -56,7 +56,7 @@ export default {
   methods: {
     handleonObserve() {
        if(!this.products.is_done) {
-        // this.getProducts()
+        this.getProducts()
        }
     },
     async getProducts() {
