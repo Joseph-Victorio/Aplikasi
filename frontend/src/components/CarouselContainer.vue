@@ -23,8 +23,8 @@
       </div>
     </div>
     <div class="carousel-items" ref="carousel" v-if="!products.length">
-      <div v-for="i in 5" :key="i" class="carousel-item" 
-     :style="`width: ${cardWidth}px`"
+      <div v-for="i in 4" :key="i" class="carousel-item" 
+     :style="cardWidthString"
       >
         <ProductCardSkeleton :width="cardWidth"/>
       </div>
@@ -76,6 +76,9 @@ import ProductCardSkeleton from 'components/ProductCardSkeleton'
 
         return 160
       },
+      cardWidthString() {
+        return `width: ${this.cardWidth}px`
+      }
     },
     mounted() {
        this.$nextTick(() => {

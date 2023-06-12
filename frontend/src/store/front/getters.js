@@ -1,15 +1,6 @@
-import { getSliders } from "./actions"
+export const getProductsByCategory =  (state) => (id) => {
 
-export const getProductItemByCategoryId =  (state) => (id) => {
-
-  let data = []
-  let ind =  state.categories.data.findIndex(cat => cat.id == id)
-
-  if(ind >= 0) {
-    data = state.categories.data[ind].product_items
-  }
-
-  return data
+  return state.products.find(data => data.category_id == id)
 }
 
 export function getBanner1 (state) {

@@ -18,6 +18,7 @@ export default function () {
       available: true,
       data: []
     },
+    products: [],
     sliders: {
       count: 0,
       data: [],

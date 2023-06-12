@@ -23,7 +23,7 @@ export default {
       el.classList.remove('hidden')
 
       let opts = {
-        rootMargin: '0px',
+        rootMargin: '300px',
         threshold: 0,
       }
 

@@ -16,13 +16,15 @@ export function SET_PRODUCT_PROMO (state, payload)
 export function SET_CATEGORIES ( state, payload ) {
 
   if(payload.length != state.categories.length) {
-    state.categories.data = payload.map(cat => ({...cat, product_items: [], is_done: false, is_available: true }))
+    state.categories.data = payload
     state.categories.ready = true
     state.categories.available = state.categories.data.length > 0
+
+    state.products = payload.map(cat => ({category_id: cat.id, data: [], is_done: false, is_available: true }))
   }
 
 }
-export function CLEAR_FRONT_CATEGORIES ( state, payload ) {
+export function CLEAR_FRONT_CATEGORIES ( state ) {
 
   state.categories.data = []
   state.categories.ready = false
@@ -30,15 +32,19 @@ export function CLEAR_FRONT_CATEGORIES ( state, payload ) {
 
 }
 export function SET_PRODUCT_CATEGORY ( state, payload ) {
-  let idx = state.categories.data.findIndex(el => el.id == payload.category_id)
+  
+  let idx = state.products.findIndex(el => el.category_id == payload.category_id)
 
   if(idx >= 0) {
-    state.categories.data[idx].product_items = payload.product_items
-    state.categories.data[idx].is_done = true
-    state.categories.data[idx].is_available = payload.product_items.length > 0
+    state.products[idx].data = payload.product_items
+    state.products[idx].is_done = true
   }
 
+  console.log(state.products);
+  console.log('payload', payload);
+
 }
+
 export function SET_SLIDERS (state, payload) {
   state.sliders.data = payload
   state.sliders.ready = true

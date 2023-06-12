@@ -18,7 +18,6 @@ class Category extends Model
 
     protected $casts = [
         'is_front' => 'boolean',
-        'is_special' => 'boolean',
         'description' => 'string'
     ];
 
