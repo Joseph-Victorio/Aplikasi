@@ -16,7 +16,7 @@ class FrontController extends Controller
 
     public function __construct()
     {
-        $this->shop = Cache::rememberForever('shop', function() {
+        $this->shop = Cache::rememberForever('shop', function () {
             return Store::first();
         });
     }
@@ -24,13 +24,13 @@ class FrontController extends Controller
     {
         $title = $this->shop->name;
 
-        if($this->shop->slogan) {
+        if ($this->shop->slogan) {
             $title = $title . ' | ' . $this->shop->slogan;
         }
         return View::vue([
             'title' => $title,
             'description' => $this->shop->description,
-            'featured_image' => $this->shop->logo_path? url($this->shop->logo_path) : null,
+            'featured_image' => $this->shop->logo_path ? url($this->shop->logo_path) : null,
         ]);
     }
     public function products()
@@ -38,18 +38,21 @@ class FrontController extends Controller
         return View::vue([
             'title' => 'Produk Katalog | ' . $this->shop->name,
             'description' => $this->shop->description,
-            'featured_image' => $this->shop->logo_path? url($this->shop->logo_path) : null,
+            'featured_image' => $this->shop->logo_path ? url($this->shop->logo_path) : null,
         ]);
     }
     public function productDetail($slug)
     {
-       $product =  Product::select('id', 'title', 'description')->with(['featuredImage'])
+        $product =  Product::select('id', 'title', 'description')->with(['featuredImage'])
             ->withCount('reviews')
             ->withAvg('reviews', 'rating')
-            ->where('slug', $slug) 
+            ->where('slug', $slug)
             ->first();
+        if (!$product) {
+            return redirect('/');
+        }
 
-        $desc= $product->description ? $this->createTeaser($product->description) : $this->shop->description;
+        $desc = $product->description ? $this->createTeaser($product->description) : $this->shop->description;
 
         $schema = $this->getSingleProductSchema($product);
 
@@ -59,29 +62,27 @@ class FrontController extends Controller
             'featured_image' => $product->featuredImage->src,
             'json_schema' => $schema
         ]);
-
     }
     public function productCategory(Category $category)
     {
         return View::vue([
             'title' => $category->title . ' | ' . $this->shop->name,
-            'description' => $category->description?? $this->shop->description,
+            'description' => $category->description ?? $this->shop->description,
             'featured_image' => url('/upload/images/' . $category->filename),
         ]);
-
     }
     public function postIndex()
     {
         return View::vue([
             'title' => 'Artikel | ' . $this->shop->name,
             'description' => $this->shop->description,
-            'featured_image' => $this->shop->logo_path? url($this->shop->logo_path) : null,
+            'featured_image' => $this->shop->logo_path ? url($this->shop->logo_path) : null,
         ]);
     }
     public function postDetail($slug)
     {
-        $post = Post::select('id','title', 'body', 'image')->where('slug', $slug)->first();
-        
+        $post = Post::select('id', 'title', 'body', 'image')->where('slug', $slug)->first();
+
         return View::vue([
             'title' => $post->title . ' | ' . $this->shop->name,
             'description' => $this->createTeaser($post->body),
@@ -98,7 +99,7 @@ class FrontController extends Controller
     public function any()
     {
         $title = $this->shop->name;
-        if($this->shop->slogan) {
+        if ($this->shop->slogan) {
             $title = $title . ' | ' . $this->shop->slogan;
         }
         return View::vue([
@@ -106,7 +107,7 @@ class FrontController extends Controller
         ]);
     }
     public function clearCache()
-    {   
+    {
         Cache::flush();
         return redirect('/');
     }
@@ -116,19 +117,18 @@ class FrontController extends Controller
         $products = Product::select('id', 'slug', 'updated_at')->get();
         $posts = Post::select('id', 'slug', 'updated_at')->get();
         return response()->view('sitemap', compact('categories', 'products', 'posts'))
-        ->header('Content-Type', 'text/xml');
-        
+            ->header('Content-Type', 'text/xml');
     }
     protected function createTeaser($html)
     {
         $str = strip_tags($html);
 
-        return substr($str, 0, 155) .'..'; 
+        return substr($str, 0, 155) . '..';
     }
     protected function getSingleProductSchema($product)
     {
-        $desc= $product->description ? $this->createTeaser($product->description) : $this->shop->description;
-        $rating= $product->reviews_avg_rating ? number_format($product->reviews_avg_rating, 1) : 0;
+        $desc = $product->description ? $this->createTeaser($product->description) : $this->shop->description;
+        $rating = $product->reviews_avg_rating ? number_format($product->reviews_avg_rating, 1) : 0;
 
         $data = [
             "@context" => "https://schema.org",
@@ -137,23 +137,23 @@ class FrontController extends Controller
             "name" => $product->title,
             "image" => $product->featuredImage->src,
             "offers" => [
-              "@type" => "Offer",
-              "availability" => "https://schema.org/InStock",
-              "price" => $product->price,
-              "priceCurrency" => "IDR"
+                "@type" => "Offer",
+                "availability" => "https://schema.org/InStock",
+                "price" => $product->price,
+                "priceCurrency" => "IDR"
             ],
             "aggregateRating" => [
-              "@type" => "AggregateRating",
-              "ratingValue" => "$rating",
-              "reviewCount" => "$product->reviews_count",
+                "@type" => "AggregateRating",
+                "ratingValue" => "$rating",
+                "reviewCount" => "$product->reviews_count",
             ],
             "review" => [
-              "@type" => "Review",
-              "reviewRating" => [
-                "@type" => "Rating",
-                "ratingValue" => "$rating",
-                "bestRating" => "5"
-              ]
+                "@type" => "Review",
+                "reviewRating" => [
+                    "@type" => "Rating",
+                    "ratingValue" => "$rating",
+                    "bestRating" => "5"
+                ]
             ]
         ];
 

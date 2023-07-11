@@ -2,11 +2,9 @@
   <q-page class="q-pb-xl">
     <q-header :class="getHeaderColorBrand">
       <q-toolbar>
-        <q-btn :to="{name: 'Settings'}"
-          flat round dense
-          icon="eva-arrow-back" />
+        <q-btn :to="{ name: 'Settings' }" flat round dense icon="eva-arrow-back" />
         <q-toolbar-title>
-         List Pesanan
+          List Pesanan
         </q-toolbar-title>
       </q-toolbar>
       <div class="box-shadow bg-white text-dark">
@@ -15,15 +13,14 @@
         </q-tabs>
       </div>
     </q-header>
-   <div class="q-py-md auto-padding-side">
+    <div class="q-py-md auto-padding-side">
       <div class="q-gutter-x-sm q-mt-sm">
-          <q-input v-model="search" 
-          placeholder="No invoice, nama, email atau ponsel customer" 
-          dense borderless clearable class="bg-grey-3 q-px-sm" @keypress.enter="handleSearchOrder" @clear="clearSearch">
-            <template v-slot:append>
-              <q-icon name="eva-search" class="cursor-pointer" @click="handleSearchOrder"></q-icon>
-            </template>
-          </q-input>
+        <q-input v-model="search" placeholder="No invoice, nama, email atau ponsel customer" dense borderless clearable
+          class="bg-grey-3 q-px-sm" @keypress.enter="handleSearchOrder" @clear="clearSearch">
+          <template v-slot:append>
+            <q-icon name="eva-search" class="cursor-pointer" @click="handleSearchOrder"></q-icon>
+          </template>
+        </q-input>
       </div>
     </div>
     <template v-if="orders.count > 0">
@@ -32,7 +29,7 @@
         <q-list separator>
           <q-item class="bg-grey-2">
             <q-item-section side class="gt-xs">
-            #
+              #
             </q-item-section>
             <q-item-section>
               <q-item-label>Detail</q-item-label>
@@ -43,7 +40,7 @@
           </q-item>
           <q-item v-for="(order, index) in orders.data" :key="index">
             <q-item-section side top class="gt-xs">
-              {{ index+1 }}
+              {{ index + 1 }}
             </q-item-section>
             <q-item-section top>
               <div>
@@ -54,7 +51,7 @@
                   </tr>
                   <tr>
                     <td>Invoice</td>
-                    <td>{{ order.order_ref}}</td>
+                    <td>{{ order.order_ref }}</td>
                   </tr>
                   <tr>
                     <td>Tanggal</td>
@@ -64,28 +61,31 @@
                     <td>Total</td>
                     <td>{{ moneyIDR(order.grand_total) }}</td>
                   </tr>
-                  
+
                   <tr>
                     <td>Status</td>
                     <td>
                       <q-badge :color="getOrderStatusColor(order.order_status)">{{ order.status_label }}</q-badge>
                     </td>
                   </tr>
-                  
+
                   <tr>
                     <td>Pembayaran</td>
-                    <td> 
-                      <q-badge :color="getOrderStatusColor(order.transaction.status)">{{ order.transaction.status_label }} </q-badge>
-                      
-                      <span class="text-xs q-pl-xs">({{ order.transaction? order.transaction.payment_method.split('_').join(' ') : '' }})</span>
+                    <td>
+                      <q-badge :color="getOrderStatusColor(order.transaction.status)">{{ order.transaction.status_label }}
+                      </q-badge>
+
+                      <span class="text-xs q-pl-xs">({{ order.transaction ?
+                        order.transaction.payment_method.split('_').join(' ') : '' }})</span>
                     </td>
                   </tr>
                   <tr>
                     <td>Pengiriman</td>
-                    <td>{{ order.shipping_courier_name == 'COD' ? 'Diantar Kurir Toko' : order.shipping_courier_name }}</td>
+                    <td>{{ order.shipping_courier_name == 'COD' ? 'Diantar Kurir Toko' : order.shipping_courier_name }}
+                    </td>
                   </tr>
-                  
-                  <tr v-if="order.shipping_courier_code ">
+
+                  <tr v-if="order.shipping_courier_code">
                     <td>No Resi</td>
                     <td>{{ order.shipping_courier_code }}</td>
                   </tr>
@@ -94,58 +94,64 @@
             </q-item-section>
             <q-item-section side top>
               <div class="q-gutter-xs column order-btn-group">
-                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" label="Detail" color="purple" :to="{name: 'AdminOrderShow', params: {order_ref: order.order_ref}}"></q-btn>
+                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" label="Detail"
+                  color="purple" :to="{ name: 'AdminOrderShow', params: { order_ref: order.order_ref } }"></q-btn>
 
-                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" @click="handleFollowUp(order)" :label="messageButtonLabel(order.order_status)" color="amber-9"></q-btn>
+                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px"
+                  @click="handleFollowUp(order)" :label="messageButtonLabel(order.order_status)" color="amber-9"></q-btn>
 
 
-                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canInputResi(order)" label="Input Resi" color="teal" @click="handleInputResi(order)"></q-btn>
+                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canInputResi(order)"
+                  label="Input Resi" color="teal" @click="handleInputResi(order)"></q-btn>
 
-                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canShip(order)" :label="order.shipping_courier_name == 'COD' ? 'Antar COD' : 'Kirim'" color="blue" @click="handleKirim(order)"></q-btn>
+                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canShip(order)"
+                  :label="order.shipping_courier_name == 'COD' ? 'Antar COD' : 'Kirim'" color="blue"
+                  @click="handleKirim(order)"></q-btn>
 
-                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canComplete(order)" label="Order Selesai" color="green" @click="handleCompletionOrder(order)"></q-btn>
+                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canComplete(order)"
+                  label="Order Selesai" color="green" @click="handleCompletionOrder(order)"></q-btn>
 
-                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canConfirm(order)" label="Konfirmasi" color="blue" @click="handleConfirmationOrder(order)"></q-btn>
+                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canConfirm(order)"
+                  label="Konfirmasi" color="blue" @click="handleConfirmationOrder(order)"></q-btn>
 
-                  <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canCancelOrder(order)" label="Batalkan" color="red" @click="handleCancelOrder(order)"></q-btn>
+                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px"
+                  v-if="canCancelOrder(order)" label="Batalkan" color="red" @click="handleCancelOrder(order)"></q-btn>
 
-                  <!-- <q-btn unelevated no-caps padding="6px 12px" size="12px" label="Hapus" color="red-7" @click="handleDeleteOrder(order.id)"></q-btn> -->
+                <!-- <q-btn unelevated no-caps padding="6px 12px" size="12px" label="Hapus" color="red-7" @click="handleDeleteOrder(order.id)"></q-btn> -->
               </div>
             </q-item-section>
           </q-item>
         </q-list>
       </div>
       <div class="flex justify-center q-py-xl">
-        <q-btn outline :loading="orders.isLoadMore" v-if="orders.count > orders.data.length" label="loadmore..." @click="loadMore" unelevated color="primary"></q-btn>
+        <q-btn outline :loading="orders.isLoadMore" v-if="orders.count > orders.data.length" label="loadmore..."
+          @click="loadMore" unelevated color="primary"></q-btn>
       </div>
     </template>
-      <div v-if="orders.ready && orders.count <= 0" class="text-center q-pt-xl">Tidak ada data</div>
+    <div v-if="orders.ready && orders.count <= 0" class="text-center q-pt-xl">Tidak ada data</div>
     <q-dialog v-model="followUpModal" persistent>
-      <follow-up @close="followUpModal= false" :order="currentOrder" />
+      <follow-up @close="followUpModal = false" :order="currentOrder" />
     </q-dialog>
 
     <q-dialog v-model="inputResiModal">
       <q-card square style="width:100%;max-width:420px;">
-        <div class="q-px-md q-py-sm bg-dark text-white text-weight-bold">Input Resi  <span v-if="orderSelected"># {{ orderSelected.order_ref }}</span></div>
-       <form @submit.prevent="submitResi" >
-        <q-card-section>
-          <div class="text-grey-8">No Resi</div>
-            <q-input 
-            outlined
-            v-model="form.resi"
-            :rules="[val => val && val.length > 0 || 'Wajib diisi']"
-            />
+        <div class="q-px-md q-py-sm bg-dark text-white text-weight-bold">Input Resi <span v-if="orderSelected"># {{
+          orderSelected.order_ref }}</span></div>
+        <form @submit.prevent="submitResi">
+          <q-card-section>
+            <div class="text-grey-8">No Resi</div>
+            <q-input outlined v-model="form.resi" :rules="[val => val && val.length > 0 || 'Wajib diisi']" />
             <q-checkbox label="Update Status ( Dikirim )" v-model="form.update_to_ship"></q-checkbox>
-          <div class="flex justify-end q-mt-sm q-gutter-x-sm">
-            <q-btn outline label="Batal" @click.prevent="closeModal" color="primary"></q-btn>
-            <q-btn unelevated type="submit" label="Simpan" color="primary"></q-btn>
-          </div>
-        </q-card-section>
-       </form>
+            <div class="flex justify-end q-mt-sm q-gutter-x-sm">
+              <q-btn outline label="Batal" @click.prevent="closeModal" color="primary"></q-btn>
+              <q-btn unelevated type="submit" label="Simpan" color="primary"></q-btn>
+            </div>
+          </q-card-section>
+        </form>
       </q-card>
     </q-dialog>
     <q-inner-loading :showing="loading">
-       
+
     </q-inner-loading>
   </q-page>
 </template>
@@ -160,13 +166,13 @@ export default {
     return {
       isFilter: true,
       options: [
-       { value: 'ALL', label: 'Semua'},
-       { value: 'PENDING', label: 'Pending' },
-       { value: 'TOSHIP', label: 'Perlu Dikirim' },
-       { value: 'SHIPPING', label: 'Dikirim'}, 
-       { value: 'COMPLETE', label: 'Selesai'},
-       { value: 'CANCELED', label: 'Batal'}
-        ],
+        { value: 'ALL', label: 'Semua' },
+        { value: 'PENDING', label: 'Pending' },
+        { value: 'TOSHIP', label: 'Perlu Dikirim' },
+        { value: 'SHIPPING', label: 'Dikirim' },
+        { value: 'COMPLETE', label: 'Selesai' },
+        { value: 'CANCELED', label: 'Batal' }
+      ],
       inputResiModal: false,
       orderSelected: '',
       followUpModal: false,
@@ -182,8 +188,8 @@ export default {
     }
   },
   watch: {
-    'filter': function(newVal, oldVal) {
-      if(newVal != oldVal) {
+    'filter': function (newVal, oldVal) {
+      if (newVal != oldVal) {
         this.form.status = newVal
         localStorage.setItem('order_filter', newVal)
         this.filterOrder(newVal)
@@ -200,18 +206,18 @@ export default {
     }
   },
   created() {
-    if(this.orders.data.length <= this.orders.limit) {
+    if (this.orders.data.length <= this.orders.limit) {
 
-      if(this.$route.query.filter) {
+      if (this.$route.query.filter) {
         this.setFilter(this.$route.query.filter)
         this.filterOrder(this.filter)
-  
-      } else if(localStorage.getItem('order_filter')) {
+
+      } else if (localStorage.getItem('order_filter')) {
 
         this.setFilter(localStorage.getItem('order_filter'))
         this.filterOrder(this.filter)
 
-      }else {
+      } else {
         this.getOrders()
       }
 
@@ -236,7 +242,7 @@ export default {
       this.setFilter('ALL')
     },
     changeTab(evt) {
-      this.$router.push({ name: 'OrderIndex', query: { filter: evt }})
+      this.$router.push({ name: 'OrderIndex', query: { filter: evt } })
       this.search = ''
       this.filterOrder(evt)
     },
@@ -256,8 +262,8 @@ export default {
       this.updateStatusOrder(this.form).then(() => {
         this.setFilter(this.form.status)
         this.filterOrder(this.filter)
-        
-      }).finally(() =>  this.$store.commit('SET_LOADING', false))
+
+      }).finally(() => this.$store.commit('SET_LOADING', false))
     },
     handleCancelOrder(order) {
       this.$q.dialog({
@@ -275,18 +281,18 @@ export default {
     },
     canShip(order) {
 
-      if(order.transaction.payment_type == 'COD' && order.order_status == 'PENDING') {
+      if (order.transaction.payment_type == 'COD' && order.order_status == 'PENDING') {
         return true
       }
 
-      if(order.shipping_courier_name == 'COD' && order.order_status == 'TOSHIP') {
+      if (order.shipping_courier_name == 'COD' && order.order_status == 'TOSHIP') {
         return true
-      } 
+      }
 
-      if(order.order_status == 'TOSHIP' && order.shipping_courier_code) {
+      if (order.order_status == 'TOSHIP' && order.shipping_courier_code) {
         return true
-      } 
-      
+      }
+
       return false
 
     },
@@ -297,7 +303,7 @@ export default {
       return order.order_status == 'PENDING'
     },
     handleCompletionOrder(order) {
-    
+
       this.$q.dialog({
         title: 'Konfirmasi',
         message: 'Ini akan merubah status pesanan menjadi "selesai" dan status pembayaran jadi "Dibayar" apabila menggunakan pembayaran COD',
@@ -307,10 +313,10 @@ export default {
         this.form.order_id = order.id
         this.handleUpdateStatusOrder()
       })
-      
+
     },
     handleSearchOrder() {
-      if(this.search) {
+      if (this.search) {
 
         this.$store.commit('SET_LOADING', true)
         this.searchOrder(this.search)
@@ -322,16 +328,16 @@ export default {
       this.setFilter('ALL')
     },
     canConfirm(order) {
-      if(order.order_status == 'PENDING' && order.transaction.payment_type != 'COD' && order.transaction.status == 'UNPAID') {
+      if (order.order_status == 'PENDING' && order.transaction.payment_type != 'COD' && order.transaction.status == 'UNPAID') {
         return true
       }
       return false
     },
     canInputResi(order) {
-      if(order.shipping_courier_name == 'COD') {
+      if (order.shipping_courier_name == 'COD') {
         return false
       } else {
-        if(order.order_status == 'TOSHIP' && !order.shipping_courier_code) { 
+        if (order.order_status == 'TOSHIP' && !order.shipping_courier_code) {
           return true
         } else {
           return false
@@ -340,29 +346,29 @@ export default {
 
     },
     messageButtonLabel(status) {
-      if(status == 'PENDING') return 'Follow Up'
+      if (status == 'PENDING') return 'Follow Up'
       return 'Kirim Pesan'
     },
     handleDeleteOrder(id) {
       this.$q.dialog({
         title: 'Yakin akan menghapus data?',
         message: 'data yang dihapus tidak dapat dikembalikan.',
-        ok: {label: 'Hapus', flat: true, 'no-caps': true, 'color' :'red-7'},
-        cancel: {label: 'Batal', flat: true, 'no-caps': true },
-        }).onOk(() => {
-          this.destroyOrder(id).then(response => {
-              if(response.status == 200) {
-                this.filterOrder(this.filter)
-              }
-            })
-        }).onCancel(() => {
-        }).onDismiss(() => {
+        ok: { label: 'Hapus', flat: true, 'no-caps': true, 'color': 'red-7' },
+        cancel: { label: 'Batal', flat: true, 'no-caps': true },
+      }).onOk(() => {
+        this.destroyOrder(id).then(response => {
+          if (response.status == 200) {
+            this.filterOrder(this.filter)
+          }
+        })
+      }).onCancel(() => {
+      }).onDismiss(() => {
       })
     },
     handleConfirmationOrder(order) {
       let msg = 'Pastikan pembayaran telah anda terima dengan baik';
       let title = 'Konfirmasi'
-      if(order.transaction.payment_type == 'PAYMENT_GATEWAY') {
+      if (order.transaction.payment_type == 'PAYMENT_GATEWAY') {
         msg = '<b>WARNING!</b>, Metode pembayaran menggunakan payment gateway, Seharusnya status pesanan dan status pembayaran akan <b>otomatis</b> berubah jika sudah terjadi pembayaran di pihak payment gateway. Sangat tidak disarankan untuk merubah status secara manual'
 
         title = 'Konfirmasi Manual'
@@ -371,15 +377,15 @@ export default {
         title: 'Konfirmasi pembayaran',
         message: msg,
         cancel: true,
-        ok: { label: title, flat: true},
+        ok: { label: title, flat: true },
         html: true,
-        }).onOk(() => {
-          this.acceptPayment(order.id).then(() => {
-            this.setFilter('TOSHIP')
-            this.filterOrder(this.filter)
-          })
-        }).onCancel(() => {
-        }).onDismiss(() => {
+      }).onOk(() => {
+        this.acceptPayment(order.id).then(() => {
+          this.setFilter('TOSHIP')
+          this.filterOrder(this.filter)
+        })
+      }).onCancel(() => {
+      }).onDismiss(() => {
       })
     },
     handleFollowUp(data) {
@@ -399,11 +405,11 @@ export default {
     },
     submitResi() {
       this.inputResi(this.form).then((res) => {
-        if(res.status == 200) {
+        if (res.status == 200) {
           let status = res.data.results.order_status
           this.setFilter(status)
+          this.filterOrder(this.filter)
         }
-        this.filterOrder(this.filter)
       })
       this.closeModal()
     }
@@ -413,6 +419,6 @@ export default {
       title: 'Order List',
     }
   }
-  
+
 }
 </script>
