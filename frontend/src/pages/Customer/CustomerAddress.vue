@@ -39,7 +39,7 @@
     <q-inner-loading :showing="loading"></q-inner-loading>
     <q-dialog v-model="formAddressModal" persistent>
       <q-card class="card-lg">
-        <q-card-section v-if="user && user.address.length">
+        <q-card-section v-if="user">
           <div class="card-title flex justify-between">
             <div>{{ formAddress._method == 'PUT' ? 'Edit' : 'Tambah' }} Alamat</div>
             <div class="q-gutter-x-sm">
