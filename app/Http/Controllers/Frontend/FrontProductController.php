@@ -19,11 +19,11 @@ class FrontProductController extends Controller
     {
         $this->productRepository = $productRepository;
 
-        if(request('limit')) {
+        if (request('limit')) {
             $this->limit = request('limit');
         }
     }
-    
+
     public function getProducts(Request $request)
     {
 
@@ -32,13 +32,10 @@ class FrontProductController extends Controller
             $order_by = $request->order_by ?? 'DESC';
 
             return new ProductListCollection($this->productRepository->getAll($per_page, $order_by));
-
         } catch (Exception $e) {
 
             return ApiResponse::failed($e);
         }
-
-
     }
 
     public function getProductsFavorites(Request $request)
@@ -50,16 +47,14 @@ class FrontProductController extends Controller
         try {
 
             return new ProductListCollection($this->productRepository->getManyInId($request->pids));
-
         } catch (Exception $e) {
 
             return ApiResponse::failed($e);
         }
-
     }
 
     public function productsByCategory(Request $request)
-    {     
+    {
 
         try {
 
@@ -73,43 +68,39 @@ class FrontProductController extends Controller
             $data = $this->productRepository->getProductByCategory($id, $per_page, $offset, $order_by, $is_subcategory);
 
             return ApiResponse::success($data);
-            
         } catch (Exception $e) {
 
             return ApiResponse::failed($e);
         }
-       
     }
 
     public function searchProduct($key)
     {
-        
+
         try {
-            
+
             $key = filter_var($key, FILTER_SANITIZE_SPECIAL_CHARS);
 
-            if(!$key) {
-               throw new Exception('Search keyword invalid');
-             }
-             
+            if (!$key) {
+                throw new Exception('Search keyword invalid');
+            }
+
             return new ProductListCollection($this->productRepository->search($key));
- 
-         } catch (Exception $e) {
- 
-             return ApiResponse::failed($e);
-         }
+        } catch (Exception $e) {
+
+            return ApiResponse::failed($e);
+        }
     }
 
     public function productDetail($slug)
     {
-       
+
         try {
-            
+
             return new ProductResource($this->productRepository->getSingleProduct($slug));
+        } catch (Exception $e) {
 
-       } catch (Exception $e) {
-
-           return ApiResponse::failed($e);
-       }
+            return ApiResponse::failed($e);
+        }
     }
 }
