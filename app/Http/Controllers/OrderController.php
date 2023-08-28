@@ -34,6 +34,9 @@ class OrderController extends Controller
             }
             if ($filter && $filter != 'ALL') {
                 $instance->where('order_status', $filter);
+                $instance->orderByDesc('updated_at');
+            } else {
+                $instance->latest();
             }
 
             $this->data['count'] = $instance->count();
@@ -44,7 +47,7 @@ class OrderController extends Controller
                     $instance->skip($this->data['skip'])->take($this->data['limit']);
                 }
 
-                $this->data['data'] = $instance->orderByDesc('updated_at')->get();
+                $this->data['data'] = $instance->get();
             }
 
             return ApiResponse::success($this->data);
