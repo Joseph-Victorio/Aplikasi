@@ -31,7 +31,5 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\Config::create();
-
-        \App\Models\MailConfig::create();
     }
 }
