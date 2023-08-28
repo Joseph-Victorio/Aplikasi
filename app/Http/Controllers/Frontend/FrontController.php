@@ -92,8 +92,8 @@ class FrontController extends Controller
     public function showInvoice($id)
     {
         return View::vue([
-            'title' => "Invoice #$id",
-            'description' => "Detail tagihan invoice #$id - " . $this->shop->name,
+            'title' => "Pesanan $id",
+            'description' => "Detail pesanan " . $this->shop->name,
         ]);
     }
     public function any()
