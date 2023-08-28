@@ -38,7 +38,13 @@ export default {
   },
   methods: {
     submitMessage() {
-      let url = `https://api.whatsapp.com/send?phone=${this.formatPhoneNumber(this.order.customer_phone)}&text=${encodeURI(this.message)}`
+
+      let whatsappUrl = 'https://api.whatsapp.com'
+      if (this.$q.platform.is.desktop) {
+        whatsappUrl = 'https://web.whatsapp.com'
+      }
+
+      let url = `${whatsappUrl}/send?phone=${this.formatPhoneNumber(this.order.customer_phone)}&text=${encodeURI(this.message)}`
       window.open(url, '_blank')
     },
     money(number) {
