@@ -17,7 +17,7 @@ class CreateConfigsTable extends Migration
             $table->id();
             $table->string('theme')->nullable()->default('default');
             $table->string('theme_color')->nullable()->default('#1bb90d');
-            $table->string('accent_color', 20)->default('#ff8f00');
+            $table->string('accent_color', 20)->default('#1bb90d');
             $table->string('secondary_color', 20)->default('#ec0d0d');
             $table->string('primary_color', 20)->default('#0082ad');
             $table->string('home_view_mode')->nullable()->default('grid');
