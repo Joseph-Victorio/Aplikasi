@@ -153,6 +153,14 @@ export default {
 
       return formatted;
     },
+    getRoutePath(orderRef) {
+      let props = this.$router.resolve({
+        name: 'UserInvoice',
+        params: { order_ref: orderRef },
+      });
+
+      return location.origin + props.href;
+    },
     formatAddressCod(addr) {
       let arr = addr.split('<br>')
       return arr.join('\n')
@@ -221,7 +229,7 @@ export default {
           setTimeout(() => {
             this.$router.push({ name: 'UserInvoice', params: { order_ref: order.order_ref } })
           }, 500)
-          this.redirectWhatsapp()
+          this.redirectWhatsapp(order)
         }
       }).catch(() => {
         this.$q.loading.hide()
@@ -233,7 +241,10 @@ export default {
 
 
     },
-    redirectWhatsapp() {
+    redirectWhatsapp(order) {
+
+      let routeInvoiceLink = this.getRoutePath(order.order_ref)
+
       let whatsappUrl = 'https://api.whatsapp.com'
       if (this.$q.platform.is.desktop) {
         whatsappUrl = 'https://web.whatsapp.com'
@@ -261,7 +272,8 @@ export default {
       str += `*Nama:*\n ${this.formOrder.customer_name} (${this.formOrder.customer_phone})\n\n`
       str += `*Alamat:*\n${this.formatAddressCod(this.formOrder.customer_address)}\n\n`
       str += `Kurir: ${this.formOrder.shipping_courier_name}\n`
-      str += `Servis: ${this.formOrder.shipping_courier_service}\n`
+      str += `Servis: ${this.formOrder.shipping_courier_service}\n\n`
+      str += `Ref Order: ${routeInvoiceLink}\n`
 
       let link = whatsappUrl + '/send?phone=' + whatsapp + '&text=' + encodeURI(str);
 
