@@ -2,19 +2,22 @@
   <div>
     <div id="categories" v-if="categories.ready && categories.data.length > 1" class="auto-padding block-container">
       <div class="block-heading">
-        <div class="block-title"><h2>Kategori</h2></div>
+        <div class="block-title">
+          <h2>Kategori</h2>
+        </div>
       </div>
       <div class="block-content q-pb-sm">
         <div class="overflow-hidden">
           <vue-glide :options="glideOptions">
             <vue-glide-slide v-for="cat in categories.data" :key="cat.id">
               <div class="column full-height relative bg-white">
-                <q-img v-if="cat.src" :src="cat.src" ratio="1" @click="openCategory(cat.id)" class="cursor-pointer rounded-borders">
+                <q-img v-if="cat.image" :src="cat.image.src" ratio="1" @click="openCategory(cat.id)"
+                  class="cursor-pointer rounded-borders">
                 </q-img>
               </div>
               <div class="text-category-auto text-center q-mt-xs">{{ cat.title }}</div>
             </vue-glide-slide>
-          </vue-glide> 
+          </vue-glide>
         </div>
       </div>
     </div>
@@ -26,9 +29,9 @@
 // import CategorySkeleton from '../../shared-components/CategorySkeleton.vue'
 export default {
   name: 'CategoryCarousel',
-  data () {
+  data() {
     return {
-       glideOptions: {
+      glideOptions: {
         rewind: false,
         perView: 5,
         gap: 16,
@@ -51,18 +54,18 @@ export default {
       return this.$store.state.front.categories
     },
   },
- mounted() {
+  mounted() {
     this.setGlideOptions()
   },
   methods: {
     setGlideOptions() {
-      if(this.categories.length == 4) {
+      if (this.categories.length == 4) {
         this.glideOptions.perView = 4
       }
     },
     openCategory(id) {
-      if(id) {
-        this.$router.push({name: 'ProductCategory', params: {id:id}})
+      if (id) {
+        this.$router.push({ name: 'ProductCategory', params: { id: id } })
       }
     }
   }

@@ -37,14 +37,14 @@
 
         <div class="text-md text-weight-bold q-pa-sm q-mt-sm">Navigation</div>
         <q-list dark dense>
-          <q-item clickable @click="$router.push('/')">
+          <!-- <q-item clickable @click="$router.push('/')">
             <q-item-section side top>
               <q-icon color="white" name="eva-home-outline" />
             </q-item-section>
             <q-item-section>
               Beranda
             </q-item-section>
-          </q-item>
+          </q-item> -->
           <q-item clickable @click="$router.push({ name: 'ProductIndex' })">
             <q-item-section side top>
               <q-icon color="white" name="eva-shopping-bag-outline" />

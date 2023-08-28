@@ -1,8 +1,7 @@
 <template>
   <div id="product-block" v-if="categories.available">
     <template v-for="category in categories.data">
-      <div :key="category.id" v-if="canGetProduct(category)" 
-        class="block-container bg-linear">
+      <div :key="category.id" v-if="canGetProduct(category)" class="block-container bg-linear">
         <ProductBlockObserver :category="category" />
       </div>
     </template>
@@ -13,7 +12,6 @@
 import { mapState } from 'vuex'
 import ProductBlockObserver from './ProductBLockObserver.vue'
 export default {
-  props: ['products'],
   components: { ProductBlockObserver },
   computed: {
     ...mapState({
@@ -22,8 +20,8 @@ export default {
   },
   methods: {
     canGetProduct(category) {
-      if(category.is_front) {
-        if(category.child_products_count > 0 || category.products_count > 0) {
+      if (category.is_front) {
+        if (category.child_products_count > 0 || category.products_count > 0) {
           return true
         }
       }

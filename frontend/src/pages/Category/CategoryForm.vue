@@ -16,7 +16,7 @@
           v-model="form.category_id" />
         <q-input required filled label="Title" v-model="form.title" />
         <q-input required filled mask="####" label="Urutan" v-model="form.weight" />
-        <q-input filled type="textarea" rows="3" label="Deskripsi" v-model="form.description" />
+        <q-input filled type="textarea" rows="3" label="Meta Deskripsi (SEO)" v-model="form.description" />
         <div class="border rounded q-pa-sm">
           <div>
             <q-toggle v-model="form.is_front" label="Tampilkan produk di beranda"></q-toggle>

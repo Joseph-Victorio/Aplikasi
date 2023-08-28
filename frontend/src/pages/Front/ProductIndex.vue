@@ -1,18 +1,17 @@
 <template>
   <q-page class="q-pb-xl bg-grey-1">
     <q-header class="text-grey-9 bg-white box-shadow">
-       <q-toolbar>
-         <q-btn :to="{name: 'Home'}"
-            flat round dense
-            icon="eva-arrow-back" />
-          <q-toolbar-title class="text-weight-bold brand">{{ title }}</q-toolbar-title>
-          <shopping-cart  />
-       </q-toolbar>
+      <q-toolbar>
+        <q-btn :to="{ name: 'Home' }" flat round dense icon="eva-arrow-back" />
+        <q-toolbar-title class="text-weight-bold brand">{{ title }}</q-toolbar-title>
+        <shopping-cart />
+      </q-toolbar>
     </q-header>
     <product-section :title="title" :products="products"></product-section>
     <div class="flex justify-center q-py-lg" v-if="products && products.links">
-     <q-btn label="loadmore" color="primary" outline :loading="isLoadmore" v-if="products.links.next" @click="paginate(products.links.next)"></q-btn>
-   </div>
+      <q-btn label="loadmore" color="primary" outline :loading="isLoadmore" v-if="products.links.next"
+        @click="paginate(products.links.next)"></q-btn>
+    </div>
   </q-page>
 </template>
 
@@ -45,23 +44,23 @@ export default {
       this.isLoadmore = true
 
       let param = {
-          per_page: this.config.catalog_product_limit,
-          order_by: this.config.catalog_product_sort,
-        }
-        url += `&${new URLSearchParams(param).toString()}`
+        per_page: this.config.catalog_product_limit,
+        order_by: this.config.catalog_product_sort,
+      }
+      url += `&${new URLSearchParams(param).toString()}`
 
       Api().get(url).then(response => {
-        if(response.status == 200) {
+        if (response.status == 200) {
           this.$store.commit('product/PAGINATE_PRODUCTS', response.data)
         }
-      }).finally(() =>  this.isLoadmore = false)
+      }).finally(() => this.isLoadmore = false)
     },
   },
   created() {
-    if(this.$route.query.q){
+    if (this.$route.query.q) {
       this.title = 'Produk ' + this.$route.query.q
     }
-    if(!this.products.data.length) {
+    if (!this.products.data.length) {
       this.$store.dispatch('product/getProducts', {
         per_page: this.config.catalog_product_limit,
         order_by: this.config.catalog_product_sort,
@@ -74,27 +73,30 @@ export default {
       meta: {
         description: { name: 'description', content: this.description },
         ogDescription: { name: 'og:description', content: this.description },
-        ogTitle:  { name: 'og:title', content: this.title },
-        ogUrl:  { name: 'og:url', content: location.href },
+        ogTitle: { name: 'og:title', content: this.title },
+        ogUrl: { name: 'og:url', content: location.href },
       }
-      
+
     }
   }
 }
 </script>
 <style lang="scss">
 .relative {
-  position:relative;
+  position: relative;
 }
+
 .absolute {
-  position:absolute;
-  &__top-right{
-    top:0;
-    right:0;
+  position: absolute;
+
+  &__top-right {
+    top: 0;
+    right: 0;
   }
 }
+
 .mini .q-field__marginal,
-.mini .q-field__control{
- height: 30px;
+.mini .q-field__control {
+  height: 30px;
 }
 </style>
