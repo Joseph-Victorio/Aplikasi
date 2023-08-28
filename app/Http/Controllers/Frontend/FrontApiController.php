@@ -9,7 +9,6 @@ use App\Models\Store;
 use App\Models\Config;
 use App\Models\Slider;
 use App\Models\Category;
-use App\Models\BankAccount;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -32,14 +31,14 @@ class FrontApiController extends Controller
     }
     public function getInitialData()
     {
-        $data['sliders'] = Cache::rememberForever('sliders', function() {
+        $data['sliders'] = Cache::rememberForever('sliders', function () {
             return Slider::OrderBy('weight', 'asc')->get();
         });
-        
+
         $data['blocks'] = Cache::rememberForever('blocks', function () {
             return Block::with('post:id,title,slug')
-            ->OrderBy('weight', 'asc')
-            ->get();
+                ->OrderBy('weight', 'asc')
+                ->get();
         });
 
         $data['shop'] = Cache::rememberForever('shop', function () {
@@ -59,10 +58,9 @@ class FrontApiController extends Controller
             return Config::first();
         });
 
-        $data['product_promo'] = Cache::remember('product_promo', now()->addMinutes(3),  function() {
+        $data['product_promo'] = Cache::remember('product_promo', now()->addMinutes(3),  function () {
 
             return $this->productRepository->getProductPromo();
-
         });
 
         $data['sess_id'] = Str::random(49);
@@ -72,7 +70,7 @@ class FrontApiController extends Controller
 
     public function getSliders()
     {
-        $data = Cache::rememberForever('sliders', function() {
+        $data = Cache::rememberForever('sliders', function () {
             return Slider::OrderBy('weight', 'asc')->get();
         });
 
@@ -95,38 +93,38 @@ class FrontApiController extends Controller
     {
         $data = [];
 
-        if($request->with) {
-            if($request->with == 'parent') {
+        if ($request->with) {
+            if ($request->with == 'parent') {
                 $data = Category::withParent()->get();
             }
-            if($request->with == 'child') {
+            if ($request->with == 'child') {
                 $data = Category::withChilds()->get();
             }
-        }else if($request->only){
-            if($request->only == 'parent') {
+        } else if ($request->only) {
+            if ($request->only == 'parent') {
                 $data = Category::onlyParents()->get();
             }
-            if($request->only == 'child') {
+            if ($request->only == 'child') {
                 $data = Category::onlyChilds()->get();
             }
-        }else {
-            
+        } else {
+
             $data = Category::all();
         }
-            
+
         return ApiResponse::success($data);
     }
     public function getAllCategories()
     {
         $data = Category::all();
-            
+
         return ApiResponse::success($data);
     }
 
     public function showCategory($id)
     {
         $data = Category::find($id);
-            
+
         return ApiResponse::success($data);
     }
 
@@ -143,7 +141,7 @@ class FrontApiController extends Controller
 
         return ApiResponse::success($data);
     }
-    
+
     public function getConfig()
     {
         $data = Config::first();
@@ -151,40 +149,31 @@ class FrontApiController extends Controller
         return ApiResponse::success($data);
     }
 
-    public function getBanks()
-    {
-        $data =  BankAccount::all();
-
-        return ApiResponse::success($data);
-    }
-
     public function getPromotePosts()
     {
-        $data = Cache::rememberForever('promote_post', function() {
+        $data = Cache::rememberForever('promote_post', function () {
             return Post::promote()->latest()->get();
         });
-        
+
         return ApiResponse::success($data);
     }
 
     public function getPosts(Request $request)
     {
         $data = [];
-        if($request->query('q') == 'listing'){
+        if ($request->query('q') == 'listing') {
 
-            $data = Cache::rememberForever('listing_post', function() {
+            $data = Cache::rememberForever('listing_post', function () {
                 return Post::listing()->latest()->get();
             });
+        } elseif ($request->query('q') == 'promote') {
 
-        }elseif($request->query('q') == 'promote'){
-
-            $data = Cache::rememberForever('promote_post', function() {
+            $data = Cache::rememberForever('promote_post', function () {
                 return Post::promote()->latest()->get();
             });
-
         } else {
 
-            $data = Cache::rememberForever('all_post', function() {
+            $data = Cache::rememberForever('all_post', function () {
                 return Post::latest()->get();
             });
         }

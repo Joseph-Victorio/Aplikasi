@@ -18,22 +18,18 @@ class CategoryController extends Controller
     {
         $with = request()->query('with');
 
-       if($with == 'parent') {
+        if ($with == 'parent') {
 
             $data = Category::withParent()->get();
-
-        }elseif($with == 'childs') {
+        } elseif ($with == 'childs') {
 
             $data = Category::withChilds()->get();
-
-        }else {
+        } else {
 
             $data = Category::all();
-
         }
 
         return ApiResponse::success($data);
-
     }
     public function store(Request $request)
     {
@@ -47,7 +43,7 @@ class CategoryController extends Controller
         try {
             $path = public_path('/upload/images');
 
-            if(! File::exists($path)) {
+            if (!File::exists($path)) {
                 File::makeDirectory($path, 0755, true, true);
             }
 
@@ -58,27 +54,32 @@ class CategoryController extends Controller
             $category->is_front = $request->boolean('is_front');
             $category->weight = $request->weight;
             $category->created_at = now();
-            
+
             $category->description = $request->description;
-
-            if($file = $request->file('images')){
-
-                $imageName = Str::random(40).'.' . $file->extension();
-
-                $file->move($path, $imageName);
-
-                $category->filename = $imageName;
-            }
-            if($file = $request->file('banner')){
-
-                $imageName = Str::random(41).'.' . $file->extension();
-
-                $file->move($path, $imageName);
-
-                $category->banner = $imageName;
-            }
-
             $category->save();
+
+
+            if ($file = $request->file('images')) {
+
+                $imageName = Str::random(40) . '.' . $file->extension();
+
+                $file->move($path, $imageName);
+
+                $category->assets()->create([
+                    'filename' => $imageName,
+                ]);
+            }
+            if ($file = $request->file('banner')) {
+
+                $imageName = Str::random(41) . '.' . $file->extension();
+
+                $file->move($path, $imageName);
+
+                $category->assets()->create([
+                    'filename' => $imageName,
+                    'variable' => 'banner'
+                ]);
+            }
 
             DB::commit();
 
@@ -86,19 +87,16 @@ class CategoryController extends Controller
             Cache::forget('initial_products');
 
             return ApiResponse::success($category);
-
         } catch (Exception $e) {
 
-           DB::rollBack();
+            DB::rollBack();
 
-           return ApiResponse::failed($e->getMessage());
+            return ApiResponse::failed($e->getMessage());
         }
-        
-        
     }
     public function show($id)
     {
-        $data = Category::find($id);
+        $data = Category::find($id)->load('image', 'banner');
         return ApiResponse::success($data);
     }
 
@@ -122,59 +120,64 @@ class CategoryController extends Controller
             $category->updated_at = now();
 
             $category->save();
-            
-            if($file = $request->file('images')) {
-    
-                $oldAssets = $category->filename;
-    
-                $imageName = Str::random(39).'.' . $file->extension();
-        
-                $file->move(public_path('/upload/images'), $imageName);
-    
-                File::delete('upload/images/'. $oldAssets);
-    
-                $category->filename = $imageName;
-            }
-            if($request->boolean('remove_banner')) {
-                
-                File::delete('upload/images/'.  $category->banner);
-                $category->banner = '';
-            }
-            if($fileBanner = $request->file('banner')){
 
+            if ($file = $request->file('images')) {
 
-                if($category->banner) {
-                    File::delete('upload/images/'. $category->banner);
+                if ($category->image) {
+
+                    File::delete('upload/images/' . $category->image->filename);
+
+                    $category->image()->delete();
                 }
 
-                $bannerName = Str::random(41).'.' . $fileBanner->extension();
+                $imageName = Str::random(39) . '.' . $file->extension();
+
+                $file->move(public_path('/upload/images'), $imageName);
+
+                $category->assets()->create([
+                    'filename' => $imageName,
+                ]);
+            }
+            if ($request->boolean('remove_banner')) {
+
+                if ($category->banner) {
+                    File::delete('upload/images/' . $category->banner->filename);
+                    $category->banner()->delete();
+                }
+            }
+
+            if ($fileBanner = $request->file('banner')) {
+
+                if ($category->banner) {
+                    File::delete('upload/images/' . $category->banner->filename);
+                    $category->banner()->delete();
+                }
+
+                $bannerName = Str::random(41) . '.' . $fileBanner->extension();
 
                 $fileBanner->move(public_path('/upload/images'), $bannerName);
-    
 
-                $category->banner = $bannerName;
+                $category->assets()->create([
+                    'filename' => $bannerName,
+                    'variable' => 'banner'
+                ]);
             }
-    
-            $category->save();
 
-            if($request->category_id) {
+            if ($request->category_id) {
                 $category->childs()->delete();
             }
 
             DB::commit();
-            
+
             Cache::forget('categories');
             Cache::forget('initial_products');
-    
-            return ApiResponse::success($category);
 
+            return ApiResponse::success($category);
         } catch (Exception $e) {
             DB::rollBack();
 
             return ApiResponse::failed($e->getMessage());
-
         }
-
     }
 
     public function destroy($id)
@@ -182,17 +185,24 @@ class CategoryController extends Controller
         $category = Category::find($id);
 
         $category->childs()->delete();
-        
-        File::delete('upload/images/'. $category->filename);
-        File::delete('upload/images/'. $category->banner);
-        
+
+        if ($category->image) {
+
+            File::delete('upload/images/' . $category->image->filename);
+        }
+
+        if ($category->banner) {
+
+            File::delete('upload/images/' . $category->banner->filename);
+        }
+
+        $category->assets()->delete();
+
         $category->delete();
-        
+
         Cache::forget('categories');
         Cache::forget('initial_products');
 
         return ApiResponse::success();
-        
     }
-
 }

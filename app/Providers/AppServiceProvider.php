@@ -18,7 +18,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        
     }
 
     /**
@@ -36,13 +35,12 @@ class AppServiceProvider extends ServiceProvider
             $shop = Cache::rememberForever('shop', function () {
                 return Store::first();
             });
-
         } catch (\Throwable $th) {
             //throw $th;
         }
 
 
-        View::macro('vue', function($page = []) use ($shop) {
+        View::macro('vue', function ($page = []) use ($shop) {
             return view('app', [
                 'jsapp' => [
                     'page' => $page,
@@ -55,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
             'post' => 'App\Models\Post',
             'Product' => 'App\Models\Product',
             'User' => 'App\Models\User',
+            'Category' => 'App\Models\Category',
         ]);
     }
 }

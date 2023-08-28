@@ -18,9 +18,10 @@ class CreateProductVariansTable extends Migration
             $table->foreignId('product_id')->nullable();
             $table->string('label');
             $table->string('value');
-            $table->string('sku')->nullable();
-            $table->integer('price')->nullable();
-            $table->integer('stock')->nullable();
+            $table->string('sku');
+            $table->integer('price')->default(0);
+            $table->integer('stock')->default(0);
+            $table->integer('weight')->default(100);
             $table->foreignId('varian_id')->nullable();
             $table->boolean('has_subvarian')->default(false);
             $table->timestamps();

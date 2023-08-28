@@ -9,26 +9,29 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Category extends Model
 {
     use HasFactory;
-    
+
     protected $guarded = [];
-
-    public $appends = ['src', 'banner_src'];
-
-    protected $hidden = ['filename', 'banner'];
 
     protected $casts = [
         'is_front' => 'boolean',
         'description' => 'string'
     ];
 
-    public function getSrcAttribute()
+    protected $with = ['image', 'banner'];
+
+    public function image()
     {
-        return $this->filename ?  url('/upload/images/' . $this->filename) : '';
+        // return $this->assets()->whereNull('variable');
+        return $this->morphOne(Asset::class, 'assetable')->whereNull('variable');
+    }
+    public function banner()
+    {
+        return $this->morphOne(Asset::class, 'assetable')->where('variable', 'banner');
     }
 
-    public function getBannerSrcAttribute()
+    public function assets()
     {
-        return $this->banner ? url('/upload/images/' . $this->banner) : '';
+        return $this->morphOne(Asset::class, 'assetable');
     }
 
     public function products()
@@ -60,7 +63,7 @@ class Category extends Model
     {
         return $query->whereNotNull('category_id')->with('parent');
     }
-    
+
 
     public function scopeHasImage($query)
     {
@@ -86,7 +89,7 @@ class Category extends Model
     {
         return $this->hasManyThrough(Review::class, Product::class)->avg('rating');
     }
-    
+
     protected static function booted()
     {
         static::addGlobalScope(new SortWeightOrderedScope);

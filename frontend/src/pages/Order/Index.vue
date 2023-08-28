@@ -9,7 +9,9 @@
       </q-toolbar>
       <div class="box-shadow bg-white text-dark">
         <q-tabs v-model="filter" active-color="primary" outside-arrows>
-          <q-tab v-for="option in options" :key="option.value" :name="option.value" :label="option.label" no-caps></q-tab>
+          <q-tab name="ALL" label="Semua" no-caps></q-tab>
+          <q-tab v-for="option in statusOptions" :key="option.value" :name="option.value" :label="option.label"
+            no-caps></q-tab>
         </q-tabs>
       </div>
     </q-header>
@@ -46,12 +48,16 @@
               <div>
                 <table class="dense">
                   <tr>
-                    <td>Customer</td>
+                    <td>Invoice</td>
+                    <td>{{ order.order_ref }}</td>
+                  </tr>
+                  <tr>
+                    <td>Pelanggan</td>
                     <td>{{ order.customer_name }}</td>
                   </tr>
                   <tr>
-                    <td>Invoice</td>
-                    <td>{{ order.order_ref }}</td>
+                    <td>Telp</td>
+                    <td>{{ order.customer_phone }}</td>
                   </tr>
                   <tr>
                     <td>Tanggal</td>
@@ -70,24 +76,14 @@
                   </tr>
 
                   <tr>
-                    <td>Pembayaran</td>
-                    <td>
-                      <q-badge :color="getOrderStatusColor(order.transaction.status)">{{ order.transaction.status_label }}
-                      </q-badge>
-
-                      <span class="text-xs q-pl-xs">({{ order.transaction ?
-                        order.transaction.payment_method.split('_').join(' ') : '' }})</span>
-                    </td>
-                  </tr>
-                  <tr>
                     <td>Pengiriman</td>
                     <td>{{ order.shipping_courier_name == 'COD' ? 'Diantar Kurir Toko' : order.shipping_courier_name }}
                     </td>
                   </tr>
 
-                  <tr v-if="order.shipping_courier_code">
+                  <tr>
                     <td>No Resi</td>
-                    <td>{{ order.shipping_courier_code }}</td>
+                    <td>{{ order.shipping_courier_code ? order.shipping_courier_code : '-' }}</td>
                   </tr>
                 </table>
               </div>
@@ -98,26 +94,31 @@
                   color="purple" :to="{ name: 'AdminOrderShow', params: { order_ref: order.order_ref } }"></q-btn>
 
                 <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px"
-                  @click="handleFollowUp(order)" :label="messageButtonLabel(order.order_status)" color="amber-9"></q-btn>
+                  @click="handleFollowUp(order)" label="Kirim Pesan" color="teal"></q-btn>
 
 
-                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canInputResi(order)"
-                  label="Input Resi" color="teal" @click="handleInputResi(order)"></q-btn>
+                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" label="Update Status"
+                  color="blue" @click="handleUpdateStatus(order)"></q-btn>
 
-                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canShip(order)"
-                  :label="order.shipping_courier_name == 'COD' ? 'Antar COD' : 'Kirim'" color="blue"
-                  @click="handleKirim(order)"></q-btn>
+                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" label="Menu Lain" outline
+                  color="grey-8">
+                  <q-menu auto-close>
+                    <q-list separator>
+                      <q-item clickable @click="handleCopyLink(order.order_ref)">
+                        <q-item-section>
+                          <span class="nowrap">Salin Invoice Link</span>
+                        </q-item-section>
+                      </q-item>
+                      <q-item clickable @click="handleInputResi(order)">
+                        <q-item-section>Input Resi</q-item-section>
+                      </q-item>
+                      <q-item clickable @click="handleDeleteOrder(order.id)">
+                        <q-item-section>Hapus Order</q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-menu>
+                </q-btn>
 
-                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canComplete(order)"
-                  label="Order Selesai" color="green" @click="handleCompletionOrder(order)"></q-btn>
-
-                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px" v-if="canConfirm(order)"
-                  label="Konfirmasi" color="blue" @click="handleConfirmationOrder(order)"></q-btn>
-
-                <q-btn class="btn-order-item" unelevated no-caps padding="6px 12px" size="12px"
-                  v-if="canCancelOrder(order)" label="Batalkan" color="red" @click="handleCancelOrder(order)"></q-btn>
-
-                <!-- <q-btn unelevated no-caps padding="6px 12px" size="12px" label="Hapus" color="red-7" @click="handleDeleteOrder(order.id)"></q-btn> -->
               </div>
             </q-item-section>
           </q-item>
@@ -142,6 +143,7 @@
             <div class="text-grey-8">No Resi</div>
             <q-input outlined v-model="form.resi" :rules="[val => val && val.length > 0 || 'Wajib diisi']" />
             <q-checkbox label="Update Status ( Dikirim )" v-model="form.update_to_ship"></q-checkbox>
+
             <div class="flex justify-end q-mt-sm q-gutter-x-sm">
               <q-btn outline label="Batal" @click.prevent="closeModal" color="primary"></q-btn>
               <q-btn unelevated type="submit" label="Simpan" color="primary"></q-btn>
@@ -150,14 +152,44 @@
         </form>
       </q-card>
     </q-dialog>
-    <q-inner-loading :showing="loading">
+
+    <q-dialog v-model="updateStatusModal" persistent no-shake>
+      <q-card square style="width:100%;max-width:420px;">
+        <div class="q-px-md q-py-sm bg-dark text-white text-weight-bold">Form Update Status</div>
+        <form @submit.prevent="submitUpdateStatus">
+          <q-card-section v-if="orderSelected">
+            <div class="text-grey-8">Status</div>
+            <q-select outlined v-model="formUpdateStatus.status" :rules="[val => val && val.length > 0 || 'Wajib diisi']"
+              :options="statusOptions" emit-value map-options />
+            <div class="q-pb-sm">
+              <q-checkbox v-if="orderSelected.order_status == 'CANCELED' || formUpdateStatus.status == 'CANCELED'"
+                v-model="formUpdateStatus.update_stock" :val="true">
+                <div>Update Stok?</div>
+                <div class="text-xs text-grey-7">
+                  Jika diaktifkan, opsi ini akan mempengaruhi stok
+                </div>
+              </q-checkbox>
+
+
+            </div>
+            <div class="flex justify-end q-mt-sm q-gutter-x-sm">
+              <q-btn outline label="Batal" @click.prevent="closeModal" color="primary"></q-btn>
+              <q-btn :disable="orderSelected.order_status == formUpdateStatus.status" unelevated type="submit"
+                label="Update Status" color="primary"></q-btn>
+            </div>
+          </q-card-section>
+        </form>
+      </q-card>
+    </q-dialog>
+    <q-inner-loading :showing="stateLoading">
 
     </q-inner-loading>
   </q-page>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
+import { copyToClipboard } from 'quasar'
 import FollowUp from './FollowUp.vue'
 export default {
   name: 'OrderIndex',
@@ -165,8 +197,8 @@ export default {
   data() {
     return {
       isFilter: true,
-      options: [
-        { value: 'ALL', label: 'Semua' },
+      updateStatusModal: false,
+      statusOptions: [
         { value: 'PENDING', label: 'Pending' },
         { value: 'TOSHIP', label: 'Perlu Dikirim' },
         { value: 'SHIPPING', label: 'Dikirim' },
@@ -185,6 +217,11 @@ export default {
         status: '',
         update_to_ship: false
       },
+      formUpdateStatus: {
+        order_id: '',
+        status: '',
+        update_stock: false
+      }
     }
   },
   watch: {
@@ -197,10 +234,9 @@ export default {
     },
   },
   computed: {
-    ...mapState({
-      orders: state => state.order.orders,
-      loading: state => state.loading
-    }),
+    orders() {
+      return this.$store.state.order.orders
+    },
     isMobile() {
       return window.innerWidth <= 800
     }
@@ -246,74 +282,13 @@ export default {
       this.search = ''
       this.filterOrder(evt)
     },
-    handleKirim(order) {
-      this.$q.dialog({
-        title: 'Konfirmasi',
-        message: 'Akan mengirim pesanan sekarang?, ini akan merubah status pesanan menjadi "sedang dikirim"',
-        cancel: true,
-      }).onOk(() => {
-        this.form.status = 'SHIPPING'
-        this.form.order_id = order.id
-        this.handleUpdateStatusOrder()
-      })
-    },
-    handleUpdateStatusOrder() {
+    submitUpdateStatus() {
       this.$store.commit('SET_LOADING', true)
-      this.updateStatusOrder(this.form).then(() => {
-        this.setFilter(this.form.status)
+      this.updateStatusOrder(this.formUpdateStatus).then(() => {
+        this.updateStatusModal = false
         this.filterOrder(this.filter)
 
       }).finally(() => this.$store.commit('SET_LOADING', false))
-    },
-    handleCancelOrder(order) {
-      this.$q.dialog({
-        title: 'Konfirmasi Pembatalan order',
-        message: 'Akan membatalkan order ini?, perubahan ini tidak dapat dikembalikan',
-        cancel: true,
-      }).onOk(() => {
-        this.form.status = 'CANCELED'
-        this.form.order_id = order.id
-        this.cancelOrder(order.id).then(() => {
-          this.setFilter(this.form.status)
-          this.filterOrder(this.filter)
-        })
-      })
-    },
-    canShip(order) {
-
-      if (order.transaction.payment_type == 'COD' && order.order_status == 'PENDING') {
-        return true
-      }
-
-      if (order.shipping_courier_name == 'COD' && order.order_status == 'TOSHIP') {
-        return true
-      }
-
-      if (order.order_status == 'TOSHIP' && order.shipping_courier_code) {
-        return true
-      }
-
-      return false
-
-    },
-    canComplete(order) {
-      return order.order_status == 'SHIPPING' ? true : false
-    },
-    canCancelOrder(order) {
-      return order.order_status == 'PENDING'
-    },
-    handleCompletionOrder(order) {
-
-      this.$q.dialog({
-        title: 'Konfirmasi',
-        message: 'Ini akan merubah status pesanan menjadi "selesai" dan status pembayaran jadi "Dibayar" apabila menggunakan pembayaran COD',
-        cancel: true,
-      }).onOk(() => {
-        this.form.status = 'COMPLETE'
-        this.form.order_id = order.id
-        this.handleUpdateStatusOrder()
-      })
-
     },
     handleSearchOrder() {
       if (this.search) {
@@ -322,67 +297,57 @@ export default {
         this.searchOrder(this.search)
       }
     },
+    handleCopyLink(order_ref) {
+      let str = this.getRoutePath(order_ref)
+
+      copyToClipboard(str)
+        .then(() => {
+          this.$q.notify({
+            type: 'positive',
+            message: 'Berhasil menyalin'
+          })
+        })
+        .catch(() => {
+          this.$q.notify({
+            type: 'negative',
+            message: 'Browser anda tidak support copy to clipboard'
+          })
+        })
+    },
+    getRoutePath(order_ref) {
+      let props = this.$router.resolve({
+        name: 'UserInvoice',
+        params: { order_ref: order_ref },
+      });
+
+      return location.origin + props.href;
+    },
     resetOrder() {
       this.orderFiltered = []
       this.isFilter = false
       this.setFilter('ALL')
     },
-    canConfirm(order) {
-      if (order.order_status == 'PENDING' && order.transaction.payment_type != 'COD' && order.transaction.status == 'UNPAID') {
-        return true
-      }
-      return false
-    },
-    canInputResi(order) {
-      if (order.shipping_courier_name == 'COD') {
-        return false
-      } else {
-        if (order.order_status == 'TOSHIP' && !order.shipping_courier_code) {
-          return true
-        } else {
-          return false
-        }
-      }
-
-    },
-    messageButtonLabel(status) {
-      if (status == 'PENDING') return 'Follow Up'
-      return 'Kirim Pesan'
-    },
     handleDeleteOrder(id) {
       this.$q.dialog({
         title: 'Yakin akan menghapus data?',
         message: 'data yang dihapus tidak dapat dikembalikan.',
+        options: {
+          type: 'checkbox',
+          model: [],
+          items: [
+            { label: 'Mengembalikan Stok?', value: true },
+          ]
+        },
         ok: { label: 'Hapus', flat: true, 'no-caps': true, 'color': 'red-7' },
         cancel: { label: 'Batal', flat: true, 'no-caps': true },
-      }).onOk(() => {
-        this.destroyOrder(id).then(response => {
+      }).onOk((data) => {
+        this.destroyOrder({
+          order_id: id,
+          update_stock: data.length ? true : false
+        }).then(response => {
           if (response.status == 200) {
             this.filterOrder(this.filter)
           }
-        })
-      }).onCancel(() => {
-      }).onDismiss(() => {
-      })
-    },
-    handleConfirmationOrder(order) {
-      let msg = 'Pastikan pembayaran telah anda terima dengan baik';
-      let title = 'Konfirmasi'
-      if (order.transaction.payment_type == 'PAYMENT_GATEWAY') {
-        msg = '<b>WARNING!</b>, Metode pembayaran menggunakan payment gateway, Seharusnya status pesanan dan status pembayaran akan <b>otomatis</b> berubah jika sudah terjadi pembayaran di pihak payment gateway. Sangat tidak disarankan untuk merubah status secara manual'
-
-        title = 'Konfirmasi Manual'
-      }
-      this.$q.dialog({
-        title: 'Konfirmasi pembayaran',
-        message: msg,
-        cancel: true,
-        ok: { label: title, flat: true },
-        html: true,
-      }).onOk(() => {
-        this.acceptPayment(order.id).then(() => {
-          this.setFilter('TOSHIP')
-          this.filterOrder(this.filter)
         })
       }).onCancel(() => {
       }).onDismiss(() => {
@@ -392,6 +357,13 @@ export default {
       this.currentOrder = data
       this.followUpModal = true
     },
+    handleUpdateStatus(order) {
+      this.orderSelected = order
+      this.formUpdateStatus.order_id = order.id
+      this.formUpdateStatus.status = order.order_status
+      this.formUpdateStatus.update_stock = false
+      this.updateStatusModal = true
+    },
     handleInputResi(order) {
       this.form.resi = ''
       this.orderSelected = order
@@ -399,9 +371,12 @@ export default {
       this.inputResiModal = true
     },
     closeModal() {
-      this.inputResiModal = false
       this.orderSelected = ''
       this.form.order_id = ''
+      this.formUpdateStatus.order_id = ''
+      this.formUpdateStatus.status = ''
+      this.inputResiModal = false
+      this.updateStatusModal = false
     },
     submitResi() {
       this.inputResi(this.form).then((res) => {

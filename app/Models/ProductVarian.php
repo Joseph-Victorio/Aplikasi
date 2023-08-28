@@ -5,7 +5,7 @@ namespace App\Models;
 use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
-use Ramsey\Uuid\Uuid as Generator; 
+use Ramsey\Uuid\Uuid as Generator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -43,7 +43,6 @@ class ProductVarian extends Model
                 $model->sku = Generator::uuid4()->toString();
             } catch (Exception $e) {
                 $model->sku = Str::upper(Str::random(32));
-                Log::info($e->getMessage());
             }
         });
     }
@@ -55,5 +54,4 @@ class ProductVarian extends Model
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
-
 }

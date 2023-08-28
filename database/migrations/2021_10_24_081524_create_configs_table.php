@@ -17,27 +17,27 @@ class CreateConfigsTable extends Migration
             $table->id();
             $table->string('theme')->nullable()->default('default');
             $table->string('theme_color')->nullable()->default('#1bb90d');
+            $table->string('accent_color', 20)->default('#ff8f00');
+            $table->string('secondary_color', 20)->default('#ec0d0d');
+            $table->string('primary_color', 20)->default('#0082ad');
             $table->string('home_view_mode')->nullable()->default('grid');
+            $table->integer('home_product_limit')->default(10);
+            $table->string('home_product_sort')->default('DESC');
             $table->string('product_view_mode')->nullable()->default('grid');
-            $table->boolean('is_whatsapp_checkout')->default(false);
-            $table->boolean('is_guest_checkout')->default(false);
-            $table->boolean('is_payment_gateway')->default(false);
+            $table->integer('catalog_product_limit')->default(10);
+            $table->string('catalog_product_sort')->default('DESC');
+            $table->boolean('is_cod_payment')->default(false);
+            $table->boolean('is_shipping_active')->default(true);
+            $table->boolean('review_auto_approved')->default(false);
             $table->text('cod_list')->nullable();
             $table->boolean('is_notifypro')->default(false);
             $table->tinyInteger('notifypro_interval')->default(20);
             $table->tinyInteger('notifypro_timeout')->default(4);
             $table->string('rajaongkir_type')->nullable();
             $table->string('rajaongkir_apikey')->nullable();
-            $table->string('rajaongkir_couriers')->nullable();
+            $table->text('rajaongkir_couriers')->nullable();
             $table->integer('warehouse_id')->nullable();
             $table->text('warehouse_address')->nullable();
-            $table->string('telegram_bot_token')->nullable();
-            $table->string('telegram_user_id')->nullable();
-            $table->string('tripay_api_key')->nullable();
-            $table->string('tripay_private_key')->nullable();
-            $table->string('tripay_merchant_code')->nullable();
-            $table->string('tripay_mode')->nullable()->default('sanbox')->comment('sanbox,production');
-       
         });
     }
 

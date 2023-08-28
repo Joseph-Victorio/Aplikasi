@@ -19,6 +19,7 @@ class CreateStoresTable extends Migration
             $table->string('slug')->nullable();
             $table->string('phone')->nullable();
             $table->string('logo_path')->nullable();
+            $table->string('slogan')->nullable();
             $table->text('description')->nullable();
             $table->text('address')->nullable();
             $table->timestamps();

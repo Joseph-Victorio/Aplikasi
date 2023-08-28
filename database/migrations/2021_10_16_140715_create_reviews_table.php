@@ -19,6 +19,7 @@ class CreateReviewsTable extends Migration
             $table->string('name')->nullable();
             $table->mediumText('comment')->nullable();
             $table->tinyInteger('rating')->nullable();
+            $table->boolean('is_approved')->default(false);
             $table->timestamps();
         });
     }

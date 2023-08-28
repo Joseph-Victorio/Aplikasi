@@ -20,9 +20,6 @@ class ConfigController extends Controller
     {
         $hiddenFields = [
             'rajaongkir_apikey',
-            'tripay_api_key',
-            'tripay_private_key',
-            'tripay_merchant_code',
             'telegram_bot_token',
             'telegram_user_id',
         ];
@@ -41,11 +38,10 @@ class ConfigController extends Controller
         Cache::forget('shop_config');
         Cache::forget('admin_config');
 
-        if($config->theme_color != $request->theme_color) {
+        if ($config->theme_color != $request->theme_color) {
             Artisan::all('generate:manifest');
         }
 
         return ApiResponse::success($config);
     }
-
 }

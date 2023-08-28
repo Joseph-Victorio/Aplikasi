@@ -25,6 +25,7 @@ class CreateCartsTable extends Migration
             $table->integer('weight');
             $table->string('image_url')->nullable();
             $table->string('product_url')->nullable();
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }

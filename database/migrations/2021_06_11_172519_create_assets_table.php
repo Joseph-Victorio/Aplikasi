@@ -16,6 +16,7 @@ class CreateAssetsTable extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table->string('filename');
+            $table->string('variable')->nullable();
             $table->morphs('assetable');
         });
     }

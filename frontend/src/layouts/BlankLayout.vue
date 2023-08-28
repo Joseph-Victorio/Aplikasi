@@ -8,27 +8,25 @@
 
 <script>
 import { mapState } from 'vuex'
-import { Cookies } from 'quasar';
 export default {
   name: 'BlankLayout',
   computed: {
     ...mapState({
       shop: state => state.shop,
       config: state => state.config,
-      user: state => state.user.user,
     })
   },
   created() {
-    if(! this.shop) {
+    if (!this.shop) {
       this.$store.dispatch('getShop')
     }
-    if(! this.config) {
+    if (!this.config) {
       this.$store.dispatch('getConfig')
     } else {
       this.$store.commit('SET_THEME_COLOR', this.config.theme_color)
     }
-    if(Cookies.get('__token')) {
-      if(!this.user) {
+    if (localStorage.getItem('__token')) {
+      if (!this.currentUser) {
         this.$store.dispatch('user/getUser')
       }
     }
@@ -36,10 +34,10 @@ export default {
   meta() {
     return {
       meta: {
-        ogUrl:  { property: 'og:url', content: location.href },
-        ogImage:  { property: 'og:image', content: this.shop?.logo },
+        ogUrl: { property: 'og:url', content: location.href },
+        ogImage: { property: 'og:image', content: this.shop?.logo },
       }
-      
+
     }
   }
 }

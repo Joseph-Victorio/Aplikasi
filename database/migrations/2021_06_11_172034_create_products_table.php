@@ -17,13 +17,13 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug');
+            $table->string('sku');
             $table->text('description');
             $table->integer('stock');
             $table->bigInteger('price');
-            $table->integer('sold')->nullable();
             $table->boolean('status')->default(true);
             $table->foreignId('category_id')->nullable();
-            $table->integer('weight')->default(1000);
+            $table->integer('weight')->default(600);
             $table->timestamps();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
         });

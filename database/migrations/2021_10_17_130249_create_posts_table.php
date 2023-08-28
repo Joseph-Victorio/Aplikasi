@@ -22,6 +22,7 @@ class CreatePostsTable extends Migration
             $table->text('body');
             $table->boolean('is_promote')->default(false);
             $table->boolean('is_listing')->default(true);
+            $table->string('category')->nullable();
             $table->timestamps();
         });
     }

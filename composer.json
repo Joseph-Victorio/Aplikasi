@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
@@ -31,7 +34,6 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Silehage\\Rajaongkir\\": "packages/silehage/rajaongkir/src",
-            "Silehage\\Tripay\\": "packages/silehage/tripay/src",
             "Silehage\\Starsender\\": "packages/silehage/starsender/src"
         },
         "files": [

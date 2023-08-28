@@ -44,9 +44,9 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Anda mengirimkan permintaan reset password, berikut kode token untuk mereset password anda')
-                    ->line($this->token)
-                    ->line('Abaikan pesan ini jika anda tidak melakukan permintaan tersebut dan jangan pernah memberikan kode ini ke siapapun.');
+            ->line('Anda mengirimkan permintaan reset password, berikut kode token untuk mereset password anda')
+            ->line($this->token)
+            ->line('Abaikan pesan ini jika anda tidak melakukan permintaan tersebut dan jangan pernah memberikan kode ini ke siapapun.');
     }
 
     /**

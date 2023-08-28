@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hHh lpR fFf" class="bg-white">
     <q-page-container>
-        <router-view />
+      <router-view />
     </q-page-container>
     <!-- <q-footer class="text-center text-xs text-grey-7 bg-white q-pa-md">&copy; Copyright 2021 {{ shop? shop.name : '' }} Allrights Reserved</q-footer> -->
   </q-layout>
@@ -11,18 +11,16 @@ import { mapState } from 'vuex'
 export default {
   name: 'AdminLayout',
   computed: {
-        ...mapState({
-      isCheckLogin: state => state.user.isCheckLogin,
+    ...mapState({
       shop: state => state.shop,
-      user: state => state.user
     })
   },
   created() {
-    if(!this.shop) {
-      
+    if (!this.shop) {
+
       this.$store.dispatch('getShop')
     }
-    if(! this.user) {
+    if (!this.currentUser) {
 
       this.$store.dispatch('user/getUser')
     }

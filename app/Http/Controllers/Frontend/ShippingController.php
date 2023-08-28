@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use Exception;
 use App\Models\Config;
+use App\Models\Address;
 use App\Models\Subdistrict;
 use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
@@ -18,7 +19,16 @@ class ShippingController extends Controller
         $config = Config::select('rajaongkir_apikey', 'rajaongkir_type')->first();
 
         Rajaongkir::setApikey($config->rajaongkir_apikey, $config->rajaongkir_type);
+    }
 
+    public function searchAddress($key)
+    {
+        $key = filter_var($key, FILTER_SANITIZE_SPECIAL_CHARS);
+
+        $data = Address::where('subdistrict_name', 'like', '%' . $key . '%')
+            ->get();
+
+        return ApiResponse::success($data);
     }
 
     public function getCost(Request $request)
@@ -36,36 +46,31 @@ class ShippingController extends Controller
 
             $data = null;
 
-            if(Cache::has($key)) {
-    
+            if (Cache::has($key)) {
+
                 $data =  Cache::get($key);
-    
             } else {
-       
+
                 $json = Rajaongkir::cost($request->all());
-        
+
                 $obj = json_decode($json);
-        
-                if(isset($obj->success) && $obj->success == true && count($obj->data) > 0) {
-        
+
+                if (isset($obj->success) && $obj->success == true && count($obj->data) > 0) {
+
                     Cache::put($key, $obj, now()->addHours(8));
-    
+
                     $data = $obj;
-        
                 } else {
 
                     throw new Exception($obj->message);
                 }
-    
             }
 
             return ApiResponse::success($data);
-            
         } catch (Exception $e) {
 
             return ApiResponse::failed($e);
         }
-
     }
     public function waybill(Request $request)
     {
@@ -80,45 +85,30 @@ class ShippingController extends Controller
 
             $data = null;
 
-            if(Cache::has($key)) {
-    
+            if (Cache::has($key)) {
+
                 $data =  Cache::get($key);
-    
             } else {
-       
+
                 $json = Rajaongkir::waybill($payload);
-        
+
                 $obj = json_decode($json);
-        
-                if(isset($obj->success) && $obj->success == true && count($obj->data) > 0) {
-        
+
+                if (isset($obj->success) && $obj->success == true && count($obj->data) > 0) {
+
                     Cache::put($key, $obj->data, now()->addHours(8));
-    
+
                     $data = $obj;
-        
                 } else {
 
                     throw new Exception($obj->message);
                 }
-    
             }
 
             return ApiResponse::success($data);
-            
         } catch (Exception $e) {
 
             return ApiResponse::failed($e);
         }
-
-    }
-
-    public function findSubdistrict($key)
-    {
-        $key = filter_var($key, FILTER_SANITIZE_SPECIAL_CHARS);
-        
-        $data = Subdistrict::where('subdistrict_name', 'like', '%' .$key.'%')
-            ->get();
-
-        return ApiResponse::success($data);
     }
 }

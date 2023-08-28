@@ -14,7 +14,7 @@ class RajaongkirServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        App::bind('Rajaongkir', function() {
+        App::bind('Rajaongkir', function () {
             return new Rajaongkir;
         });
 
@@ -28,6 +28,6 @@ class RajaongkirServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        include __DIR__.'/routes.php';
+        include __DIR__ . '/routes.php';
     }
 }

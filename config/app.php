@@ -161,16 +161,13 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        
+
         /*
         * Package Service Providers...
         */
         Silehage\Rajaongkir\RajaongkirServiceProvider::class,
-        Silehage\Tripay\TripayServiceProvider::class,
         Silehage\Starsender\StarsenderServiceProvider::class,
-        App\Providers\ConfigApiProvider::class,
-        App\Providers\MailConfigServiceProvider::class,
-        
+
         /*
         * Application Service Providers...
         */
@@ -234,7 +231,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'Tripay' => Silehage\Tripay\Facades\Tripay::class,
         'Rajaongkir' => Silehage\Rajaongkir\Facades\Rajaongkir::class,
         'Starsender' => \Silehage\Starsender\Facades\Starsender::class,
 

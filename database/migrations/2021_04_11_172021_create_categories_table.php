@@ -17,9 +17,11 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug');
-            $table->string('filename')->nullable();
-            $table->string('banner')->nullable();
+            $table->foreignId('category_id')->nullable();
             $table->string('description')->nullable();
+            $table->boolean('is_front')->default(true);
+            $table->tinyInteger('weight')->default(1);
+            $table->timestamps();
         });
     }
 

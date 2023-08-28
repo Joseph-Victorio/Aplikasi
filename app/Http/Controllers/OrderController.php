@@ -10,7 +10,7 @@ use App\Models\ProductVarian;
 
 class OrderController extends Controller
 {
-    protected $data = ['skip' => 0,'limit' => 6,'data' => []];
+    protected $data = ['skip' => 0, 'limit' => 6, 'data' => []];
 
     public function __construct()
     {
@@ -24,23 +24,23 @@ class OrderController extends Controller
             $search = $request->query('search') ?? null;
             $filter = $request->query('filter') ?? null;
 
-            $instance = Order::with('transaction');
+            $instance = Order::query();
 
-            if($search) {
-                $instance->where('customer_whatsapp', 'LIKE', '%'.$search . '%')
-                ->orWhere('order_ref', $search)
-                ->orWhere('customer_name', 'LIKE', '%'.$search . '%')
-                ->orWhere('customer_email', 'LIKE', '%'.$search . '%');
+            if ($search) {
+                $instance->where('customer_phone', 'LIKE', '%' . $search . '%')
+                    ->orWhere('order_ref', $search)
+                    ->orWhere('customer_name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('customer_email', 'LIKE', '%' . $search . '%');
             }
-            if($filter && $filter != 'ALL') {
+            if ($filter && $filter != 'ALL') {
                 $instance->where('order_status', $filter);
             }
 
             $this->data['count'] = $instance->count();
 
-            if($this->data['count'] > 0) {
+            if ($this->data['count'] > 0) {
 
-                if(!$search) {
+                if (!$search) {
                     $instance->skip($this->data['skip'])->take($this->data['limit']);
                 }
 
@@ -48,52 +48,46 @@ class OrderController extends Controller
             }
 
             return ApiResponse::success($this->data);
-            
         } catch (\Throwable $th) {
 
             return ApiResponse::failed($th);
         }
-
     }
 
     public function show($orderRef)
     {
-        $data = Order::with(['items', 'transaction'])
-                        ->where('order_ref', $orderRef)
-                        ->first();
+        $data = Order::with(['items'])
+            ->where('order_ref', $orderRef)
+            ->first();
         return ApiResponse::success($data);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        
+
         $order = Order::findOrFail($id);
+
+        if ($request->boolean('update_stock')) {
+            foreach ($order->items as $item) {
+
+                $this->incrementStock($item->sku, $item->quantity);
+            }
+        }
 
         $order->delete();
 
         return ApiResponse::success();
-
     }
     public function paymentAccepted($id)
     {
         $order = Order::find($id);
-        $transaction = $order->transaction;
 
         $order->order_status = 'TOSHIP';
         $order->updated_at = now();
         $order->save();
-
-        $transaction->status = 'PAID';
-        $transaction->paid_at = now();
-        $transaction->save();
-
-        // foreach($order->items as $item) {
-        //    $this->setStock($item->sku, $item->quantity, true);
-        // }
-
         return ApiResponse::success();
     }
-    
+
     public function searchAdminOrder(Request $request)
     {
         $request->validate([
@@ -104,19 +98,16 @@ class OrderController extends Controller
 
             $q = filter_var($request->key, FILTER_SANITIZE_SPECIAL_CHARS);
 
-            $this->data['data'] = Order::with('transaction')
-                ->where('customer_whatsapp', 'like', '%'.$q .'%')
-                ->orWhere('order_ref', 'like', '%'.$q .'%')
+            $this->data['data'] = Order::where('customer_phone', 'like', '%' . $q . '%')
+                ->orWhere('order_ref', 'like', '%' . $q . '%')
                 ->orderByDesc('updated_at')
                 ->get();
 
             return ApiResponse::success($this->data);
-             
-         } catch (\Throwable $th) {
- 
+        } catch (\Throwable $th) {
+
             return ApiResponse::failed($th);
-         }
- 
+        }
     }
     public function inputResi(Request $request)
     {
@@ -127,23 +118,20 @@ class OrderController extends Controller
 
         try {
             $order = Order::findOrFail($request->order_id);
-    
+
             $order->shipping_courier_code = $request->resi;
-            $order->shipping_delivered = now();
-            $order->updated_at = now();
-            
-            if($request->boolean('update_to_ship')) {
+
+            if ($request->boolean('update_to_ship')) {
 
                 $order->order_status = 'SHIPPING';
             }
-    
+
             $order->save();
 
             return ApiResponse::success($order);
-             
         } catch (\Throwable $th) {
 
-           return ApiResponse::failed($th);
+            return ApiResponse::failed($th);
         }
     }
 
@@ -155,69 +143,62 @@ class OrderController extends Controller
         ]);
 
         $order = Order::find($request->order_id);
+
         $order->order_status = $request->status;
         $order->updated_at = now();
 
         $order->save();
 
-        if($request->status == 'COMPLETE') {
+        if ($request->status == 'CANCELED') {
 
-            $order->transaction()->update([
-                'status' => 'PAID'
-            ]);
+            if ($request->boolean('update_stock') == true) {
 
-        }
+                foreach ($order->items as $item) {
 
-        if($order->order_status == 'CANCELED') {
-            
-            foreach($order->items as $item) {
+                    $this->incrementStock($item->sku, $item->quantity);
+                }
+            }
+        } else {
+            if ($request->boolean('update_stock') == true) {
+                foreach ($order->items as $item) {
 
-                $this->setStock($item->sku, $item->quantity);
-    
+                    $this->decrementStock($item->sku, $item->quantity);
+                }
             }
         }
 
-        return ApiResponse::success($order);
-
-    }
-    public function cancelOrder($id)
-    {
-        $order = Order::findOrFail($id);
-
-        foreach($order->items as $item) {
-
-            $this->setStock($item->sku, $item->quantity);
-
-        }
-
-        $order->update(['order_status' => 'CANCELED']);
 
         return ApiResponse::success($order);
     }
-    
-    protected function setStock($sku, $qty, $decrement = false)
+
+    protected function incrementStock($sku, $qty)
     {
         $productData = Product::where('sku', $sku)->first();
 
-        if(!$productData) {
+        if (!$productData) {
 
             $productData = ProductVarian::where('sku', $sku)->first();
         }
 
-        if($productData) {
+        if ($productData) {
 
-            if($decrement) {
-
-                $productData->stock -= $qty;
-
-            } else {
-
-                $productData->stock += $qty;
-            }
-            
+            $productData->stock += $qty;
             $productData->save();
-
         }
     }
-    
+    protected function decrementStock($sku, $qty)
+    {
+        $productData = Product::where('sku', $sku)->first();
+
+        if (!$productData) {
+
+            $productData = ProductVarian::where('sku', $sku)->first();
+        }
+
+        if ($productData) {
+
+            $productData->stock -= $qty;
+            $productData->save();
+        }
+    }
 }

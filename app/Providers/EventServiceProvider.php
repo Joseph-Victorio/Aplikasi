@@ -4,13 +4,9 @@ namespace App\Providers;
 
 use App\Models\Post;
 use App\Models\Slider;
-use App\Models\Product;
-use App\Models\BankAccount;
 use App\Observers\PostObserver;
 use App\Observers\SliderObserver;
-use App\Observers\ProductObserver;
 use Illuminate\Support\Facades\Event;
-use App\Observers\BankAccountObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -37,6 +33,5 @@ class EventServiceProvider extends ServiceProvider
     {
         Slider::observe(SliderObserver::class);
         Post::observe(PostObserver::class);
-        BankAccount::observe(BankAccountObserver::class);
     }
 }

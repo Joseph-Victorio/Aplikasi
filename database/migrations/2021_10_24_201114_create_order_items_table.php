@@ -21,6 +21,7 @@ class CreateOrderItemsTable extends Migration
             $table->foreignId('product_id');
             $table->integer('quantity');
             $table->integer('price');
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }

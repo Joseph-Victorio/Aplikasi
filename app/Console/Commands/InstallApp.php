@@ -45,12 +45,15 @@ class InstallApp extends Command
         Artisan::call('migrate:fresh', ['--force' => true]);
 
         $bar->advance();
-        
+
         $this->newLine();
         Artisan::call('db:seed', ['--force' => true]);
-        
+
+        $this->newLine();
+        Artisan::call('address:generate');
+
         $bar->finish();
-        
+
         $this->newLine();
         $this->info('Berhasil menginstall aplikasi');
     }

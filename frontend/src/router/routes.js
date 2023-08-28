@@ -4,8 +4,8 @@ const routes = [
     path: '/',
     component: () => import('layouts/FrontLayout.vue'),
     children: [
-      { path: '', name: 'Home', component: () => import('pages/Front/PageIndex.vue')},
-      { path: 'favorite', name: 'ProductFavorite', component: () => import('pages/Front/ProductFavorite.vue')},
+      { path: '', name: 'Home', component: () => import('pages/Front/PageIndex.vue') },
+      { path: 'favorite', name: 'ProductFavorite', component: () => import('pages/Front/ProductFavorite.vue') },
       { path: 'products', name: 'ProductIndex', component: () => import('pages/Front/ProductIndex.vue') },
       { path: 'products/category/:id', name: 'ProductCategory', component: () => import('pages/Front/ProductsByCategory.vue') },
       { path: 'search-product', name: 'ProductSearch', component: () => import('src/pages/Front/ProductSearch.vue') },
@@ -17,7 +17,7 @@ const routes = [
   {
     path: '/product',
     component: () => import('src/layouts/BlankLayout.vue'),
-    children:[
+    children: [
       {
         path: ':slug',
         name: 'ProductShow',
@@ -25,25 +25,23 @@ const routes = [
       }
     ]
   },
-  { 
+  {
     path: '/p',
     component: () => import('src/layouts/BlankLayout.vue'),
     children: [
-      { path: 'cart', name: 'Cart', component: () => import('src/pages/Shop/Cart.vue')},
-      { path: 'checkout', name: 'Checkout', component: () => import('src/pages/Checkout/Index.vue')},
-      { path: 'direct-checkout', name: 'DirectCheckout', component: () => import('src/pages/Checkout/DirectWithShipping.vue')},
-      { path: 'invoice/:order_ref', name: 'UserInvoice', component: () => import('src/pages/Invoice/Index.vue')},
-      { path: 'tagihan-detail/:order_ref', name: 'PaymentDetail', component: () => import('src/pages/Invoice/PaymentDetail.vue')},
+      { path: 'cart', name: 'Cart', component: () => import('src/pages/Shop/Cart.vue') },
+      { path: 'checkout', name: 'Checkout', component: () => import('src/pages/Checkout/DirectWithShipping.vue') },
+      { path: 'invoice/:order_ref', name: 'UserInvoice', component: () => import('src/pages/Invoice/Index.vue') },
     ]
   },
-  { 
+  {
     path: '/auth',
     component: () => import('src/layouts/AuthLayout.vue'),
     children: [
-      { path: 'login', name: 'Login', component: () => import('src/pages/Auth/Login.vue')},
-      { path: 'register', name: 'Register', component: () => import('src/pages/Auth/Register.vue')},
-      { path: 'forgot-password', name: 'ForgotPassword', component: () => import('src/pages/Auth/ForgotPassword.vue')},
-      { path: 'reset-password', name: 'ResetPassword', component: () => import('src/pages/Auth/ResetPassword.vue')},
+      { path: 'login', name: 'Login', component: () => import('src/pages/Auth/Login.vue') },
+      { path: 'register', name: 'Register', component: () => import('src/pages/Auth/Register.vue') },
+      { path: 'forgot-password', name: 'ForgotPassword', component: () => import('src/pages/Auth/ForgotPassword.vue') },
+      { path: 'reset-password', name: 'ResetPassword', component: () => import('src/pages/Auth/ResetPassword.vue') },
     ]
   },
   {
@@ -52,12 +50,12 @@ const routes = [
     meta: { requiresAdmin: true },
     children: [
       { path: 'product/create', name: 'ProductCreate', component: () => import('pages/Product/Create.vue') },
-      { path: 'product/edit/:id', name: 'ProductEdit', component: () => import('pages/Product/Edit.vue')},
-      { path: 'category/form', name: 'CategoryForm', component: () => import('src/pages/Category/CategoryForm.vue')},
-      { path: 'category/form/:category_id', name: 'CategoryFormEdit', component: () => import('src/pages/Category/CategoryForm.vue')},
-      { path: 'post/create', name: 'PostCreate', component: () => import('pages/Post/Create.vue')},
-      { path: 'post/edit/:id', name: 'PostEdit', component: () => import('pages/Post/Edit.vue')},
-      { path: 'config', name: 'Config', component: () => import('pages/Config/Index.vue')},
+      { path: 'product/edit/:id', name: 'ProductEdit', component: () => import('pages/Product/Edit.vue') },
+      { path: 'category/form', name: 'CategoryForm', component: () => import('src/pages/Category/CategoryForm.vue') },
+      { path: 'category/form/:category_id', name: 'CategoryFormEdit', component: () => import('src/pages/Category/CategoryForm.vue') },
+      { path: 'post/create', name: 'PostCreate', component: () => import('pages/Post/Create.vue') },
+      { path: 'post/edit/:id', name: 'PostEdit', component: () => import('pages/Post/Edit.vue') },
+      { path: 'config', name: 'Config', component: () => import('pages/Config/Index.vue') },
     ]
   },
   {
@@ -78,19 +76,19 @@ const routes = [
     children: [
       { path: 'account', name: 'Account', component: () => import('src/pages/Account/Index.vue') },
       { path: 'settings', name: 'Settings', component: () => import('src/pages/Dashboard/Settings.vue') },
-      { path: 'slider', name: 'Slider', component: () => import('src/pages/Slider/Index.vue')},
-      { path: 'store', name: 'Shop', component: () => import('src/pages/Shop/Index.vue')},
-      { path: 'categories', name: 'CategoryIndex', component: () => import('src/pages/Category/CategoryIndex.vue')},
-      { path: 'products', name: 'AdminProductIndex', component: () => import('pages/Product/Index.vue')},
-      { path: 'posts', name: 'AdminPostIndex', component: () => import('src/pages/Post/Index.vue')},
-      { path: 'blocks', name: 'AdminBlockIndex', component: () => import('pages/Block/Index.vue')},
-      { path: 'orders', name: 'OrderIndex', component: () => import('pages/Order/Index.vue')},
-      { path: 'order/:order_ref', name: 'AdminOrderShow', component: () => import('pages/Order/Detail.vue')},
-      { path: 'banks', name: 'BankIndex', component: () => import('pages/Shop/BankAccount.vue')},
-      { path: 'users', name: 'UserList', component: () => import('pages/Account/UserList.vue')},
-      { path: 'promo', name: 'PromoIndex', component: () => import('pages/Promo/Index.vue')},
-      { path: 'promo/:id', name: 'PromoDetail', component: () => import('pages/Promo/Detail.vue')},
-      { path: 'reviews', name: 'ReviewsIndex', component: () => import('pages/Reviews/Index.vue')},
+      { path: 'slider', name: 'Slider', component: () => import('src/pages/Slider/Index.vue') },
+      { path: 'store', name: 'Shop', component: () => import('src/pages/Shop/Index.vue') },
+      { path: 'categories', name: 'CategoryIndex', component: () => import('src/pages/Category/CategoryIndex.vue') },
+      { path: 'products', name: 'AdminProductIndex', component: () => import('pages/Product/Index.vue') },
+      { path: 'posts', name: 'AdminPostIndex', component: () => import('src/pages/Post/Index.vue') },
+      { path: 'blocks', name: 'AdminBlockIndex', component: () => import('pages/Block/Index.vue') },
+      { path: 'orders', name: 'OrderIndex', component: () => import('pages/Order/Index.vue') },
+      { path: 'order/:order_ref', name: 'AdminOrderShow', component: () => import('pages/Order/Detail.vue') },
+      { path: 'banks', name: 'BankIndex', component: () => import('pages/Shop/BankAccount.vue') },
+      { path: 'users', name: 'UserList', component: () => import('pages/Account/UserList.vue') },
+      { path: 'promo', name: 'PromoIndex', component: () => import('pages/Promo/Index.vue') },
+      { path: 'promo/:id', name: 'PromoDetail', component: () => import('pages/Promo/Detail.vue') },
+      { path: 'reviews', name: 'ReviewsIndex', component: () => import('pages/Reviews/Index.vue') },
     ]
   },
   // Always leave this as last one,

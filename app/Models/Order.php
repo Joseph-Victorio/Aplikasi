@@ -16,7 +16,7 @@ class Order extends Model
 
     public function getGrandTotalAttribute()
     {
-        return $this->order_total+$this->payment_fee;
+        return $this->order_total + $this->payment_fee;
     }
 
     public function user()
@@ -36,11 +36,6 @@ class Order extends Model
         return $this->created_at->format('d/m/Y ~ H:i');
     }
 
-    public function transaction()
-    {
-        return $this->hasOne(Transaction::class);
-        
-    }
     public function getStatusLabelAttribute()
     {
         switch ($this->order_status) {
@@ -56,12 +51,11 @@ class Order extends Model
             case 'COMPLETE':
                 return 'Selesai';
                 break;
-            
+
             default:
-            return 'Pending';
+                return 'Pending';
                 break;
         }
-
     }
     public function getCustomerStatusLabelAttribute()
     {
@@ -78,20 +72,18 @@ class Order extends Model
             case 'COMPLETE':
                 return 'Selesai';
                 break;
-            
+
             default:
-            return 'Pending';
+                return 'Pending';
                 break;
         }
-
     }
     protected static function boot()
     {
         parent::boot();
-
-        static::created(function ($model) {
-            $model->order_ref = 'INV'. Carbon::now()->format('ym') . str_pad($model->id, 6, '0', STR_PAD_LEFT) . Str::upper(Str::random(3));
-            $model->save();
+        $maxId = self::max('id');
+        static::creating(function ($model) use ($maxId) {
+            $model->order_ref = 'INV' . Carbon::now()->format('ym') . str_pad($maxId + 1, 5, '0', STR_PAD_LEFT) . Str::upper(Str::random(2));
         });
     }
 }

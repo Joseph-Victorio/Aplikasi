@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,10 +12,9 @@ class UserController extends Controller
 {
     public function show(Request $request)
     {
-        return response([
-            'success' => true,
-            'results' => $request->user()->load('address')
-        ], 200);
+        $data =  $request->user()->load('address');
+
+        return ApiResponse::success($data);
     }
     public function register(Request $request)
     {
@@ -23,7 +23,7 @@ class UserController extends Controller
             'phone' => ['required', 'string', 'max:20', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:80', 'unique:users'],
             'password' => ['required', 'confirmed'],
-        ],[
+        ], [
             'name.required' => 'Nama wajib diisi.',
             'phone.required' => 'Nomor ponsel wajib diisi.',
             'phone.unique' => 'Nomor ponsel sudah terdaftar.',
@@ -56,16 +56,16 @@ class UserController extends Controller
             'email.required' => 'Email atau No ponsel wajib diisi.',
             'password.required' => 'Password wajib diisi.',
         ]);
-    
+
         $user = User::where('email', $request->email)->orWhere('phone', $request->email)->first();
-    
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['Data kredensial salah.'],
             ]);
         }
         $user->tokens()->delete();
-    
+
         $token = $user->createToken($request->device_name)->plainTextToken;
         return response([
             'success' => true,
@@ -80,10 +80,10 @@ class UserController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'phone' => 'required|unique:users,phone,' .$user->id,
-            'email' => 'required|email|unique:users,email,' .$user->id,
+            'phone' => 'required|unique:users,phone,' . $user->id,
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|confirmed'
-        ],[
+        ], [
             'name.required' => 'Nama wajib diisi.',
             'phone.required' => 'Nomor ponsel wajib diisi.',
             'email.required' => 'Email wajib diisi.',
@@ -97,7 +97,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->phone = $request->phone;
 
-        if($request->password) {
+        if ($request->password) {
             $user->password = Hash::make($request->password);
         }
         $user->save();
@@ -106,8 +106,6 @@ class UserController extends Controller
             'success' => true,
             'results' => $user->load('address')
         ], 200);
-
-
     }
 
     public function logout(Request $request)
@@ -144,7 +142,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return response([ 'success' => true ]);
-
+        return response(['success' => true]);
     }
 }
