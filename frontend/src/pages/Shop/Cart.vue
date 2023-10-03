@@ -64,9 +64,9 @@
       <div class="row item-stretch">
 
 
-        <div class="cart-total col-auto bg-white" style="min-width:30%">
-          <div class="cart-label text-grey-10 text-weight-bold">Total</div>
-          <div class="cart-amount text-weight-bold text-secondary">{{ moneyIDR(carts.subtotal) }}</div>
+        <div class="cart-total col-auto bg-white column" style="min-width:30%">
+          <!-- <div class="cart-label text-grey-10 text-weight-bold">Total</div> -->
+          <div class="cart-amount text-weight-bold text-secondary q-my-auto">{{ moneyIDR(carts.subtotal) }}</div>
         </div>
 
         <div class="col bg-primary q-px-xs flex item-stretch">

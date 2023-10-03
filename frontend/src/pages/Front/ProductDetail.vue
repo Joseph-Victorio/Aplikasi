@@ -192,13 +192,14 @@
       <q-card style="max-width:450px;width:100%;" class="text-grey-9">
         <div class="text-weight-bold q-py-sm q-px-md bg-primary text-white">Kirim pesan / tanya ke penjual</div>
         <q-card-section class="transition-height">
-          <div class="q-mb-sm text-subtitle2" v-if="this.product"># {{ product.title }}</div>
+          <!-- <div class="q-mb-sm text-subtitle2" v-if="this.product"># {{ product.title }}</div> -->
           <q-input outlined autogrow autofocus v-model="chatText"
             placeholder="contoh: Halo Admin, Apakah ini masih ada?"></q-input>
-          <div class="q-pt-sm">
-            <div class="q-pa-xs cursor-pointer" v-for="chat in defaultChat" :key="chat" @click="changeChatText(chat)">
+          <div class="q-pt-md q-gutter-sm">
+            <q-badge color="green" g class="cursor-pointer" v-for="chat in defaultChat" :key="chat"
+              @click="changeChatText(chat)">
               <span>{{ chat }}</span>
-            </div>
+            </q-badge>
           </div>
         </q-card-section>
         <q-card-actions class="justify-end q-pa-md">
@@ -333,7 +334,7 @@ export default {
     return {
       scale: 1,
       tab: 'Description',
-      defaultChat: ['Apakah ini masih ada?', 'Apakah bisa grosir?'],
+      defaultChat: ['Mohon infomasi tentang produk ini', 'Apakah produk ini masih ada?'],
       chatText: '',
       chatModal: false,
       reviewModal: false,
