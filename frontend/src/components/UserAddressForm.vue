@@ -204,6 +204,10 @@ export default {
          }).onOk(() => {
             this.$store.commit('user/DELETE_ADDRESS', id)
             this.$emit('onSelectAddress', null)
+
+            if (!this.user_address.length) {
+               this.addressModal = false
+            }
          })
       }
    }
