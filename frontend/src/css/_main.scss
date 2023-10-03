@@ -1,4 +1,4 @@
-$default : #0598c0;
+$default : #1bb90d;
 
 :root {
   --page-width: 768px;
@@ -6,7 +6,7 @@ $default : #0598c0;
   --default-theme: $default;
   --box-shadow: 0px 14px 16px -10px rgba(48, 48, 48, 0.04);
   --color-grey: rgb(214, 214, 214);
-  --q-color-brand: #0082ad;
+  --q-color-brand: $default;
 }
 
 .main-page {
@@ -15,7 +15,7 @@ $default : #0598c0;
 }
 
 .text-brand {
-  color: #0082ad;
+  color: $default;
   color: var(--q-color-brand);
 }
 
@@ -28,7 +28,7 @@ $default : #0598c0;
 }
 
 .bg-brand {
-  background-color: #0082ad;
+  background-color: $default;
   background-color: var(--q-color-brand);
 }
 
