@@ -1,25 +1,19 @@
 <template>
   <q-page class="q-pb-lg bg-grey-1">
     <q-header class="text-grey-9 bg-white box-shadow">
-       <q-toolbar>
-         <q-btn :to="{name: 'Home'}"
-            flat round dense
-            icon="eva-arrow-back" />
-            <q-toolbar-title class="text-weight-bold brand">Cari Produk</q-toolbar-title>
-            <q-btn flat label="Cari Order" :to="{ name: 'OrderSearch'}"></q-btn>
-       </q-toolbar>
+      <q-toolbar>
+        <q-btn :to="{ name: 'Home' }" flat round dense icon="eva-arrow-back" />
+        <q-toolbar-title class="text-weight-bold brand">Cari Produk</q-toolbar-title>
+        <!-- <q-btn flat label="Cari Order" :to="{ name: 'OrderSearch'}"></q-btn> -->
+      </q-toolbar>
     </q-header>
     <div class="q-px-md q-pt-md">
       <div class="col bg-white border">
-        <q-input ref="input" outlined dense color="grey-2" v-model="search" autofocus @keyup.enter="searchProduct" placeholder="ketik nama produk"
-        >
-        <template v-slot:append>
-          <q-icon
-            name="eva-search"
-            class="cursor-pointer"
-            @click="searchProduct"
-          />
-        </template>
+        <q-input ref="input" outlined dense color="grey-2" v-model="search" autofocus @keyup.enter="searchProduct"
+          placeholder="ketik nama produk">
+          <template v-slot:append>
+            <q-icon name="eva-search" class="cursor-pointer" @click="searchProduct" />
+          </template>
         </q-input>
       </div>
       <template v-if="products.ready && products.available">
@@ -30,17 +24,18 @@
       <product-section :products="products"></product-section>
     </template>
     <template v-if="!products.available">
-      <div class="text-center column">
-        <div class="text-h6">Opps..</div>
+      <div class="text-center column q-pt-lg">
+        <div class="text-h6">Maaf...</div>
         <div class="">Tidak ada produk dengan kata kunci <b>"{{ searchTitle }}"</b> </div>
       </div>
     </template>
     <q-inner-loading :showing="loading">
-       
+
     </q-inner-loading>
     <div class="flex justify-center q-py-lg" v-if="products && products.links">
-     <q-btn label="loadmore" color="primary" outline :loading="isLoadmore" v-if="products.links.next" @click="paginate(products.links.next)"></q-btn>
-   </div>
+      <q-btn label="loadmore" color="primary" outline :loading="isLoadmore" v-if="products.links.next"
+        @click="paginate(products.links.next)"></q-btn>
+    </div>
   </q-page>
 </template>
 
@@ -51,7 +46,7 @@ import { Api } from 'boot/axios'
 export default {
   name: 'ProductSearch',
   components: { ProductSection },
-  data () {
+  data() {
     return {
       loading: false,
       search: '',
@@ -69,15 +64,15 @@ export default {
   methods: {
     ...mapActions('product', ['searchProducts']),
     searchProduct() {
-      if(this.search.length < 3) return
+      if (this.search.length < 3) return
       this.loading = true
       this.$refs.input.blur()
       this.searchProducts(this.search).then(response => {
-        if(response.status == 200) {
+        if (response.status == 200) {
           this.products.data = response.data.results
           this.products.links = response.data.links
           this.products.meta = response.data.meta
-          this.products.available = this.products.data.length? true : false
+          this.products.available = this.products.data.length ? true : false
         }
       }).finally(() => {
         this.products.ready = true
@@ -89,26 +84,26 @@ export default {
     paginate(url) {
       this.isLoadmore = true
       Api().get(url).then(response => {
-        if(response.status == 200) {
+        if (response.status == 200) {
           this.products.data = [...this.products.data, ...response.data.data]
           this.products.links = response.data.links
           this.products.meta = response.data.meta
         }
-      }).finally(() =>  this.isLoadmore = false)
+      }).finally(() => this.isLoadmore = false)
     }
   },
   mounted() {
-    if(this.$route.query.q){
+    if (this.$route.query.q) {
       let query = this.$route.query.q
-      if(query) {
+      if (query) {
         this.search = query
         this.searchProduct()
       }
     }
   },
- created() {
-   this.$store.commit('product/CLEAR_PRODUCT_SEARCH')
- }
-  
+  created() {
+    this.$store.commit('product/CLEAR_PRODUCT_SEARCH')
+  }
+
 }
 </script>
