@@ -3,22 +3,6 @@
     <form @submit.prevent="updateData">
       <q-card flat>
         <q-card-section>
-          <div class="q-mb-md">
-            <div class="text-md text-weight-bold">Kurir Toko dan Pembayaran Ditempat </div>
-            <div class="q-mb-sm text-caption text-grey-7">Pengaturan pengiriman kurir toko dan opsi pembayaran ditempat
-            </div>
-          </div>
-
-          <div class="flex justify-between items-center q-py-sm">
-            <div>
-              <div class="text-weight-medium">Pembayaran Ditempat</div>
-              <div class="q-mb-sm text-caption text-grey-7">Opsi pembayaran ditempat oleh kurir toko</div>
-            </div>
-            <div>
-              <q-toggle class="text-grey-8" color="teal" v-model="formdata.is_cod_payment" left-label
-                :label="formdata.is_cod_payment ? 'ON' : 'OFF'"> </q-toggle>
-            </div>
-          </div>
           <div class="q-mt-md">
             <div class="text-weight-medium">Kecamatan Tujuan</div>
             <div class="q-mb-sm text-caption text-grey-7">Pilih kecamatan tujuan untuk pengiriman kurir toko ( Kosongkan

@@ -1,162 +1,129 @@
 <template>
   <div class="">
     <div id="courier" ref="courier" class="q-mb-lg">
-      <div v-if="config.can_cod">
-        <div class="text-md text-weight-medium ">Pilih Metode Pengiriman</div>
 
-        <div class="q-py-sm q-gutter-x-sm">
-          <q-radio v-model="shipping_method" val="EKSPEDISI" label="Via Ekspedisi"></q-radio>
-          <q-radio v-model="shipping_method" val="COD" label="Via Kurir Toko ( COD )">
-          </q-radio>
+      <div id="shipping_destination">
+        <div flat bordered id="customer">
+          <fieldset>
+            <legend class="q-mb-sm">Detail Penerima</legend>
+            <div class="q-gutter-y-md">
+              <q-input filled square stack-label label="Nama Penerima" v-model="customer_name"
+                :error="errors.customer_name" debounce="1000">
+              </q-input>
+              <q-input v-if="canEmail" filled square stack-label type="email" required label="Alamat Email"
+                v-model="customer_email" :error="errors.customer_email" debounce="1000">
+              </q-input>
+              <q-input label="No ponsel / Whatsapp" filled square stack-label v-model="customer_phone" type="number"
+                :error="errors.customer_phone" debounce="1000">
+              </q-input>
+            </div>
+          </fieldset>
         </div>
-      </div>
+        <div class="q-mt-md" flat bordered id="shipping">
+          <fieldset>
+            <legend class="q-mb-sm">
+              <div>Tujuan Pengiriman</div>
 
-      <div id="shipping_destination" class="q-mt-md">
-        <div v-if="shipping_method == 'EKSPEDISI' && config.can_shipping">
-
-          <div id="shipping">
-            <div class="text-md text-weight-medium ">Pilih Kecamatan Tujuan</div>
-            <div class="q-mt-sm">
-              <q-list v-if="formOrder.shipping_destination">
-                <q-item class="bg-grey-2 q-px-sm">
-                  <q-item-section>{{ destinationAddressFormat(formOrder.shipping_destination) }}</q-item-section>
-                  <q-item-section side>
-                    <q-btn icon="edit" dense unelevated no-caps color="primary" size="12px" @click="clearAddress">
-                    </q-btn>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-              <div v-else>
-                <q-input filled square placeholder="Ketik kecamatan tujuan, min 3 karakter" ref="search"
-                  v-model="searchSubdistrictKey" debounce="500" @input="findSubdistrict" :loading="isSearching"
-                  :error="errors.shipping_destination">
-                  <!-- <template v-slot:error>Tujuan pengiriman belum diisi</template> -->
-                </q-input>
-                <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
-                  <div class="relative bg-grey-1" v-show="isSearching || searchReady">
-                    <q-list style="min-height:43px;max-height:300px;overflow-y:auto;" v-if="searchAvailable">
-                      <q-item v-for="item in subdistrictOptionsData" :key="item.id" clickable
-                        @click="selectSubdistrict(item)">
-                        <q-item-section>
-                          <q-item-label>{{ destinationAddressFormat(item) }}</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                    </q-list>
-                    <div v-else class="text-red-7 q-pa-md">kecamatan {{ searchSubdistrictKey }} tidak ditemukan</div>
-                    <q-inner-loading :showing="isSearching"></q-inner-loading>
-                  </div>
-                </transition>
+            </legend>
+            <div class="q-pa-md bg-grey-2">
+              <div v-if="formOrder.shipping_destination">
+                <q-badge class="q-mb-sm" color="green">{{ formOrder.shipping_destination.label }}</q-badge>
+                <div>{{ formOrder.shipping_destination.address_street }}</div>
+                <div>{{ formOrder.shipping_destination.address.label }}</div>
+                <q-btn no-caps label="Ganti Alamat" color="amber-10" unelevated size="sm" class="q-mt-sm"
+                  @click="handleOpenAddressModal"></q-btn>
               </div>
+              <div v-else class="justify-center">
+                <q-btn v-if="user_address.length" no-caps label="Pilih Alamat" color="teal" unelevated class="full-width"
+                  @click="handleOpenAddressModal"></q-btn>
+                <div class="text-center" v-else>
+                  <div class="text-md q-mb-md">Belum ada alamat tersimpan</div>
+                  <q-btn no-caps label="Tambah Alamat" color="primary" unelevated @click="handleAddAddress"></q-btn>
+                </div>
+              </div>
+
+            </div>
+          </fieldset>
+          <div class="text-red q-pa-xs text-xs" v-if="errors.shipping_destination">Pengiriman belum dipilih</div>
+        </div>
+        <div class="q-mt-md" flat bordered>
+          <fieldset v-if="courierAvailable">
+            <legend class="q-mb-sm">Kurir</legend>
+            <div>
+              <q-select id="inputCourier" filled square stack-label label="Pilih Kurir" :options="couriers"
+                v-model="currentSelelectedCourier" :error="errors.shipping_courier_service" @input="selectCourier">
+                <template v-slot:error>Kurir belum dipilih</template>
+              </q-select>
+
             </div>
 
-          </div>
-          <div class="relative q-mt-md">
-            <div class="text-md text-weight-medium q-pb-xs">Pilih Kurir</div>
-            <q-select id="inputCourier" filled square stack-label label="Pilih Kurir" :options="couriers"
-              v-model="currentSelelectedCourier" :error="errors.shipping_courier_service" @input="selectCourier">
-              <template v-slot:error>Kurir belum dipilih</template>
-            </q-select>
-
-          </div>
-          <q-list v-if="shippingCost.ready">
-            <template v-if="shippingCost.costs.length">
-              <q-item v-for="item in shippingCost.costs" :key="item.service" v-ripple @click="selectCost(item)" clickable
-                class="bg-grey-1">
-                <q-item-section avatar>
-                  <q-icon
-                    :name="isSelectedCost && isSelectedCost.service == item.service ? 'radio_button_checked' : 'radio_button_unchecked'"
-                    :color="isSelectedCost && isSelectedCost.service == item.service ? 'primary' : 'grey-6'"></q-icon>
-                </q-item-section>
+            <q-list v-if="shippingCost.ready">
+              <template v-if="shippingCost.costs.length">
+                <q-item v-for="item in shippingCost.costs" :key="item.service" v-ripple @click="selectCost(item)"
+                  clickable class="bg-grey-1">
+                  <q-item-section avatar>
+                    <q-icon
+                      :name="isSelectedCost && isSelectedCost.service == item.service ? 'radio_button_checked' : 'radio_button_unchecked'"
+                      :color="isSelectedCost && isSelectedCost.service == item.service ? 'primary' : 'grey-6'"></q-icon>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>
+                      {{ item.description }} (<span class="text-weight-bold">{{ item.service }}</span>)
+                    </q-item-label>
+                    <q-item-label>Ongkos kirim {{ moneyIDR(item.cost[0].value) }}</q-item-label>
+                    <q-item-label caption v-if="item.cost[0].etd">
+                      Etd {{ item.cost[0].etd }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </template>
+              <q-item v-else>
                 <q-item-section>
-                  <q-item-label>Layanan : {{ item.service }}</q-item-label>
-                  <q-item-label>Ongkos kirim : {{ moneyIDR(item.cost[0].value) }}</q-item-label>
-                  <q-item-label caption>{{ item.description }} <span v-if="item.cost[0].etd">Estimasi {{ item.cost[0].etd
-                  }} day</span></q-item-label>
-                </q-item-section>
-              </q-item>
-            </template>
-            <q-item v-else>
-              <q-item-section>
-                <q-item-label class="text-red-5 q-pa-lg">Ongkos kirim tidak ditemukan, silahkan ganti dengan kurir yang
-                  lain</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-          <div ref="courier_skeleton">
-            <q-list v-if="loading">
-              <q-item v-for="i in 3" :key="i">
-                <q-item-section avatar top>
-                  <div class="q-pa-sm">
-                    <q-skeleton width="20px" height="20px" class="round"></q-skeleton>
-                  </div>
-                </q-item-section>
-                <q-item-section>
-                  <q-skeleton type="text" width="80px"></q-skeleton>
-                  <q-skeleton type="text" width="180px"></q-skeleton>
-                  <q-skeleton type="text" width="110px"></q-skeleton>
-                  <q-skeleton type="text" width="90px"></q-skeleton>
+                  <q-item-label class="text-red-5 q-pa-lg">Ongkos kirim tidak ditemukan, silahkan ganti dengan kurir yang
+                    lain</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
-          </div>
-        </div>
-        <div v-if="shipping_method == 'COD' && config.can_cod">
-
-          <div class="q-mb-lg">
-            <div class="text-md q-pb-xs text-weight-medium q-mb-xs">Pilih Tujuan Pengiriman</div>
-            <q-select filled v-model="codSelected" :options="listCodOptions" label="Pilih"
-              :error="errors.shipping_destination">
-              <template v-slot:error>Tujuan pengiriman belum diisi</template>
-              <template v-slot:option="scope">
-                <q-list separator>
-                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                    <q-item-section>
-                      <q-item-label>{{ scope.opt.label }}</q-item-label>
-                      <q-item-label class="text-primary text-weight-bold text-sm"> Ongkos Kirim {{ scope.opt.price > 0 ?
-                        moneyIDR(scope.opt.price) : 'Gratis' }}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </template>
-            </q-select>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-
-    <div id="customer" class="q-pb-lg">
-      <div class="text-md q-pb-xs text-weight-medium">Detail Penerima</div>
-      <div class="q-gutter-y-md">
-        <q-input filled square stack-label label="Nama Penerima" v-model="customer_name" :error="errors.customer_name"
-          debounce="1000">
-        </q-input>
-        <q-input v-if="canEmail" filled square stack-label type="email" required label="Alamat Email"
-          v-model="customer_email" :error="errors.customer_email" debounce="1000">
-        </q-input>
-        <q-input label="No ponsel / Whatsapp" filled square stack-label v-model="customer_phone" type="number"
-          :error="errors.customer_phone" debounce="1000">
-        </q-input>
-        <div>
-          <q-input class="preline" label="Alamat Lengkap" type="textarea" filled rows="4" square stack-label
-            :error="errors.customer_address" v-model="customer_address">
-          </q-input>
-          <!-- <div class="bg-grey-2 q-pa-sm relative" >
-          <div class="text-xs text-grey-7">Alamat Lengkap</div>
-          <p class="preline" style="min-height:40px">{{ customer_address }}</p>
-          <q-btn icon="edit" class="absolute-top-right q-ma-xs" color="primary" dense size="12px" unelevated @click="removeSelectedAddress"></q-btn>
-        </div> -->
-          <div class="flex justify-between items-center q-mt-sm">
-            <div>
-              <q-btn v-if="user && user.address.length" no-caps label="Pilih Alamat" size="sm" color="primary" unelevated
-                @click="addressModal = true"></q-btn>
+            <div ref="courier_skeleton">
+              <q-list v-if="loading">
+                <q-item v-for="i in 3" :key="i">
+                  <q-item-section avatar top>
+                    <div class="q-pa-sm">
+                      <q-skeleton width="20px" height="20px" class="round"></q-skeleton>
+                    </div>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-skeleton type="text" width="80px"></q-skeleton>
+                    <q-skeleton type="text" width="180px"></q-skeleton>
+                    <q-skeleton type="text" width="110px"></q-skeleton>
+                    <q-skeleton type="text" width="90px"></q-skeleton>
+                  </q-item-section>
+                </q-item>
+              </q-list>
             </div>
-            <!-- <q-checkbox v-if="user && !customer_address_selected" v-model="is_save_address" label="Simpan Alamat"
-              size="sm"></q-checkbox> -->
+          </fieldset>
+
+          <div v-else>
+            <div class="q-pa-lg text-center">
+              <!-- <div class="text-lg text-weight-bold">Mohon Maaf</div> -->
+              <q-icon name="error" size="xl" color="red"></q-icon>
+              <div class="text-md text-weight-bold text-red">Alamat tidak dalam jangkauan kurir</div>
+              <div class="q-mt-md q-mb-xs">Berikut alamat yg didukung kurir kami</div>
+
+              <q-list v-if="currentConfig.cod_list.length" dense separator bordered>
+                <q-item v-for="(an, i) in currentConfig.cod_list" :key="i">
+                  <q-item-section class="text-green-8">{{
+                    destinationAddressFormat(an)
+                  }} ({{ moneyIDR(an.price) }})</q-item-section>
+                </q-item>
+              </q-list>
+
+            </div>
           </div>
+
         </div>
       </div>
+
     </div>
 
     <q-dialog v-model="useDataUserPrompt">
@@ -171,62 +138,16 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="addressModal">
-      <q-card>
-        <q-card-section v-if="user && user.address.length">
-          <div class="card-title flex justify-between">
-            <div>Pilih Alamat</div>
-            <div class="q-gutter-x-sm">
-              <q-btn label="Tambah" flat dense @click="handleAddAddress"></q-btn>
-              <q-btn label="Close" flat dense v-close-popup></q-btn>
-            </div>
-          </div>
-          <q-list>
-            <q-item v-for="item in user.address" :key="item.id" clickable @click="selectAddress(item)">
-              <q-item-section avatar>
-                <q-icon
-                  :name="customer_address_selected == item.id ? 'eva-checkmark-square-2-outline' : 'eva-square-outline'"
-                  :color="customer_address_selected == item.id ? 'green' : 'grey-8'" size="md"></q-icon>
-              </q-item-section>
-              <q-item-section>
-                <q-item-label class="row items-center q-gutter-x-sm">
-                  <div>{{ item.label }} </div>
-                  <q-badge color="green" v-if="item.is_primary" label="Utama"></q-badge>
-                </q-item-label>
-                <q-item-label caption class="q-pt-xs">{{ item.address }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-    <q-dialog v-model="formAddressModal" persistent>
-      <q-card class="card-lg">
-        <q-card-section v-if="user && user.address.length">
-          <div class="card-title flex justify-between">
-            <div>Tambah Alamat</div>
-            <div class="q-gutter-x-sm">
-              <q-btn icon="close" flat dense v-close-popup></q-btn>
-            </div>
-          </div>
-          <form @submit.prevent="submitNewAddress" class="q-gutter-y-md">
-            <q-input required label="Label" v-model="formAddress.label" placeholder="eg: Kantor"></q-input>
-            <q-input required type="textarea" v-model="formAddress.address" label="Alamat Lengkap"></q-input>
-            <q-checkbox label="Gunakan sebagai alamat utama" v-model="formAddress.is_primary"></q-checkbox>
-            <div class="card-action">
-              <q-btn label="Simpan Alamat" class="full-width" color="primary" type="submit"></q-btn>
-            </div>
-          </form>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
+    <UserAddressForm autoSelectModal ref="userAddressForm" @onSelectAddress="handleSelectAddress" />
   </div>
 </template>
-
+ 
 <script>
 import { Api } from 'boot/axios'
+import UserAddressForm from 'src/components/UserAddressForm.vue'
 export default {
   name: 'ShippingAddress',
+  components: { UserAddressForm },
   props: {
     canEmail: {
       type: Boolean,
@@ -254,59 +175,24 @@ export default {
         costs: [],
         ready: false
       },
-      address_street: '',
-      userAddressData: {
-        destination: '',
-        address: ''
-      },
       searchSubdistrictKey: '',
       isSearching: false,
       searchAvailable: true,
       searchReady: false,
-      subdistrictOptionsData: [],
       codSelected: '',
       currentSelelectedCourier: null,
-      formAddress: {
-        label: '',
-        is_primary: false,
-        address: ''
-      }
-    }
-  },
-  watch: {
-    shipping_method: function (val) {
-      if (val) {
-        this.clearShipping()
-        this.clearPayment()
-        this.clearAddress()
-        this.codSelected = ''
-        this.isSelectedCostCod = ''
-      }
-    },
-    codSelected: function (val) {
-      if (val) {
-        this.commitFormOrder('shipping_cost', val.price)
-        this.commitFormOrder('shipping_courier_name', 'COD')
-        this.commitFormOrder('shipping_courier_service', 'Diantar kurir toko')
-        this.commitFormOrder('shipping_destination', val)
-      }
     }
   },
   computed: {
+    user_address() {
+      return this.$store.getters['user/getAllAddress']
+    },
     customer_address: {
       set: function (val) {
         this.commitFormOrder('customer_address', val)
       },
       get: function () {
         return this.$store.state.order.formOrder.customer_address
-      }
-    },
-    customer_address_selected: {
-      set: function (val) {
-        this.commitFormOrder('customer_address_selected', val)
-      },
-      get: function () {
-        return this.$store.state.order.formOrder.customer_address_selected
       }
     },
     customer_phone: {
@@ -333,40 +219,25 @@ export default {
         return this.$store.state.order.formOrder.customer_email
       }
     },
-    shipping_method: {
+    shipping_destination: {
       set: function (val) {
-        this.commitFormOrder('shipping_method', val)
+        this.commitFormOrder('shipping_destination', val)
       },
       get: function () {
-        return this.$store.state.order.formOrder.shipping_method
+        return this.$store.state.order.formOrder.shipping_destination
       }
     },
     listCodOptions() {
-      if (this.config && this.config.can_cod) {
-        return this.config.cod_list.map(el => ({ label: `${el.subdistrict_name} ${el.type} ${el.city} ${el.province}`, value: el.id, ...el }))
+      if (this.canCod) {
+        return this.currentConfig.cod_list.map(el => ({ label: `${el.subdistrict_name} ${el.type} ${el.city} ${el.province}`, value: el.id, ...el }))
       }
       return []
     },
     canCod() {
-      if (this.config && this.config.cod_list.length) {
+      if (this.currentConfig && this.currentConfig.can_cod) {
         return true
       }
       return false
-    },
-    codListString() {
-      if (this.canCod) {
-        let list = this.config.cod_list.map(el => {
-          return el.subdistrict_name
-        })
-        if (list.length > 1) {
-          let first = list.slice(0, list.length - 1).join(', ')
-
-          return first + ' atau ' + list[list.length - 1]
-
-        }
-        return list.join(', ')
-      }
-      return ''
     },
     errors() {
       return this.$store.state.errors
@@ -374,26 +245,30 @@ export default {
     formOrder() {
       return this.$store.state.order.formOrder
     },
-    user() {
-      return this.$store.state.user.user
-    },
     originAddressFormat() {
-      return `${this.config.warehouse_address.city}, ${this.config.warehouse_address.province}`
+      return `${this.currentConfig.warehouse_address.city}, ${this.currentConfig.warehouse_address.province}`
     },
     couriers() {
-      let n = [{ label: 'Pilih', value: '' }]
+      let n = []
 
-      if (this.config) {
-        n = [...n, ...this.config.rajaongkir_couriers]
+      if (this.currentConfig && this.currentConfig.can_shipping) {
+        n = [...this.currentConfig.rajaongkir_couriers]
+      }
+
+      if (this.formOrder.shipping_destination && this.canCod) {
+        const item = this.currentConfig.cod_list.find(el => el.id == this.formOrder.shipping_destination.address.id)
+        if (item != undefined) {
+          let price = parseInt(item.price) > 0 ? `Rp.${item.price}` : 'Gratis'
+          n.unshift({ label: `Antar Kurir Toko (${price})`, value: 'COD', price: item.price })
+        }
       }
       return n
-
     },
-    config() {
-      return this.$store.state.config
-    },
-    carts() {
-      return this.$store.state.cart.carts
+    courierAvailable() {
+      if (this.formOrder.shipping_destination && !this.couriers.length) {
+        return false
+      }
+      return true
     },
     loading() {
       return this.$store.state.loading
@@ -407,8 +282,8 @@ export default {
     },
     codItem() {
       if (this.formOrder.shipping_destination) {
-        if (this.config && this.config.cod_list && this.config.cod_list.length) {
-          let h = this.config.cod_list.find(el => el.subdistrict_id == this.formOrder.shipping_destination.subdistrict_id)
+        if (this.currentConfig && this.currentConfig.cod_list && this.currentConfig.cod_list.length) {
+          let h = this.currentConfig.cod_list.find(el => el.subdistrict_id == this.formOrder.shipping_destination.address.subdistrict_id)
           if (h != undefined) {
             return h
           } else {
@@ -421,85 +296,41 @@ export default {
       } else {
         return null
       }
-    },
-    codAvailable() {
-      let codStr = []
-      if (this.config.cod_list.length) {
-
-        this.config.cod_list.forEach(eld => {
-          codStr.push(`${eld.subdistrict_name}`)
-        })
-      }
-      return codStr.join(', ')
     }
   },
   mounted() {
     this.setFormGetCost()
-    if (this.user) {
-      this.commitFormOrder('user_id', this.user.id)
-      this.customer_name = this.user.name
-      this.customer_email = this.user.email
-      this.customer_phone = this.user.phone ? this.user.phone : ''
+    if (this.currentUser) {
+      this.commitFormOrder('user_id', this.currentUser.id)
+      this.customer_name = this.currentUser.name
+      this.customer_email = this.currentUser.email
+      this.customer_phone = this.currentUser.phone ? this.currentUser.phone : ''
+    } else {
 
-      if (this.user.address.length) {
-        this.selectPrimaryAddress()
-      } else {
-        this.commitFormOrder('is_save_address', true)
+      if (localStorage.getItem('__nextshop_current_user')) {
+        if (!this.customer_name || !this.customer_phone) {
+          this.useDataUserPrompt = true
+        }
       }
-    }
-
-    if (localStorage.getItem('_nex_user_data')) {
-      if (!this.customer_name || !this.customer_phone) {
-        this.useDataUserPrompt = true
-      }
-    }
-
-    if (this.config && !this.config.can_shipping) {
-      this.shipping_method = 'COD'
     }
 
   },
   methods: {
-    submitNewAddress() {
-      Api().post('user-address', this.formAddress).then(() => {
-        this.$store.dispatch('user/getUser')
-
-        setTimeout(() => {
-          this.addressModal = true
-        }, 500)
-      })
-      this.formAddressModal = false
-    },
     handleAddAddress() {
-      this.formAddress.label = ''
-      this.formAddress.is_primary = false
-      this.formAddress.address = ''
-
-      this.addressModal = false
-      this.formAddressModal = true
+      this.$refs.userAddressForm.handleAddAddress()
+    },
+    handleOpenAddressModal() {
+      this.$refs.userAddressForm.handleOpenAddressModal()
     },
     removeSelectedAddress() {
-      this.customer_address_selected = null
+      this.shipping_destination = null
       this.customer_address = ''
     },
-    selectPrimaryAddress() {
-      let prim = this.user.address.find(e => e.is_primary == true)
 
-      if (prim == undefined) {
-        prim = this.user.address[0]
-      }
-      this.selectAddress(prim)
-    },
-    selectAddress(item) {
-      this.customer_address_selected = item.id
-      this.customer_address = item.address
-      this.is_save_address = false
-    },
     clearShipping() {
       this.commitFormOrder('shipping_courier_name', '')
       this.commitFormOrder('shipping_courier_service', '')
       this.commitFormOrder('shipping_cost', 0)
-      // this.commitFormOrder('shipping_destination', '')
     },
     clearPayment() {
       this.commitFormOrder('payment_method', '')
@@ -515,6 +346,9 @@ export default {
       this.saveDataUser()
     },
     destinationAddressFormat(obj) {
+      if (!obj) {
+        return ''
+      }
       return `${obj.subdistrict_name} - ${obj.type} ${obj.city}, ${obj.province}`
     },
     selectCostCod(item) {
@@ -549,10 +383,36 @@ export default {
       this.useDataUserPrompt = false
       this.$emit('closeModal')
     },
+    handleSelectAddress(item) {
+      if (!item) {
+        this.shipping_destination = null
+        this.customer_address = null
+        this.clearAddress()
+
+        return
+
+      }
+      this.shipping_destination = item
+      let addr = `${item.address_street}\n${item.address.label}`
+
+      this.customer_address = addr
+
+      setTimeout(() => {
+
+        if (this.couriers.length == 1) {
+          this.currentSelelectedCourier = this.couriers[0]
+          this.selectCourier(this.currentSelelectedCourier)
+        }
+      }, 300)
+
+
+      this.clearSelectedCost()
+      this.getCost()
+
+    },
     clearAddress() {
       this.currentSelelectedCourier = null
       this.searchSubdistrictKey = '';
-      this.subdistrictOptionsData = []
       this.searchReady = false
       this.formGetCost.destination = ''
       this.formGetCost.courier = ''
@@ -561,65 +421,11 @@ export default {
       this.commitFormOrder('shipping_destination', '')
 
     },
-    selectSubdistrict(item) {
-
-      this.commitFormOrder('shipping_destination', item)
-      this.searchSubdistrictKey = ''
-
-      this.formGetCost.origin = this.config.warehouse_address.city_id
-      this.formGetCost.destination = item.city_id
-      this.formGetCost.weight = this.formOrder.weight
-
-      this.userAddressData.destination = item
-
-      if (this.config.rajaongkir_type == 'pro') {
-
-        this.formGetCost.origin = this.config.warehouse_address.subdistrict_id
-        this.formGetCost.destination = item.subdistrict_id
-        this.formGetCost.destinationType = 'subdistrict'
-        this.formGetCost.originType = 'subdistrict'
-
-      }
-
-      this.getCost()
-    },
-    findSubdistrict() {
-      this.subdistrictOptionsData = []
-      this.searchAvailable = true
-      this.searchReady = false
-      if (this.searchSubdistrictKey.length < 3) return
-      this.isSearching = true
-      Api().get('searchAddress/' + this.searchSubdistrictKey)
-        .then(response => {
-          if (response.status == 200) {
-            if (response.data.success) {
-
-              this.subdistrictOptionsData = response.data.results
-              this.searchAvailable = response.data.results.length ? true : false
-
-            } else {
-              this.$q.notify({
-                type: 'negative',
-                message: response.data.message
-              })
-            }
-          }
-        })
-        .finally(() => {
-          this.isSearching = false
-          this.searchReady = true
-        })
-    },
 
     setDataUser() {
 
-      let data = JSON.parse(localStorage.getItem('_nex_user_data'))
+      let data = JSON.parse(localStorage.getItem('__nextshop_current_user'))
 
-      if (this.config.can_shipping) {
-        this.selectSubdistrict(data.shipping_destination)
-      }
-
-      this.customer_address = data.customer_address
       this.customer_name = data.customer_name
       this.customer_phone = data.customer_phone
       this.customer_email = data.customer_email ? data.customer_email : ''
@@ -633,19 +439,15 @@ export default {
 
       if (this.formOrder.customer_name
         && this.formOrder.customer_phone
-        && this.formOrder.customer_address
-        && this.formOrder.shipping_destination
       ) {
 
         let userData = {
           customer_name: this.formOrder.customer_name,
           customer_phone: this.formOrder.customer_phone,
           customer_email: this.formOrder.customer_email,
-          customer_address: this.formOrder.customer_address,
-          shipping_destination: this.formOrder.shipping_destination
         }
 
-        localStorage.setItem('_nex_user_data', JSON.stringify(userData))
+        localStorage.setItem('__nextshop_current_user', JSON.stringify(userData))
 
       }
     },
@@ -655,9 +457,13 @@ export default {
         this.formGetCost.courier = ''
       }
 
-      if (evt == 'cod') {
+      if (evt.value == 'COD') {
 
         this.clearSelectedCost()
+
+        this.commitFormOrder('shipping_cost', evt.price)
+        this.commitFormOrder('shipping_courier_name', 'COD')
+        this.commitFormOrder('shipping_courier_service', 'Diantar kurir toko')
 
       } else {
         this.commitFormOrder('shipping_courier_name', this.currentSelelectedCourier.label)
@@ -678,8 +484,6 @@ export default {
     },
     getCost() {
       this.setFormGetCost()
-
-      if (this.shipping_method == 'COD') return
 
       this.shippingCost.ready = false
       this.costNotFound = false
@@ -716,25 +520,26 @@ export default {
       this.formGetCost.weight = this.formOrder.weight;
 
       if (this.formOrder.shipping_destination) {
-        this.formGetCost.destination = this.formOrder.shipping_destination.city_id
+        this.formGetCost.destination = this.formOrder.shipping_destination.address.city_id
       }
 
-      if (this.config && this.config.can_shipping) {
+      if (this.currentConfig && this.currentConfig.can_shipping) {
 
-        this.formGetCost.origin = this.config.warehouse_address.city_id
+        this.formGetCost.origin = this.currentConfig.warehouse_address.city_id
 
-        if (this.config.rajaongkir_type == 'pro') {
-          this.formGetCost.origin = this.config.warehouse_address.subdistrict_id
+        if (this.currentConfig.rajaongkir_type == 'pro') {
+          this.formGetCost.origin = this.currentConfig.warehouse_address.subdistrict_id
           this.formGetCost.destinationType = 'subdistrict'
           this.formGetCost.originType = 'subdistrict'
 
           if (this.formOrder.shipping_destination) {
-            this.formGetCost.destination = this.formOrder.shipping_destination.subdistrict_id
+            this.formGetCost.destination = this.formOrder.shipping_destination.address.subdistrict_id
           }
         }
 
       }
-    },
+    }
   }
 }
 </script>
+ 

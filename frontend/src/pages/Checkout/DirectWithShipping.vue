@@ -3,7 +3,7 @@
     <q-header class="text-primary bg-white box-shadow">
       <q-toolbar>
         <q-btn @click="handleBackButton" flat round dense icon="eva-arrow-back" />
-        <q-toolbar-title class="text-weight-bold brand">Form Order</q-toolbar-title>
+        <q-toolbar-title class="text-weight-bold brand">Form Pemesanan</q-toolbar-title>
       </q-toolbar>
     </q-header>
     <div id="checkout" v-if="carts && carts.items.length" ref="top" class="q-pb-xl">
