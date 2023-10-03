@@ -9,6 +9,8 @@ export function LOGOUT(state) {
 }
 export function DELETE_ADDRESS(state, id) {
   state.address = state.address.filter(el => el.id != id)
+
+  localStorage.setItem('user_address', JSON.stringify(state.address))
 }
 export function PUSH_ADDRESS(state, payload) {
   if (payload.is_primary) {

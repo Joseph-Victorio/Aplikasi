@@ -44,10 +44,11 @@ export function register({ commit, dispatch }, payload) {
 
 }
 export function logout({ commit, dispatch }) {
+  Api().post('user/logout')
+
   commit('LOGOUT')
   localStorage.removeItem('__token')
   this.$router.push('/')
-  Api().post('user/logout')
   setTimeout(() => dispatch('getConfig', null, { root: true }), 1000)
 }
 export function exit({ commit }) {
