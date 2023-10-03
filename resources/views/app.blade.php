@@ -9,10 +9,11 @@
    <meta name=viewport content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
    <link rel=icon type=image/png href=/icon/favicon.png>
    <link rel=icon type=image/png sizes=96x96 href=/icon/icon-96x96.png>
-   <link rel=icon type=image/png sizes=192x192 href=/icon/icon-192x192.png>@include('partial/meta_head')
+   <link rel=icon type=image/png sizes=192x192 href=/icon/icon-192x192.png>
+   @include('partial/meta_head')
    @include('partial/json_schema')
    <link href=/css/vendor.100acf1c.css rel=stylesheet>
-   <link href=/css/app.976dac9f.css rel=stylesheet>
+   <link href=/css/app.d3281b5c.css rel=stylesheet>
    <link rel=manifest href=manifest.json>
    <meta name=theme-color content=#048daf>
    <meta name=apple-mobile-web-app-capable content=yes>
@@ -30,8 +31,8 @@
 <body class=bg-blue-grey-1>
    @include('partial/meta_body')
    <div id=q-app></div>
-   <script src=/js/vendor.00106a5b.js></script>
-   <script src=/js/app.68a22829.js></script>
+   <script src=/js/vendor.3727a202.js></script>
+   <script src=/js/app.d5f2f752.js></script>
 </body>
 
 </html>
