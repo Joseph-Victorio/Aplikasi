@@ -33,7 +33,7 @@ class CreateConfigsTable extends Migration
             $table->boolean('is_notifypro')->default(false);
             $table->tinyInteger('notifypro_interval')->default(20);
             $table->tinyInteger('notifypro_timeout')->default(4);
-            $table->string('rajaongkir_type')->nullable();
+            $table->string('rajaongkir_type')->nullable()->default('starter');
             $table->string('rajaongkir_apikey')->nullable();
             $table->text('rajaongkir_couriers')->nullable();
             $table->integer('warehouse_id')->nullable();

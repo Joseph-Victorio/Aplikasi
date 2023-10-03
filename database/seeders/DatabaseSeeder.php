@@ -27,9 +27,13 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\Store::create([
             'name' => 'My Shop',
-            'slug' => 'my-shop'
+            'slug' => 'my-shop',
+            'phone' => '083842587851',
+            'slogan' => 'The next generation online shop apps',
         ]);
 
-        \App\Models\Config::create();
+        \App\Models\Config::create([
+            'rajaongkir_apikey' => 'e7495ac700145ab33b3af06bb159ac83'
+        ]);
     }
 }

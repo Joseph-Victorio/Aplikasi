@@ -5,21 +5,21 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
-class InstallApp extends Command
+class DevInstall extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'site:install';
+    protected $signature = 'site:install-dev';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Install Allikasi';
+    protected $description = 'Command description';
 
     /**
      * Create a new command instance.
@@ -38,20 +38,7 @@ class InstallApp extends Command
      */
     public function handle()
     {
-        $bar = $this->output->createProgressBar(2);
-
-        $this->line('Migrate and Seeding Database please wait...');
-
-        Artisan::call('migrate:fresh', ['--force' => true]);
-
-        $bar->advance();
-
-        $this->newLine();
-        Artisan::call('db:seed', ['--force' => true]);
-
-        $bar->finish();
-
-        $this->newLine();
-        $this->info('Berhasil menginstall aplikasi');
+        Artisan::call('site:install');
+        Artisan::call('address:generate');
     }
 }
