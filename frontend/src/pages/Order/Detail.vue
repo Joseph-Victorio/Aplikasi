@@ -63,12 +63,12 @@
         </q-card>
         <q-card class="no-print bg-white shadow" square>
           <div class="card-heading">
-            <div>Info Pengiriman</div>
+            <div>Info Pelanggan</div>
           </div>
           <q-card-section class="q-px-sm">
             <q-list dense>
               <q-item>
-                <q-item-section>Penerima</q-item-section>
+                <q-item-section>Nama</q-item-section>
                 <q-item-section>{{ invoice.customer_name }}</q-item-section>
               </q-item>
               <q-item>
