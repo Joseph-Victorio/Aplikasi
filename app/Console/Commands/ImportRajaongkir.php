@@ -38,7 +38,7 @@ class ImportRajaongkir extends Command
     */
    public function handle()
    {
-      $sql = database_path('rajaongkir.sql'); // write the sql filename here to import
+      $sql = database_path('addresses.sql'); // write the sql filename here to import
 
       DB::unprepared(file_get_contents($sql));
    }
