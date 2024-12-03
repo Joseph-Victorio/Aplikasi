@@ -100,9 +100,6 @@ export default {
       isCanCheckoutDirectWithShipping() {
          if (this.carts.items.length && this.currentShop.phone) {
             return true
-            if (this.currentConfig.can_cod || this.currentConfig.can_shipping) {
-               return true
-            }
          }
 
          return false

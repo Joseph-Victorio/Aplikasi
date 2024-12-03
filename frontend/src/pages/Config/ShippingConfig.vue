@@ -101,6 +101,28 @@ export default {
          },
       }
    },
+   watch: {
+      'formdata.is_shipping_active'(val) {
+         if (val == true) {
+            if (
+               !this.formdata.rajaongkir_type ||
+               !this.formdata.rajaongkir_apikey ||
+               !this.formdata.warehouse_id ||
+               !this.formdata.warehouse_address ||
+               !this.formdata.rajaongkir_couriers.length
+            ) {
+
+               this.formdata.is_shipping_active = false
+
+               this.$q.notify({
+                  type: 'warning',
+                  message: 'Untuk mengaktifkan servis, semua input tidak boleh kosong'
+               })
+               return
+            }
+         }
+      }
+   },
    computed: {
       theCouriers() {
          if (this.formdata.rajaongkir_type == 'pro') {
@@ -173,23 +195,6 @@ export default {
 
       },
       updateData() {
-         if (this.formdata.is_shipping_active) {
-
-            if (
-               !this.formdata.rajaongkir_type ||
-               !this.formdata.rajaongkir_apikey ||
-               !this.formdata.warehouse_id ||
-               !this.formdata.warehouse_address ||
-               !this.formdata.rajaongkir_couriers.length
-            ) {
-
-               this.$q.notify({
-                  type: 'warning',
-                  message: 'Untuk mengaktifkan servis, semua input tidak boleh kosong'
-               })
-               return
-            }
-         }
          Api().post('config', this.formdata).then(() => {
             this.$store.dispatch('getAdminConfig')
             this.$q.notify({

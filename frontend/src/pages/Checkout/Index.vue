@@ -27,7 +27,7 @@ export default {
          return this.$store.state.config
       },
       can_ship() {
-         if (this.config.is_shipping_active || this.config.is_local_shipping_active) {
+         if (this.config.can_cod || this.config.can_shipping) {
             return true
          }
          return false

@@ -41,7 +41,7 @@
                                           <q-item-section>
                                              <q-item-label>{{ itemData.subdistrict_name }} - {{ itemData.type }} {{
                                                 itemData.city
-                                             }}</q-item-label>
+                                                }}</q-item-label>
                                           </q-item-section>
                                        </q-item>
                                     </q-list>
@@ -111,6 +111,20 @@ export default {
          },
       }
    },
+   watch: {
+      'formdata.is_local_shipping_active'(val) {
+         if (val == true) {
+            if (this.formdata.is_local_shipping_active && !this.formdata.cod_list.length) {
+               this.formdata.is_local_shipping_active = false
+               this.$q.notify({
+                  type: 'warning',
+                  message: 'Untuk mengaktifkan servis, kecamatan tidak boleh kosong'
+               })
+               return
+            }
+         }
+      }
+   },
    computed: {
       config: function () {
          return this.$store.state.config
@@ -134,13 +148,7 @@ export default {
          }
       },
       updateData() {
-         if (this.formdata.is_local_shipping_active && !this.formdata.cod_list.length) {
-            this.$q.notify({
-               type: 'warning',
-               message: 'Untuk mengaktifkan servis, kecamatan tidak boleh kosong'
-            })
-            return
-         }
+
          Api().post('config', this.formdata).then(() => {
             this.$store.dispatch('getAdminConfig')
             this.$q.notify({

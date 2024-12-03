@@ -69,6 +69,10 @@ class Config extends Model
    }
    public function getCanShippingAttribute()
    {
+
+      if (!$this->is_shipping_active) {
+         return false;
+      }
       if (
          $this->rajaongkir_apikey
          && $this->rajaongkir_type
@@ -82,6 +86,9 @@ class Config extends Model
    }
    public function getCanCodAttribute()
    {
+      if (!$this->is_local_shipping_active) {
+         return false;
+      }
       return $this->cod_list ? true : false;
    }
    public function getIsMailReadyAttribute()
