@@ -86,20 +86,28 @@ class FrontOrderController extends Controller
       $request->validate([
          'customer_name' => ['required', 'string'],
          'customer_phone' => ['required', 'string'],
-         'customer_address' => ['required', 'string'],
+         'customer_address' => ['nullable', 'string'],
          'items' => ['required', 'array'],
          'quantity' => ['required', 'numeric'],
          'subtotal' => ['required', 'numeric'],
          'total' => ['required', 'numeric'],
          'weight' => ['required', 'numeric'],
          'shipping_cost' => ['required', 'numeric'],
-         'shipping_courier_name' => ['required', 'string'],
-         'shipping_courier_service' => ['required', 'string'],
+         'shipping_courier_name' => ['nullable', 'string'],
+         'shipping_courier_service' => ['nullable', 'string'],
       ]);
 
       DB::beginTransaction();
 
       try {
+         $kurir = null;
+         if ($request->shipping_courier_name) {
+            $kurir = $request->shipping_courier_name;
+
+            if ($request->shipping_courier_service) {
+               $kurir = $kurir .= " " . $request->shipping_courier_service;
+            }
+         }
 
          $order = Order::create([
             'customer_name' => $request->customer_name,
@@ -110,9 +118,9 @@ class FrontOrderController extends Controller
             'order_subtotal' => $request->subtotal,
             'order_total' => $request->total,
             'order_status' => 'PENDING',
-            'shipping_courier_name' => $request->shipping_courier_name . ' - ' . $request->shipping_courier_service,
+            'shipping_courier_name' => $kurir,
             'shipping_cost' => $request->shipping_cost,
-            'note' => $request->note ?? NULL
+            'note' => $request->customer_note ?? NULL
          ]);
 
          foreach ($request->items as $item) {

@@ -1,68 +1,84 @@
 
-export function SET_ORDERS (state, payload) {
+export function SET_ORDERS(state, payload) {
 
-  state.orders.data = payload.data
-  state.orders.ready = true
-  state.orders.count = payload.count
-  state.orders.limit = payload.limit
-  state.orders.available = payload.count > 0 ? true : false
-  
-}
-export function SET_PAGINATE_ORDERS (state, payload) {
-
-  state.orders.data = [...state.orders.data, ...payload.data]
+   state.orders.data = payload.data
+   state.orders.ready = true
+   state.orders.count = payload.count
+   state.orders.limit = payload.limit
+   state.orders.available = payload.count > 0 ? true : false
 
 }
+export function SET_PAGINATE_ORDERS(state, payload) {
 
-export function SET_CUSTOMER_ORDERS (state, payload) {
-  state.customer_order.data = payload.data
-  state.customer_order.ready = true
-  state.customer_order.count = payload.count
-  state.customer_order.limit = payload.limit
-  state.customer_order.available = payload.count > 0 ? true : false
-  
-}
-export function SET_PAGINATE_CUSTOMER_ORDERS (state, payload) {
+   state.orders.data = [...state.orders.data, ...payload.data]
 
-  state.customer_order.data = [...state.customer_order.data, ...payload.data]
-  
-}
-export function SET_INVOICE (state, payload) {
-
-  state.invoice = payload
-  
-}
-export function SET_TRANSACTION (state, payload) {
-
-  state.transaction = payload
-  
-}
-export function SET_LOAD_MORE (state, status) {
-
-  state.orders.isLoadMore = status
-  
-}
-export function SET_LOAD_MORE_CUSTOMER (state, status) {
-
-  state.customer_order.isLoadMore = status
-  
-}
-export function COLLECT_ORDER (state, payload) {
-
-  state.formOrder.items = payload.items
-  state.formOrder.quantity = payload.qty
-  state.formOrder.weight = payload.weight
-  state.formOrder.subtotal = payload.subtotal
-  
 }
 
-export function SET_FORM_ORDER (state, payload) {
-  state.formOrder[payload.key] = payload.value
+export function SET_CUSTOMER_ORDERS(state, payload) {
+   state.customer_order.data = payload.data
+   state.customer_order.ready = true
+   state.customer_order.count = payload.count
+   state.customer_order.limit = payload.limit
+   state.customer_order.available = payload.count > 0 ? true : false
+
+}
+export function SET_PAGINATE_CUSTOMER_ORDERS(state, payload) {
+
+   state.customer_order.data = [...state.customer_order.data, ...payload.data]
+
+}
+export function SET_INVOICE(state, payload) {
+
+   state.invoice = payload
+
+}
+export function SET_TRANSACTION(state, payload) {
+
+   state.transaction = payload
+
+}
+export function SET_LOAD_MORE(state, status) {
+
+   state.orders.isLoadMore = status
+
+}
+export function SET_LOAD_MORE_CUSTOMER(state, status) {
+
+   state.customer_order.isLoadMore = status
+
+}
+export function COLLECT_ORDER(state, payload) {
+
+   state.formOrder.items = []
+   state.formOrder.quantity = 0
+   state.formOrder.weight = 0
+   state.formOrder.subtotal = 0
+   state.formOrder.shipping_method = 'EKSPEDISI'
+   state.formOrder.shipping_destination = ''
+   state.formOrder.shipping_courier_name = ''
+   state.formOrder.shipping_courier_service = ''
+   state.formOrder.shipping_cost = 0
+   state.formOrder.customer_name = ''
+   state.formOrder.customer_email = ''
+   state.formOrder.customer_phone = ''
+   state.formOrder.customer_address = ''
+   state.formOrder.customer_note = ''
+   state.formOrder.customer_address_selected = null
+
+   state.formOrder.items = payload.items
+   state.formOrder.quantity = payload.qty
+   state.formOrder.weight = payload.weight
+   state.formOrder.subtotal = payload.subtotal
+
 }
 
-export function SET_NOTIFY_ORDER_ITEMS (state, payload) {
+export function SET_FORM_ORDER(state, payload) {
+   state.formOrder[payload.key] = payload.value
+}
 
-  state.orderItems = payload
+export function SET_NOTIFY_ORDER_ITEMS(state, payload) {
+
+   state.orderItems = payload
 
 }
 
