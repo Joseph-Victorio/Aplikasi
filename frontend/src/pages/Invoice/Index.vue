@@ -74,14 +74,14 @@
                <q-card-section class="q-px-sm">
                   <q-list dense>
                      <q-item>
-                        <q-item-section>Penerima</q-item-section>
+                        <q-item-section>Nama</q-item-section>
                         <q-item-section>{{ invoice.customer_name }}</q-item-section>
                      </q-item>
                      <q-item>
                         <q-item-section>Ponsel</q-item-section>
                         <q-item-section>{{ invoice.customer_phone }}</q-item-section>
                      </q-item>
-                     <q-item>
+                     <q-item v-if="invoice.shipping_address">
                         <q-item-section top>Alamat</q-item-section>
                         <q-item-section>
                            <div v-html="invoice.shipping_address"></div>
