@@ -91,6 +91,9 @@ const routes = [
          { path: 'reviews', name: 'ReviewsIndex', component: () => import('pages/Reviews/Index.vue') },
       ]
    },
+
+   { path: '/install', name: 'InstallApp', component: () => import('pages/Install/Welcome.vue') },
+
    // Always leave this as last one,
    // but you can also remove it
    {

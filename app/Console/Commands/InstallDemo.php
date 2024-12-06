@@ -19,7 +19,12 @@ class InstallDemo extends Command
     *
     * @var string
     */
-   protected $signature = 'app:install-demo';
+   protected $signature = 'app:install-with-demo 
+                           {--shop_name=}
+                           {--shop_phone=}
+                           {--admin_name=}
+                           {--admin_email=}
+                           {--admin_password=}';
 
    /**
     * The console command description.
@@ -62,14 +67,21 @@ class InstallDemo extends Command
          $sql = database_path('demo/database.sql');
          DB::unprepared(file_get_contents($sql));
 
+         $shop_name = $this->option('shop_name');
+         $shop_phone = $this->option('shop_phone');
+         $admin_name = $this->option('admin_name');
+         $admin_email = $this->option('admin_email');
+         $admin_password = $this->option('admin_password');
+
          User::find(1)->update([
-            'email' => 'admin@example.com',
-            'password' => Hash::make('admin123')
+            'name' => $admin_name,
+            'email' => $admin_email,
+            'password' => Hash::make($admin_password)
          ]);
 
          Store::find(1)->update([
-            'name' => 'Nextshop Whatsapp',
-            'phone' => '083842587851'
+            'name' => $shop_name,
+            'phone' => $shop_phone
          ]);
          Artisan::call('optimize:clear');
       } catch (\Throwable $th) {

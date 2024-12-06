@@ -23,63 +23,64 @@ import * as getters from './getters'
 import actions from './actions'
 
 const stateData = createPersistedState({
-  key: '__state',
-  paths: ['user', 'cart', 'shop', 'config', 'session_id', 'product.favorites', 'forgot_password'],
-  storage: {
-    getItem: (key) => ls.get(key),
-    setItem: (key, value) => ls.set(key, value, { expires: 1 }),
-    removeItem: (key) => ls.remove(key),
-  }
+   key: '__state',
+   paths: ['user', 'cart', 'shop', 'config', 'session_id', 'product.favorites', 'forgot_password'],
+   storage: {
+      getItem: (key) => ls.get(key),
+      setItem: (key, value) => ls.set(key, value, { expires: 1 }),
+      removeItem: (key) => ls.remove(key),
+   }
 })
 
 Vue.use(Vuex)
 
 export default function (/* { ssrContext } */) {
 
-  const Store = new Vuex.Store({
-    state: {
-      themes: ['default', 'elegant', 'romance'],
-      errors: {},
-      loading: true,
-      shop: null,
-      config: null,
-      deferredPrompt: null,
-      isMenuCategory: false,
-      session_id: null,
-      page_width: window.innerWidth,
-      initial_data: false,
-      forgot_password: {
-        token: '',
-        email: '',
-        hide_email: 'anda'
+   const Store = new Vuex.Store({
+      state: {
+         themes: ['default', 'elegant', 'romance'],
+         errors: {},
+         loading: true,
+         shop: null,
+         config: null,
+         deferredPrompt: null,
+         isMenuCategory: false,
+         session_id: null,
+         page_width: window.innerWidth,
+         initial_data: false,
+         can_install: false,
+         forgot_password: {
+            token: '',
+            email: '',
+            hide_email: 'anda'
+         },
+         meta: {
+            title: '',
+            description: 'Simple Web Commerce checkout whatsapp'
+         }
       },
-      meta: {
-        title: '',
-        description: 'Simple Web Commerce checkout whatsapp'
-      }
-    },
-    actions,
-    mutations,
-    getters,
-    modules: {
-      user,
-      product,
-      category,
-      slider,
-      post,
-      block,
-      order,
-      bank,
-      cart,
-      promo,
-      front
-    },
-    plugins: [stateData],
+      actions,
+      mutations,
+      getters,
+      modules: {
+         user,
+         product,
+         category,
+         slider,
+         post,
+         block,
+         order,
+         bank,
+         cart,
+         promo,
+         front
+      },
+      plugins: [stateData],
 
-    // enable strict mode (adds overhead!)
-    // for dev mode only
-    strict: process.env.DEBUGGING
-  })
+      // enable strict mode (adds overhead!)
+      // for dev mode only
+      strict: process.env.DEBUGGING
+   })
 
-  return Store
+   return Store
 }
