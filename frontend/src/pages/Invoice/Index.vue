@@ -59,17 +59,19 @@
                         <q-item-section side>{{ moneyIDR(item.price) }}</q-item-section>
                      </q-item>
                   </q-list>
-                  <div class="q-mt-md">
-                     <div class="bg-yellow-1 q-pa-md">
-                        <div class="card-subtitle q-mb-xs">Catatan Pembeli:</div>
-                        <div>{{ invoice.note ? invoice.note : '-' }}</div>
-                     </div>
-                  </div>
                </q-card-section>
             </q-card>
             <q-card class="no-print bg-white shadow" square>
                <div class="card-heading">
-                  <div>Detail Pelanggan</div>
+                  <div>Pesan dari Pembeli</div>
+               </div>
+               <q-card-section>
+                  {{ invoice.note ? invoice.note : '' }}
+               </q-card-section>
+            </q-card>
+            <q-card class="no-print bg-white shadow" square>
+               <div class="card-heading">
+                  <div>Detail Pembeli</div>
                </div>
                <q-card-section class="q-px-sm">
                   <q-list dense>
