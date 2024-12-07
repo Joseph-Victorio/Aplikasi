@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Cache;
 
 class FrontOrderController extends Controller
 {
-   public function getInvoice($orderRef)
+   public function getInvoice($invoice)
    {
       try {
-         $data =  Order::with(['items'])->where('order_ref', $orderRef)->first();
+         $data =  Order::with(['items'])->where('order_ref', $invoice)->first();
 
          return ApiResponse::success($data);
       } catch (\Exception $e) {
