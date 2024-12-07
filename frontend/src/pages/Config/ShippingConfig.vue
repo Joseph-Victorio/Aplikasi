@@ -211,9 +211,6 @@ export default {
       submitWarehouse() {
          this.updateData()
       },
-      setLoading(status) {
-         this.$store.commit('SET_LOADING', status)
-      },
       selectSubdistrict(item) {
          this.formdata.warehouse_id = item.city_id
          this.formdata.warehouse_address = item

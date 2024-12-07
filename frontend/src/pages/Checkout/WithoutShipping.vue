@@ -13,6 +13,8 @@
                         mask="#### #### #####" unmasked-value :error="errors.customer_phone"
                         error-message="no whatsapp belum diisi">
                      </q-input>
+                     <!-- <q-input label="Email (opsional)" filled square stack-label v-model="customer_email" type="email">
+                     </q-input> -->
                      <q-input label="Catatan Pesanan" type="textarea" rows="3" filled square stack-label
                         v-model="customer_note">
                      </q-input>
@@ -116,6 +118,14 @@ export default {
          },
          get: function () {
             return this.$store.state.order.formOrder.customer_name
+         }
+      },
+      customer_email: {
+         set: function (val) {
+            this.commitFormOrder('customer_email', val)
+         },
+         get: function () {
+            return this.$store.state.order.formOrder.customer_email
          }
       },
       customer_note: {
@@ -278,12 +288,17 @@ export default {
 
          str += `Total: *${this.moneyIDR(this.formOrder.total)}*\n`
          str += `-----------------------------------\n\n`
-         str += `*Nama:*\n ${this.formOrder.customer_name} (${this.formOrder.customer_phone})\n\n`
-         str += `Ref Order: ${routeInvoiceLink}\n`
+         str += `*Nama:*\n ${this.formOrder.customer_name}\n`
+         str += `*Whatsapp:*\n ${this.formOrder.customer_phone}\n`
 
+         // if (this.formOrder.customer_email) {
+         //    str += `*Email:*\n ${this.formOrder.customer_email}\n`
+         // }
          if (this.formOrder.customer_note) {
-            str += `\n\nCatatan:\n${this.formOrder.customer_note}`
+            str += `Catatan Pembeli:\n${this.formOrder.customer_note}\n`
          }
+         str += `\nRef Order: ${routeInvoiceLink}`
+
 
          let link = whatsappUrl + '/send?phone=' + whatsapp + '&text=' + encodeURI(str);
 

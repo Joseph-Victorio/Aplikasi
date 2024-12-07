@@ -66,7 +66,10 @@
                   <div>Pesan dari Pembeli</div>
                </div>
                <q-card-section>
-                  {{ invoice.note ? invoice.note : '' }}
+                  <div class="q-pa-md bg-grey-2">
+
+                     {{ invoice.note ? invoice.note : '' }}
+                  </div>
                </q-card-section>
             </q-card>
             <q-card class="no-print bg-white shadow" square>

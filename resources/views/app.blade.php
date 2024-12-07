@@ -2,7 +2,7 @@
 <html lang=id prefix="og: https://ogp.me/ns#">
 
 <head>
-    <base href=/>
+    <base href= />
     <meta charset=utf-8>
     <meta name=format-detection content="telephone=no">
     <meta name=msapplication-tap-highlight content=no>
@@ -28,10 +28,10 @@
 </head>
 
 <body class=bg-blue-grey-1>
-   @include('partial/meta_body')
-   <div id=q-app></div>
+    @include('partial/meta_body')
+    <div id=q-app></div>
     <script src=/js/vendor.59ce054d.js></script>
-    <script src=/js/app.f186652f.js></script>
+    <script src=/js/app.a273b71a.js></script>
 </body>
 
 </html>

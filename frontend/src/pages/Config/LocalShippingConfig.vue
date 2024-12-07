@@ -162,9 +162,6 @@ export default {
             })
          })
       },
-      setLoading(status) {
-         this.$store.commit('SET_LOADING', status)
-      },
       selectCodItemData(data) {
          let hasData = this.formdata.cod_list.filter(elj => elj.id == data.id)
          if (hasData.length) {
