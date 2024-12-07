@@ -20,11 +20,11 @@ class InstallDemo extends Command
     * @var string
     */
    protected $signature = 'app:install-with-demo 
-                           {--shop_name=}
-                           {--shop_phone=}
-                           {--admin_name=}
-                           {--admin_email=}
-                           {--admin_password=}';
+                           {--shop_name=Nextshop}
+                           {--shop_phone=083842587851}
+                           {--admin_name=Admin}
+                           {--admin_email=admin@example.com}
+                           {--admin_password=admin123}';
 
    /**
     * The console command description.
