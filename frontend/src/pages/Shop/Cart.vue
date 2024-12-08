@@ -109,7 +109,7 @@ export default {
       if (!this.currentShop) {
          this.$store.dispatch('getShop')
       }
-      // this.$store.dispatch('getConfig')
+      this.$store.dispatch('getConfig')
    },
    methods: {
       checkout() {
