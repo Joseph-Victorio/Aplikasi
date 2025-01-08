@@ -32,10 +32,12 @@ class Config extends Model
       'catalog_product_sort',
       'home_product_limit',
       'home_product_sort',
+      'home_product_view',
       'accent_color',
       'secondary_color',
       'primary_color',
-      'is_local_shipping_active'
+      'is_local_shipping_active',
+      'is_pic_order',
    ];
    public $appends = [
       'is_shippable',
@@ -57,6 +59,7 @@ class Config extends Model
       'is_shipping_active' => 'boolean',
       'is_local_shipping_active' => 'boolean',
       'review_auto_approved' => 'boolean',
+      'is_pic_order' => 'boolean',
       'cod_list' => 'array',
       'warehouse_address' => 'object',
       'rajaongkir_couriers' => 'array'

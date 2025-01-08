@@ -4,17 +4,27 @@
          <q-card flat>
             <q-card-section>
                <div class="flex items-center justify-between">
-                  <div class="text-md text-weight-bold">Kurir Toko</div>
+                  <div>
+                     <div class="text-md text-weight-bold">Ambil di Toko</div>
+                     <q-item-label caption>Memungkinkan pembeli untuk ambil pesanan ditoko</q-item-label>
+                  </div>
+
+                  <q-toggle v-model="formdata.is_pic_order" :label="formdata.is_pic_order ? 'Active' : 'Disabled'"
+                     left-label color="teal" class="text-grey-8"></q-toggle>
+               </div>
+               <div class="flex items-center justify-between q-mt-md">
+                  <div>
+                     <div class="text-md text-weight-bold">Kurir Toko</div>
+                     <q-item-label caption>Pengaturan kurir toko berdasarkan kecamatan</q-item-label>
+
+                  </div>
 
                   <q-toggle v-model="formdata.is_local_shipping_active"
                      :label="formdata.is_local_shipping_active ? 'Active' : 'Disabled'" left-label color="teal"
                      class="text-grey-8"></q-toggle>
                </div>
-               <div class="text-caption text-grey-7">
-                  <div class="q-mb-sm text-caption text-grey-7">Pengaturan kurir toko berdasarkan kecamatan</div>
-               </div>
 
-               <div>
+               <div class="q-mt-md">
                   <div>
                      <q-input filled :loading="searchLoading" placeholder="Tambah kecamatan tujuan" v-model="search"
                         debounce="600" @input="searchCodData">
@@ -107,7 +117,8 @@ export default {
          formdata: {
             cod_list: [],
             is_cod_payment: false,
-            is_local_shipping_active: false
+            is_local_shipping_active: false,
+            is_pic_order: false
          },
       }
    },
@@ -141,6 +152,7 @@ export default {
       setConfig(item) {
          this.formdata.is_cod_payment = item.is_cod_payment
          this.formdata.is_local_shipping_active = item.is_local_shipping_active
+         this.formdata.is_pic_order = item.is_pic_order
          if (item.cod_list) {
             item.cod_list.forEach(element => {
                this.formdata.cod_list.push(element)

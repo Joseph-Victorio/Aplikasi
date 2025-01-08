@@ -16,10 +16,6 @@ class AdminSeeder extends Seeder
     */
    public function run($name, $email, $password)
    {
-      Log::info($name);
-      Log::info($email);
-      Log::info($password);
-
       \App\Models\User::create([
          'name' => $name,
          'email' => $email,

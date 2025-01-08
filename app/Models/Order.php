@@ -9,81 +9,87 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
 {
-    use HasFactory;
+   use HasFactory;
 
-    protected $guarded = [];
-    public $appends = ['status_label', 'customer_status_label', 'created', 'grand_total'];
+   protected $guarded = [];
+   public $appends = ['status_label', 'customer_status_label', 'created', 'grand_total'];
 
-    public function getGrandTotalAttribute()
-    {
-        return $this->order_total + $this->payment_fee;
-    }
+   public function getGrandTotalAttribute()
+   {
+      return $this->order_total + $this->payment_fee;
+   }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-    public function items()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
-    public function getCreatedReadableAttribute()
-    {
-        return $this->created_at->diffForHumans();
-    }
-    public function getCreatedAttribute()
-    {
-        return $this->created_at->format('d/m/Y ~ H:i');
-    }
+   public function user()
+   {
+      return $this->belongsTo(User::class);
+   }
+   public function items()
+   {
+      return $this->hasMany(OrderItem::class);
+   }
+   public function getCreatedReadableAttribute()
+   {
+      return $this->created_at->diffForHumans();
+   }
+   public function getCreatedAttribute()
+   {
+      return $this->created_at->format('d/m/Y ~ H:i');
+   }
 
-    public function getStatusLabelAttribute()
-    {
-        switch ($this->order_status) {
-            case 'CANCELED':
-                return 'Batal';
-                break;
-            case 'TOSHIP':
-                return 'Perlu Dikirim';
-                break;
-            case 'SHIPPING':
-                return 'Dikirim';
-                break;
-            case 'COMPLETE':
-                return 'Selesai';
-                break;
+   public function getStatusLabelAttribute()
+   {
+      switch ($this->order_status) {
+         case 'CANCELED':
+            return 'Batal';
+            break;
+         case 'TOSHIP':
+            return 'Perlu Dikirim';
+            break;
+         case 'AWAITING_PICKUP':
+            return 'Menunggu Diambil';
+            break;
+         case 'SHIPPING':
+            return 'Dikirim';
+            break;
+         case 'COMPLETE':
+            return 'Selesai';
+            break;
 
-            default:
-                return 'Pending';
-                break;
-        }
-    }
-    public function getCustomerStatusLabelAttribute()
-    {
-        switch ($this->order_status) {
-            case 'CANCELED':
-                return 'Batal';
-                break;
-            case 'TOSHIP':
-                return 'Diproses';
-                break;
-            case 'SHIPPING':
-                return 'Dikirim';
-                break;
-            case 'COMPLETE':
-                return 'Selesai';
-                break;
+         default:
+            return 'Pending';
+            break;
+      }
+   }
+   public function getCustomerStatusLabelAttribute()
+   {
+      switch ($this->order_status) {
+         case 'CANCELED':
+            return 'Batal';
+            break;
+         case 'TOSHIP':
+            return 'Diproses';
+            break;
+         case 'AWAITING_PICKUP':
+            return 'Menunggu Diambil';
+            break;
+         case 'SHIPPING':
+            return 'Dikirim';
+            break;
+         case 'COMPLETE':
+            return 'Selesai';
+            break;
 
-            default:
-                return 'Pending';
-                break;
-        }
-    }
-    protected static function boot()
-    {
-        parent::boot();
-        $maxId = self::max('id');
-        static::creating(function ($model) use ($maxId) {
-            $model->order_ref = 'INV' . Carbon::now()->format('ym') . str_pad($maxId + 1, 5, '0', STR_PAD_LEFT) . Str::upper(Str::random(2));
-        });
-    }
+         default:
+            return 'Pending';
+            break;
+      }
+   }
+   protected static function boot()
+   {
+      parent::boot();
+      $maxId = self::max('id');
+      static::creating(function ($model) use ($maxId) {
+         $model->order_ref = 'INV' . Carbon::now()->format('ym') . str_pad($maxId + 1, 5, '0', STR_PAD_LEFT) . Str::upper(Str::random(2));
+      });
+   }
 }

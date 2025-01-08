@@ -1,22 +1,19 @@
 <template>
-   <q-page class="q-pb-xl bg-grey-1">
-      <q-header class="text-grey-9 bg-white box-shadow">
-         <q-toolbar>
-            <q-btn :to="{ name: 'Home' }" flat round dense icon="eva-arrow-back" />
-            <q-toolbar-title class="text-weight-bold brand">{{ title }}</q-toolbar-title>
-            <shopping-cart />
-         </q-toolbar>
-      </q-header>
-      <ProductContainer></ProductContainer>
-   </q-page>
+   <div>
+      <product-section :title="title" :products="products"></product-section>
+      <div class="flex justify-center q-py-lg" v-if="products && products.links">
+         <q-btn label="loadmore" color="primary" outline :loading="isLoadmore" v-if="products.links.next"
+            @click="paginate(products.links.next)"></q-btn>
+      </div>
+   </div>
 </template>
 
 <script>
-import ProductContainer from 'components/ProductContainer.vue'
-import ShoppingCart from 'components/ShoppingCart.vue'
+import ProductSection from 'components/ProductSection.vue'
+import { Api } from 'boot/axios'
 export default {
    name: 'ProductIndex',
-   components: { ProductContainer, ShoppingCart },
+   components: { ProductSection },
    data() {
       return {
          title: 'Katalog Produk',
@@ -35,10 +32,31 @@ export default {
       }
    },
    methods: {
+      paginate(url) {
+         this.isLoadmore = true
+
+         let param = {
+            per_page: this.config.catalog_product_limit,
+            order_by: this.config.catalog_product_sort,
+         }
+         url += `&${new URLSearchParams(param).toString()}`
+
+         Api().get(url).then(response => {
+            if (response.status == 200) {
+               this.$store.commit('product/PAGINATE_PRODUCTS', response.data)
+            }
+         }).finally(() => this.isLoadmore = false)
+      },
    },
    created() {
       if (this.$route.query.q) {
          this.title = 'Produk ' + this.$route.query.q
+      }
+      if (!this.products.data.length) {
+         this.$store.dispatch('product/getProducts', {
+            per_page: this.config.catalog_product_limit,
+            order_by: this.config.catalog_product_sort,
+         })
       }
    },
    meta() {

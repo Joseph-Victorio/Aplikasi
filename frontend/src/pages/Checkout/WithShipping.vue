@@ -108,6 +108,15 @@ export default {
       errors() {
          return this.$store.state.errors
       },
+      config() {
+         return this.$store.state.config
+      },
+      can_pic_order() {
+         if (this.config) {
+            return this.config.is_pic_order
+         }
+         return false
+      },
       isOk() {
          if (this.formOrder.customer_name
             && this.formOrder.customer_phone
@@ -263,7 +272,8 @@ export default {
          str += `Ongkir: *${this.moneyIDR(this.formOrder.shipping_cost)}*\n`
          str += `Total: *${this.moneyIDR(this.formOrder.total)}*\n`
          str += `-----------------------------------\n\n`
-         str += `*Nama:*\n ${this.formOrder.customer_name} (${this.formOrder.customer_phone})\n\n`
+         str += `*Nama:* ${this.formOrder.customer_name}\n`
+         str += `*Ponsel:* ${this.formOrder.customer_phone}\n\n`
          str += `*Alamat:*\n${this.formatAddressCod(this.formOrder.customer_address)}\n\n`
          str += `Kurir: ${this.formOrder.shipping_courier_name}\n`
          str += `Servis: ${this.formOrder.shipping_courier_service}\n\n`

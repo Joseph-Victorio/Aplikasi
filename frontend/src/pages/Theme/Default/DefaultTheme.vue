@@ -1,51 +1,54 @@
 <template>
-  <q-page class="bg-grey-1 default main-page">
-    <q-header class="bg-white text-dark box-shadow" :class="{ 'auto-padding-side': $q.platform.is.desktop}">
-      <q-toolbar class="items-center sans">
-        <img v-if="shop" class="logo" :src="shop.logo? shop.logo : '/icon/icon-192x192.png'" alt="Logo"/>
-        <q-toolbar-title v-if="shop && shop.name" class="text-weight-bold text-brand">{{ shop.name }}</q-toolbar-title>
-        <shopping-cart  />
-      </q-toolbar>
-    </q-header>
+   <q-page class="bg-grey-1 default main-page">
+      <q-header class="bg-white text-dark box-shadow" :class="{ 'auto-padding-side': $q.platform.is.desktop }">
+         <q-toolbar class="items-center sans">
+            <img v-if="shop" class="logo" :src="shop.logo ? shop.logo : '/icon/icon-192x192.png'" alt="Logo" />
+            <q-toolbar-title v-if="shop && shop.name" class="text-weight-bold text-brand">{{ shop.name
+               }}</q-toolbar-title>
+            <shopping-cart />
+         </q-toolbar>
+      </q-header>
 
-    <template v-if="!loading">
+      <template v-if="!loading">
 
-      <Slider />
+         <Slider />
 
-      <FeaturedCarousel />
+         <FeaturedCarousel />
 
-      <CategoryCarousel />
+         <CategoryCarousel />
 
-      <div id="product-promo" v-if="product_promo.length" >
-        <ProductPromo :product_promo="product_promo" />
-      </div>
+         <div id="product-promo" v-if="product_promo.length">
+            <ProductPromo :product_promo="product_promo" />
+         </div>
 
-      <div v-if="banner1" class="banner auto-padding-side block-container">
-        <img :src="banner1.image_url" @click="goToPost(banner1)" alt="banner">
-      </div>
-      
-      <ProductSectionObserver />
-      
-      <div v-if="banner2" class="banner auto-padding-side block-container">
-        <img :src="banner2.image_url" @click="goToPost(banner2)" alt="banner">
-      </div>
+         <div v-if="banner1" class="banner auto-padding-side block-container">
+            <img :src="banner1.image_url" @click="goToPost(banner1)" alt="banner">
+         </div>
 
-      <PostBlock />
 
-      <div v-if="banner3" class="banner auto-padding block-container">
-        <img :src="banner3.image_url" @click="goToPost(banner3)" alt="banner">
-      </div>
+         <ProductSectionObserver v-if="is_category_mode" />
+         <ProductContainer v-else />
 
-      <InstallApp />
-      
-      <FooterBock />
-    </template>
+         <div v-if="banner2" class="banner auto-padding-side block-container">
+            <img :src="banner2.image_url" @click="goToPost(banner2)" alt="banner">
+         </div>
 
-    <q-inner-loading :showing="loading" label="Please wait...">
-      <q-spinner-facebook size="50px" color="brand" />
-    </q-inner-loading>
+         <PostBlock />
 
-  </q-page>
+         <div v-if="banner3" class="banner auto-padding block-container">
+            <img :src="banner3.image_url" @click="goToPost(banner3)" alt="banner">
+         </div>
+
+         <InstallApp />
+
+         <FooterBock />
+      </template>
+
+      <q-inner-loading :showing="loading" label="Please wait...">
+         <q-spinner-facebook size="50px" color="brand" />
+      </q-inner-loading>
+
+   </q-page>
 </template>
 
 <script>
@@ -56,38 +59,45 @@ import FeaturedCarousel from './../shared-components/FeaturedCarousel.vue'
 import CategoryCarousel from './block/CategoryCarousel.vue'
 import ProductPromo from './../shared-components/ProductPromo.vue'
 import ProductSectionObserver from './../shared-components/ProductSectionObserver.vue'
-
+import ProductContainer from 'components/ProductContainer.vue'
 export default {
-  name: 'DefaultTheme',
-  components: {
-    ShoppingCart,
-    Slider, 
-    FeaturedCarousel,
-    CategoryCarousel,
-    ProductPromo,
-    ProductSectionObserver,
-    PostBlock: () => import('../shared-components/FrontPostBlock.vue'), 
-    FooterBock: () => import('./../shared-components/FooterBlock.vue'),
-    InstallApp: () => import('components/InstallApp.vue')
-  },
-  computed: {
-    ...mapState({
-      loading: state => state.loading,
-      initial_data: state => state.initial_data,
-      banners: state => state.front.blocks.banner,
-      shop: state => state.shop,
-      config: state => state.config,
-      product_promo: state => state.front.product_promo,
-    }),
-    banner1() {
-      return this.banners.find(b => b.weight == 1)
-    },
-    banner2() {
-      return this.banners.find(b => b.weight == 2)
-    },
-    banner3() {
-      return this.banners.find(b => b.weight == 3)
-    }
-  }
+   name: 'DefaultTheme',
+   components: {
+      ShoppingCart,
+      Slider,
+      FeaturedCarousel,
+      CategoryCarousel,
+      ProductPromo,
+      ProductSectionObserver,
+      ProductContainer,
+      PostBlock: () => import('../shared-components/FrontPostBlock.vue'),
+      FooterBock: () => import('./../shared-components/FooterBlock.vue'),
+      InstallApp: () => import('components/InstallApp.vue')
+   },
+   computed: {
+      ...mapState({
+         loading: state => state.loading,
+         initial_data: state => state.initial_data,
+         banners: state => state.front.blocks.banner,
+         shop: state => state.shop,
+         config: state => state.config,
+         product_promo: state => state.front.product_promo,
+      }),
+      is_category_mode() {
+         if (this.config && this.config.home_product_view == 'by_category') {
+            return true
+         }
+         return false
+      },
+      banner1() {
+         return this.banners.find(b => b.weight == 1)
+      },
+      banner2() {
+         return this.banners.find(b => b.weight == 2)
+      },
+      banner3() {
+         return this.banners.find(b => b.weight == 3)
+      }
+   }
 }
 </script>

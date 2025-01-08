@@ -109,6 +109,12 @@ class FrontOrderController extends Controller
             }
          }
 
+         $order_status = 'PENDING';
+
+         if ($request->shipping_courier_name == 'PICKUP') {
+            $order_status = 'AWAITING_PICKUP';
+         }
+
          $order = Order::create([
             'customer_name' => $request->customer_name,
             'customer_phone' => $request->customer_phone,
@@ -117,7 +123,7 @@ class FrontOrderController extends Controller
             'order_weight' => $request->weight,
             'order_subtotal' => $request->subtotal,
             'order_total' => $request->total,
-            'order_status' => 'PENDING',
+            'order_status' => $order_status,
             'shipping_courier_name' => $kurir,
             'shipping_cost' => $request->shipping_cost,
             'note' => $request->customer_note ?? NULL

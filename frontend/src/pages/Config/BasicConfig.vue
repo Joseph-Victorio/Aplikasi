@@ -69,7 +69,18 @@
                   </div>
                </q-item-section>
             </q-item>
-            <q-item class="q-mt-md q-px-xs">
+            <q-item class="q-px-xs q-mt-sm">
+               <q-item-section>
+                  <q-item-label class="text-weight-medium">Tampilan Produk Beranda</q-item-label>
+               </q-item-section>
+               <q-item-section side>
+                  <q-item-label>
+                     <q-select dense outlined v-model="form.home_product_view" :options="productViews" emit-value
+                        map-options></q-select>
+                  </q-item-label>
+               </q-item-section>
+            </q-item>
+            <q-item class="q-mt-sm q-px-xs">
                <q-item-section>
                   <q-item-label class="text-weight-medium">Auto Approved Produk Review</q-item-label>
                </q-item-section>
@@ -78,9 +89,10 @@
                      :label="form.review_auto_approved ? 'Active' : 'Disabled'" left-label color="teal"></q-toggle>
                </q-item-section>
             </q-item>
-            <q-item class="q-mt-md q-px-xs">
+
+            <q-item class="q-mt-sm q-px-xs">
                <q-item-section>
-                  <div class="text-weight-bold text-subtitle1 ">Social Proof Popup</div>
+                  <div class="text-weight-medium">Social Proof Popup</div>
                   <div class="text-caption text-grey-7">
                      Pengaturan social proof notifikasi.
                   </div>
@@ -90,6 +102,7 @@
                      color="teal"></q-toggle>
                </q-item-section>
             </q-item>
+
             <q-item v-if="form.is_notifypro" class="q-px-none">
                <q-item-section>
                   <q-input filled label="Jeda Waktu Tayang" mask="###"
@@ -102,8 +115,11 @@
                      v-model="form.notifypro_timeout"></q-input>
                </q-item-section>
             </q-item>
+
+
+
             <div class="q-mt-lg">
-               <div class="text-subtitle1 text-weight-bold">Produk Beranda</div>
+               <div class="text-weight-medium">Produk Beranda</div>
                <div class="text-caption text-grey-7">Pengaturan tampilan produk beranda</div>
                <q-item class="q-px-none q-mt-xs">
                   <q-item-section>
@@ -128,7 +144,7 @@
                </q-item>
             </div>
             <div class="q-mt-md">
-               <div class="text-subtitle1 text-weight-bold">Produk Katalog</div>
+               <div class="text-weight-medium">Produk Katalog</div>
                <div class="text-caption text-grey-7">Pengaturan tampilan produk katalog</div>
                <q-item class="q-px-none q-mt-xs">
                   <q-item-section>
@@ -164,10 +180,15 @@ import { Api } from 'boot/axios'
 export default {
    data() {
       return {
+         productViews: [
+            { value: 'by_category', label: 'Kategory Mode' },
+            { value: 'by_catalog', label: 'Katalog Mode' },
+         ],
          sorts: [
             { value: 'DESC', label: 'Terbaru' },
             { value: 'ASC', label: 'Terlama' },
          ],
+
          form: {
             theme: '',
             theme_color: '',
@@ -184,7 +205,8 @@ export default {
             catalog_product_sort: 'DESC',
             home_product_limit: 10,
             home_product_sort: 'DESC',
-            review_auto_approved: false
+            review_auto_approved: false,
+            home_product_view: 'by_category'
          }
       }
    },
@@ -226,6 +248,7 @@ export default {
       this.form.catalog_product_sort = this.config.catalog_product_sort
       this.form.home_product_limit = this.config.home_product_limit
       this.form.home_product_sort = this.config.home_product_sort
+      this.form.home_product_view = this.config.home_product_view
    },
    methods: {
       changeHomeViewMode(str) {

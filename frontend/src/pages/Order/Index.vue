@@ -206,6 +206,7 @@ export default {
          statusOptions: [
             { value: 'PENDING', label: 'Pending' },
             { value: 'TOSHIP', label: 'Perlu Dikirim' },
+            { value: 'AWAITING_PICKUP', label: 'Belum Diambil' },
             { value: 'SHIPPING', label: 'Dikirim' },
             { value: 'COMPLETE', label: 'Selesai' },
             { value: 'CANCELED', label: 'Batal' }
