@@ -15,12 +15,12 @@ class InstallApp extends Command
     * @var string
     */
    protected $signature = 'app:install
-                           {--shop_name=}
-                           {--shop_phone=}
-                           {--admin_name=}
-                           {--admin_email=}
-                           {--admin_password=}
-                           ';
+                           {--shop_name=Nextshop}
+                           {--shop_phone=083842587851}
+                           {--admin_name=Admin}
+                           {--admin_email=admin@example.com}
+                           {--admin_password=admin123}
+                           {--with_demo=0}';
 
    /**
     * The console command description.
@@ -46,7 +46,7 @@ class InstallApp extends Command
     */
    public function handle(AdminSeeder $adminSeeder, StoreSeeder $storeSeeder)
    {
-      $bar = $this->output->createProgressBar(3);
+      $bar = $this->output->createProgressBar(2);
 
       $this->line('Migrate and Seeding Database please wait...');
 
@@ -64,9 +64,16 @@ class InstallApp extends Command
       $admin_name = $this->option('admin_name');
       $admin_email = $this->option('admin_email');
       $admin_password = $this->option('admin_password');
+      $with_demo = $this->option('with_demo');
 
       $adminSeeder->run($admin_name, $admin_email, $admin_password);
       $storeSeeder->run($shop_name, $shop_phone);
+
+      if ($with_demo == 1) {
+         $this->newLine();
+         $this->info('Installing Demo');
+         Artisan::call('app:install-demo');
+      }
 
       Artisan::call('optimize:clear');
 

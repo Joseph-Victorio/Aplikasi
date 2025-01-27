@@ -19,12 +19,7 @@ class InstallDemo extends Command
     *
     * @var string
     */
-   protected $signature = 'app:install-with-demo 
-                           {--shop_name=Nextshop}
-                           {--shop_phone=083842587851}
-                           {--admin_name=Admin}
-                           {--admin_email=admin@example.com}
-                           {--admin_password=admin123}';
+   protected $signature = 'app:install-demo';
 
    /**
     * The console command description.
@@ -52,42 +47,19 @@ class InstallDemo extends Command
    {
       try {
 
-         if (!File::exists(database_path('demo/assets')) || !File::exists(database_path('demo/database.sql'))) {
+         if (!File::exists(database_path('demo/assets')) || !File::exists(database_path('demo/demo.sql'))) {
             throw new Exception('demo not found');
          }
 
-         $this->line('Copying assets please wait...');
          File::deleteDirectory(public_path('upload/images'));
          File::copyDirectory(database_path('demo/assets'), public_path('upload/images'));
 
-         $this->line('Migrating Database please wait...');
-         Artisan::call('migrate:fresh', ['--force' => true]);
-
-         $this->line('Import Database please wait...');
-         $sql = database_path('demo/database.sql');
+         $sql = database_path('demo/demo.sql');
          DB::unprepared(file_get_contents($sql));
-
-         $shop_name = $this->option('shop_name');
-         $shop_phone = $this->option('shop_phone');
-         $admin_name = $this->option('admin_name');
-         $admin_email = $this->option('admin_email');
-         $admin_password = $this->option('admin_password');
-
-         User::find(1)->update([
-            'name' => $admin_name,
-            'email' => $admin_email,
-            'password' => Hash::make($admin_password)
-         ]);
-
-         Store::find(1)->update([
-            'name' => $shop_name,
-            'phone' => $shop_phone
-         ]);
-         Artisan::call('optimize:clear');
       } catch (\Throwable $th) {
 
          $this->info($th->getMessage());
-         Log::info($th->getMessage());
+         Log::error($th->getMessage());
       }
    }
 }

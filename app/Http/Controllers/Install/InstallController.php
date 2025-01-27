@@ -102,13 +102,10 @@ class InstallController extends Controller
             '--admin_name' => $request->admin_name,
             '--admin_email' => $request->admin_email,
             '--admin_password' => $request->admin_password,
+            '--with_demo' => $request->boolean('with_demo') == true ? 1 : 0,
          ];
 
-         if ($request->boolean('with_demo') == true) {
-            Artisan::call('app:install-with-demo', $params);
-         } else {
-            Artisan::call('app:install', $params);
-         }
+         Artisan::call('app:install', $params);
 
          $env = [
             'APP_NAME' => '"' . $request->shop_name . '"',

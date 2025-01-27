@@ -13,7 +13,7 @@ class StoreSeeder extends Seeder
     *
     * @return void
     */
-   public function run($shopName = 'Administrator', $shopPhone = '083842587851')
+   public function run($shopName = 'Nextshop', $shopPhone = '083842587851')
    {
       Log::debug($shopName);
       Log::debug($shopPhone);
