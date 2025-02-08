@@ -6,8 +6,6 @@
 /public/upload/images
 /storage/*.key
 /storage/installed
-/database/demo/database.sql
-/database/demo/demo.sql
 /vendor
 .env
 .env.backup
