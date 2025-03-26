@@ -15,12 +15,18 @@
 
         <CategoryBlock :category_id="form.category_id" @onUpdate="(val) => form.category_id = val" />
 
+
         <div class="q-mt-md q-mb-sm">
           <label for="description" class="text-grey-7 q-pb-sm block">Deskripsi</label>
           <ContentEditor @update="(val) => form.description = val" :content="form.description" />
           <div class="text-xs text-red" v-if="errors.description"> {{ errors.description[0] }}</div>
         </div>
+        <div class="q-mt-md">
+          <q-input type="text" v-model="form.product_url" label="Link Eksternal"
+            hint="Digunakan jika ingin mengarahkan ke url tertentu saat klik tombol beli seperti produk affiliate."></q-input>
+        </div>
       </div>
+
 
       <q-card square flat class="q-pa-xs">
         <q-card-section>
@@ -140,7 +146,8 @@
                           </q-item-label>
                           <q-item-label>
                             <money-formatter stack-label required
-                              v-model="form.varians[varIndex].subvarian[subIndex].price" prefix="Rp" label="Harga Jual" />
+                              v-model="form.varians[varIndex].subvarian[subIndex].price" prefix="Rp"
+                              label="Harga Jual" />
                           </q-item-label>
                         </q-item-section>
 
@@ -267,7 +274,8 @@ export default {
         images: [],
         has_subvarian: false,
         featured_index: 0,
-        simple_product: true
+        simple_product: true,
+        product_url: '',
       },
       imagePreview: [],
       // embed_video: {
@@ -511,6 +519,7 @@ export default {
       formData.append('has_subvarian', this.form.has_subvarian)
       formData.append('stock', this.form.stock)
       formData.append('description', this.form.description)
+      formData.append('product_url', this.form.product_url)
       formData.append('featured_index', this.form.featured_index)
 
       if (this.form.category_id) {

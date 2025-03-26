@@ -51,6 +51,7 @@ class AdminProductRepository
             $product->slug = $slug;
             $product->category_id =  $request->category_id;
             $product->description = $request->description;
+            $product->product_url = $request->product_url ?? NULL;
 
             $is_simple_product = $request->boolean('simple_product');
 
@@ -149,6 +150,7 @@ class AdminProductRepository
             $product->title = $request->title;
             $product->description = $request->description;
             $product->category_id = $request->category_id;
+            $product->product_url = $request->product_url ?? NULL;
 
             if ($is_simple_product) {
 

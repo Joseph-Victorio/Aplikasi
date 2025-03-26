@@ -30,20 +30,20 @@ class ProductRequest extends FormRequest
             'weight' => 'required',
             'stock' => 'required',
             'description' => 'required',
+            'product_url' => 'nullable',
         ];
-        
-        if($this->isMethod('PUT') || $this->isMethod('PATCH')) {
+
+        if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
             $product = Product::find($this->id);
 
             $imageRule = 'nullable';
-            
-            if(request()->del_images && count($product->assets) == count(request()->del_images) && !request()->images) {
+
+            if (request()->del_images && count($product->assets) == count(request()->del_images) && !request()->images) {
                 $imageRule = 'required';
             }
-            
-            $rules['images'] = $imageRule;
 
-        }else {
+            $rules['images'] = $imageRule;
+        } else {
             $rules['title'] = 'required|unique:products';
             $rules['images'] = 'required';
         }

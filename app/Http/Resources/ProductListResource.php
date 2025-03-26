@@ -23,7 +23,7 @@ class ProductListResource extends JsonResource
             'is_discount' => false,
         ];
 
-        if($this->productPromo) {
+        if ($this->productPromo) {
 
             $disc = $this->productPromo;
 
@@ -32,7 +32,7 @@ class ProductListResource extends JsonResource
             $pricing['discount_amount'] = $disc->discount_amount;
         }
 
-        if($this->minPrice) {
+        if ($this->minPrice) {
             $pricing['default_price'] = $this->minPrice->price;
         }
 
@@ -49,7 +49,7 @@ class ProductListResource extends JsonResource
             'asset'  =>  $this->featuredImage,
             'category_id' => $this->category_id,
             'unit' => $this->unit,
-          ];
+            'product_url' => $this->product_url,
+        ];
     }
-
 }

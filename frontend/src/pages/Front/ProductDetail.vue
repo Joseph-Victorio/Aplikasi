@@ -3,61 +3,25 @@
     <template v-if="ready && product">
       <div class="q-pa-md header-top">
         <div class="flex justify-between">
-          <q-btn
-            aria-label="Kembali"
-            @click="backButton"
-            round
-            flat
-            icon="eva-arrow-back"
-            icon-size="27px"
-            style="cursor: pointer; opacity: 0.9"
-          >
+          <q-btn aria-label="Kembali" @click="backButton" round flat icon="eva-arrow-back" icon-size="27px"
+            style="cursor: pointer; opacity: 0.9">
           </q-btn>
           <shopping-cart />
         </div>
       </div>
       <div class="col relative overflow-x-hidden">
-        <q-carousel
-          ref="carousel"
-          :style="cStyle"
-          class="img-carousel"
-          animated
-          swipeable
-          v-model="slide"
-          infinite
-          :height="height"
-          style="max-height: 574px"
-        >
-          <q-carousel-slide
-            v-for="(img, index) in product.assets"
-            :key="index"
-            :name="index + 1"
-            :img-src="img.src"
-            ratio="1"
-          />
+        <q-carousel ref="carousel" :style="cStyle" class="img-carousel" animated swipeable v-model="slide" infinite
+          :height="height" style="max-height: 574px">
+          <q-carousel-slide v-for="(img, index) in product.assets" :key="index" :name="index + 1" :img-src="img.src"
+            ratio="1" />
 
           <template v-slot:control>
-            <q-carousel-control
-              position="bottom"
-              :offset="[18, 40]"
-              class="row items-center justify-between"
-            >
+            <q-carousel-control position="bottom" :offset="[18, 40]" class="row items-center justify-between">
               <div v-if="product" class="asset-badge q-mr-sm">
                 {{ slide }}/{{ product.assets.length }}
               </div>
-              <q-btn
-                aria-label="Fullscreen"
-                dense
-                color="white"
-                class="bordered"
-                text-color="grey-8"
-                icon="ion-expand"
-                unelevated
-                size="13px"
-                padding="8px"
-                round
-                @click="fullscreen = !fullscreen"
-              />
+              <q-btn aria-label="Fullscreen" dense color="white" class="bordered" text-color="grey-8" icon="ion-expand"
+                unelevated size="13px" padding="8px" round @click="fullscreen = !fullscreen" />
             </q-carousel-control>
           </template>
         </q-carousel>
@@ -67,10 +31,7 @@
               {{ product.title }}
             </h1>
 
-            <div
-              class="items-center justify-between"
-              :class="{ row: $q.screen.width > 800 }"
-            >
+            <div class="items-center justify-between" :class="{ row: $q.screen.width > 800 }">
               <div>
                 <div class="flex items-center">
                   <div class="flex items-center text-secondary">
@@ -79,13 +40,9 @@
                       {{ $money(parseInt(getCurrentPrice * this.quantity)) }}
                     </span>
                   </div>
-                  <div
-                    class="flex items-center text-strike text-xs q-ml-xs"
-                    v-if="renderDiscount"
-                  >
+                  <div class="flex items-center text-strike text-xs q-ml-xs" v-if="renderDiscount">
                     <span class="text-sm">Rp</span>
-                    <span class="text-md"
-                      >{{ $money(getDefaultPrice * this.quantity) }}
+                    <span class="text-md">{{ $money(getDefaultPrice * this.quantity) }}
                     </span>
                   </div>
 
@@ -93,8 +50,7 @@
                     <div class="q-px-sm text-md text-weight-bold">-</div>
                     <div class="flex items-center text-secondary">
                       <span class="text-md">Rp</span>
-                      <span class="text-lg text-weight-medium"
-                        >{{ $money(getMaxPrice) }}
+                      <span class="text-lg text-weight-medium">{{ $money(getMaxPrice) }}
                       </span>
                     </div>
                   </template>
@@ -103,16 +59,8 @@
                 </div> -->
                 </div>
                 <div class="row items-center q-gutter-x-sm">
-                  <q-rating
-                    data-nosnippet="true"
-                    v-model="productRating"
-                    readonly
-                    color="accent"
-                    icon="ion-star-outline"
-                    icon-selected="ion-star"
-                    icon-half="ion-star-half"
-                    size="1.3rem"
-                  />
+                  <q-rating data-nosnippet="true" v-model="productRating" readonly color="accent"
+                    icon="ion-star-outline" icon-selected="ion-star" icon-half="ion-star-half" size="1.3rem" />
                   <div class="text-weight-medium text-sm">
                     {{
                       product.reviews_count > 0
@@ -123,39 +71,20 @@
                 </div>
               </div>
               <div class="row gutter-x text-h6 items-center">
-                <q-btn
-                  aria-label="decrement"
-                  flat
-                  round
-                  icon="eva-minus-circle-outline"
-                  size="24"
-                  @click="decrementQty"
-                  style="cursor: pointer"
-                ></q-btn>
+                <q-btn aria-label="decrement" flat round icon="eva-minus-circle-outline" size="24" @click="decrementQty"
+                  style="cursor: pointer"></q-btn>
                 <div>{{ quantity }}</div>
-                <q-btn
-                  aria-label="increment"
-                  flat
-                  round
-                  icon="eva-plus-circle-outline"
-                  size="24"
-                  @click="incrementQty"
-                  style="cursor: pointer"
-                ></q-btn>
+                <q-btn aria-label="increment" flat round icon="eva-plus-circle-outline" size="24" @click="incrementQty"
+                  style="cursor: pointer"></q-btn>
               </div>
             </div>
 
             <!-- <div class="text-weight-bold q-mt-xs text-md text-grey-9" v-if="currentStock > 0">Stok : {{  currentStock }} {{ product.unit }}</div> -->
           </q-card-section>
         </q-card>
-        <div
-          class="box-shadow bg-white q-px-md q-mt-md q-py-lg"
-          v-if="product && product_varian_item_render.length"
-        >
+        <div class="box-shadow bg-white q-px-md q-mt-md q-py-lg" v-if="product && product_varian_item_render.length">
           <div class="q-pb-sm">
-            <div
-              class="flex justify-between items-center text-md text-weight-semibold"
-            >
+            <div class="flex justify-between items-center text-md text-weight-semibold">
               <div class="">Pilih Varian</div>
             </div>
             <div class="q-mt-sm" v-if="product.varian_attributes.length">
@@ -163,27 +92,16 @@
                 {{ product.varian_attributes[0].label }}
               </div>
               <div class="q-gutter-sm">
-                <q-btn
-                  aria-label="Product Attribute"
-                  class="product-varian--btn"
-                  outline
-                  v-for="attr in product.varian_attributes"
-                  :key="attr.id"
-                  :label="attr.value"
-                  :color="
+                <q-btn aria-label="Product Attribute" class="product-varian--btn" outline
+                  v-for="attr in product.varian_attributes" :key="attr.id" :label="attr.value" :color="product_attribute_selected &&
+                    product_attribute_selected.id == attr.id
+                    ? 'accent'
+                    : 'grey-9'
+                    " @click="selectVarianAttribute(attr)">
+                  <badge-tick v-if="
                     product_attribute_selected &&
                     product_attribute_selected.id == attr.id
-                      ? 'accent'
-                      : 'grey-9'
-                  "
-                  @click="selectVarianAttribute(attr)"
-                >
-                  <badge-tick
-                    v-if="
-                      product_attribute_selected &&
-                      product_attribute_selected.id == attr.id
-                    "
-                  />
+                  " />
                 </q-btn>
               </div>
             </div>
@@ -192,28 +110,17 @@
                 {{ product_varian_item_render[0].label }}
               </div>
               <div class="q-gutter-sm">
-                <q-btn
-                  aria-label="Product Varian"
-                  class="product-varian--btn"
-                  outline
-                  v-for="item in product_varian_item_render"
-                  :key="item.id"
-                  :label="`${item.value} ${item.stock > 0 ? '' : 'Habis'}`"
-                  :color="
+                <q-btn aria-label="Product Varian" class="product-varian--btn" outline
+                  v-for="item in product_varian_item_render" :key="item.id"
+                  :label="`${item.value} ${item.stock > 0 ? '' : 'Habis'}`" :color="product_varian_selected &&
+                    product_varian_selected.id == item.id
+                    ? 'accent'
+                    : 'grey-9'
+                    " @click="selectVarianItem(item)" :disable="item.stock < 1">
+                  <badge-tick v-if="
                     product_varian_selected &&
                     product_varian_selected.id == item.id
-                      ? 'accent'
-                      : 'grey-9'
-                  "
-                  @click="selectVarianItem(item)"
-                  :disable="item.stock < 1"
-                >
-                  <badge-tick
-                    v-if="
-                      product_varian_selected &&
-                      product_varian_selected.id == item.id
-                    "
-                  />
+                  " />
                 </q-btn>
               </div>
             </div>
@@ -239,16 +146,8 @@
                     <div class="text-3xl text-weight-bold">
                       {{ product.rating }}
                     </div>
-                    <q-rating
-                      data-nosnippet="true"
-                      readonly
-                      v-model="productRating"
-                      color="accent"
-                      icon="ion-star-outline"
-                      icon-selected="ion-star"
-                      icon-half="ion-star-half"
-                      size="30px"
-                    />
+                    <q-rating data-nosnippet="true" readonly v-model="productRating" color="accent"
+                      icon="ion-star-outline" icon-selected="ion-star" icon-half="ion-star-half" size="30px" />
                   </div>
                   <div class="text-weight-medium text-md q-my-sm">
                     {{
@@ -257,27 +156,15 @@
                         : "Belum ada ulasan"
                     }}
                   </div>
-                  <q-btn
-                    outline
-                    color="accent"
-                    @click="handleReviewModal"
-                    label="Berikan ulasan"
-                    class="q-my-xs"
-                  ></q-btn>
+                  <q-btn outline color="accent" @click="handleReviewModal" label="Berikan ulasan"
+                    class="q-my-xs"></q-btn>
                 </div>
                 <div class="q-pt-xl">
                   <review-block :reviews="AllProductReviews" />
                 </div>
                 <div class="q-my-md row justify-center">
-                  <q-btn
-                    outline
-                    no-caps
-                    color="primary"
-                    :loading="loadMoreLoading"
-                    v-if="productReviews.length < product.reviews_count"
-                    label="loadmore..."
-                    @click="loadReview"
-                  >
+                  <q-btn outline no-caps color="primary" :loading="loadMoreLoading"
+                    v-if="productReviews.length < product.reviews_count" label="loadmore..." @click="loadReview">
                   </q-btn>
                 </div>
               </div>
@@ -286,25 +173,10 @@
         </q-card>
       </div>
       <q-footer class="q-gutter-x-sm flex q-pa-md bg-white">
-        <q-btn
-          unelevated
-          rounded
-          outline
-          @click="chatModal = true"
-          icon="eva-message-circle-outline"
-          label="Chat"
-          color="primary"
-          class="col"
-        ></q-btn>
-        <q-btn
-          unelevated
-          rounded
-          @click="addNewItem"
-          icon="eva-shopping-cart-outline"
-          label="Beli"
-          color="primary"
-          class="col"
-        ></q-btn>
+        <q-btn unelevated rounded outline @click="chatModal = true" icon="eva-message-circle-outline" label="Chat"
+          color="primary" class="col"></q-btn>
+        <q-btn unelevated rounded @click="addNewItem" icon="eva-shopping-cart-outline" label="Beli" color="primary"
+          class="col"></q-btn>
       </q-footer>
     </template>
     <q-inner-loading :showing="!ready"> </q-inner-loading>
@@ -314,30 +186,13 @@
           <form @submit.prevent="submitReview">
             <div>
               <div class="text-subtitle2 q-mb-sm">Berikan Ulasan Anda</div>
-              <q-rating
-                data-nosnippet="true"
-                v-model="form.rating"
-                color="accent"
-                icon="ion-star-outline"
-                icon-selected="ion-star"
-                icon-half="ion-star-half"
-                size="sm"
-              />
+              <q-rating data-nosnippet="true" v-model="form.rating" color="accent" icon="ion-star-outline"
+                icon-selected="ion-star" icon-half="ion-star-half" size="sm" />
               <div class="q-my-md q-gutter-y-xs">
-                <q-input
-                  dense
-                  label="Nama Anda"
-                  v-model="form.name"
-                  :rules="[(val) => (val && val != '') || 'Wajib disisi']"
-                ></q-input>
-                <q-input
-                  dense
-                  label="Ulasan Anda"
-                  type="textarea"
-                  v-model="form.comment"
-                  rows="3"
-                  :rules="[(val) => (val && val != '') || 'Wajib disisi']"
-                ></q-input>
+                <q-input dense label="Nama Anda" v-model="form.name"
+                  :rules="[(val) => (val && val != '') || 'Wajib disisi']"></q-input>
+                <q-input dense label="Ulasan Anda" type="textarea" v-model="form.comment" rows="3"
+                  :rules="[(val) => (val && val != '') || 'Wajib disisi']"></q-input>
               </div>
               <div class="q-gutter-y-sm q-my-md items-center text-grey">
                 <div class="text-grey text-xs">
@@ -345,42 +200,22 @@
                   robot
                 </div>
                 <div class="row q-gutter-x-sm items-center">
-                  <div
-                    class="text-weight-bold bg-dark text-white q-px-sm q-py-xs rounded"
-                  >
+                  <div class="text-weight-bold bg-dark text-white q-px-sm q-py-xs rounded">
                     {{ number2 }} + {{ number1 }}
                   </div>
                   <div class="text-weight-bold">=</div>
-                  <input
-                    class="rounded text-grey-9"
-                    type="text"
-                    ref="jawaban"
-                    v-model="jawaban"
-                    style="
+                  <input class="rounded text-grey-9" type="text" ref="jawaban" v-model="jawaban" style="
                       width: 60px;
                       padding: 3px 6px;
                       border: 1px solid grey;
-                    "
-                  />
+                    " />
                 </div>
               </div>
               <div class="row justify-end q-gutter-x-sm">
-                <q-btn
-                  unelevated
-                  type="button"
-                  @click.prevent="closeReviewModal"
-                  label="Batal"
-                  color="primary"
-                  outline
-                ></q-btn>
-                <q-btn
-                  unelevated
-                  :disable="chalengeTesting"
-                  type="submit"
-                  :loading="loading"
-                  label="Kirim Ulasan"
-                  color="primary"
-                ></q-btn>
+                <q-btn unelevated type="button" @click.prevent="closeReviewModal" label="Batal" color="primary"
+                  outline></q-btn>
+                <q-btn unelevated :disable="chalengeTesting" type="submit" :loading="loading" label="Kirim Ulasan"
+                  color="primary"></q-btn>
               </div>
             </div>
           </form>
@@ -394,87 +229,43 @@
         </div>
         <q-card-section class="transition-height">
           <!-- <div class="q-mb-sm text-subtitle2" v-if="this.product"># {{ product.title }}</div> -->
-          <q-input
-            outlined
-            autogrow
-            autofocus
-            v-model="chatText"
-            placeholder="contoh: Halo Admin, Apakah ini masih ada?"
-          ></q-input>
+          <q-input outlined autogrow autofocus v-model="chatText"
+            placeholder="contoh: Halo Admin, Apakah ini masih ada?"></q-input>
           <div class="q-pt-md q-gutter-sm">
-            <q-badge
-              color="green"
-              g
-              class="cursor-pointer"
-              v-for="chat in defaultChat"
-              :key="chat"
-              @click="changeChatText(chat)"
-            >
+            <q-badge color="green" g class="cursor-pointer" v-for="chat in defaultChat" :key="chat"
+              @click="changeChatText(chat)">
               <span>{{ chat }}</span>
             </q-badge>
           </div>
         </q-card-section>
         <q-card-actions class="justify-end q-pa-md">
-          <q-btn
-            @click="closeChatModal"
-            outline
-            color="primary"
-            label="Batal"
-          ></q-btn>
-          <q-btn
-            @click="submitChat"
-            :disable="!chatText"
-            color="primary"
-            label="Kirim"
-          ></q-btn>
+          <q-btn @click="closeChatModal" outline color="primary" label="Batal"></q-btn>
+          <q-btn @click="submitChat" :disable="!chatText" color="primary" label="Kirim"></q-btn>
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog
-      v-model="cartModal"
-      transition-show="slide-up"
-      transition-hide="slide-up"
-    >
+    <q-dialog v-model="cartModal" transition-show="slide-up" transition-hide="slide-up">
       <q-card flat class="card-lg bg-white" v-if="product">
         <q-linear-progress size="10px" :value="100" />
         <q-card-section>
           <q-list>
             <q-item class="q-px-xs">
               <q-item-section avatar top>
-                <q-img
-                  :src="product.assets[0].src"
-                  width="80px"
-                  class="rounded-borders"
-                  ratio="1"
-                ></q-img>
+                <q-img :src="product.assets[0].src" width="80px" class="rounded-borders" ratio="1"></q-img>
               </q-item-section>
               <q-item-section top>
                 <div class="text-md text-weight-meduim q-mb-sm">
                   <span class="text-weight-medium">{{ product.title }}</span>
                   berhasil ditambahkan di keranjang belanja.
                 </div>
-                <q-item-label caption
-                  >Anda bisa lanjut kehalaman checkout atau melanjutkan
-                  berbelanja</q-item-label
-                >
+                <q-item-label caption>Anda bisa lanjut kehalaman checkout atau melanjutkan
+                  berbelanja</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
           <div class="flex justify-end q-gutter-x-sm q-pt-sm">
-            <q-btn
-              outline
-              no-caps
-              @click="cartModal = false"
-              label="Berbelanja Lagi"
-              color="primary"
-            ></q-btn>
-            <q-btn
-              unelevated
-              no-caps
-              :to="{ name: 'Cart' }"
-              label="Lanjut Checkout"
-              color="primary"
-            ></q-btn>
+            <q-btn outline no-caps @click="cartModal = false" label="Berbelanja Lagi" color="primary"></q-btn>
+            <q-btn unelevated no-caps :to="{ name: 'Cart' }" label="Lanjut Checkout" color="primary"></q-btn>
           </div>
         </q-card-section>
       </q-card>
@@ -485,42 +276,20 @@
         <q-card-section v-if="product">
           <div class="q-mb-sm text-weight-medium text-lg">Konfirmasi</div>
           <div>
-            <span class="text-weight-medium text-md text-capitalize"
-              >{{ product.title }}
+            <span class="text-weight-medium text-md text-capitalize">{{ product.title }}
             </span>
             {{ getVarianTextNote() }}<br />Sudah ada dikeranjang, Apakah ingin
             tetap menambahkan?, Jika YA, keranjang akan diperbarui kuantitasnya
           </div>
         </q-card-section>
         <q-card-actions class="justify-end q-gutter-x-sm q-pa-md">
-          <q-btn
-            outline
-            no-caps
-            @click="alreadyItemModal = false"
-            label="Batal"
-            color="primary"
-          ></q-btn>
-          <q-btn
-            unelevated
-            no-caps
-            @click="updateNewItem"
-            label="Tambahkan"
-            color="primary"
-          ></q-btn>
+          <q-btn outline no-caps @click="alreadyItemModal = false" label="Batal" color="primary"></q-btn>
+          <q-btn unelevated no-caps @click="updateNewItem" label="Tambahkan" color="primary"></q-btn>
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog
-      v-model="formVariantModal"
-      position="bottom"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card
-        class="max-width"
-        flat
-        v-if="product && product_varian_item_render.length"
-      >
+    <q-dialog v-model="formVariantModal" position="bottom" transition-show="slide-up" transition-hide="slide-down">
+      <q-card class="max-width" flat v-if="product && product_varian_item_render.length">
         <q-card-section>
           <div class="q-pb-sm" style="min-height: 200px">
             <div class="text-lg">Pilih Varian</div>
@@ -529,27 +298,16 @@
                 {{ product.varian_attributes[0].label }}
               </div>
               <div class="q-gutter-sm">
-                <q-btn
-                  aria-label="Product Attribute"
-                  class="product-varian--btn"
-                  outline
-                  v-for="attr in product.varian_attributes"
-                  :key="attr.id"
-                  :label="attr.value"
-                  :color="
+                <q-btn aria-label="Product Attribute" class="product-varian--btn" outline
+                  v-for="attr in product.varian_attributes" :key="attr.id" :label="attr.value" :color="product_attribute_selected &&
+                    product_attribute_selected.id == attr.id
+                    ? 'accent'
+                    : 'grey-9'
+                    " @click="selectVarianAttribute(attr)">
+                  <badge-tick v-if="
                     product_attribute_selected &&
                     product_attribute_selected.id == attr.id
-                      ? 'accent'
-                      : 'grey-9'
-                  "
-                  @click="selectVarianAttribute(attr)"
-                >
-                  <badge-tick
-                    v-if="
-                      product_attribute_selected &&
-                      product_attribute_selected.id == attr.id
-                    "
-                  />
+                  " />
                 </q-btn>
               </div>
             </div>
@@ -558,134 +316,57 @@
                 {{ product_varian_item_render[0].label }}
               </div>
               <div class="q-gutter-sm">
-                <q-btn
-                  aria-label="Product Varian"
-                  class="product-varian--btn"
-                  outline
-                  v-for="item in product_varian_item_render"
-                  :key="item.id"
-                  :color="
+                <q-btn aria-label="Product Varian" class="product-varian--btn" outline
+                  v-for="item in product_varian_item_render" :key="item.id" :color="product_varian_selected &&
+                    product_varian_selected.id == item.id
+                    ? 'accent'
+                    : 'grey-9'
+                    " @click="selectVarianItem(item)" :label="`${item.value} ${item.stock > 0 ? '' : 'Habis'}`"
+                  :disable="item.stock < 1">
+                  <badge-tick v-if="
                     product_varian_selected &&
                     product_varian_selected.id == item.id
-                      ? 'accent'
-                      : 'grey-9'
-                  "
-                  @click="selectVarianItem(item)"
-                  :label="`${item.value} ${item.stock > 0 ? '' : 'Habis'}`"
-                  :disable="item.stock < 1"
-                >
-                  <badge-tick
-                    v-if="
-                      product_varian_selected &&
-                      product_varian_selected.id == item.id
-                    "
-                  />
+                  " />
                 </q-btn>
               </div>
             </div>
           </div>
         </q-card-section>
         <q-card-section>
-          <q-btn
-            unelevated
-            @click="addNewItem"
-            name="eva-shopping-cart-outline"
-            label="Beli Sekarang"
-            color="primary"
-            class="full-width"
-          ></q-btn>
+          <q-btn unelevated @click="addNewItem" name="eva-shopping-cart-outline" label="Beli Sekarang" color="primary"
+            class="full-width"></q-btn>
         </q-card-section>
       </q-card>
     </q-dialog>
     <q-dialog v-model="fullscreen" persistent maximized>
-      <div
-        class="max-width relative"
-        v-if="product"
-        style="background: rgb(120 120 120 / 96%)"
-      >
-        <div
-          class="text-center q-py-md absolute"
-          style="top: 5px; width: 100%; z-index: 99"
-        >
+      <div class="max-width relative" v-if="product" style="background: rgb(120 120 120 / 96%)">
+        <div class="text-center q-py-md absolute" style="top: 5px; width: 100%; z-index: 99">
           <div class="flex justify-center" v-show="helpTextScreen">
             <div class="q-px-md" style="background: rgb(240 240 240 / 90%)">
               Scroll mouse atau cubit layar untuk zoom
             </div>
           </div>
         </div>
-        <Transition
-          name="slide"
-          tag="div"
-          class="preview-image relative bg-grey-5 text-center"
-        >
-          <PinchScrollZoom
-            ref="zoomer"
-            :width="zoomerWidth"
-            :height="zoomerHeight"
-            :scale="scale"
-          >
-            <img
-              ref="zoomerimage"
-              :src="currentImage"
-              :style="zoomImageStyle"
-            />
+        <Transition name="slide" tag="div" class="preview-image relative bg-grey-5 text-center">
+          <PinchScrollZoom ref="zoomer" :width="zoomerWidth" :height="zoomerHeight" :scale="scale">
+            <img ref="zoomerimage" :src="currentImage" :style="zoomImageStyle" />
           </PinchScrollZoom>
         </Transition>
-        <div
-          class="absolute row items-center q-py-md q-px-lg justify-between fuul-width"
-          style="bottom: 0; left: 0; right: 0"
-        >
+        <div class="absolute row items-center q-py-md q-px-lg justify-between fuul-width"
+          style="bottom: 0; left: 0; right: 0">
           <div class="asset-badge">{{ slide }}/{{ product.assets.length }}</div>
           <div class="row items-center">
             <template v-if="product.assets.length > 1">
-              <q-btn
-                :disable="slide == 1"
-                dense
-                size="16px"
-                color="white"
-                text-color="dark"
-                round
-                unelevated
-                icon="eva-arrow-ios-back"
-                @click="slide--"
-                class="q-mr-sm bordered"
-              />
-              <q-btn
-                :disable="product.assets.length == slide"
-                dense
-                size="16px"
-                color="white"
-                text-color="dark"
-                round
-                unelevated
-                icon="eva-arrow-ios-forward"
-                class="q-mr-sm bordered"
-                @click="slide++"
-              />
+              <q-btn :disable="slide == 1" dense size="16px" color="white" text-color="dark" round unelevated
+                icon="eva-arrow-ios-back" @click="slide--" class="q-mr-sm bordered" />
+              <q-btn :disable="product.assets.length == slide" dense size="16px" color="white" text-color="dark" round
+                unelevated icon="eva-arrow-ios-forward" class="q-mr-sm bordered" @click="slide++" />
             </template>
 
-            <q-btn
-              dense
-              size="16px"
-              color="white"
-              text-color="dark"
-              round
-              unelevated
-              icon="ion-refresh"
-              @click="resetZoom"
-              class="q-mr-sm bordered"
-            />
-            <q-btn
-              dense
-              size="16px"
-              color="white"
-              text-color="dark"
-              class="bordered"
-              round
-              unelevated
-              icon="eva-close"
-              @click="fullscreen = !fullscreen"
-            />
+            <q-btn dense size="16px" color="white" text-color="dark" round unelevated icon="ion-refresh"
+              @click="resetZoom" class="q-mr-sm bordered" />
+            <q-btn dense size="16px" color="white" text-color="dark" class="bordered" round unelevated icon="eva-close"
+              @click="fullscreen = !fullscreen" />
           </div>
         </div>
       </div>
@@ -1004,6 +685,16 @@ export default {
       }
     },
     addNewItem() {
+
+      if (this.product.product_url) {
+        let url = this.product.product_url
+        if (!url.startsWith('http')) {
+          url = `https://${url}`
+        }
+        window.open(url, 'new')
+
+        return
+      }
       if (this.has_varian && !this.product_varian_selected) {
         this.showNotifyHasSelectVarian();
         return;
@@ -1304,11 +995,9 @@ export default {
   right: 0;
   width: 100%;
   background: transparent;
-  background: linear-gradient(
-    0deg,
-    rgba(2, 0, 36, 0) 0%,
-    rgba(0, 0, 5, 0.678) 100%
-  );
+  background: linear-gradient(0deg,
+      rgba(2, 0, 36, 0) 0%,
+      rgba(0, 0, 5, 0.678) 100%);
   color: #fff;
 }
 

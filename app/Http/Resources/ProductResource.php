@@ -12,7 +12,7 @@ class ProductResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    
+
     public static $wrap = 'results';
 
     public function toArray($request)
@@ -27,14 +27,14 @@ class ProductResource extends JsonResource
             'is_discount' => false,
         ];
 
-        if($this->productPromo) {
+        if ($this->productPromo) {
 
             $pricing['is_discount'] = true;
             $pricing['discount_type'] = $this->productPromo->discount_type;
             $pricing['discount_amount'] = intval($this->productPromo->discount_amount);
         }
 
-        if($this->varianItemSortByPrice->count() > 0) {
+        if ($this->varianItemSortByPrice->count() > 0) {
             $pricing['default_price'] = intval($this->varianItemSortByPrice[0]->price);
             $pricing['max_price'] = intval($this->varianItemSortByPrice[$this->varianItemSortByPrice->count() - 1]->price);
         }
@@ -55,6 +55,7 @@ class ProductResource extends JsonResource
             'varian_items' => $this->varianItemSortByPrice,
             'varian_attributes' => $this->varianAttributes,
             'unit' => $this->unit,
+            'product_url' => $this->product_url,
         ];
     }
 }
