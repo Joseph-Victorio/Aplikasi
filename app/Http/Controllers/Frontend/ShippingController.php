@@ -132,7 +132,6 @@ class ShippingController extends Controller
                     if($is_standart_package) {
 
                         if((str_contains($name, 'Truck') || str_contains($name, 'Motor'))) {
-                            Log::debug('is_standart');
                             continue;
                         }
 

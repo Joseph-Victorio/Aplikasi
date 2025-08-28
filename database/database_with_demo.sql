@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.43, for Linux (x86_64)
 --
--- Host: localhost    Database: nextshop_whatsapp_starter
+-- Host: localhost    Database: nextshop_whatsapp_demo
 -- ------------------------------------------------------
 -- Server version	8.0.43-0ubuntu0.24.04.1
 
@@ -53,13 +53,13 @@ DROP TABLE IF EXISTS `assets`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assets` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `filename` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `variable` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `assetable_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `filename` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `variable` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `assetable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `assetable_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `assets_assetable_type_assetable_id_index` (`assetable_type`,`assetable_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,6 +68,7 @@ CREATE TABLE `assets` (
 
 LOCK TABLES `assets` WRITE;
 /*!40000 ALTER TABLE `assets` DISABLE KEYS */;
+INSERT INTO `assets` VALUES (1,'ZsnNnvf7ACJvw0k0CtLVsIyj0UO8o4ytbE0QMWEa.png',NULL,'Category',1),(2,'YwsM6FW3hBAkUXrg9L9w4uLdPwfWtEMKNTWv8FwOf.png','featured','Product',1),(3,'tZe4ZP1OjAig1q9El5tMUOjuUFPFTAOX5H4qlGPFX.png','featured','Product',2),(4,'OSQJzK9NoT01iLwpr3tyK0SUl2Ogd7RiZxX9thKWB.png','featured','Product',3);
 /*!40000 ALTER TABLE `assets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -80,18 +81,18 @@ DROP TABLE IF EXISTS `blocks`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `blocks` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `label` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `image` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `label` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `image` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `weight` tinyint NOT NULL DEFAULT '1',
-  `position` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `position` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `post_id` bigint unsigned DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `blocks_post_id_foreign` (`post_id`),
   CONSTRAINT `blocks_post_id_foreign` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,6 +101,7 @@ CREATE TABLE `blocks` (
 
 LOCK TABLES `blocks` WRITE;
 /*!40000 ALTER TABLE `blocks` DISABLE KEYS */;
+INSERT INTO `blocks` VALUES (1,'Original','Curabitur aliquet quam id dui posuere blandit.','AK0HiQhzBPORfCczBf5xLu4Rk9QiMFXFQhn4UJFoj3.png',1,'Featured',NULL,'2023-10-03 14:27:48','2023-10-03 14:27:48'),(2,'Terpercaya','Curabitur aliquet quam id dui posuere blandit.','Q9SFlhcSs3Dxq0WdW3EgvjCHC0DjvvunvIF5K2tpWO.png',2,'Featured',NULL,'2023-10-03 14:28:05','2023-10-03 14:28:05'),(3,'Terbaik','Curabitur aliquet quam id dui posuere blandit.','q2AnUxEdJhZ5h7ZVni6tYhxKD5l221gxNQk0i3tIWN.png',3,'Featured',NULL,'2023-10-03 14:28:20','2023-10-03 14:28:20');
 /*!40000 ALTER TABLE `blocks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,21 +114,21 @@ DROP TABLE IF EXISTS `carts`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `carts` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `session_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sku` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `session_id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sku` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `product_stock` int NOT NULL,
   `product_id` int NOT NULL,
   `price` int NOT NULL,
   `quantity` int NOT NULL,
   `weight` int NOT NULL,
-  `image_url` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `product_url` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `note` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image_url` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product_url` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `note` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -135,6 +137,7 @@ CREATE TABLE `carts` (
 
 LOCK TABLES `carts` WRITE;
 /*!40000 ALTER TABLE `carts` DISABLE KEYS */;
+INSERT INTO `carts` VALUES (1,'HUk9TyAMbETUZFhLiG1l7iaBuqeB3irgzOOngCb8CiPVaQEej','Kripik Talas','a72b26fb-ab78-456d-b2d0-4d23ce54e870',100,1,20000,1,500,'http://127.0.0.1:8001/upload/images/YwsM6FW3hBAkUXrg9L9w4uLdPwfWtEMKNTWv8FwOf.png','http://127.0.0.1:8001/product/kripik-talas',NULL,'2023-10-03 14:38:15','2023-10-03 14:38:15');
 /*!40000 ALTER TABLE `carts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,16 +150,16 @@ DROP TABLE IF EXISTS `categories`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categories` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `category_id` bigint unsigned DEFAULT NULL,
-  `description` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_front` tinyint(1) NOT NULL DEFAULT '1',
   `weight` tinyint NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,6 +168,7 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` VALUES (1,'Makanan & Minuman','makanan-minuman',NULL,'Makanan & Minuman',1,1,'2023-10-03 14:28:56','2023-10-03 14:28:56');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,29 +181,29 @@ DROP TABLE IF EXISTS `configs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `configs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `theme` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT 'default',
-  `theme_color` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT '#1bb90d',
-  `accent_color` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '#1bb90d',
-  `secondary_color` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '#ec0d0d',
-  `primary_color` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '#1bb90d',
-  `home_view_mode` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT 'grid',
+  `theme` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'default',
+  `theme_color` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '#1bb90d',
+  `accent_color` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '#1bb90d',
+  `secondary_color` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '#ec0d0d',
+  `primary_color` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '#1bb90d',
+  `home_view_mode` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'grid',
   `home_product_limit` int NOT NULL DEFAULT '10',
-  `home_product_sort` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'DESC',
-  `product_view_mode` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT 'grid',
+  `home_product_sort` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'DESC',
+  `product_view_mode` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'grid',
   `catalog_product_limit` int NOT NULL DEFAULT '10',
-  `catalog_product_sort` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'DESC',
+  `catalog_product_sort` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'DESC',
   `is_cod_payment` tinyint(1) NOT NULL DEFAULT '0',
-  `is_shipping_active` tinyint(1) NOT NULL DEFAULT '0',
+  `is_shipping_active` tinyint(1) NOT NULL DEFAULT '1',
   `review_auto_approved` tinyint(1) NOT NULL DEFAULT '0',
-  `cod_list` text COLLATE utf8mb4_unicode_ci,
+  `cod_list` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `is_notifypro` tinyint(1) NOT NULL DEFAULT '0',
   `notifypro_interval` tinyint NOT NULL DEFAULT '20',
   `notifypro_timeout` tinyint NOT NULL DEFAULT '4',
-  `rajaongkir_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT 'starter',
-  `rajaongkir_apikey` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `rajaongkir_couriers` text COLLATE utf8mb4_unicode_ci,
+  `rajaongkir_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'starter',
+  `rajaongkir_apikey` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rajaongkir_couriers` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `warehouse_id` int DEFAULT NULL,
-  `warehouse_address` text COLLATE utf8mb4_unicode_ci,
+  `warehouse_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `is_local_shipping_active` tinyint(1) NOT NULL DEFAULT '0',
   `home_product_view` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'by_category',
   `is_pic_order` tinyint(1) NOT NULL DEFAULT '0',
@@ -215,7 +219,7 @@ CREATE TABLE `configs` (
 
 LOCK TABLES `configs` WRITE;
 /*!40000 ALTER TABLE `configs` DISABLE KEYS */;
-INSERT INTO `configs` VALUES (1,'default','#1bb90d','#1bb90d','#ec0d0d','#1bb90d','grid',10,'DESC','grid',10,'DESC',0,0,0,NULL,0,20,4,'starter','e7495ac700145ab33b3af06bb159ac83',NULL,NULL,NULL,0,'by_category',0,NULL,NULL);
+INSERT INTO `configs` VALUES (1,'romance','#1bb90d','#eb9409','#ec0d0d','#1bb90d','grid',10,'DESC','grid',10,'DESC',0,1,0,'[{\"id\":2544,\"subdistrict_name\":\"Patean\",\"subdistrict_id\":\"2544\",\"city\":\"Kendal\",\"city_id\":\"181\",\"type\":\"Kabupaten\",\"province\":\"Jawa Tengah\",\"price\":0},{\"id\":2551,\"subdistrict_name\":\"Sukorejo\",\"subdistrict_id\":\"2551\",\"city\":\"Kendal\",\"city_id\":\"181\",\"type\":\"Kabupaten\",\"province\":\"Jawa Tengah\",\"price\":\"5000\"}]',0,20,4,'starter','e7495ac700145ab33b3af06bb159ac83','[{\"label\":\"JNE\",\"value\":\"jne\"},{\"label\":\"TIKI\",\"value\":\"tiki\"},{\"label\":\"POS\",\"value\":\"pos\"}]',NULL,NULL,0,'by_category',0,NULL,NULL);
 /*!40000 ALTER TABLE `configs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -228,11 +232,11 @@ DROP TABLE IF EXISTS `failed_jobs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `failed_jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
@@ -257,8 +261,8 @@ DROP TABLE IF EXISTS `jobs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `queue` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `attempts` tinyint unsigned NOT NULL,
   `reserved_at` int unsigned DEFAULT NULL,
   `available_at` int unsigned NOT NULL,
@@ -286,7 +290,7 @@ DROP TABLE IF EXISTS `migrations`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `migrations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -298,7 +302,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2021_04_11_172021_create_categories_table',1),(6,'2021_06_11_172034_create_products_table',1),(7,'2021_06_11_172519_create_assets_table',1),(8,'2021_06_12_131316_create_sliders_table',1),(9,'2021_06_17_010104_create_stores_table',1),(10,'2021_10_16_140715_create_reviews_table',1),(11,'2021_10_17_130249_create_posts_table',1),(12,'2021_10_18_212500_create_blocks_table',1),(13,'2021_10_24_081524_create_configs_table',1),(14,'2021_10_24_201040_create_orders_table',1),(15,'2021_10_24_201114_create_order_items_table',1),(16,'2021_11_11_155008_create_carts_table',1),(17,'2021_12_03_124300_add_role_to_users_table',1),(18,'2022_05_21_145045_create_jobs_table',1),(19,'2022_05_24_180041_create_promos_table',1),(20,'2022_05_24_180217_create_product_promos_table',1),(21,'2022_05_24_180424_create_product_varians_table',1),(22,'2023_08_27_140004_create_addresses_table',1),(23,'2023_08_27_201145_create_user_addresses_table',1),(24,'2024_12_03_130405_add_local_ship_to_configs_table',1),(25,'2025_01_08_062211_add_default_product_view_to_configs_table',1),(26,'2025_03_27_025843_add_ext_url_to_products_table',1),(27,'2025_08_28_233443_add_coordinate_to_configs_table',2);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2021_04_11_172021_create_categories_table',1),(6,'2021_06_11_172034_create_products_table',1),(7,'2021_06_11_172519_create_assets_table',1),(8,'2021_06_12_131316_create_sliders_table',1),(9,'2021_06_17_010104_create_stores_table',1),(10,'2021_10_16_140715_create_reviews_table',1),(11,'2021_10_17_130249_create_posts_table',1),(12,'2021_10_18_212500_create_blocks_table',1),(13,'2021_10_24_081524_create_configs_table',1),(14,'2021_10_24_201040_create_orders_table',1),(15,'2021_10_24_201114_create_order_items_table',1),(16,'2021_11_11_155008_create_carts_table',1),(17,'2021_12_03_124300_add_role_to_users_table',1),(18,'2022_05_21_145045_create_jobs_table',1),(19,'2022_05_24_180041_create_promos_table',1),(20,'2022_05_24_180217_create_product_promos_table',1),(21,'2022_05_24_180424_create_product_varians_table',1),(22,'2023_08_27_140004_create_addresses_table',1),(23,'2023_08_27_201145_create_user_addresses_table',1),(24,'2024_12_03_130405_add_local_ship_to_configs_table',2),(25,'2025_01_08_062211_add_default_product_view_to_configs_table',3),(26,'2025_03_27_025843_add_ext_url_to_products_table',3),(27,'2025_08_28_233443_add_coordinate_to_configs_table',4);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -311,13 +315,13 @@ DROP TABLE IF EXISTS `order_items`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order_items` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sku` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sku` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `order_id` bigint unsigned NOT NULL,
   `product_id` bigint unsigned NOT NULL,
   `quantity` int NOT NULL,
   `price` int NOT NULL,
-  `note` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `note` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -344,20 +348,20 @@ DROP TABLE IF EXISTS `orders`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `order_ref` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `customer_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `customer_phone` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `order_ref` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `customer_name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `customer_phone` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `order_qty` int NOT NULL,
   `order_subtotal` int NOT NULL,
   `order_weight` int NOT NULL,
   `order_total` int NOT NULL DEFAULT '0',
-  `order_status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `shipping_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_courier_code` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_courier_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `order_status` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `shipping_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_courier_code` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_courier_name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `shipping_cost` int DEFAULT NULL,
-  `shipping_address` text COLLATE utf8mb4_unicode_ci,
-  `note` text COLLATE utf8mb4_unicode_ci,
+  `shipping_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `note` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -381,8 +385,8 @@ DROP TABLE IF EXISTS `password_resets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `password_resets` (
-  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   KEY `password_resets_email_index` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -406,18 +410,18 @@ DROP TABLE IF EXISTS `personal_access_tokens`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `personal_access_tokens` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `tokenable_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tokenable_id` bigint unsigned NOT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -426,6 +430,7 @@ CREATE TABLE `personal_access_tokens` (
 
 LOCK TABLES `personal_access_tokens` WRITE;
 /*!40000 ALTER TABLE `personal_access_tokens` DISABLE KEYS */;
+INSERT INTO `personal_access_tokens` VALUES (3,'User',1,'APP','453b14a57a980a4ed262b146437f07686a9c45a3e1399bf0ebde1df79c63be36','[\"*\"]','2025-03-26 21:19:38','2025-03-26 21:19:18','2025-03-26 21:19:38');
 /*!40000 ALTER TABLE `personal_access_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -438,18 +443,18 @@ DROP TABLE IF EXISTS `posts`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `posts` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tags` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `body` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tags` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_promote` tinyint(1) NOT NULL DEFAULT '0',
   `is_listing` tinyint(1) NOT NULL DEFAULT '1',
-  `category` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `category` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -458,6 +463,7 @@ CREATE TABLE `posts` (
 
 LOCK TABLES `posts` WRITE;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
+INSERT INTO `posts` VALUES (1,'Cara Berbelanja','cara-berbelanja',NULL,'j3nCZsu0ZqDjoXXCWJ9r8ileJukTTYycUCeTeLYdfY.jpg','<div>Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla porttitor accumsan tincidunt.</div><div><br></div><div>Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Pellentesque in ipsum id orci porta dapibus. Sed porttitor lectus nibh.</div><div><br></div><div>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Proin eget tortor risus. Nulla porttitor accumsan tincidunt. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.</div><div><br></div><div>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla porttitor accumsan tincidunt. Proin eget tortor risus. Nulla porttitor accumsan tincidunt.</div>',1,1,NULL,'2023-10-03 14:36:20','2023-10-03 14:36:20'),(2,'Cara Pembayaran','cara-pembayaran',NULL,'DfLkLGSY00oxO0xpFUNrUyM5LWkchgjZXbBRICghOj.jpg','<div>Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla porttitor accumsan tincidunt.</div><div><br></div><div>Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Pellentesque in ipsum id orci porta dapibus. Sed porttitor lectus nibh.</div><div><br></div><div>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Proin eget tortor risus. Nulla porttitor accumsan tincidunt. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.</div><div><br></div><div>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla porttitor accumsan tincidunt. Proin eget tortor risus. Nulla porttitor accumsan tincidunt.</div>',1,1,NULL,'2023-10-03 14:36:38','2023-10-03 14:36:38');
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -473,11 +479,11 @@ CREATE TABLE `product_promos` (
   `product_id` bigint unsigned NOT NULL,
   `promo_id` bigint unsigned NOT NULL,
   `discount_amount` int NOT NULL DEFAULT '0',
-  `discount_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `discount_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -486,6 +492,7 @@ CREATE TABLE `product_promos` (
 
 LOCK TABLES `product_promos` WRITE;
 /*!40000 ALTER TABLE `product_promos` DISABLE KEYS */;
+INSERT INTO `product_promos` VALUES (1,1,1,2000,'AMOUNT','2024-02-09 07:55:16','2024-02-09 07:55:16'),(2,2,1,2000,'AMOUNT','2024-02-09 07:55:25','2024-02-09 07:55:25'),(3,3,1,2000,'AMOUNT','2024-02-09 07:55:31','2024-02-09 07:55:31');
 /*!40000 ALTER TABLE `product_promos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -499,9 +506,9 @@ DROP TABLE IF EXISTS `product_varians`;
 CREATE TABLE `product_varians` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `product_id` bigint unsigned DEFAULT NULL,
-  `label` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sku` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sku` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` int NOT NULL DEFAULT '0',
   `stock` int NOT NULL DEFAULT '0',
   `weight` int NOT NULL DEFAULT '100',
@@ -514,7 +521,7 @@ CREATE TABLE `product_varians` (
   KEY `product_varians_varian_id_foreign` (`varian_id`),
   CONSTRAINT `product_varians_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `product_varians_varian_id_foreign` FOREIGN KEY (`varian_id`) REFERENCES `product_varians` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -523,6 +530,7 @@ CREATE TABLE `product_varians` (
 
 LOCK TABLES `product_varians` WRITE;
 /*!40000 ALTER TABLE `product_varians` DISABLE KEYS */;
+INSERT INTO `product_varians` VALUES (1,2,'Ukuran','200 Gram','29dbd84c-7dfa-4534-bc14-5d88346ae0c7',20000,100,600,NULL,0,'2023-10-03 14:31:38','2023-10-03 14:31:38'),(2,2,'Ukuran','500 Gram','2a0ba7f5-ba0a-40ab-80f5-d1d2f5492285',35000,100,600,NULL,0,'2023-10-03 14:31:38','2023-10-03 14:31:38'),(3,2,'Ukuran','1000 Gram','cf4b4ecd-2b01-4c80-8884-29d16e24cb02',70000,100,600,NULL,0,'2023-10-03 14:31:38','2023-10-03 14:31:38'),(4,3,'Rasa','Original','2a951e3e-b48e-454d-92ed-51684131c977',0,0,100,NULL,1,'2023-10-03 14:34:06','2023-10-03 14:34:06'),(5,3,'Ukuran','200 Gram','6aa7f3ca-f422-46da-9dec-a5345f50b5f6',20000,100,600,4,0,'2023-10-03 14:34:06','2023-10-03 14:34:06'),(6,3,'Ukuran','500 Gram','e9bc27a5-51e2-466a-9467-4c0f93c8857d',35000,100,600,4,0,'2023-10-03 14:34:06','2023-10-03 14:34:06'),(7,3,'Rasa','Barbeque','7e7770ae-46c9-4f63-b311-3a450ae513d5',0,0,100,NULL,1,'2023-10-03 14:34:06','2023-10-03 14:34:06'),(8,3,'Ukuran','200 Gram','eb91be15-41ac-480e-af80-37cc9ba1eb99',20000,100,600,7,0,'2023-10-03 14:34:06','2023-10-03 14:34:06'),(9,3,'Ukuran','500 Gram','81b823d5-fcd3-4314-89c3-18b9a93a0227',35000,100,600,7,0,'2023-10-03 14:34:06','2023-10-03 14:34:06');
 /*!40000 ALTER TABLE `product_varians` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -535,10 +543,10 @@ DROP TABLE IF EXISTS `products`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `products` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sku` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sku` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `stock` int NOT NULL,
   `price` bigint NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
@@ -550,7 +558,7 @@ CREATE TABLE `products` (
   PRIMARY KEY (`id`),
   KEY `products_category_id_foreign` (`category_id`),
   CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -559,6 +567,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
+INSERT INTO `products` VALUES (1,'Kripik Talas','kripik-talas','a72b26fb-ab78-456d-b2d0-4d23ce54e870','<div>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur aliquet quam id dui posuere blandit. Cras ultricies ligula sed magna dictum porta. Pellentesque in ipsum id orci porta dapibus.</div><div><br></div><div>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla porttitor accumsan tincidunt. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.</div><div><br></div><div>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus suscipit tortor eget felis porttitor volutpat.</div><div><br></div><div>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Cras ultricies ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt. Cras ultricies ligula sed magna dictum porta.</div>',100,20000,1,1,500,'2023-10-03 14:29:57','2023-10-03 14:29:57',NULL),(2,'Kripik Pare','kripik-pare','f960054d-4448-4353-838f-b93592fbf1f6','<div>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur aliquet quam id dui posuere blandit. Cras ultricies ligula sed magna dictum porta. Pellentesque in ipsum id orci porta dapibus.</div><div><br></div><div>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla porttitor accumsan tincidunt. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.</div><div><br></div><div>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus suscipit tortor eget felis porttitor volutpat.</div><div><br></div><div>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Cras ultricies ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt. Cras ultricies ligula sed magna dictum porta.</div>',0,0,1,1,0,'2023-10-03 14:31:37','2023-10-03 14:31:37',NULL),(3,'Kripik Rumput Laut','kripik-rumput-laut','01c197ce-fab7-4061-be55-4802d0388def','<div>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur aliquet quam id dui posuere blandit. Cras ultricies ligula sed magna dictum porta. Pellentesque in ipsum id orci porta dapibus.</div><div><br></div><div>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla porttitor accumsan tincidunt. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.</div><div><br></div><div>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus suscipit tortor eget felis porttitor volutpat.</div><div><br></div><div>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Cras ultricies ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt. Cras ultricies ligula sed magna dictum porta.</div>',0,0,1,1,0,'2023-10-03 14:34:06','2023-10-03 14:34:06',NULL);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -571,13 +580,13 @@ DROP TABLE IF EXISTS `promos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `promos` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `label` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `start_date` timestamp NULL DEFAULT NULL,
   `end_date` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -586,6 +595,7 @@ CREATE TABLE `promos` (
 
 LOCK TABLES `promos` WRITE;
 /*!40000 ALTER TABLE `promos` DISABLE KEYS */;
+INSERT INTO `promos` VALUES (1,'Flash Sale','2024-01-31 17:00:00','2025-03-30 17:00:00','2024-02-09 07:54:33','2024-02-09 07:54:33');
 /*!40000 ALTER TABLE `promos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -599,8 +609,8 @@ DROP TABLE IF EXISTS `reviews`;
 CREATE TABLE `reviews` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `product_id` bigint unsigned NOT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `comment` mediumtext COLLATE utf8mb4_unicode_ci,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `rating` tinyint DEFAULT NULL,
   `is_approved` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -630,9 +640,9 @@ DROP TABLE IF EXISTS `sliders`;
 CREATE TABLE `sliders` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `weight` tinyint NOT NULL DEFAULT '1',
-  `filename` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `filename` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -641,6 +651,7 @@ CREATE TABLE `sliders` (
 
 LOCK TABLES `sliders` WRITE;
 /*!40000 ALTER TABLE `sliders` DISABLE KEYS */;
+INSERT INTO `sliders` VALUES (1,1,'flA9xApyjFKAH3j3glWbmFb8aXesKaukWbSbKO.jpg'),(2,2,'K5dH5Aw1bL3aq7crKbFyaj9q7Q6BR7bSixV74C.jpg');
 /*!40000 ALTER TABLE `sliders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -653,13 +664,13 @@ DROP TABLE IF EXISTS `stores`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `stores` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `slug` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `logo_path` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `slogan` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `address` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo_path` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slogan` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -672,7 +683,7 @@ CREATE TABLE `stores` (
 
 LOCK TABLES `stores` WRITE;
 /*!40000 ALTER TABLE `stores` DISABLE KEYS */;
-INSERT INTO `stores` VALUES (1,'Nextshop','nextshop','083842587851',NULL,'The next generation online shop apps',NULL,NULL,'2025-03-26 21:07:19','2025-03-26 21:07:19');
+INSERT INTO `stores` VALUES (1,'Nextshop Whatsapp','my-shop','083842587851',NULL,'The next generation online shop apps',NULL,NULL,'2023-10-03 14:19:48','2024-12-03 08:52:39');
 /*!40000 ALTER TABLE `stores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -687,8 +698,8 @@ CREATE TABLE `user_addresses` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint unsigned NOT NULL,
   `is_primary` tinyint(1) NOT NULL DEFAULT '0',
-  `label` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Default',
-  `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Default',
+  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_addresses_user_id_foreign` (`user_id`),
   CONSTRAINT `user_addresses_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
@@ -713,15 +724,15 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `role` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'customer',
-  `phone` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `role` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'customer',
+  `phone` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
@@ -734,7 +745,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Admin','admin@example.com',NULL,'$2y$10$VPOaAspKDwpvFtPHPgGXUOUXj5nNSDVYmp7HFGj3QQ5KRdFdtZJYy',NULL,'2025-03-26 21:07:19','2025-03-26 21:07:19','admin',NULL,NULL);
+INSERT INTO `users` VALUES (1,'admin','admin@example.com','2023-10-03 14:19:48','$2y$10$IMoVQz9w48iQVFRnJ9MubOiz4KbioXxaxpnarzLZzA7m5pOtNfsFy','BapTl2LJge','2023-10-03 14:19:48','2024-12-03 08:52:39','admin','083842587851',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -747,4 +758,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-29  5:03:06
+-- Dump completed on 2025-08-29  5:04:01
