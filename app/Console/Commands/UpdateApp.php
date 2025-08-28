@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Category;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +14,7 @@ class UpdateApp extends Command
      *
      * @var string
      */
-    protected $signature = 'site:update';
+    protected $signature = 'app:update';
 
     /**
      * The console command description.
@@ -47,16 +46,9 @@ class UpdateApp extends Command
             // Call Migration
             Artisan::call('migrate', ['--force' => true]);
             
-            // Update Version 2.4.0
-            Artisan::call('site:update-v-240');
-            
-            Artisan::call('asset:update-path');
-
-            Artisan::call('order:change-status');
-
         } catch (\Exception $e) {
             
-            Log::info('error site update');
+            Log::info('error app update');
         }
     }
 }

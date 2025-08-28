@@ -49,7 +49,7 @@ class UpdateController extends Controller
         DB::beginTransaction();
 
         try {
-            Artisan::call('site:update');
+            Artisan::call('app:update');
             Cache::flush();
             Artisan::call('config:clear');
             Artisan::call('optimize:clear');
