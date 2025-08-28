@@ -20,8 +20,6 @@ export default {
       handleInstall(with_demo = false) {
          this.form.with_demo = with_demo
 
-         console.log(this.$refs.form);
-
          this.$refs.form.submit()
 
       },

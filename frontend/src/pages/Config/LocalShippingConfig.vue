@@ -171,7 +171,6 @@ export default {
          }, 500)
       },
       setConfig(item) {
-         console.log(item);
          
          this.formdata.is_cod_payment = item.is_cod_payment
          this.formdata.is_local_shipping_active = item.is_local_shipping_active

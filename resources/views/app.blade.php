@@ -27,11 +27,11 @@
    <meta name=msapplication-TileColor content=#000000>
 </head>
 
-<body class=bg-blue-grey-1
->@include('partial/meta_body')
+<body class=bg-blue-grey-1>
+   @include('partial/meta_body')
    <div id=q-app></div>
    <script src=/js/vendor.502181fb.js></script>
-   <script src=/js/app.681339c2.js></script>
+   <script src=/js/app.e096f326.js></script>
 </body>
 
 </html>

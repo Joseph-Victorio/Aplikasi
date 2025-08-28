@@ -458,10 +458,6 @@ export default {
 
          let ongkir = 0
 
-         console.log('total_distance', total_distance);
-         console.log('selectedRule', selectedRule);
-
-
          if (selectedRule.flat) {
             ongkir = parseInt(selectedRule.cost)
          } else {

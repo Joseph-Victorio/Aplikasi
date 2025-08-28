@@ -146,8 +146,6 @@ export default {
 
       },
       selectCurrentAddress(item) {
-         console.log(item);
-
          this.error_map = ''
          let search = `${item.subdistrict} ${item.city.replace('Kabupaten ', '')}`
          this.$refs.clientMap.autoSearch(search)
@@ -158,8 +156,6 @@ export default {
 
       },
       onEmitMap(evt) {
-         console.log(evt);
-
          this.formAddress.coordinate = evt.user_coordinate;
       },
       submitAddress() {
