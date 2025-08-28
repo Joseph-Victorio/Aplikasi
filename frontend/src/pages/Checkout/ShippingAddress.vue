@@ -407,16 +407,17 @@ export default {
       getLocalCost(coords) {
 
          if (!this.map) {
-            this.map = L.map('mapView', {
-               center: this.currentConfig.warehouse_coordinate,
-            });
+            // this.map = L.map('mapView', {
+            //    center: this.currentConfig.warehouse_coordinate
+            // });
+            this.map = L.map('mapView');
          }
 
          let distanceInMeter = this.map.distance(this.currentConfig.warehouse_coordinate, coords)
 
          let total_distance = (distanceInMeter / 1000).toFixed(1);
 
-         console.log('direct distance: in M', distanceInMeter);
+         // console.log('direct distance: in M', distanceInMeter);
          console.log('direct distance: in KM', total_distance);
 
          let localCosts = this.currentConfig.local_shipping_costs
