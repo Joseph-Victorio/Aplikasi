@@ -47,12 +47,12 @@ class InstallDemo extends Command
    {
       try {
 
-         if (!File::exists(database_path('demo/assets')) || !File::exists(database_path('demo/content.sql'))) {
+         if (!File::exists(database_path('demo/images')) || !File::exists(database_path('demo/content.sql'))) {
             throw new Exception('demo not found');
          }
 
          File::deleteDirectory(public_path('upload/images'));
-         File::copyDirectory(database_path('demo/assets'), public_path('upload/images'));
+         File::copyDirectory(database_path('demo/images'), public_path('upload/images'));
 
          $sql = database_path('demo/content.sql');
          DB::unprepared(file_get_contents($sql));
