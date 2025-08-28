@@ -2,7 +2,7 @@
    <div>
       <div class="q-mb-md">
          <q-input :loading="searchLoading" dense placeholder="cari desa atau kecamatan" v-model="query"
-            @update:modelValue="searchQuery" debounce="1000" outlined></q-input>
+            @input="searchQuery" debounce="1000" outlined></q-input>
       </div>
       <div class="relative">
          <div class="list-box-content" v-show="showList">
@@ -86,10 +86,10 @@ export default {
       },
    },
    methods: {
-      searchQuery() {
+      searchQuery(val) {
          this.notFound = false
          this.searchLoading = true
-         this.provider.search({ query: this.query }).then(response => {
+         this.provider.search({ query: val }).then(response => {
             this.lists = response
 
          }).finally(() => {

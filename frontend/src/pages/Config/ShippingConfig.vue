@@ -14,7 +14,7 @@
                   <div>Silahkan daftar di rajaongkir.com untuk mendapatkan apikey</div>
                </div>
                <div class="q-gutter-y-sm q-py-md">
-                  <q-select @update:modelValue="selectType" label="Raja Ongkir Paket" filled :options="rajaongkirtypes"
+                  <q-select label="Raja Ongkir Paket" filled :options="rajaongkirtypes"
                      v-model="formdata.rajaongkir_type" @input="selectCourierType"></q-select>
                   <q-input filled v-model="formdata.rajaongkir_apikey" label="Raja Ongkir API KEY">
                   </q-input>
@@ -51,9 +51,8 @@
                   <q-btn flat icon="close" v-close-popup></q-btn>
                </div>
                <div class="q-pa-sm q-gutter-y-sm">
-                  <q-input ref="warehouse" :loading="searchLoading"
-                     placeholder="Ketik nama kecamatan" v-model="search" debounce="1000"
-                     @input="searchWarehouseData"></q-input>
+                  <q-input ref="warehouse" :loading="searchLoading" placeholder="Ketik nama kecamatan" v-model="search"
+                     debounce="1000" @input="searchWarehouseData"></q-input>
                   <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
                      <div style="min-height:100px;max-height:300px;overflow-y:auto;" class="relative bg-grey-2"
                         v-if="subdistrictOptions.length">
@@ -146,11 +145,6 @@ export default {
       }
    },
    methods: {
-      selectType(type) {
-         this.form.rajaongkir_type = type
-         this.form.rajaongkir_couriers = []
-         this.updateData()
-      },
       changeWarehouse() {
 
          this.modal = true
@@ -174,7 +168,9 @@ export default {
          this.formdata.warehouse_id = item.warehouse_id
       },
       selectCourierType() {
+         this.formdata.rajaongkir_type = type
          this.formdata.rajaongkir_couriers = []
+         this.updateData()
       },
       isCourierActive(name) {
          if (this.formdata.rajaongkir_couriers.length) {
