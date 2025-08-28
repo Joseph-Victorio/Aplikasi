@@ -35,7 +35,6 @@ export default {
          searchControl: null,
          originMarker: null,
          destinationMarker: null,
-         destinationCenter: null,
          originMarkerOption: {
             clickable: false,
             draggable: false,
@@ -125,11 +124,11 @@ export default {
       },
       selectItemList(list) {
          this.listSelected = list
-         let latlng = [list.y, list.x]
+         let center = [list.y, list.x]
          this.lists = []
 
-         this.setMapView(latlng)
-         this.setDestinationMarker(latlng)
+         this.setMapView(center)
+         this.setDestinationMarker(center)
 
          this.$emit('onSelectAddress', list)
 
@@ -201,37 +200,36 @@ export default {
             .setLatLng(e.latlng)
             .openOn(this.map);
          L.DomEvent.on(btn, 'click', () => {
-
             this.setDestinationMarker([e.latlng.lat, e.latlng.lng])
 
          });
       },
-      setDestinationMarker(latlng) {
+      setDestinationMarker(center) {
 
          if (this.polyline) {
             this.map.removeLayer(this.polyline);
             this.polyline = null;
          }
-         this.user_coordinate = latlng
+         this.user_coordinate = center
 
          if (this.destinationMarker != undefined) {
+
+            this.destinationMarker = null
 
             this.map.removeLayer(this.destinationMarker);
          };
 
-         this.destinationMarker = L.marker(latlng, this.destinationMarkerOption);
+         this.destinationMarker = L.marker(center, this.destinationMarkerOption);
 
          this.destinationMarker.addTo(this.map)
 
-         this.map.closePopup();
+         this.destinationMarker.on('dragend', this.handleMArkerDragend)
 
-         this.destinationCenter = latlng
-
-         this.map.setView(latlng)
+         this.setMapView(center)
 
          this.loading = false
 
-         // let dinMeters = this.map.distance(this.warehouse_coordinate, latlng)
+         // let dinMeters = this.map.distance(this.warehouse_coordinate, center)
 
          // let dInkm = (dinMeters / 1000).toFixed(1);
 
@@ -239,7 +237,7 @@ export default {
          // console.log('direct distance: in KM', dInkm);
 
          //draw a line between two points
-         // this.polyline = L.polyline([this.warehouse_coordinate, latlng], {
+         // this.polyline = L.polyline([this.warehouse_coordinate, center], {
          //    color: 'red'
          // });
 
@@ -248,11 +246,21 @@ export default {
 
 
       },
-      setMapView(latlng) {
+      handleMArkerDragend(e) {
+
+         let latlng = e.target._latlng
+
+         this.setMapView([latlng.lat, latlng.lng])
+
+      },
+      setMapView(center) {
+
+       this.$emit('onEmitMap', center)
+
          setTimeout(() => {
-            this.map.setView(latlng)
+            this.map.setView(center)
             this.map.closePopup();
-         }, 500)
+         }, 300)
       },
       getCurrentPosition() {
          this.loading = true
@@ -285,91 +293,6 @@ export default {
             this.loding = false
          }, 500)
       },
-      createPopup() {
-         return `<div class="marker-tooltip">
-              <div class="details-text">Jarak : <b>${this.totalDistanceKm} Km</b></div>
-              <div class="details-text">Estimasi Ongkos Kirim: <b> ${this.formatOngkir()} </b></div>
-            </div>`;
-      },
-      getLocalCost() {
-
-         if (this.config && this.config.local_shipping_costs.length) {
-
-            let localCosts = this.config.local_shipping_costs
-
-            // Get max distance from last item
-
-            let lastItem = localCosts[localCosts.length - 1]
-
-            this.maxDistance = parseInt(lastItem.radius)
-            this.hargaJarakPerKm = parseInt(lastItem.cost)
-            this.lastLocalCost = parseInt(lastItem.cost)
-
-            // Get Cost by current distance
-
-            for (let i = 0; i < localCosts.length; i++) {
-
-               let currentRule = localCosts[i]
-               this.hargaJarakPerKm = parseInt(currentRule.cost)
-
-               if (this.totalDistanceKm >= parseInt(currentRule.radius)) {
-
-                  let nextRule = localCosts[i + 1]
-
-
-                  if (nextRule && parseInt(nextRule.radius) > this.totalDistanceKm) {
-
-                     this.hargaJarakPerKm = parseInt(currentRule.cost)
-
-
-                     break
-                  }
-
-               }
-            }
-
-            if (this.totalDistanceKm > this.maxDistance) {
-               // this.$q.dialog({
-               //    title: 'Tujuan diluar jangkauan!',
-               //    message: `Mohon maaf alamat tujuan diluar jangkauan kurir toko, Maksimal adalah ${this.maxDistance} km.`
-               // })
-
-               this.$emit('onError', 'Alamat tujuan diluar jangkauan kurir toko')
-
-               return
-            }
-
-            this.$emit('onSelected', {
-               amount: this.getOngkir(),
-               user_coordinate: this.user_coordinate
-            })
-
-            setTimeout(() => {
-               if (this.setDestinationMarker != undefined) {
-                  this.destinationMarker.bindTooltip(this.createPopup(), {
-                     permanent: true,
-                     direction: 'top',
-                     offset: [0, -40]
-                  });
-               }
-            }, 500)
-         }
-      },
-      getOngkir() {
-
-         if (this.totalDistanceKm > 0) {
-
-            return Math.round(this.totalDistanceKm * this.hargaJarakPerKm)
-         }
-         return 0;
-      },
-      formatOngkir() {
-         if (this.totalDistanceKm > 0) {
-
-            return this.moneyFormat(this.getOngkir())
-         }
-         return 'Gratis';
-      }
    },
 }
 </script>

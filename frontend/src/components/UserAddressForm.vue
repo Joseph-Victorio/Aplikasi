@@ -1,7 +1,7 @@
 <template>
    <div>
       <q-dialog v-model="addressModal">
-         <q-card>
+         <q-card class="card-lg">
             <q-card-section v-if="user_address.length">
                <div class="card-title flex justify-between q-mb-md items-center">
                   <div>Pilih Alamat</div>
@@ -32,7 +32,7 @@
                   </q-list>
                </div>
                <div class="q-pa-sm">
-                  <q-btn label="Tambah Alamat" outline class="full-width" color="blue"
+                  <q-btn label="Tambah Alamat" class="full-width" color="primary"
                      @click="handleAddAddress"></q-btn>
                </div>
             </q-card-section>
@@ -74,7 +74,7 @@
                         </div>
                         <div>
                            <ClientMap ref="clientMap" :config="config" :coordinate="formAddress.coordinate"
-                              :is_client="true" @onSelected="onEmitMap" @onSelectAddress="selectMapAddress"
+                              :is_client="true" @onEmitMap="onEmitMap" @onSelectAddress="selectMapAddress"
                               @onError="(m) => error_map = m" />
                            <div class="text-amber-10 q-pa-xs text-sm" v-if="error_map">{{ error_map }}</div>
 
@@ -127,7 +127,7 @@ export default {
          if (this.user_address.length) {
             this.selectAddress(this.user_address[0])
          }
-      }, 1000)
+      }, 400)
    },
    computed: {
       user_address() {
@@ -156,7 +156,7 @@ export default {
 
       },
       onEmitMap(evt) {
-         this.formAddress.coordinate = evt.user_coordinate;
+         this.formAddress.coordinate = evt;
       },
       submitAddress() {
          this.handleSavelocalAddress()

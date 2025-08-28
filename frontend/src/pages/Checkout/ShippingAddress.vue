@@ -55,23 +55,24 @@
 
                      <q-list separator v-if="shippingCostReady">
                         <template v-if="render_shipping_costs.length">
-                           <q-item v-for="(item, idx) in render_shipping_costs" :key="idx" v-ripple
-                              @click="selectCost(item)" clickable class="bg-grey-1">
-                              <q-item-section avatar>
+                           <q-item v-for="(item, idx) in render_shipping_costs" :key="idx" class="q-px-xs"
+                              @click="selectCost(item)" clickable
+                              :class="{'bg-green-1' : selected_cost && selected_cost.id == item.id}">
+                              <q-item-section side>
                                  <q-icon
                                     :name="selected_cost && selected_cost.id == item.id ? 'radio_button_checked' : 'radio_button_unchecked'"
                                     :color="selected_cost && selected_cost.id == item.id ? 'primary' : 'grey-6'"></q-icon>
                               </q-item-section>
                               <q-item-section>
-                                 <q-item-label class="text-weight-medium">
+                                 <q-item-label class="text-weight-medium text-grey-9">
                                     {{ item.courier_name }}
                                  </q-item-label>
-                                 <q-item-label>Biaya {{ moneyIDR(item.price) }}</q-item-label>
+                                 <q-item-label class="text-weight-bold text-grey-9">Ongkos Kirim {{ moneyIDR(item.price) }}</q-item-label>
                                  <q-item-label class="text-grey-8">
-                                    {{ item.courier_service_name }} - {{ item.courier_service_code }}
+                                  {{ item.courier_service_name }} ({{ item.courier_service_code }})
                                  </q-item-label>
                                  <q-item-label class="text-grey-8">
-                                    Etd {{ item.duration }}
+                                    Etd {{ item.duration ? item.duration : '-' }}
                                  </q-item-label>
                               </q-item-section>
                            </q-item>
@@ -413,8 +414,8 @@ export default {
 
          let total_distance = (distanceInMeter / 1000).toFixed(1);
 
-         // console.log('direct distance: in M', distanceInMeter);
-         // console.log('direct distance: in KM', total_distance);
+         console.log('direct distance: in M', distanceInMeter);
+         console.log('direct distance: in KM', total_distance);
 
          let localCosts = this.currentConfig.local_shipping_costs
 
@@ -471,7 +472,7 @@ export default {
          this.local_cost = {
             id: "COD",
             courier_code: "COD",
-            courier_name: "Via Kurir Toko",
+            courier_name: "Kurir Toko",
             courier_service_name: "Diantar oleh kurir toko",
             courier_service_code: "COD",
             price: ongkir,
