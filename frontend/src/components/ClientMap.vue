@@ -195,12 +195,14 @@ export default {
          btn.setAttribute('type', 'button');
          btn.innerHTML = 'Pilih lokasi disini';
 
+         let center = [e.latlng.lat, e.latlng.lng]
+
          L.popup()
             .setContent(container)
             .setLatLng(e.latlng)
             .openOn(this.map);
          L.DomEvent.on(btn, 'click', () => {
-            this.setDestinationMarker([e.latlng.lat, e.latlng.lng])
+            this.setDestinationMarker(center)
 
          });
       },
@@ -213,9 +215,7 @@ export default {
          this.user_coordinate = center
 
          if (this.destinationMarker != undefined) {
-
-            this.destinationMarker = null
-
+            
             this.map.removeLayer(this.destinationMarker);
          };
 

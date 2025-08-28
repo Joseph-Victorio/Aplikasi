@@ -253,6 +253,8 @@ export default {
       },
    },
    mounted() {
+      this.shippingCosts = []
+      this.local_cost = null
       this.setFormGetCost()
       if (localStorage.getItem('_nextwalocaluser')) {
          if (!this.customer_name || !this.customer_phone) {
