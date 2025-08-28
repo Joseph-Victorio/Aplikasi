@@ -1,4 +1,3 @@
-
 @if($jsapp['page']['title'])
 <title>{{ $jsapp['page']['title'] }}</title>
 <meta property="og:title" content="{{ $jsapp['page']['title'] }}" />
@@ -7,10 +6,11 @@
 <title>{{ $jsapp['shop']['name'] }}</title>
 <meta property="og:title" content="{{ $jsapp['shop']['name'] }}" />
 <meta name="twitter:title" content="{{ $jsapp['shop']['name'] }}" />
+<meta name=apple-mobile-web-app-title content="{{ $jsapp['shop']['name'] }}">
 @endif
 <meta property="og:url" content="{{ url()->full() }}" />
 <meta property="og:type" content="website" data-qmeta="ogType" />
-<meta property="og:site_name" content="{{ $jsapp['shop']['name'] }}"/>
+<meta property="og:site_name" content="{{ $jsapp['shop']['name'] }}" />
 
 <meta name="twitter:card" content="summary_large_image">
 <meta property="twitter:domain" content="{{ request()->getHost() }}" />
@@ -32,4 +32,3 @@
 @endif
 
 <meta name="csrf-token" content="{{ csrf_token() }}" />
-

@@ -14,7 +14,7 @@
                   <div>Silahkan daftar di rajaongkir.com untuk mendapatkan apikey</div>
                </div>
                <div class="q-gutter-y-sm q-py-md">
-                  <q-select label="Raja Ongkir Paket" filled :options="rajaongkirtypes"
+                  <q-select @update:modelValue="selectType" label="Raja Ongkir Paket" filled :options="rajaongkirtypes"
                      v-model="formdata.rajaongkir_type" @input="selectCourierType"></q-select>
                   <q-input filled v-model="formdata.rajaongkir_apikey" label="Raja Ongkir API KEY">
                   </q-input>
@@ -51,18 +51,17 @@
                   <q-btn flat icon="close" v-close-popup></q-btn>
                </div>
                <div class="q-pa-sm q-gutter-y-sm">
-                  <q-input ref="warehouse" :loading="searchLoading && searchType == 'warehouse'"
+                  <q-input ref="warehouse" :loading="searchLoading"
                      placeholder="Ketik nama kecamatan" v-model="search" debounce="1000"
                      @input="searchWarehouseData"></q-input>
                   <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
                      <div style="min-height:100px;max-height:300px;overflow-y:auto;" class="relative bg-grey-2"
-                        v-if="searchType == 'warehouse' && subdistrictOptions.length">
+                        v-if="subdistrictOptions.length">
                         <q-list>
                            <q-item v-for="item in subdistrictOptions" :key="item.id" clickable
                               @click="selectSubdistrict(item)">
                               <q-item-section>
-                                 <q-item-label>{{ item.subdistrict_name }} - {{ item.type }} {{ item.city
-                                    }}</q-item-label>
+                                 <q-item-label>{{ item.name }}</q-item-label>
                               </q-item-section>
                            </q-item>
                         </q-list>
@@ -85,11 +84,10 @@ export default {
       return {
          codListModal: false,
          modal: false,
-         rajaongkirtypes: ['starter', 'basic', 'pro'],
+         rajaongkirtypes: ['starter', 'pro'],
          subdistrictOptions: [],
          search: '',
          isWarehouseSearch: false,
-         searchType: 'cod',
          searchLoading: false,
          formdata: {
             is_shipping_active: false,
@@ -148,15 +146,22 @@ export default {
       }
    },
    methods: {
+      selectType(type) {
+         this.form.rajaongkir_type = type
+         this.form.rajaongkir_couriers = []
+         this.updateData()
+      },
       changeWarehouse() {
+
          this.modal = true
+         this.search = ''
          setTimeout(() => {
             this.$refs.warehouse.focus()
          }, 300)
       },
       warehouseTitle() {
          if (this.formdata.warehouse_address) {
-            return `${this.formdata.warehouse_address.subdistrict_name} - ${this.formdata.warehouse_address.type} ${this.formdata.warehouse_address.city}, ${this.formdata.warehouse_address.province}`
+            return this.formdata.warehouse_address.name
          }
          return 'Pilih Gudang Pengiriman'
       },
@@ -222,7 +227,6 @@ export default {
          return this.formdata.warehouse_address.id == item.id ? true : false
       },
       searchWarehouseData() {
-         this.searchType = 'warehouse'
          this.findAddress()
       },
       getAdminConfig() {
@@ -240,9 +244,7 @@ export default {
             .then(response => {
                if (response.status == 200) {
                   if (response.data.success) {
-
                      this.subdistrictOptions = response.data.results
-
                   } else {
                      this.$q.notify({
                         type: 'negative',

@@ -9,7 +9,7 @@
                      <q-item-label caption>Memungkinkan pembeli untuk ambil pesanan ditoko</q-item-label>
                   </div>
 
-                  <q-toggle v-model="formdata.is_pic_order" :label="formdata.is_pic_order ? 'Active' : 'Disabled'"
+                  <q-toggle @input="autoUpdate" v-model="formdata.is_pic_order" :label="formdata.is_pic_order ? 'Active' : 'Disabled'"
                      left-label color="teal" class="text-grey-8"></q-toggle>
                </div>
                <div class="flex items-center justify-between q-mt-md">
@@ -19,79 +19,84 @@
 
                   </div>
 
-                  <q-toggle v-model="formdata.is_local_shipping_active"
+                  <q-toggle @input="autoUpdate" v-model="formdata.is_local_shipping_active"
                      :label="formdata.is_local_shipping_active ? 'Active' : 'Disabled'" left-label color="teal"
                      class="text-grey-8"></q-toggle>
                </div>
 
                <div class="q-mt-md">
-                  <div>
-                     <q-input filled :loading="searchLoading" placeholder="Tambah kecamatan tujuan" v-model="search"
-                        debounce="600" @input="searchCodData">
-                        <template slot="append" v-if="search">
-                           <q-btn icon="close" flat @click="closeSubdistrictBox" color="red" round></q-btn>
-                        </template>
-                     </q-input>
-                     <div class="relative" v-if="subdistrictOptions.length">
-                        <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
-                           <div class="absolute full-width z-30">
-                              <q-card class="bg-white full-width full-height">
-                                 <div class="scroll" style="height:100%;max-height:300px;">
-                                    <q-list class="bg-grey-1">
-                                       <q-item clickable v-for="(itemData, index) in subdistrictOptions" :key="index"
-                                          @click="selectCodItemData(itemData)">
-                                          <q-item-section side>
-                                             <template v-if="hasCodData(itemData)">
-                                                <q-icon name="remove_circle" size="17px" color="red"></q-icon>
-                                             </template>
-                                             <template v-else>
-                                                <q-icon name="add_circle" size="17px" color="primary"></q-icon>
-                                             </template>
-                                          </q-item-section>
-                                          <q-item-section>
-                                             <q-item-label>{{ itemData.subdistrict_name }} - {{ itemData.type }} {{
-                                                itemData.city
-                                                }}</q-item-label>
-                                          </q-item-section>
-                                       </q-item>
-                                    </q-list>
-                                 </div>
-                                 <q-inner-loading :showing="searchLoading">
-                                 </q-inner-loading>
-                              </q-card>
-                           </div>
-                        </transition>
+                  <div class="">
+                     <div class="text-md text-weight-bold">
+                        Pengiriman dan Koordinat Toko
+                     </div>
+                     <div class="text-grey-8 q-pt-sm text-13">
+                        Gunakan tombol lokasi terkini atau klik didalam map untuk
+                        mendapatkan lokasi toko atau geser - geser ikon toko untuk
+                        medapatkan lokasi yang sesuai
                      </div>
                   </div>
-                  <div class="q-py-md">
-                     <q-list separator>
-                        <q-separator></q-separator>
-                        <q-item>
-                           <q-item-section>
-                              Kecamatan Tujuan
-                           </q-item-section>
-                           <q-item-section side>
-                              Ongkos Kirim
-                           </q-item-section>
-                        </q-item>
-                        <q-separator></q-separator>
-                        <q-item v-for="(codItem, index) in formdata.cod_list" :key="index" class="q-px-xs">
-                           <q-item-section side>
-                              <q-btn @click="removeCodList(index)" icon="close" color="red" dense flat round></q-btn>
-                           </q-item-section>
-                           <q-item-section>
-                              <q-item-label>{{ codItem.subdistrict_name }} {{ codItem.type }} {{ codItem.city
-                                 }}</q-item-label>
-                           </q-item-section>
-                           <q-item-section side>
-                              <div>
-                                 <q-input filled square dense min="0" prefix="Rp" style="width:120px;" mask="########"
-                                    v-model="formdata.cod_list[index].price" required></q-input>
-                              </div>
-                           </q-item-section>
-                        </q-item>
-                     </q-list>
-                     <div v-if="!formdata.cod_list.length" class="text-center q-py-lg">Tidak ada data</div>
+
+                  <div class="q-mt-md">
+                     <div class="warehouse-map" v-if="config">
+                        <MainMap ref="theMap" :config="config" :coordinate="formdata.warehouse_coordinate" @onEmitMap="onEmitMap" />
+                     </div>
+                  </div>
+                  <div class="q-mt-lg">
+                     <div class="flex justify-between no-wrap items-center q-py-sm">
+                        <div>
+                           <div class="text-weight-medium text-md">Aturan Ongkos Kirim</div>
+                           <p class="text-13 text-grey-7">
+                              Perhatikan baik - baik saat menambahkan aturan ongkos kirim,
+                              jarak yang diluar aturan akan diabaikan dan menjadi diluar
+                              jangkauan kurir.
+                           </p>
+                        </div>
+                        <q-btn label="Tambah Aturan" color="teal" unelevated class="btn-action" @click="addRule"
+                           no-caps></q-btn>
+                     </div>
+                     <div class="table-responsive">
+                        <table class="table aligned dense">
+                           <thead>
+                              <tr>
+                                 <th>Flat Ongkir *</th>
+                                 <th>Radius (KM)</th>
+                                 <th>Biaya</th>
+                                 <th>Delete</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr v-for="(item, idx) in formdata.local_shipping_costs" :key="idx" class="q-px-none">
+                                 <td>
+                                    <q-checkbox class="q-py-xs" outlined dense
+                                       v-model="formdata.local_shipping_costs[idx].flat"></q-checkbox>
+                                 </td>
+                                 <td>
+                                    <q-input class="q-py-xs" outlined dense
+                                       v-model="formdata.local_shipping_costs[idx].radius" label="Radius (KM)" mask="####"
+                                       suffix="KM"></q-input>
+                                 </td>
+                                 <td>
+                                    <q-input class="q-py-xs" outlined dense
+                                       v-model="formdata.local_shipping_costs[idx].cost"
+                                       :label="formdata.local_shipping_costs[idx].flat ? 'Ongkos Kirim Flat' : 'Ongkos Kirim /km'"
+                                       mask="##########"></q-input>
+                                 </td>
+                                 <td>
+                                    <div>
+                                       <q-btn icon="delete" round flat padding="xs" color="red"
+                                          @click="removeCost(idx)" />
+                                    </div>
+                                 </td>
+                              </tr>
+
+                           </tbody>
+                        </table>
+
+                     </div>
+                     <div class="text-center q-py-md" v-if="!formdata.local_shipping_costs.length">Tidak ada data</div>
+                     <div class="text-caption q-py-md">
+                        * Flat ongkir adalah tarif tetap dalam radius tertentu alias tidak dihitung per km
+                     </div>
                   </div>
                </div>
             </q-card-section>
@@ -105,8 +110,10 @@
 
 <script>
 import { Api } from 'boot/axios'
+import MainMap from 'components/MainMap.vue'
 export default {
    name: 'LocalShipping',
+   components: { MainMap },
    data() {
       return {
          codListModal: false,
@@ -118,18 +125,20 @@ export default {
             cod_list: [],
             is_cod_payment: false,
             is_local_shipping_active: false,
-            is_pic_order: false
+            is_pic_order: false,
+            local_shipping_costs: [],
+            warehouse_coordinate: []
          },
       }
    },
    watch: {
       'formdata.is_local_shipping_active'(val) {
          if (val == true) {
-            if (this.formdata.is_local_shipping_active && !this.formdata.cod_list.length) {
+            if (this.formdata.is_local_shipping_active && !this.formdata.local_shipping_costs.length && !this.formdata.warehouse_coordinate.length) {
                this.formdata.is_local_shipping_active = false
                this.$q.notify({
-                  type: 'warning',
-                  message: 'Untuk mengaktifkan servis, kecamatan tidak boleh kosong'
+                  type: 'negative',
+                  message: 'Koordinate dan ongkos kirim belum di input'
                })
                return
             }
@@ -139,7 +148,14 @@ export default {
    computed: {
       config: function () {
          return this.$store.state.config
-      }
+      },
+       map_radius() {
+         if (this.formdata.local_shipping_costs.length) {
+            let r = this.formdata.local_shipping_costs[this.formdata.local_shipping_costs.length - 1].radius
+            return parseInt(r * 1000)
+         }
+         return 0
+      },
    },
    mounted() {
       if (!this.config) {
@@ -149,15 +165,42 @@ export default {
       }
    },
    methods: {
+      autoUpdate() {
+         setTimeout(() => {
+            this.updateData()
+         }, 500)
+      },
       setConfig(item) {
+         console.log(item);
+         
          this.formdata.is_cod_payment = item.is_cod_payment
          this.formdata.is_local_shipping_active = item.is_local_shipping_active
          this.formdata.is_pic_order = item.is_pic_order
-         if (item.cod_list) {
-            item.cod_list.forEach(element => {
-               this.formdata.cod_list.push(element)
-            });
+         this.formdata.warehouse_coordinate = item.warehouse_coordinate
+            ? item.warehouse_coordinate
+            : [];
+         this.formdata.local_shipping_costs = item.local_shipping_costs
+            ? item.local_shipping_costs
+            : [];
+      },
+      onEmitMap(evt) {
+         this.formdata.warehouse_coordinate[0] = evt[0];
+         this.formdata.warehouse_coordinate[1] = evt[1];
+      },
+
+      removeCost(idx) {
+         this.formdata.local_shipping_costs.splice(idx, 1);
+      },
+
+      addRule() {
+         let start = 0;
+
+         if (this.formdata.local_shipping_costs.length) {
+            let endItem = this.formdata.local_shipping_costs[this.formdata.local_shipping_costs.length - 1];
+
+            start = parseInt(endItem.end) + 1;
          }
+         this.formdata.local_shipping_costs.push({ cost: 500, radius: start, flat: false });
       },
       updateData() {
 

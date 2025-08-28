@@ -14,9 +14,16 @@ class UserAddress extends Model
         'is_primary',
         'label',
         'address',
+        'coordinate',
+        'detail',
+        'city_id'
     ];
 
-    protected $casts = ['is_primary' => 'boolean'];
+    protected $casts = [
+        'is_primary' => 'boolean',
+        'coordinate' => 'array',
+        'detail' => 'object'
+    ];
 
     public $timestamps = false;
 }

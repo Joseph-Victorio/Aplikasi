@@ -658,7 +658,7 @@ ul {
 .sticky-top {
    position: sticky;
    top: 0;
-   z-index: 100;
+   z-index: 1002;
 }
 
 .bg-linear {
@@ -1394,6 +1394,92 @@ button.bordered {
       @media screen and (max-width: 600px) {
          font-size: 1.2rem;
 
+      }
+   }
+}
+
+.btn-floating {
+   position: absolute;
+   bottom: 40px;
+   right: 10px;
+   z-index: 1009;
+}
+.q-btn .q-btn__content {
+   white-space: nowrap;
+   flex-wrap: nowrap;
+}
+
+
+table {
+   border-spacing: 0px;
+
+   &.table {
+      width: 100%;
+
+      @media (min-width: 600px) {
+
+         tbody>tr>td:first-child,
+         thead>tr>th:first-child {
+            padding-left: 16px;
+         }
+
+         tbody>tr>td:last-child,
+         thead>tr>th:last-child {
+            padding-right: 16px;
+         }
+      }
+
+      >thead>tr>th,
+      >tbody>tr>td {
+         text-align: left;
+         padding: 8px;
+      }
+
+      &.wides {
+
+         >thead>tr>th,
+         >tbody>tr>td {
+            padding: 12px;
+         }
+      }
+
+      >thead>tr>th {
+         background-color: #f7f7f7;
+      }
+
+      &.table-sm {
+
+         >tr>th,
+         >tr>td {
+            padding: .5rem;
+         }
+      }
+      &.table-lg {
+
+         tr>th,
+         tr>td {
+            padding: 1rem;
+         }
+      }
+
+   }
+
+   &.bordered {
+      >tbody>tr:not(:last-child)>td {
+         border-bottom: 1px solid #eee;
+      }
+   }
+
+   &.aligned {
+
+      >thead>tr>th,
+      >tbody>tr>th {
+         text-align: left;
+      }
+
+      >thead>tr>th:last-child,
+      >tbody>tr>td:last-child {
+         text-align: right;
       }
    }
 }

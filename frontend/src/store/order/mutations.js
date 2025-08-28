@@ -63,7 +63,6 @@ export function COLLECT_ORDER(state, payload) {
    state.formOrder.customer_phone = ''
    state.formOrder.customer_address = ''
    state.formOrder.customer_note = ''
-   state.formOrder.customer_address_selected = null
 
    state.formOrder.items = payload.items
    state.formOrder.quantity = payload.qty

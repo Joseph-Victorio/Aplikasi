@@ -21,14 +21,12 @@ class UpdateController extends Controller
     {
 
         try {
-            
+
             Cache::flush();
-            Artisan::call('cache:clear');
             Artisan::call('config:clear');
+            Artisan::call('optimize:clear');
 
-            return response()->json(['success' => true ], 200);
-
-
+            return response()->json(['success' => true], 200);
         } catch (\Throwable $th) {
 
             return response()->json([
@@ -40,27 +38,28 @@ class UpdateController extends Controller
 
     public function overview()
     {
-       return response()->json([
-           'suceess' => true,
-           'results' => count($this->migrations) - count($this->dbMigrations)
-       ]);
+        return response()->json([
+            'suceess' => true,
+            'results' => count($this->migrations) - count($this->dbMigrations)
+        ]);
     }
-    
+
     public function update()
     {
         DB::beginTransaction();
-        
+
         try {
-            
             Artisan::call('site:update');
+            Cache::flush();
+            Artisan::call('config:clear');
+            Artisan::call('optimize:clear');
 
             DB::commit();
-            
+
             return response()->json([
                 'sucess' => true,
                 'message' => 'Update Successfully'
             ], 200);
-
         } catch (\Throwable $th) {
 
             DB::rollBack();
@@ -71,10 +70,10 @@ class UpdateController extends Controller
             ], 500);
         }
     }
-    
+
     public function getMigrations()
     {
-        $migrations = glob(database_path().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR.'*.php');
+        $migrations = glob(database_path() . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR . '*.php');
 
         return str_replace('.php', '', $migrations);
     }
@@ -91,7 +90,7 @@ class UpdateController extends Controller
 
     public function forceUpdate(Request $request)
     {
-        if(! $request->key || urldecode($request->key) != config('app.key')) {
+        if (! $request->key || $request->key != config('app.secret_key')) {
             return 'Not Authenticated';
         }
 

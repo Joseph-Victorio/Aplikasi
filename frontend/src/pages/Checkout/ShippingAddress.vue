@@ -48,45 +48,43 @@
                <div class="text-red q-pa-xs text-xs" v-if="errors.shipping_destination">Pengiriman belum dipilih</div>
             </div>
             <div class="q-mt-md" flat bordered>
-               <fieldset v-if="courierAvailable">
-                  <legend class="q-mb-sm">Kurir</legend>
-                  <div>
-                     <q-select id="inputCourier" filled square stack-label label="Pilih Kurir" :options="couriers"
-                        v-model="currentSelelectedCourier" :error="errors.shipping_courier_service"
-                        @input="selectCourier">
-                        <template v-slot:error>Kurir belum dipilih</template>
-                     </q-select>
+               <fieldset>
+                  <legend class="q-mb-sm">Kurir & Ongkos Kirim</legend>
 
-                  </div>
+                  <div class="relative q-py-sm" style="max-height: 300px;overflow-y: auto;">
 
-                  <q-list v-if="shippingCost.ready">
-                     <template v-if="shippingCost.costs.length">
-                        <q-item v-for="item in shippingCost.costs" :key="item.service" v-ripple
-                           @click="selectCost(item)" clickable class="bg-grey-1">
-                           <q-item-section avatar>
-                              <q-icon
-                                 :name="isSelectedCost && isSelectedCost.service == item.service ? 'radio_button_checked' : 'radio_button_unchecked'"
-                                 :color="isSelectedCost && isSelectedCost.service == item.service ? 'primary' : 'grey-6'"></q-icon>
-                           </q-item-section>
+                     <q-list separator v-if="shippingCostReady">
+                        <template v-if="render_shipping_costs.length">
+                           <q-item v-for="(item, idx) in render_shipping_costs" :key="idx" v-ripple
+                              @click="selectCost(item)" clickable class="bg-grey-1">
+                              <q-item-section avatar>
+                                 <q-icon
+                                    :name="selected_cost && selected_cost.id == item.id ? 'radio_button_checked' : 'radio_button_unchecked'"
+                                    :color="selected_cost && selected_cost.id == item.id ? 'primary' : 'grey-6'"></q-icon>
+                              </q-item-section>
+                              <q-item-section>
+                                 <q-item-label class="text-weight-medium">
+                                    {{ item.courier_name }}
+                                 </q-item-label>
+                                 <q-item-label>Biaya {{ moneyIDR(item.price) }}</q-item-label>
+                                 <q-item-label class="text-grey-8">
+                                    {{ item.courier_service_name }} - {{ item.courier_service_code }}
+                                 </q-item-label>
+                                 <q-item-label class="text-grey-8">
+                                    Etd {{ item.duration }}
+                                 </q-item-label>
+                              </q-item-section>
+                           </q-item>
+                        </template>
+                        <q-item v-if="costNotFound">
                            <q-item-section>
-                              <q-item-label>
-                                 {{ item.description }} (<span class="text-weight-bold">{{ item.service }}</span>)
-                              </q-item-label>
-                              <q-item-label>Ongkos kirim {{ moneyIDR(item.cost[0].value) }}</q-item-label>
-                              <q-item-label caption v-if="item.cost[0].etd">
-                                 Etd {{ item.cost[0].etd }}
-                              </q-item-label>
+                              <q-item-label class="text-red-5 q-pa-lg">Ongkos kirim tidak ditemukan, silahkan hubungi
+                                 admin</q-item-label>
                            </q-item-section>
                         </q-item>
-                     </template>
-                     <q-item v-else>
-                        <q-item-section>
-                           <q-item-label class="text-red-5 q-pa-lg">Ongkos kirim tidak ditemukan, silahkan ganti dengan
-                              kurir yang
-                              lain</q-item-label>
-                        </q-item-section>
-                     </q-item>
-                  </q-list>
+                     </q-list>
+                  </div>
+
                   <div ref="courier_skeleton">
                      <q-list v-if="loading">
                         <q-item v-for="i in 3" :key="i">
@@ -105,24 +103,6 @@
                      </q-list>
                   </div>
                </fieldset>
-
-               <div v-else>
-                  <div class="q-pa-lg text-center">
-                     <!-- <div class="text-lg text-weight-bold">Mohon Maaf</div> -->
-                     <q-icon name="error" size="xl" color="red"></q-icon>
-                     <div class="text-md text-weight-bold text-red">Alamat tidak dalam jangkauan kurir</div>
-                     <div class="q-mt-md q-mb-xs">Berikut alamat yg didukung kurir kami</div>
-
-                     <q-list v-if="currentConfig.cod_list.length" dense separator bordered>
-                        <q-item v-for="(an, i) in currentConfig.cod_list" :key="i">
-                           <q-item-section class="text-green-8">{{
-                              destinationAddressFormat(an)
-                           }} ({{ moneyIDR(an.price) }})</q-item-section>
-                        </q-item>
-                     </q-list>
-
-                  </div>
-               </div>
 
             </div>
          </div>
@@ -143,6 +123,8 @@
          </q-card>
       </q-dialog>
       <UserAddressForm autoSelectModal ref="userAddressForm" @onSelectAddress="handleSelectAddress" />
+
+      <div id="mapView"></div>
    </div>
 </template>
 
@@ -160,36 +142,57 @@ export default {
    },
    data() {
       return {
+         shippingCostReady: false,
          formAddressModal: false,
          addressModal: false,
-         costNotFound: false,
-         readyAddressBlock: false,
          useDataUserPrompt: false,
-         isSelectedCost: null,
-         isSelectedCostCod: null,
+         selected_cost: null,
          formGetCost: {
             origin: '',
             destination: '',
             weight: '',
-            courier: '',
          },
-         shippingCost: {
-            code: '',
-            name: '',
-            costs: [],
-            ready: false
-         },
-         searchSubdistrictKey: '',
-         isSearching: false,
-         searchAvailable: true,
-         searchReady: false,
-         codSelected: '',
-         currentSelelectedCourier: null,
+         shippingCosts: [],
+         local_cost: null
       }
    },
    computed: {
       user_address() {
          return this.$store.getters['user/getAllAddress']
+      },
+      costNotFound() {
+         if (this.shippingCostReady) {
+            if (!this.render_shipping_costs.length) {
+               return true
+            }
+         }
+         return false
+      },
+      render_shipping_costs() {
+
+         let data = [];
+
+         if (this.formOrder.customer_address) {
+
+            if (this.currentConfig.is_pic_order) {
+               data.push({
+                  id: 'PICKUP',
+                  courier_code: "PICKUP",
+                  courier_name: "Ambil Di Toko",
+                  courier_service_name: "Diambil sendiri oleh pelanggan",
+                  courier_service_code: "PICKUP",
+                  price: 0,
+                  type: 'other'
+               })
+            }
+         }
+
+         if (this.local_cost) {
+            data = [...data, this.local_cost]
+
+         }
+
+         return [...data, ...this.shippingCosts];
       },
       customer_address: {
          set: function (val) {
@@ -231,98 +234,28 @@ export default {
             return this.$store.state.order.formOrder.shipping_destination
          }
       },
-      listCodOptions() {
-         if (this.canCod) {
-            return this.currentConfig.cod_list.map(el => ({ label: `${el.subdistrict_name} ${el.type} ${el.city} ${el.province}`, value: el.id, ...el }))
-         }
-         return []
-      },
-      canCod() {
-         if (this.currentConfig && this.currentConfig.can_cod) {
-            return true
-         }
-         return false
-      },
       errors() {
          return this.$store.state.errors
       },
       formOrder() {
          return this.$store.state.order.formOrder
       },
-      originAddressFormat() {
-         return `${this.currentConfig.warehouse_address.city}, ${this.currentConfig.warehouse_address.province}`
-      },
-      couriers() {
-         let n = []
-
-
-         if (this.currentConfig) {
-            if (this.currentConfig.can_shipping) {
-               n = [...this.currentConfig.rajaongkir_couriers]
-            }
-
-            if (this.currentConfig.is_pic_order) {
-               n.unshift({ label: `Ambil di Toko (Gratis)`, value: 'PICKUP', price: 0 })
-            }
-
-         }
-
-         if (this.formOrder.shipping_destination && this.canCod) {
-            const item = this.currentConfig.cod_list.find(el => el.id == this.formOrder.shipping_destination.address.id)
-            if (item != undefined) {
-               let price = parseInt(item.price) > 0 ? `Rp.${item.price}` : 'Gratis'
-               n.unshift({ label: `Antar Kurir Toko (${price})`, value: 'COD', price: item.price })
-            }
-         }
-         return n
-      },
-      courierAvailable() {
-         if (this.formOrder.shipping_destination && !this.couriers.length) {
-            return false
-         }
-         return true
-      },
       loading() {
          return this.$store.state.loading
       },
       canGetCost() {
-         if (this.formGetCost.destination && this.formGetCost.courier && this.formGetCost.weight && this.formGetCost.origin) {
+         if (this.formGetCost.destination && this.formGetCost.weight && this.formGetCost.origin) {
             return true
          } else {
             return false
          }
       },
-      codItem() {
-         if (this.formOrder.shipping_destination) {
-            if (this.currentConfig && this.currentConfig.cod_list && this.currentConfig.cod_list.length) {
-               let h = this.currentConfig.cod_list.find(el => el.subdistrict_id == this.formOrder.shipping_destination.address.subdistrict_id)
-               if (h != undefined) {
-                  return h
-               } else {
-                  return null
-               }
-            } else {
-               return null
-            }
-
-         } else {
-            return null
-         }
-      }
    },
    mounted() {
       this.setFormGetCost()
-      if (this.currentUser) {
-         this.commitFormOrder('user_id', this.currentUser.id)
-         this.customer_name = this.currentUser.name
-         this.customer_email = this.currentUser.email
-         this.customer_phone = this.currentUser.phone ? this.currentUser.phone : ''
-      } else {
-
-         if (localStorage.getItem('__nextshop_current_user')) {
-            if (!this.customer_name || !this.customer_phone) {
-               this.useDataUserPrompt = true
-            }
+      if (localStorage.getItem('_nextwalocaluser')) {
+         if (!this.customer_name || !this.customer_phone) {
+            this.useDataUserPrompt = true
          }
       }
 
@@ -344,50 +277,23 @@ export default {
          this.commitFormOrder('shipping_courier_service', '')
          this.commitFormOrder('shipping_cost', 0)
       },
-      clearPayment() {
-         this.commitFormOrder('payment_method', '')
-         this.commitFormOrder('payment_name', '')
-         this.commitFormOrder('payment_type', '')
-         this.commitFormOrder('payment_code', '')
-         this.commitFormOrder('payment_fee', 0)
-         this.$emit('removePayment')
-      },
       commitFormOrder(key, val) {
          this.$store.commit('order/SET_FORM_ORDER', { key: key, value: val })
 
          this.saveDataUser()
       },
-      destinationAddressFormat(obj) {
-         if (!obj) {
-            return ''
-         }
-         return `${obj.subdistrict_name} - ${obj.type} ${obj.city}, ${obj.province}`
-      },
-      selectCostCod(item) {
-         this.isSelectedCost = null
-
-         this.commitFormOrder('shipping_courier_name', 'COD')
-         this.commitFormOrder('shipping_courier_service', 'COD')
-         this.commitFormOrder('shipping_cost', item.price ? parseInt(item.price) : 0)
-
-         this.isSelectedCostCod = item
-
-      },
       selectCost(item) {
 
-         this.isSelectedCostCod = null
-         this.isSelectedCost = item
+         this.selected_cost = item
 
-         this.commitFormOrder('shipping_courier_name', this.shippingCost.name)
-         this.commitFormOrder('shipping_courier_service', item.service)
-         this.commitFormOrder('shipping_cost', item.cost[0].value)
+         this.commitFormOrder('shipping_courier_name', item.courier_service_name)
+         this.commitFormOrder('shipping_courier_service', item.courier_service_code)
+         this.commitFormOrder('shipping_cost', item.price)
 
       },
       changeNewAddress() {
          this.clearAddress()
-         this.formGetCost.courier = ''
          this.formGetCost.destination = ''
-         this.readyAddressBlock = false
          this.clearSelectedCost()
       },
       closeModalAddress() {
@@ -396,6 +302,7 @@ export default {
          this.$emit('closeModal')
       },
       handleSelectAddress(item) {
+         this.clearSelectedCost()
          if (!item) {
             this.shipping_destination = null
             this.customer_address = null
@@ -405,29 +312,19 @@ export default {
 
          }
          this.shipping_destination = item
-         let addr = `${item.address_street}\n${item.address.label}`
+         let addr = `${item.address_street.toUpperCase()} \n${item.address.name}`
 
          this.customer_address = addr
 
-         setTimeout(() => {
-
-            if (this.couriers.length == 1) {
-               this.currentSelelectedCourier = this.couriers[0]
-               this.selectCourier(this.currentSelelectedCourier)
-            }
-         }, 300)
-
-
-         this.clearSelectedCost()
          this.getCost()
+
+         if (this.currentConfig.can_cod && item && item.coordinate && this.currentConfig.warehouse_coordinate) {
+            this.getLocalCost(item.coordinate)
+         }
 
       },
       clearAddress() {
-         this.currentSelelectedCourier = null
-         this.searchSubdistrictKey = '';
-         this.searchReady = false
          this.formGetCost.destination = ''
-         this.formGetCost.courier = ''
          this.clearSelectedCost()
 
          this.commitFormOrder('shipping_destination', '')
@@ -436,14 +333,13 @@ export default {
 
       setDataUser() {
 
-         let data = JSON.parse(localStorage.getItem('__nextshop_current_user'))
+         let data = JSON.parse(localStorage.getItem('_nextwalocaluser'))
 
          this.customer_name = data.customer_name
          this.customer_phone = data.customer_phone
          this.customer_email = data.customer_email ? data.customer_email : ''
 
          this.useDataUserPrompt = false
-         this.readyAddressBlock = true
 
       },
 
@@ -459,55 +355,19 @@ export default {
                customer_email: this.formOrder.customer_email,
             }
 
-            localStorage.setItem('__nextshop_current_user', JSON.stringify(userData))
+            localStorage.setItem('_nextwalocaluser', JSON.stringify(userData))
 
-         }
-      },
-      selectCourier(evt) {
-         if (!evt) {
-            this.clearSelectedCost()
-            this.formGetCost.courier = ''
-         }
-
-         if (evt.value == 'COD') {
-
-            this.clearSelectedCost()
-
-            this.commitFormOrder('shipping_cost', evt.price)
-            this.commitFormOrder('shipping_courier_name', 'COD')
-            this.commitFormOrder('shipping_courier_service', 'Diantar kurir toko')
-
-         } else if (evt.value == 'PICKUP') {
-
-            this.clearSelectedCost()
-
-            this.commitFormOrder('shipping_cost', evt.price)
-            this.commitFormOrder('shipping_courier_name', 'PICKUP')
-            this.commitFormOrder('shipping_courier_service', 'Ambil di toko')
-
-         } else {
-            this.commitFormOrder('shipping_courier_name', this.currentSelelectedCourier.label)
-            this.formGetCost.courier = this.currentSelelectedCourier.value
-
-            this.getCost()
          }
       },
       clearSelectedCost() {
-         this.shippingCost.code = ''
-         this.shippingCost.name = ''
-         this.shippingCost.costs = []
-         this.shippingCost.ready = false
-         this.isSelectedCost = null
-         this.isSelectedCostCod = null
+         this.local_cost = null
+         this.shippingCosts = []
+         this.selected_cost = null
 
          this.clearShipping()
       },
       getCost() {
          this.setFormGetCost()
-
-         this.shippingCost.ready = false
-         this.costNotFound = false
-         this.clearSelectedCost()
 
          if (this.canGetCost) {
 
@@ -517,23 +377,15 @@ export default {
             Api().post('shipping/costs', this.formGetCost).then(response => {
                if (response.status == 200) {
 
-                  let data = response.data.results.data[0];
-                  this.shippingCost.code = data.code
-                  this.shippingCost.name = data.name
-                  this.shippingCost.costs = data.costs
+                  this.shippingCosts = response.data.results;
 
-                  if (!data.costs.length) {
-                     this.costNotFound = true
-                  }
                   this.$store.commit('SET_LOADING', false)
                }
             }).catch(() => {
                this.$store.commit('SET_LOADING', false)
-               this.costNotFound = true
+            }).finally(() => {
+               this.shippingCostReady = true
             })
-               .finally(() => {
-                  this.shippingCost.ready = true
-               })
          }
       },
       setFormGetCost() {
@@ -547,18 +399,92 @@ export default {
 
             this.formGetCost.origin = this.currentConfig.warehouse_address.city_id
 
-            if (this.currentConfig.rajaongkir_type == 'pro') {
-               this.formGetCost.origin = this.currentConfig.warehouse_address.subdistrict_id
-               this.formGetCost.destinationType = 'subdistrict'
-               this.formGetCost.originType = 'subdistrict'
-
-               if (this.formOrder.shipping_destination) {
-                  this.formGetCost.destination = this.formOrder.shipping_destination.address.subdistrict_id
-               }
-            }
-
          }
-      }
+      },
+      getLocalCost(coords) {
+
+         if (!this.map) {
+            this.map = L.map('mapView', {
+               center: this.currentConfig.warehouse_coordinate,
+            });
+         }
+
+         let distanceInMeter = this.map.distance(this.currentConfig.warehouse_coordinate, coords)
+
+         let total_distance = (distanceInMeter / 1000).toFixed(1);
+
+         // console.log('direct distance: in M', distanceInMeter);
+         // console.log('direct distance: in KM', total_distance);
+
+         let localCosts = this.currentConfig.local_shipping_costs
+
+         // Get max distance from last item
+
+         let lastItem = localCosts[localCosts.length - 1]
+
+         let max_distance = parseInt(lastItem.end)
+
+         if (total_distance > max_distance) {
+
+            this.local_cost = null
+
+            return
+         }
+
+         // Get Cost by current distance
+
+         let selectedRule = null
+
+         for (let i = 0; i < localCosts.length; i++) {
+
+            let currentRule = localCosts[i]
+
+            let radius = parseInt(currentRule.radius)
+
+            if (total_distance > radius) {
+
+               continue;
+
+            } else {
+               selectedRule = currentRule
+               break;
+            }
+         }
+
+         if (!selectedRule) {
+            this.local_cost = null
+            return
+         }
+
+         let ongkir = 0
+
+         console.log('total_distance', total_distance);
+         console.log('selectedRule', selectedRule);
+
+
+         if (selectedRule.flat) {
+            ongkir = parseInt(selectedRule.cost)
+         } else {
+            if (total_distance > 0) {
+               ongkir = Math.round(total_distance * parseInt(selectedRule.cost))
+            } else {
+               ongkir = parseInt(selectedRule.cost)
+            }
+         }
+
+         this.local_cost = {
+            id: "COD",
+            courier_code: "COD",
+            courier_name: "Via Kurir Toko",
+            courier_service_name: "Diantar oleh kurir toko",
+            courier_service_code: "COD",
+            price: ongkir,
+            type: 'other'
+         }
+
+         this.shippingCostReady = true
+
+      },
    }
 }
 </script>

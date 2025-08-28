@@ -33,7 +33,6 @@ export default function () {
          customer_phone: '',
          customer_address: '',
          customer_note: '',
-         customer_address_selected: null
       },
       orderItems: [],
    }

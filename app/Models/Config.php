@@ -38,6 +38,8 @@ class Config extends Model
       'primary_color',
       'is_local_shipping_active',
       'is_pic_order',
+      'warehouse_coordinate',
+      'local_shipping_costs'
    ];
    public $appends = [
       'is_shippable',
@@ -62,7 +64,9 @@ class Config extends Model
       'is_pic_order' => 'boolean',
       'cod_list' => 'array',
       'warehouse_address' => 'object',
-      'rajaongkir_couriers' => 'array'
+      'rajaongkir_couriers' => 'array',
+      'warehouse_coordinate' => 'array',
+      'local_shipping_costs' => 'array'
    ];
 
 
@@ -92,7 +96,7 @@ class Config extends Model
       if (!$this->is_local_shipping_active) {
          return false;
       }
-      return $this->cod_list ? true : false;
+      return $this->warehouse_coordinate && $this->local_shipping_costs ? true : false;
    }
    public function getIsMailReadyAttribute()
    {

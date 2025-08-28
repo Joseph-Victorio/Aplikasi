@@ -31,7 +31,7 @@
               {{ product.title }}
             </h1>
 
-            <div class="items-center justify-between" :class="{ row: $q.screen.width > 800 }">
+            <div class="flex items-center justify-between" :class="{ row: $q.screen.width > 800 }">
               <div>
                 <div class="flex items-center">
                   <div class="flex items-center text-secondary">

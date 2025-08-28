@@ -8,6 +8,8 @@
     </q-btn>
     <q-btn aria-label="Share Page" v-if="webShareApiSupported" :padding="isDesktop? '6px' : '5px'" @click="shareTheWeb" color="white" unelevated dense round :size="isDesktop ? '16px' : '15px'" icon="eva-share" text-color="grey-9" >
     </q-btn>
+    <q-btn aria-label="Share Page" v-if="user" :padding="isDesktop? '6px' : '5px'" @click="toDashboard" color="white" unelevated dense round :size="isDesktop ? '16px' : '15px'" icon="eva-person-outline" text-color="grey-9" >
+    </q-btn>
   </div>
 </template>
 
@@ -23,6 +25,9 @@ export default {
   computed: {
     ...mapGetters('product', ['favoriteCount']),
     ...mapGetters('cart', ['cartCount']),
+    user() {
+      return this.$store.state.user.user
+    },
     isDesktop() {
       return this.$q.platform.is.desktop ? true : false
     },
@@ -46,7 +51,15 @@ export default {
         text: title,
         url: location.href,
       })
-    }
+    },
+     toDashboard() {
+         if (this.currentUser) {
+            this.$router.push({ name: 'Settings' })
+         } else {
+            this.$router.push({ name: 'Login' })
+
+         }
+      }
   }
 }
 </script>

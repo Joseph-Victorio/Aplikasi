@@ -16,7 +16,7 @@
                               <q-badge color="green" v-if="item.is_primary" label="Utama"></q-badge>
                            </q-item-label>
                            <q-item-label class="q-pt-xs text-grey-7">{{ item.address_street }}</q-item-label>
-                           <q-item-label class="text-grey-7">{{ destinationAddressFormat(item.address) }}</q-item-label>
+                           <q-item-label class="text-grey-7">{{ item.address.name }}</q-item-label>
                            <q-item-label v-if="!item.is_complete"> <q-badge color="red-4"
                                  outline>incomplete</q-badge></q-item-label>
                         </q-item-section>
@@ -32,41 +32,62 @@
                   </q-list>
                </div>
                <div class="q-pa-sm">
-                  <q-btn label="Tambah Alamat" outline class="full-width" color="blue" @click="handleAddAddress"></q-btn>
+                  <q-btn label="Tambah Alamat" outline class="full-width" color="blue"
+                     @click="handleAddAddress"></q-btn>
                </div>
             </q-card-section>
          </q-card>
       </q-dialog>
-      <q-dialog v-model="formAddressModal" persistent>
-         <q-card class="card-lg">
-            <q-card-section>
-               <div class="card-title flex justify-between q-pb-md">
+      <q-dialog v-model="formAddressModal" persistent no-shake position="bottom">
+         <q-card class="max-width">
+            <q-card-section class="q-pa-none" style="min-height:320px">
+               <div class="card-title flex justify-between q-py-sm q-px-md sticky-top bg-white">
                   <div>{{ formAddress._method == 'PUT' ? 'Edit' : 'Tambah' }} Alamat</div>
                   <q-btn icon="close" flat dense v-close-popup></q-btn>
                </div>
-               <form @submit.prevent="submitAddress" class="q-gutter-y-md">
-                  <q-input filled required label="Label" v-model="formAddress.label" placeholder="eg: Kantor"></q-input>
-                  <div class="q-mt-sm">
-                     <q-select required filled v-model="formAddress.subdistrict_id" use-input hide-selected fill-input
-                        input-debounce="500" map-options emit-value label="Pilih Kecamatan" :options="subdistrict_options"
-                        @filter="filterFn">
-                        <template v-slot:no-option>
-                           <q-item>
-                              <q-item-section class="text-grey">
-                                 No results
-                              </q-item-section>
-                           </q-item>
-                        </template>
-                     </q-select>
-                  </div>
-                  <q-input filled required type="textarea" v-model="formAddress.address_street"
-                     label="Alamat Lengkap"></q-input>
-                  <q-checkbox v-if="user_address.length" label="Gunakan sebagai alamat utama"
-                     v-model="formAddress.is_primary"></q-checkbox>
-                  <div class="card-action">
-                     <q-btn label="Simpan Alamat" class="full-width" color="primary" type="submit"></q-btn>
-                  </div>
-               </form>
+               <div class="q-pa-md">
+
+                  <form @submit.prevent="submitAddress" class="q-gutter-y-md">
+                     <q-input filled required label="Label" v-model="formAddress.label"
+                        placeholder="eg: Kantor"></q-input>
+                     <div class="q-mt-sm">
+                        <q-select required filled v-model="formAddress.address" use-input hide-selected fill-input
+                           :input-debounce="1000" label="Ketik Kecamatan" :options="subdistrict_options"
+                           @input="selectCurrentAddress" @filter="filterFn">
+                           <template v-slot:no-option>
+                              <q-item>
+                                 <q-item-section class="text-grey">
+                                    No results
+                                 </q-item-section>
+                              </q-item>
+                           </template>
+                        </q-select>
+                     </div>
+                     <q-input filled required type="textarea" v-model="formAddress.address_street"
+                        label="Alamat Lengkap"></q-input>
+                     <div v-if="config" class="q-mt-md q-pa-sm">
+                        <div class="card-subtitle">
+                           <div>Pilih Koordinat</div>
+                           <q-item-label caption>
+                              Klik pada map atau geser posisi ikon kurir untuk mendapatkan koordinat yang tepat
+                           </q-item-label>
+                        </div>
+                        <div>
+                           <ClientMap ref="clientMap" :config="config" :coordinate="formAddress.coordinate"
+                              :is_client="true" @onSelected="onEmitMap" @onSelectAddress="selectMapAddress"
+                              @onError="(m) => error_map = m" />
+                           <div class="text-amber-10 q-pa-xs text-sm" v-if="error_map">{{ error_map }}</div>
+
+                        </div>
+                     </div>
+
+                     <q-checkbox v-if="user_address.length" label="Gunakan sebagai alamat utama"
+                        v-model="formAddress.is_primary"></q-checkbox>
+                     <div class="card-action q-py-md sticky-bottom bg-white" style="z-index:1000">
+                        <q-btn label="Simpan Alamat" class="full-width" color="primary" type="submit"></q-btn>
+                     </div>
+                  </form>
+               </div>
             </q-card-section>
          </q-card>
       </q-dialog>
@@ -75,7 +96,9 @@
 
 <script>
 import { Api } from 'boot/axios'
+import ClientMap from 'components/ClientMap.vue'
 export default {
+   components: { ClientMap },
    props: {
       autoSelectModal: {
          type: Boolean,
@@ -84,6 +107,7 @@ export default {
    },
    data() {
       return {
+         error_map: '',
          addressModal: false,
          formAddressModal: false,
          formAddress: {
@@ -92,37 +116,51 @@ export default {
             label: '',
             is_primary: false,
             address_street: '',
-            subdistrict_id: ''
+            coordinate: [],
+            address: ''
          },
          subdistrict_options: [],
-         current_selected_address: null
       }
    },
    mounted() {
-      if (this.user_address.length) {
-         this.selectPrimaryAddress()
-      }
+      setTimeout(() => {
+         if (this.user_address.length) {
+            this.selectAddress(this.user_address[0])
+         }
+      }, 1000)
    },
    computed: {
       user_address() {
          return this.$store.state.user.address
       },
+      config() {
+         return this.$store.state.config
+      }
    },
    methods: {
-      selectPrimaryAddress() {
-         let prim = this.user_address.find(e => e.is_primary == true && e.is_complete == true)
-
-         if (prim != undefined) {
-            this.selectAddress(prim)
-         }
-      },
       selectAddress(item) {
-
          this.$store.commit('CLEAR_ERRORS')
 
          this.$emit('onSelectAddress', item)
          this.addressModal = false
 
+      },
+      selectCurrentAddress(item) {
+         console.log(item);
+
+         this.error_map = ''
+         let search = `${item.subdistrict} ${item.city.replace('Kabupaten ', '')}`
+         this.$refs.clientMap.autoSearch(search)
+      },
+      selectMapAddress(list) {
+         let latlng = [list.y, list.x]
+         this.formAddress.coordinate = latlng
+
+      },
+      onEmitMap(evt) {
+         console.log(evt);
+
+         this.formAddress.coordinate = evt.user_coordinate;
       },
       submitAddress() {
          this.handleSavelocalAddress()
@@ -139,12 +177,8 @@ export default {
             this.formAddress.id = this.getRandomString(16)
          }
          this.formAddress.is_complete = true
-         const addr = this.subdistrict_options.find(el => el.id == this.formAddress.subdistrict_id)
 
-         const data = { ...this.formAddress }
-         data.address = addr
-
-         this.$store.commit('user/PUSH_ADDRESS', data)
+         this.$store.commit('user/PUSH_ADDRESS', this.formAddress)
 
          this.formAddressModal = false
       },
@@ -157,29 +191,23 @@ export default {
          this.formAddress.label = ''
          this.formAddress.is_primary = false
          this.formAddress.address_street = ''
-         this.formAddress.subdistrict_id = ''
+         this.formAddress.address = ''
+
+         if (!this.user_address.length) {
+            this.formAddress.label = 'Rumah'
+         }
 
          this.addressModal = false
          this.formAddressModal = true
       },
       handleEditAddress(item) {
          const data = { ...item }
-         this.formAddress._method = 'PUT'
-         this.formAddress.id = data.id
-         this.formAddress.label = data.label
-         this.formAddress.is_primary = data.is_primary
-         this.formAddress.address_street = data.address_street
-         this.formAddress.subdistrict_id = data.subdistrict_id ?? ''
+         this.formAddress = { ...this.formAddress, ...data }
          if (data.address) {
             this.subdistrict_options = [data.address]
          }
          this.formAddressModal = true
-      },
-      destinationAddressFormat(obj) {
-         if (!obj) {
-            return ''
-         }
-         return `${obj.subdistrict_name} - ${obj.type} ${obj.city}, ${obj.province}`
+
       },
       async filterFn(val, update, abort) {
          if (val == '' || val.length <= 3) {
@@ -188,13 +216,26 @@ export default {
             return
          }
 
-         let response = await Api().get('searchAddress/' + val)
-
-         if (response.status == 200) {
-            update(() => {
-               this.subdistrict_options = response.data.results
+         Api().get('searchAddress/' + val).then(res => {
+            if (res.data.success) {
+               update(() => {
+                  this.subdistrict_options = res.data.results
+               })
+            } else {
+               this.$q.notify({
+                  type: 'negative',
+                  message: res.data.message
+               })
+            }
+         }).catch((err) => {
+            this.$q.notify({
+               type: 'negative',
+               message: err.response.data.message
             })
-         }
+            update()
+
+         })
+
       },
       handleDeleteAddress(id) {
          this.$q.dialog({

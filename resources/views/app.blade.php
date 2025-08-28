@@ -2,7 +2,7 @@
 <html lang=id prefix="og: https://ogp.me/ns#">
 
 <head>
-   <base href= />
+   <base href=/>
    <meta charset=utf-8>
    <meta name=format-detection content="telephone=no">
    <meta name=msapplication-tap-highlight content=no>
@@ -10,10 +10,10 @@
    <link rel=icon type=image/png href=/icon/favicon.png>
    <link rel=icon type=image/png sizes=96x96 href=/icon/icon-96x96.png>
    <link rel=icon type=image/png sizes=192x192 href=/icon/icon-192x192.png>
-   @include('partial/meta_head')
+   @include('partial/meta_head') 
    @include('partial/json_schema')
-   <link href=/css/vendor.100acf1c.css rel=stylesheet>
-   <link href=/css/app.d122833c.css rel=stylesheet>
+   <link href=/css/vendor.7f04b25f.css rel=stylesheet>
+   <link href=/css/app.845878cb.css rel=stylesheet>
    <link rel=manifest href=manifest.json>
    <meta name=theme-color content=#048daf>
    <meta name=apple-mobile-web-app-capable content=yes>
@@ -27,11 +27,11 @@
    <meta name=msapplication-TileColor content=#000000>
 </head>
 
-<body class=bg-blue-grey-1>
-   @include('partial/meta_body')
+<body class=bg-blue-grey-1
+>@include('partial/meta_body')
    <div id=q-app></div>
-   <script src=/js/vendor.7a651566.js></script>
-   <script src=/js/app.16aace72.js></script>
+   <script src=/js/vendor.502181fb.js></script>
+   <script src=/js/app.681339c2.js></script>
 </body>
 
 </html>
