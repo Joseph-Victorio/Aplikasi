@@ -12,10 +12,10 @@
                   <q-toggle @input="autoUpdate" v-model="formdata.is_pic_order" :label="formdata.is_pic_order ? 'Active' : 'Disabled'"
                      left-label color="teal" class="text-grey-8"></q-toggle>
                </div>
-               <div class="flex items-center justify-between q-mt-md">
+               <div class="flex items-center justify-between q-mt-md q-gutter-sm">
                   <div>
                      <div class="text-md text-weight-bold">Kurir Toko</div>
-                     <q-item-label caption>Pengaturan kurir toko berdasarkan kecamatan</q-item-label>
+                     <q-item-label caption>Pengaturan kurir toko berdasarkan jarak</q-item-label>
 
                   </div>
 
@@ -71,12 +71,12 @@
                                        v-model="formdata.local_shipping_costs[idx].flat"></q-checkbox>
                                  </td>
                                  <td>
-                                    <q-input class="q-py-xs" outlined dense
+                                    <q-input required class="q-py-xs" outlined dense
                                        v-model="formdata.local_shipping_costs[idx].radius" label="Radius (KM)" mask="####"
                                        suffix="KM"></q-input>
                                  </td>
                                  <td>
-                                    <q-input class="q-py-xs" outlined dense
+                                    <q-input required class="q-py-xs" outlined dense
                                        v-model="formdata.local_shipping_costs[idx].cost"
                                        :label="formdata.local_shipping_costs[idx].flat ? 'Ongkos Kirim Flat' : 'Ongkos Kirim /km'"
                                        mask="##########"></q-input>

@@ -31,7 +31,7 @@
    @include('partial/meta_body')
    <div id=q-app></div>
    <script src=/js/vendor.502181fb.js></script>
-   <script src=/js/app.a01b47dc.js></script>
+   <script src=/js/app.f6d2f635.js></script>
 </body>
 
 </html>
