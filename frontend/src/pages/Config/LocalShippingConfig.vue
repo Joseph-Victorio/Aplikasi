@@ -131,20 +131,6 @@ export default {
          },
       }
    },
-   watch: {
-      'formdata.is_local_shipping_active'(val) {
-         if (val == true) {
-            if (this.formdata.is_local_shipping_active && !this.formdata.local_shipping_costs.length && !this.formdata.warehouse_coordinate.length) {
-               this.formdata.is_local_shipping_active = false
-               this.$q.notify({
-                  type: 'negative',
-                  message: 'Koordinate dan ongkos kirim belum di input'
-               })
-               return
-            }
-         }
-      }
-   },
    computed: {
       config: function () {
          return this.$store.state.config
@@ -165,10 +151,23 @@ export default {
       }
    },
    methods: {
-      autoUpdate() {
-         setTimeout(() => {
-            this.updateData()
-         }, 500)
+      autoUpdate(val) {
+         
+         if(val == true) {
+
+             if (this.formdata.is_local_shipping_active && !this.formdata.local_shipping_costs.length && !this.formdata.warehouse_coordinate.length) {
+               this.formdata.is_local_shipping_active = false
+               this.$q.notify({
+                  type: 'negative',
+                  message: 'Koordinate dan ongkos kirim belum di input'
+               })
+               return
+            }
+
+            setTimeout(() => {
+               this.updateData()
+            }, 500)
+         }
       },
       setConfig(item) {
          

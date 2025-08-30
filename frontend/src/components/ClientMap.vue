@@ -1,20 +1,26 @@
 <template>
-   <div class="relative">
-      <div class="list-box-content" v-show="showList">
-         <q-list separator>
-            <q-item v-for="(list, i) in lists" :key="i" clickable @click="selectItemList(list)">
-               <q-item-section>{{ list.label }}</q-item-section>
-            </q-item>
-            <q-item v-if="notFound">
-               <q-item-section class="text-center">Data tidak ditemukan</q-item-section>
-            </q-item>
-         </q-list>
+   <div>
+      <div class="q-mb-md">
+         <q-input :loading="searchLoading" dense placeholder="cari desa atau kecamatan" v-model="query"
+            @input="searchQuery" debounce="1000" outlined></q-input>
       </div>
       <div class="relative">
-         <div id="clientMapContiner">
+         <div class="list-box-content" v-show="showList">
+            <q-list separator>
+               <q-item v-for="(list, i) in lists" :key="i" clickable @click="selectItemList(list)">
+                  <q-item-section>{{ list.label }}</q-item-section>
+               </q-item>
+               <q-item v-if="notFound">
+                  <q-item-section class="text-center">Data tidak ditemukan</q-item-section>
+               </q-item>
+            </q-list>
          </div>
-         <!-- <q-btn flat icon="ion-locate" :loading="loading" class="bg-white text-grey-7 btn-floating" round dense
-            padding="sm" @click="getCurrentPosition"></q-btn> -->
+         <div class="relative">
+            <div id="clientMapContiner">
+            </div>
+            <q-btn flat icon="ion-locate" :loading="loading" class="bg-white text-grey-7 btn-floating" round dense
+               padding="sm" @click="getCurrentPosition"></q-btn>
+         </div>
       </div>
    </div>
 </template>
