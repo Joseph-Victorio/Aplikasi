@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Store;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
@@ -29,12 +30,17 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        $shop = null;
+        $shop = collect([
+            'name' => env('APP_NAME'),
+            'description' => 'The next Genration online shop Apps'
+        ]); 
 
         try {
-            $shop = Cache::rememberForever('shop', function () {
-                return Store::first();
-            });
+            if(DB::connection()->getPDO()) {
+                $shop = Cache::rememberForever('shop', function () {
+                    return Store::first();
+                });
+            }
         } catch (\Throwable $th) {
             //throw $th;
         }

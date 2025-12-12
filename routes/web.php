@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\Frontend\FrontController;
+use App\Http\Controllers\Install\InstallController;
 
 // MOHON UNTUK TIDAK MENGEDIT ROUTE DIBAWAH
 
 Route::get('/', [FrontController::class, 'homepage']);
+Route::get('/install', [InstallController::class, 'index'])->name('installPage');
 Route::get('/products', [FrontController::class, 'products']);
 Route::get('/products/category/{category}', [FrontController::class, 'productCategory'])->name('product.category');
 Route::get('/product/{slug}', [FrontController::class, 'productDetail'])->name('product.show');

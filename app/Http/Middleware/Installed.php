@@ -20,6 +20,8 @@ class Installed
          return $next($request);
       }
 
+      return redirect()->route('installPage');
+
       return response()->json([
          'success' => false,
          'is_installed' => false,

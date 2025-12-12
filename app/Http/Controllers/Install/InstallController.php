@@ -6,11 +6,19 @@ use App\Helpers\ApiResponse;
 use App\Utilities\Installer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Artisan;
 
 class InstallController extends Controller
 {
+   public function index()
+   {
+       return View::vue([
+            'title' => "Install",
+            'description' => "Halaman Installasi",
+        ]);
+   }
    public function status()
    {
       return response()->json([

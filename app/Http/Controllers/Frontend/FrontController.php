@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Http\Middleware\Installed;
 use App\Models\Post;
 use App\Models\Store;
 use App\Models\Product;
@@ -16,6 +17,7 @@ class FrontController extends Controller
 
     public function __construct()
     {
+        $this->middleware(Installed::class);
         $this->shop = Cache::rememberForever('shop', function () {
             return Store::first();
         });
