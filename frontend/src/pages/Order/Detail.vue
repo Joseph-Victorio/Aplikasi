@@ -104,7 +104,15 @@
                            </q-item-label>
                         </q-item-section>
                         <q-item-section>{{ invoice.shipping_courier_code ? invoice.shipping_courier_code : '-'
-                           }}</q-item-section>
+                        }}</q-item-section>
+                     </q-item>
+                     <q-item>
+                        <q-item-section>
+                           <q-item-label>
+                              Bukti Pembayaran
+                           </q-item-label>
+                        </q-item-section>
+                        <q-item-section><a href="#" @click.prevent="showBukti(invoice)">Lihat Bukti</a></q-item-section>
                      </q-item>
                   </q-list>
                </q-card-section>
@@ -127,7 +135,7 @@
                         </q-item-section>
                         <q-item-section>
                            <q-item-label class="text-weight-bold q-py-sm text-md">{{ moneyIDR(invoice.grand_total)
-                              }}</q-item-label>
+                           }}</q-item-label>
                         </q-item-section>
                      </q-item>
                   </q-list>
@@ -153,7 +161,7 @@
                   <div class="q-mb-md flex justify-between item-start" style="font-size:1.1rem">
                      <table>
                         <tr>
-                           <td align="left">Invocie No</td>
+                           <td align="left">Invoice No</td>
                            <td>:</td>
                            <td align="left">{{ invoice.order_ref }}</td>
                         </tr>
@@ -263,13 +271,29 @@
             </div>
          </div>
       </div>
+      <q-dialog v-model="showImage">
+         <q-card style="max-width: 500px; width: 100%">
+            <q-card-section class="row items-center q-pb-none">
+               <div class="text-h6">Bukti Pembayaran</div>
+               <q-space />
+               <q-btn icon="close" flat round dense v-close-popup />
+            </q-card-section>
+
+            <q-card-section>
+               <q-img :src="bukti_bayar" fit="contain" spinner-color="primary" />
+            </q-card-section>
+         </q-card>
+      </q-dialog>
    </q-page>
+
 </template>
 
 <script>
+
 import { copyToClipboard } from 'quasar'
 import { mapActions, mapState } from 'vuex'
 import QRCode from 'qrcode'
+import order from 'src/store/order';
 export default {
    name: 'InvoiceIndex',
    data() {
@@ -278,7 +302,9 @@ export default {
          isPrintPacking: false,
          isPrintInvoice: false,
          timeout: null,
-         qrData: ''
+         qrData: '',
+         showImage: false,
+         bukti_bayar : null,
       }
    },
    computed: {
@@ -294,6 +320,11 @@ export default {
    },
 
    methods: {
+       showBukti(order) {
+         console.log('Clicked order:', order);
+         this.bukti_bayar = order.bukti_tf;
+         this.showImage = true;
+      },
       ...mapActions('order', ['getOrderByRef']),
       generateQr() {
          let opts = {

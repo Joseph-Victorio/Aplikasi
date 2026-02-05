@@ -64,6 +64,12 @@
                               <td>{{ order.created }}</td>
                            </tr>
                            <tr>
+                              <td>Bukti Pembayaran</td>
+                              <td>
+                                 <a href="#" @click.prevent="showBukti(order)">Lihat Bukti</a>
+                              </td>
+                           </tr>
+                           <tr>
                               <td>Total</td>
                               <td>{{ moneyIDR(order.grand_total) }}</td>
                            </tr>
@@ -189,18 +195,34 @@
       <q-inner-loading :showing="stateLoading">
 
       </q-inner-loading>
+      <q-dialog v-model="showImage">
+         <q-card style="max-width: 500px; width: 100%">
+            <q-card-section class="row items-center q-pb-none">
+               <div class="text-h6">Bukti Pembayaran</div>
+               <q-space />
+               <q-btn icon="close" flat round dense v-close-popup />
+            </q-card-section>
+
+            <q-card-section>
+               <q-img :src="bukti_bayar" fit="contain" spinner-color="primary" />
+            </q-card-section>
+         </q-card>
+      </q-dialog>
    </q-page>
 </template>
 
 <script>
+console.log(order)
 import { mapActions } from 'vuex'
 import { copyToClipboard } from 'quasar'
 import FollowUp from './FollowUp.vue'
+import order from 'src/store/order';
 export default {
    name: 'OrderIndex',
    components: { FollowUp },
    data() {
       return {
+
          isFilter: true,
          updateStatusModal: false,
          statusOptions: [
@@ -217,6 +239,8 @@ export default {
          currentOrder: null,
          search: '',
          filter: 'ALL',
+         showImage: false,
+         bukti_bayar: null,
          form: {
             order_id: '',
             resi: '',
@@ -266,6 +290,11 @@ export default {
       }
    },
    methods: {
+      showBukti(order) {
+         console.log('Clicked order:', order);
+         this.bukti_bayar = order.bukti_tf;
+         this.showImage = true;
+      },
       ...mapActions('order', ['getOrders', 'getPaginateOrder', 'getPaginateFilterOrder', 'destroyOrder', 'acceptPayment', 'inputResi', 'updateStatusOrder', 'searchOrder', 'filterOrder', 'cancelOrder']),
       loadMore() {
          this.getPaginateOrder({ filter: this.filter, skip: this.orders.data.length })

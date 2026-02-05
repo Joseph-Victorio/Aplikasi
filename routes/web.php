@@ -5,6 +5,7 @@ use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\Frontend\FrontController;
 use App\Http\Controllers\Install\InstallController;
 
+
 // MOHON UNTUK TIDAK MENGEDIT ROUTE DIBAWAH
 
 Route::get('/', [FrontController::class, 'homepage']);

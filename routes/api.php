@@ -21,6 +21,7 @@ use App\Http\Controllers\Frontend\FrontApiController;
 use App\Http\Controllers\Frontend\ShippingController;
 use App\Http\Controllers\Frontend\FrontOrderController;
 use App\Http\Controllers\Frontend\FrontProductController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserAddressController;
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -104,3 +105,8 @@ Route::get('searchAddress/{key}', [ShippingController::class, 'searchAddress']);
 Route::post('shipping/costs', [ShippingController::class, 'getCost']);
 Route::get('shop', [FrontApiController::class, 'getShop']);
 Route::get('config', [FrontApiController::class, 'getConfig']);
+
+Route::post('/payment/upload-proof', [PaymentController::class, 'uploadProof']);
+Route::get('order/{orderRef}', [FrontOrderController::class, 'show']);
+
+

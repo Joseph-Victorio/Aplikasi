@@ -91,6 +91,11 @@ const routes = [
          { path: 'reviews', name: 'ReviewsIndex', component: () => import('pages/Reviews/Index.vue') },
       ]
    },
+   {
+    path: '/qris/:order_ref',
+    name: 'Qris',
+    component: () => import('src/pages/Checkout/PaymentQris.vue')
+  },
 
    { path: '/install', name: 'InstallApp', component: () => import('pages/Install/Welcome.vue') },
 
