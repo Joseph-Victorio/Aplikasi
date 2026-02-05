@@ -92,20 +92,7 @@
                            </q-item-label>
                         </q-item-section>
                      </q-item>
-                     <q-item>
-                        <q-item-section>Kurir</q-item-section>
-                        <q-item-section>{{ invoice.shipping_courier_name }} </q-item-section>
-                     </q-item>
-                     <q-item>
-                        <q-item-section>
-                           <q-item-label>No Resi <q-icon v-if="invoice.shipping_courier_code" name="eva-copy"
-                                 size="18px" class="q-ml-sm cursor-pointer"
-                                 @click="copy(invoice.shipping_courier_code)"></q-icon>
-                           </q-item-label>
-                        </q-item-section>
-                        <q-item-section>{{ invoice.shipping_courier_code ? invoice.shipping_courier_code : '-'
-                        }}</q-item-section>
-                     </q-item>
+                     
                      <q-item>
                         <q-item-section>
                            <q-item-label>
@@ -125,10 +112,7 @@
                         <q-item-section>Total Belanja</q-item-section>
                         <q-item-section>{{ moneyIDR(invoice.order_subtotal) }}</q-item-section>
                      </q-item>
-                     <q-item>
-                        <q-item-section>Total Ongkos Kirim ({{ invoice.order_weight }} gram)</q-item-section>
-                        <q-item-section>{{ moneyIDR(invoice.shipping_cost) }}</q-item-section>
-                     </q-item>
+                    
                      <q-item>
                         <q-item-section>
                            <q-item-label class="text-weight-bold q-py-sm text-md">Total Tagihan</q-item-label>

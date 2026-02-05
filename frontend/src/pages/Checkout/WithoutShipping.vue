@@ -13,11 +13,15 @@
                         mask="#### #### #####" unmasked-value :error="errors.customer_phone"
                         error-message="no whatsapp belum diisi">
                      </q-input>
-                     <!-- <q-input label="Email (opsional)" filled square stack-label v-model="customer_email" type="email">
-                     </q-input> -->
+
+                     <q-input label="Alamat" type="textarea" rows="3" filled square stack-label
+                        v-model="customer_address">
+                     </q-input>
                      <q-input label="Catatan Pesanan" type="textarea" rows="3" filled square stack-label
                         v-model="customer_note">
                      </q-input>
+                     <!-- <q-input label="Email (opsional)" filled square stack-label v-model="customer_email" type="email">
+                     </q-input> -->
 
                   </div>
                </fieldset>
@@ -122,6 +126,15 @@ export default {
             return this.$store.state.order.formOrder.customer_name
          }
       },
+      customer_address: {
+         set(val) {
+            this.commitFormOrder('customer_address', val)
+         },
+         get() {
+            return this.$store.state.order.formOrder.customer_address
+         }
+      },
+
       customer_email: {
          set: function (val) {
             this.commitFormOrder('customer_email', val)
