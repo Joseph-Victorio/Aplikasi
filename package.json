@@ -6,5 +6,8 @@
       "serve": "cd frontend && quasar dev",
       "build": "cd frontend && quasar build -m pwa",
       "start": "cd frontend && npm install"
+   },
+   "dependencies": {
+      "chart.js": "^3.9.1"
    }
 }

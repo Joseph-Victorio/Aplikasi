@@ -23,6 +23,7 @@ use App\Http\Controllers\Frontend\ShippingController;
 use App\Http\Controllers\Frontend\FrontOrderController;
 use App\Http\Controllers\Frontend\FrontProductController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserAddressController;
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -111,5 +112,5 @@ Route::post('/payment/upload-proof', [PaymentController::class, 'uploadProof']);
 Route::get('order/{orderRef}', [FrontOrderController::class, 'show']);
 
 Route::post('/check-invoice', [CheckInvoiceController::class, 'search']);
-
+Route::get('/reports/orders', [ReportController::class, 'orders']);
 

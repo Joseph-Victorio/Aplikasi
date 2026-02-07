@@ -56,6 +56,7 @@ export default {
             { label: 'Akun', caption: 'Pengaturan Akun', path: 'Account', icon: 'person', color: 'green' },
             { label: 'Toko', caption: 'Pengaturan Tampilan toko', path: 'Shop', icon: 'store', color: 'blue' },
             { label: 'Order', caption: 'Kelola pesanan', path: 'OrderIndex', icon: 'receipt', color: 'green' },
+            { label: 'Laporan', caption: 'Lihat laporan perminggu, perbulan, dan pertahun', path: 'LaporanIndex', icon: 'eva-file-outline', color: 'green' },
             { label: 'Produk', caption: 'Tambah, edit dan hapus produk', path: 'AdminProductIndex', icon: 'inventory_2', color: 'deep-orange' },
             { label: 'Promo', caption: 'Kelola produk promo', path: 'PromoIndex', icon: 'local_offer', color: 'blue-7' },
             { label: 'Kategori', caption: 'Kelola kategori produk', path: 'CategoryIndex', icon: 'category', color: 'amber-7' },
