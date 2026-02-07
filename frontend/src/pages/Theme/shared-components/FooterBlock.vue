@@ -69,14 +69,14 @@
                      Artikel Blog
                   </q-item-section>
                </q-item>
-               <q-item clickable @click="toDashboard">
+               <!-- <q-item clickable @click="toDashboard">
                   <q-item-section side top>
                      <q-icon color="white" name="eva-person-outline" />
                   </q-item-section>
                   <q-item-section>
                      <span> {{ currentUser ? 'Dashboard' : 'Login' }}</span>
                   </q-item-section>
-               </q-item>
+               </q-item> -->
             </q-list>
          </div>
       </div>

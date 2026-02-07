@@ -19,7 +19,7 @@
 
         <q-route-tab icon="eva-search" :to="{ name: 'ProductSearch' }" label="Cari" exact />
 
-        <q-route-tab icon="eva-book-open-outline" :to="{ name: 'FrontPostIndex' }" label="Artikel" exact />
+        <q-route-tab icon="eva-file-text-outline" :to="{ name: 'CheckInvoice' }" label="Invoice" exact />
 
       </q-tabs>
     </q-footer>

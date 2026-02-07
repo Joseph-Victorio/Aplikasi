@@ -10,7 +10,7 @@ const routes = [
          { path: 'products/category/:id', name: 'ProductCategory', component: () => import('pages/Front/ProductsByCategory.vue') },
          { path: 'search-product', name: 'ProductSearch', component: () => import('src/pages/Front/ProductSearch.vue') },
          { path: 'search-order', name: 'OrderSearch', component: () => import('src/pages/Front/OrderSearch.vue') },
-         { path: 'posts', name: 'FrontPostIndex', component: () => import('src/pages/Front/PostIndex.vue') },
+         { path: 'invoice-check', name: 'CheckInvoice', component: () => import('src/pages/Front/CheckInvoice.vue') },
          { path: 'post/:slug', name: 'FrontPostShow', component: () => import('src/pages/Front/PostDetaIl.vue') },
       ]
    },

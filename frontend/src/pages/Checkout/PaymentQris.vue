@@ -59,6 +59,12 @@ export default {
             total: 0
         }
     },
+    computed: {
+        currentSessionId() {
+            return this.$store.state.currentSessionId
+        }
+    },
+
     mounted() {
         const orderRef = this.$route.params.order_ref
 
@@ -86,7 +92,9 @@ export default {
             try {
                 await this.$axios.post(`${process.env.API}/payment/upload-proof`, form)
                 this.$q.notify({ type: 'positive', message: 'Bukti berhasil dikirim, menunggu verifikasi' })
-
+                this.$store.dispatch('cart/clearCart', this.currentSessionId)
+            
+                localStorage.removeItem('_nextshop_wa_current_user')
                 this.$router.replace({
                     name: 'UserInvoice',
                     params: { order_ref: this.$route.params.order_ref }

@@ -12,6 +12,7 @@ use App\Http\Controllers\SliderController;
 use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckInvoiceController;
 use App\Http\Controllers\PasswordResetController;
 
 use App\Http\Controllers\Frontend\CartController;
@@ -108,5 +109,7 @@ Route::get('config', [FrontApiController::class, 'getConfig']);
 
 Route::post('/payment/upload-proof', [PaymentController::class, 'uploadProof']);
 Route::get('order/{orderRef}', [FrontOrderController::class, 'show']);
+
+Route::post('/check-invoice', [CheckInvoiceController::class, 'search']);
 
 
