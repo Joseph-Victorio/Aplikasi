@@ -47,8 +47,8 @@ export default {
          tab: 'BasicConfig',
          tabs: [
             { value: 'BasicConfig', label: 'Basic' },
-            { value: 'ShippingConfig', label: 'Pengiriman Ekspedisi' },
-            { value: 'Local', label: 'Pengiriman Toko' },
+            // { value: 'ShippingConfig', label: 'Pengiriman Ekspedisi' },
+            // { value: 'Local', label: 'Pengiriman Toko' },
             { value: 'System', label: 'System Update' }
          ]
       }

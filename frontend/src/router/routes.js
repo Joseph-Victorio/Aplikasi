@@ -6,6 +6,7 @@ const routes = [
       children: [
          { path: '', name: 'Home', component: () => import('pages/Front/PageIndex.vue') },
          { path: 'favorite', name: 'ProductFavorite', component: () => import('pages/Front/ProductFavorite.vue') },
+         { path: 'berita', name: 'FrontPostIndex', component: () => import('pages/Front/PostIndex.vue') },
          { path: 'products', name: 'ProductIndex', component: () => import('pages/Front/ProductIndex.vue') },
          { path: 'products/category/:id', name: 'ProductCategory', component: () => import('pages/Front/ProductsByCategory.vue') },
          { path: 'search-product', name: 'ProductSearch', component: () => import('src/pages/Front/ProductSearch.vue') },
